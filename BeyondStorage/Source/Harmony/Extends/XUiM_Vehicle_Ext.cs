@@ -1,5 +1,5 @@
 ﻿using Audio;
-using BeyondStorage.Game.Vehicle;
+using BeyondStorage.Game.Item;
 using HarmonyLib;
 
 namespace BeyondStorage.Harmony.Extends;
@@ -73,7 +73,7 @@ internal static class XUiM_Vehicle_Ext
             else
             {
                 // Try storage if neither bag nor toolbelt had repair kits
-                int removedFromStorage = VehicleRepair.VehicleRepairRemoveRemaining(itemValue, 1);
+                int removedFromStorage = ItemCommon.ItemRemoveRemaining(itemValue, 1);
                 if (removedFromStorage > 0)
                 {
                     itemConsumed = true;

@@ -185,7 +185,6 @@
     <Compile Include="Source\Storage\TileEntityItemDiscovery.cs" />
     <Compile Include="Source\Entities\CollectorHandler.cs" />
     <Compile Include="Source\Entities\WorkstationHandler.cs" />
-    <Compile Include="Source\Game\Vehicle\VehicleRepair.cs" />
     <Compile Include="Source\Game\WorldPlayerContext.cs" />
     <Compile Include="Source\Multiplayer\NetPackageBeyondStorageConfig.cs" />
     <Compile Include="Source\Multiplayer\NetPackageLockedTEs.cs" />
