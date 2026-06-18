@@ -1,0 +1,224 @@
+﻿using System;
+using System.Collections.Generic;
+using BeyondStorage.Caching;
+using BeyondStorage.Configuration;
+using BeyondStorage.Data;
+using BeyondStorage.Game;
+using BeyondStorage.Infrastructure;
+
+namespace BeyondStorage.Storage;
+
+/// <summary>
+/// Factory responsible for creating and caching StorageContext instances.
+/// Handles the complex logic of context creation, validation, and caching.
+/// </summary>
+public static class StorageContextFactory
+{
+    private const double DEFAULT_CACHE_DURATION = 0.5;
+    private static readonly ExpiringCache<StorageContext> s_contextCache = new(DEFAULT_CACHE_DURATION, nameof(StorageContext));
+
+    /// <summary>
+    /// Creates or retrieves a cached StorageContext instance.
+    /// </summary>
+    /// <param name="methodName">The calling method name for logging</param>
+    /// <param name="forceRefresh">Whether to force creation of a fresh context</param>
+    /// <returns>A valid StorageContext or null if creation failed</returns>
+    public static StorageContext Create(string methodName, bool forceRefresh = false)
+    {
+        return s_contextCache.GetOrCreate(() => CreateFresh(methodName), forceRefresh, methodName);
+    }
+
+    /// <summary>
+    /// Creates a fresh StorageContext instance.
+    /// </summary>
+    /// <param name="methodName">The calling method name for logging</param>
+    /// <returns>A new StorageContext or null if creation failed</returns>
+    private static StorageContext CreateFresh(string methodName)
+    {
+        try
+        {
+            var worldPlayerContext = WorldPlayerContext.TryCreate(methodName);
+            if (worldPlayerContext == null)
+            {
+                ModLogger.DebugLog($"{methodName}: Failed to create WorldPlayerContext, aborting context creation.");
+                return null;
+            }
+
+            var config = ConfigSnapshot.Current;
+            if (config == null)
+            {
+                ModLogger.DebugLog($"{methodName}: ConfigSnapshot.Current is null, aborting context creation.");
+                return null;
+            }
+
+            var cacheManager = new ItemStackCacheManager();
+            var allowedSources = BuildAllowedSourcesSnapshot(config);
+
+            var dataStore = new StorageSourceItemDataStore(allowedSources);
+            var sources = new StorageDataManager(dataStore);
+
+            var context = new StorageContext(config, worldPlayerContext, sources, cacheManager);
+            return context;
+        }
+        catch (Exception ex)
+        {
+            ModLogger.DebugLog($"{methodName}: Exception creating StorageContext: {ex}", ex);
+            return null;
+        }
+    }
+
+    public static bool EnsureValidContext(StorageContext context, string methodName)
+    {
+        const string d_MethodName = nameof(EnsureValidContext);
+
+        if (string.IsNullOrEmpty(methodName))
+        {
+            methodName = d_MethodName;
+        }
+
+        if (context == null)
+        {
+            ModLogger.DebugLog($"{methodName}: Context is null, cannot ensure validity.");
+            return false;
+        }
+
+        if (!IsValidContext(context))
+        {
+            ModLogger.DebugLog($"{methodName}: Context is invalid, refreshing cache.");
+            s_contextCache.InvalidateCache();
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Validates that a context is usable and not expired.
+    /// </summary>
+    /// <param name="context">The context to validate</param>
+    /// <returns>True if the context is valid and usable</returns>
+    public static bool IsValidContext(StorageContext context)
+    {
+        if (context == null)
+        {
+            return false;
+        }
+
+        if (context.WorldPlayerContext == null)
+        {
+            return false;
+        }
+
+        if (context.Config == null)
+        {
+            return false;
+        }
+
+        if (context.Sources == null)
+        {
+            return false;
+        }
+
+        if (context.Sources.DataStore == null)
+        {
+            return false;
+        }
+
+        if (context.CacheManager == null)
+        {
+            return false;
+        }
+
+        // Check if context is too old (expired).
+        // Keeps cache from becoming dangerously stale, if it somehow persists beyond
+        // the normal cache expiration time.
+        if (context.AgeInSeconds > DEFAULT_CACHE_DURATION * 2)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Invalidates only this factory's context cache.
+    /// </summary>
+    public static void InvalidateCache()
+    {
+        s_contextCache.InvalidateCache();
+        ModLogger.DebugLog($"StorageContext cache invalidated");
+    }
+
+    /// <summary>
+    /// Invalidates all storage-related caches (factory and global item stack caches).
+    /// Use this when you need complete cache invalidation across the entire system.
+    /// </summary>
+    public static void InvalidateAllCaches()
+    {
+        s_contextCache.InvalidateCache();
+        ItemStackCacheManager.InvalidateGlobalCache();
+        ModLogger.DebugLog($"All StorageContext and ItemStack caches invalidated");
+    }
+
+    /// <summary>
+    /// Gets the age of the current cached context in seconds.
+    /// </summary>
+    /// <returns>Age in seconds or -1 if no cached context</returns>
+    public static double GetCacheAge()
+    {
+        return s_contextCache.GetCacheAge();
+    }
+
+    /// <summary>
+    /// Checks if there is a valid cached context available.
+    /// </summary>
+    /// <returns>True if a valid cached context exists</returns>
+    public static bool HasValidCachedContext()
+    {
+        return s_contextCache.HasValidCachedItem();
+    }
+
+    /// <summary>
+    /// Gets cache statistics for diagnostics.
+    /// </summary>
+    /// <returns>String containing cache statistics</returns>
+    public static string GetCacheStats()
+    {
+        return s_contextCache.GetCacheStats();
+    }
+
+    /// <summary>
+    /// Invalidates the cached context. The next call to <see cref="Create"/> will build a fresh instance.
+    /// Use when external state that affects the context has changed mid-session, such as a slot lock toggle.
+    /// </summary>
+    public static void InvalidateContext()
+    {
+        s_contextCache.InvalidateCache(nameof(InvalidateContext));
+    }
+
+    private static AllowedSourcesList BuildAllowedSourcesSnapshot(ConfigSnapshot config)
+    {
+        var types = new List<Type>();
+
+        // The order is important
+
+        if (config.ConsumeFromDrones)
+        {
+            types.Add(typeof(EntityDrone));
+        }
+
+        // Always allowed as of v2.6.9
+        types.Add(typeof(TileEntityCollector));
+        types.Add(typeof(TileEntityWorkstation));
+
+        // Lootables: Always allowed
+        types.Add(typeof(ITileEntityLootable));
+
+        if (config.ConsumeFromVehicles)
+        {
+            types.Add(typeof(EntityVehicle));
+        }
+
+        return new AllowedSourcesList(types);
+    }
+}

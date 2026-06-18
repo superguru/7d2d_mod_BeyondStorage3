@@ -1,0 +1,299 @@
+﻿using System;
+using System.Collections.Generic;
+using BeyondStorage.Configuration;
+using BeyondStorage.Data;
+using BeyondStorage.Game;
+using BeyondStorage.Infrastructure;
+
+namespace BeyondStorage.Storage;
+
+public sealed class StorageContext
+{
+    internal ConfigSnapshot Config { get; }
+    internal WorldPlayerContext WorldPlayerContext { get; }
+    internal StorageDataManager Sources { get; }
+    internal ItemStackCacheManager CacheManager { get; }
+
+    internal EntityPlayerLocal Player => WorldPlayerContext.Player;
+    internal XUiM_PlayerInventory PlayerInventory => Player.playerUI.xui.PlayerInventory;
+
+    private DateTime CreatedAt { get; }
+
+    internal StorageContext(ConfigSnapshot config, WorldPlayerContext worldPlayerContext, StorageDataManager sources, ItemStackCacheManager cacheManager)
+    {
+        const string d_MethodName = nameof(StorageContext);
+
+        if (config == null)
+        {
+            var error = $"{d_MethodName}: {nameof(config)} cannot be null.";
+            ModLogger.DebugLog(error);
+            throw new ArgumentNullException(nameof(config), error);
+        }
+
+        if (worldPlayerContext == null)
+        {
+            var error = $"{d_MethodName}: {nameof(worldPlayerContext)} cannot be null.";
+            ModLogger.DebugLog(error);
+            throw new ArgumentNullException(nameof(worldPlayerContext), error);
+        }
+
+        if (sources == null)
+        {
+            var error = $"{d_MethodName}: {nameof(sources)} cannot be null.";
+            ModLogger.DebugLog(error);
+            throw new ArgumentNullException(nameof(sources), error);
+        }
+
+        if (cacheManager == null)
+        {
+            var error = $"{d_MethodName}: {nameof(cacheManager)} cannot be null.";
+            ModLogger.DebugLog(error);
+            throw new ArgumentNullException(nameof(cacheManager), error);
+        }
+
+        Config = config;
+        WorldPlayerContext = worldPlayerContext;
+        Sources = sources;
+        CacheManager = cacheManager;
+        CreatedAt = DateTime.Now;
+    }
+
+    #region Cache Management
+
+    public void InvalidateCache()
+    {
+        // Clear data first, then invalidate cache atomically
+        Sources.Clear();
+        CacheManager.InvalidateCache();
+    }
+
+    /// <summary>
+    /// Ensures cache is valid for the specified filter, refreshing if necessary.
+    /// </summary>
+    /// <param name="filter">The filter to validate cache for</param>
+    /// <param name="methodName">Calling method name for logging</param>
+    /// <returns>True if cache was valid (hit), false if refresh was needed (miss)</returns>
+    private bool EnsureValidCache(string methodName)
+    {
+        var hit = CacheManager.IsMasterCacheValid();
+
+        if (!hit)
+        {
+            try
+            {
+                // Clear data first, then invalidate cache atomically
+                Sources.Clear();
+                CacheManager.InvalidateCache();
+
+                // Always discover everything for master cache
+                ItemDiscoveryService.DiscoverItems(this);
+                CacheManager.MarkCached();
+
+                hit = true; // Cache refresh succeeded
+            }
+            catch (Exception ex)
+            {
+                ModLogger.DebugLog($"{methodName}: Failed during item discovery: {ex.Message}", ex);
+
+                // Ensure cache is invalidated on failure and data is cleared
+                Sources.Clear();
+                CacheManager.InvalidateCache();
+
+                return false;
+            }
+        }
+
+        //var cacheStatus = hit ? "HIT" : "MISS";
+        //ModLogger.DebugLog($"{methodName}: CACHE_CHECK_{cacheStatus}");
+        return hit;
+    }
+
+    private void LoadCache()
+    {
+        const string d_MethodName = nameof(LoadCache);
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed during manual load");
+        }
+    }
+
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedSourcesList allowedSourcePolicy, ItemScope filter)
+    {
+        LoadCache();
+
+        var storages = StorageQueryService.GetClosestStorageSources(this, allowedSourcePolicy, filter);
+        return storages;
+    }
+
+    /// <summary>
+    /// Gets information about the current cache state.
+    /// </summary>
+    /// <returns>String containing cache information</returns>
+    public string GetItemStackCacheInfo()
+    {
+        return CacheManager.GetCacheInfo();
+    }
+
+    /// <summary>
+    /// Gets comprehensive diagnostic information including both cache and data store state.
+    /// </summary>
+    /// <returns>String containing comprehensive diagnostic information</returns>
+    public string GetComprehensiveDiagnosticInfo()
+    {
+        var cacheInfo = CacheManager.GetCacheInfo();
+        var dataStoreInfo = Sources.DataStore.GetComprehensiveDiagnosticInfo();
+        return $"{cacheInfo} | {dataStoreInfo}";
+    }
+    #endregion
+
+    #region Query Operations - Delegate to StorageQueryService
+    public IList<ItemStack> GetAllAvailableItemStacks(UniqueItemTypes filter)
+    {
+        const string d_MethodName = nameof(GetAllAvailableItemStacks);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning empty collection");
+            return CollectionFactory.EmptyItemStackList;
+        }
+
+        return StorageQueryService.GetAllAvailableItemStacks(this, filter);
+    }
+
+    public int GetItemCount(ItemValue itemValue)
+    {
+        const string d_MethodName = nameof(GetItemCount);
+        var filter = UniqueItemTypes.FromItemValue(itemValue);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning 0");
+            return 0;
+        }
+
+        return StorageQueryService.GetItemCount(this, itemValue);
+    }
+
+    public int GetItemCount(UniqueItemTypes filter)
+    {
+        const string d_MethodName = nameof(GetItemCount);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning 0");
+            return 0;
+        }
+
+        return StorageQueryService.GetItemCount(this, filter);
+    }
+
+    public bool HasItem(ItemValue itemValue)
+    {
+        const string d_MethodName = nameof(HasItem);
+        var filter = UniqueItemTypes.FromItemValue(itemValue);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning false");
+            return false;
+        }
+
+        return StorageQueryService.HasItem(this, itemValue);
+    }
+
+    public bool HasItem(UniqueItemTypes filter)
+    {
+        const string d_MethodName = nameof(HasItem);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning false");
+            return false;
+        }
+
+        return StorageQueryService.HasItem(this, filter);
+    }
+    #endregion
+
+    #region Removal Operations - Delegate to StorageItemRemovalService
+    public int RemoveRemaining(ItemValue itemValue, int stillNeeded, bool ignoreModdedItems = false, IList<ItemStack> gameTrackedRemovedItems = null)
+    {
+        const string d_MethodName = nameof(RemoveRemaining);
+        var filter = UniqueItemTypes.FromItemValue(itemValue);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning 0");
+            return 0;
+        }
+
+        return StorageItemRemovalService.RemoveItems(this, itemValue, stillNeeded, ignoreModdedItems, gameTrackedRemovedItems);
+    }
+    #endregion
+
+    #region Diagnostics and Statistics
+    public double AgeInSeconds => (DateTime.Now - CreatedAt).TotalSeconds;
+
+    public string GetSourceSummary()
+    {
+        return $"{Sources.GetSourceSummary()}, Age: {AgeInSeconds:F1}s";
+    }
+
+    internal IReadOnlyCollection<Type> GetAllowedSourceTypes()
+    {
+        return Sources.DataStore.GetAllowedSourceTypes();
+    }
+    #endregion
+
+    #region User Actions and Interactions
+    internal void ShowLocalPlayerNotification(string localisationKey, params object[] formatArgs)
+    {
+        ShowLocalPlayerNotification(localisationKey, null, formatArgs);
+    }
+
+    internal void ShowLocalPlayerNotification(string localisationKey, string alertSound, params object[] formatArgs)
+    {
+        const string d_MethodName = nameof(ShowLocalPlayerNotification);
+
+
+        if (string.IsNullOrEmpty(localisationKey))
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Localisation key is null or empty, cannot show notification");
+#endif
+            return;
+        }
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, not showing anything");
+#endif
+            return;
+        }
+
+        if (Player == null)
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Player reference is null, cannot show notification");
+#endif
+            return;
+        }
+
+        string localisedMessage = GameTools.GetLocalisedValue(d_MethodName, localisationKey, formatArgs);
+        if (string.IsNullOrEmpty(localisedMessage))
+        {
+#if DEBUG
+            ModLogger.DebugLog(d_MethodName + ": Localised message is null or empty, cannot show notification");
+#endif
+            return;
+        }
+
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName}: Showing notification - Key: '{localisationKey}', Message: '{localisedMessage}', AlertSound: '{alertSound}'");
+#endif
+
+        GameManager.ShowTooltip(Player, localisedMessage, string.Empty, alertSound);
+    }
+    #endregion
+}

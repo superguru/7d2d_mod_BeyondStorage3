@@ -1,0 +1,170 @@
+﻿using System.Collections.Generic;
+using BeyondStorage.Caching;
+using BeyondStorage.Infrastructure;
+using Platform;
+using UnityEngine;
+
+namespace BeyondStorage.Game;
+
+/// <summary>
+/// Encapsulates world and player context information needed for tile entity operations.
+/// This class provides a centralized way to access commonly used world/player data.
+/// </summary>
+public sealed class WorldPlayerContext
+{
+    private const double DEFAULT_CACHE_DURATION = 2.0;
+    private static readonly ExpiringCache<WorldPlayerContext> s_cache = new(DEFAULT_CACHE_DURATION, nameof(WorldPlayerContext)) { LogCacheUsage = false };
+
+    public World World { get; }
+    public EntityPlayerLocal Player { get; }
+    public Vector3 PlayerPosition { get; }
+    public PlatformUserIdentifierAbs InternalLocalUserIdentifier { get; }
+    public int PlayerEntityId { get; }
+    public List<Chunk> ChunkCacheCopy { get; }
+    public System.DateTime CreatedAt { get; }
+
+    private WorldPlayerContext(World world, EntityPlayerLocal player, List<Chunk> chunkCacheCopy)
+    {
+        World = world;
+        Player = player;
+        ChunkCacheCopy = chunkCacheCopy;
+        PlayerPosition = player.position;
+        InternalLocalUserIdentifier = PlatformManager.InternalLocalUserIdentifier;
+        PlayerEntityId = player.entityId;
+        CreatedAt = System.DateTime.Now;
+    }
+
+    /// <summary>
+    /// Returns a cached or freshly created WorldPlayerContext.
+    /// A new context is only created when the cache is empty, expired, or a refresh is forced.
+    /// Returns null if any required component is unavailable.
+    /// </summary>
+    /// <param name="methodName">The calling method name for logging purposes</param>
+    /// <param name="forceRefresh">If true, bypasses cache and creates fresh context</param>
+    /// <returns>A valid WorldPlayerContext or null if creation failed</returns>
+    public static WorldPlayerContext TryCreate(string methodName, bool forceRefresh = false)
+    {
+        return s_cache.GetOrCreate(() => CreateFresh(methodName), forceRefresh, methodName);
+    }
+
+    /// <summary>
+    /// Forces cache invalidation and creates a fresh context on next call.
+    /// </summary>
+    public static void InvalidateCache()
+    {
+        s_cache.InvalidateCache();
+    }
+
+    /// <summary>
+    /// Gets the age of the current cached context in seconds.
+    /// Returns -1 if no cached context exists.
+    /// </summary>
+    public static double GetCacheAge()
+    {
+        return s_cache.GetCacheAge();
+    }
+
+    /// <summary>
+    /// Checks if the cache currently has a valid (non-expired) context.
+    /// </summary>
+    public static bool HasValidCachedContext()
+    {
+        return s_cache.HasValidCachedItem();
+    }
+
+    /// <summary>
+    /// Gets cache statistics for diagnostics.
+    /// </summary>
+    public static string GetCacheStats()
+    {
+        return s_cache.GetCacheStats();
+    }
+
+    private static WorldPlayerContext CreateFresh(string methodName)
+    {
+        var world = GameManager.Instance?.World;
+        if (world == null)
+        {
+            ModLogger.DebugLog($"{methodName}: World is null, aborting.");
+            return null;
+        }
+
+        var player = world.GetPrimaryPlayer();
+        if (player == null)
+        {
+            if (WorldTools.IsClient() || WorldTools.IsSinglePlayer())
+            {
+                ModLogger.DebugLog($"{methodName}: Player is null, aborting.");
+            }
+            return null;
+        }
+
+        var chunkCacheCopy = world.ChunkCache.GetChunkArrayCopySync();
+        if (chunkCacheCopy == null)
+        {
+            if (WorldTools.IsClient() || WorldTools.IsSinglePlayer())
+            {
+                ModLogger.DebugLog($"{methodName}: chunkCacheCopy is null, aborting.");
+            }
+            return null;
+        }
+
+        return new WorldPlayerContext(world, player, chunkCacheCopy);
+    }
+
+    /// <summary>
+    /// Calculates the distance between the player and a world position.
+    /// </summary>
+    /// <param name="worldPosition">The world position to measure distance to</param>
+    /// <returns>The distance in world units</returns>
+    public float DistanceToPlayer(Vector3 worldPosition)
+    {
+        return Vector3.Distance(PlayerPosition, worldPosition);
+    }
+
+    /// <summary>
+    /// Checks if a position is within the specified range of the player.
+    /// </summary>
+    /// <param name="worldPosition">The world position to check</param>
+    /// <param name="range">The maximum range (0 or negative means no range limit)</param>
+    /// <returns>True if within range or range is unlimited</returns>
+    public bool IsWithinRange(Vector3 worldPosition, float range)
+    {
+        return IsWithinRange(worldPosition, range, out _);
+    }
+
+    /// <summary>
+    /// Checks if a position is within the specified range of the player.
+    /// </summary>
+    /// <param name="worldPosition">The world position to check</param>
+    /// <param name="range">The maximum range (0 or negative means no range limit)</param>
+    /// <param name="distance">The distance to the world position from the player</param>
+    /// <returns>True if within range or range is unlimited</returns>
+    public bool IsWithinRange(Vector3 worldPosition, float range, out float distance)
+    {
+        distance = DistanceToPlayer(worldPosition);
+        return range <= 0 || distance < range;
+    }
+
+    /// <summary>
+    /// Checks if the player is allowed to access a lockable tile entity.
+    /// </summary>
+    /// <param name="lockable">The lockable tile entity to check</param>
+    /// <returns>True if the player can access the lockable entity</returns>
+    public bool CanAccessLockable(ILockable lockable)
+    {
+        return lockable == null || !lockable.IsLocked() || lockable.IsUserAllowed(InternalLocalUserIdentifier);
+    }
+
+    /// <summary>
+    /// Gets the age of this context instance in seconds.
+    /// </summary>
+    public double AgeInSeconds => (System.DateTime.Now - CreatedAt).TotalSeconds;
+
+    /// <summary>
+    /// Checks if this context has expired based on the given lifetime.
+    /// </summary>
+    /// <param name="lifetimeSeconds">Maximum lifetime in seconds</param>
+    /// <returns>True if the context has expired</returns>
+    public bool HasExpired(double lifetimeSeconds) => AgeInSeconds > lifetimeSeconds;
+}

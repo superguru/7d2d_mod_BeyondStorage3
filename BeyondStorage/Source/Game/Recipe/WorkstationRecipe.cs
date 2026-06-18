@@ -1,0 +1,126 @@
+﻿using BeyondStorage.Game.UI;
+using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage;
+using BeyondStorage.UI;
+
+namespace BeyondStorage.Game.Recipe;
+
+public static class WorkstationRecipe
+{
+    // Use MethodCallTracker for tracking call performance
+    private static readonly MethodCallTracker s_callStats = new("WorkstationRecipe");
+
+    /// <summary>
+    /// This is called when the recipe finishes crafting on a workstation TE that is NOT open on a player screen
+    /// </summary>
+    public static void BackgroundWorkstation_CraftCompleted()
+    {
+        const string d_MethodName = nameof(BackgroundWorkstation_CraftCompleted);
+
+        s_callStats.StartTiming(d_MethodName);
+        try
+        {
+            var stats = s_callStats.GetMethodStats(d_MethodName);
+            long callCount = stats?.callCount ?? 0;
+            Update_OpenWorkstations(d_MethodName, callCount + 1);
+        }
+        finally
+        {
+            var elapsedUs = s_callStats.StopAndRecordCall(d_MethodName);
+            var stats = s_callStats.GetMethodStats(d_MethodName);
+
+            if (stats.HasValue)
+            {
+                var (callCount, totalTimeUs, avgTimeUs) = stats.Value;
+#if DEBUG
+                //ModLogger.DebugLog($"{d_MethodName}: completed call {callCount} in {MethodCallTracker.FormatMicroseconds(elapsedUs)} (avg: {MethodCallTracker.FormatMicroseconds(avgTimeUs)})");
+#endif
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called when the recipe finishes crafting on the currently opened workstation window
+    /// </summary>
+    public static void ForegroundWorkstation_CraftCompleted()
+    {
+        const string d_MethodName = nameof(ForegroundWorkstation_CraftCompleted);
+
+        s_callStats.StartTiming(d_MethodName);
+        try
+        {
+            var stats = s_callStats.GetMethodStats(d_MethodName);
+            long callCount = stats?.callCount ?? 0;
+
+            Update_OpenWorkstations(d_MethodName, callCount + 1);
+        }
+        finally
+        {
+            // Stop timing and record the call
+            var elapsedUs = s_callStats.StopAndRecordCall(d_MethodName);
+            var stats = s_callStats.GetMethodStats(d_MethodName);
+
+            if (stats.HasValue)
+            {
+                var (callCount, totalTimeUs, avgTimeUs) = stats.Value;
+#if DEBUG
+                //ModLogger.DebugLog($"{d_MethodName}: completed call {callCount} in {MethodCallTracker.FormatMicroseconds(elapsedUs)} (avg: {MethodCallTracker.FormatMicroseconds(avgTimeUs)})");
+#endif
+            }
+        }
+    }
+
+    internal static void Update_OpenWorkstations(string callType, long callCount)
+    {
+        string methodName = $"{callType}.{nameof(Update_OpenWorkstations)}";
+
+        // This check HAS to be done first, as StorageContextFactory.Create will return null if the world does not exist.
+        if (!WorldTools.IsWorldExists() || !WorldTools.IsWorldHasPrimaryPlayer())
+        {
+            return;
+        }
+
+        if (!ValidationHelper.ValidateStorageContext(methodName, out StorageContext context))
+        {
+            return;
+        }
+
+        // Use the new UIRefreshHelper to validate and refresh UI
+        if (!UIRefreshHelper.ValidateAndRefreshUI(context, methodName))
+        {
+            return;
+        }
+
+        RefreshOpenWorkstationRecipeLists(context, methodName, callCount);
+    }
+
+    private static void RefreshOpenWorkstationRecipeLists(StorageContext context, string methodName, long callCount)
+    {
+        var worldPlayerContext = context?.WorldPlayerContext;
+        if (worldPlayerContext == null)
+        {
+            ModLogger.DebugLog($"{methodName}: WorldPlayerContext is null in call {callCount}.");
+            return;
+        }
+
+        // Get the currently active workstation using the new WindowStateManager
+        var activeWorkstation = WindowStateManager.GetActiveWorkstationWindow();
+
+        if (activeWorkstation == null)
+        {
+            return; // Nothing to update - exit early
+        }
+
+        var recipeList = activeWorkstation.recipeList;
+        if (recipeList == null || recipeList.recipeControls == null)
+        {
+            ModLogger.DebugLog($"{methodName}: Recipe list or controls are null for active workstation in call {callCount}. Skipping updates.");
+            return;
+        }
+
+        activeWorkstation.syncUIfromTE();
+
+        recipeList.PlayerInventory_OnBackpackItemsChanged();
+        activeWorkstation.craftInfoWindow?.ingredientList?.PlayerInventory_OnBackpackItemsChanged();
+    }
+}

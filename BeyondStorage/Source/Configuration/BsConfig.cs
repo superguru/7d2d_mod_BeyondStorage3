@@ -1,0 +1,48 @@
+﻿using BeyondStorage.Infrastructure;
+
+namespace BeyondStorage.Configuration;
+
+/// <summary>
+/// Configuration class for Beyond Storage mod settings
+/// </summary>
+public class BsConfig
+{
+    // ========== Versioning =========
+    /// <summary>
+    /// Config schema version - matches ModInfo.Version when config was created/migrated
+    /// </summary>
+    public string version = ConfigVersioning.CurrentVersion;
+
+    // ========== Source selection / eligibility =========
+    /// <summary>
+    /// How far to pull from (-1 is infinite range, only limited by chunks loaded)
+    /// </summary>
+    public float range = -1.0f;
+
+    /// <summary>
+    /// If set to true it will try and pull items from nearby drones
+    /// </summary>
+    public bool consumeFromDrones = true;
+
+    /// <summary>
+    /// If set to true it will try and pull items from nearby vehicle storages
+    /// </summary>
+    public bool consumeFromVehicles = true;
+
+    // ========== Multiplayer =========
+    /// <summary>
+    /// If set true on a server it will force all clients to use server settings for Beyond Storage
+    /// </summary>
+    public bool serverSyncConfig = true;
+
+    // ========== Housekeeping =========
+    /// <summary>
+    /// If set true additional logging will be printed to logs/console
+    /// </summary>
+    public bool isDebug = false;
+
+    /// <summary>
+    /// Optional metadata description field for configuration documentation purposes
+    /// </summary>
+    public string metaDescription = string.Empty;
+}
