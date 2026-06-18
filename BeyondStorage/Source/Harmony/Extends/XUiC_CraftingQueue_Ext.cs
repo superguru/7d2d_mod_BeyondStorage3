@@ -12,7 +12,7 @@ namespace BeyondStorage.Harmony.Extends;
 internal static class XUiC_CraftingQueue_Ext
 {
     // Fixed an internal bug where crafting queue is not kept in sync with some other UI elements.
-    // Still a bug in 2.x - confirmed in 2.0 - 2.2
+    // Still a bug in 2.x - confirmed in 2.x, 3.0.x
     [HarmonyPrefix]
     [HarmonyPatch(nameof(XUiC_CraftingQueue.AddRecipeToCraftAtIndex))]
 #if DEBUG
