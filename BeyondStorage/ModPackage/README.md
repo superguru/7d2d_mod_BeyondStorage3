@@ -6,9 +6,9 @@ Use resources from all of those when you refuel, paint, repair, pick locks, craf
 
 If you can do it from your player inventory, you can now also do it from your extended inventory.
 
-Please go to <span style="color:#4c5fd7;">**#beyond-storage2**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support. See the README.md file or the mod web page for the details.
+Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support. See the README.md file or the mod web page for the details.
 
-All support is via **[Discord at GAZ World](https://discord.gg/hAF5T4P9pE)** in the <span style="color:#4c5fd7;">**#beyond-storage2**</span> channel.
+All support is via **[Discord at GAZ World](https://discord.gg/hAF5T4P9pE)** in the <span style="color:#4c5fd7;">**#beyond-storage3**</span> channel.
 <!-- [size=4][color=#ff0000][BBCode][/color] [url=https://discord.gg/hAF5T4P9pE]Support is ONLY on Discord at GAZ World[/url] [color=#ff0000][/BBCode][/color][/size] -->
 
 [quote]This README is a mix of BBCode and Markdown. You might read it more easily on [url=https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/README.md]GitHub[/url].[/quote]
@@ -111,8 +111,6 @@ What is considered Consuming?
 
 💡However, a locked slot will stop items in that slot from being moved in a bulk inventory transfer, just like in the base game.
 
-_**Note:** In versions of the mod prior to 2.6.3, a locked slot - except for the Player Backpack - would not be eligible for pulling for consumption (recipes, painting, etc.)._
-
 ### ⏪Smart Push
 
 All sources listed in the Consume section, aside from the Toolbelt, has a Smart Push button added to the appropriate window.
@@ -193,7 +191,7 @@ the Nexus Mod mod details section more easily.
 
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
 
-[list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V2 Larger Backpacks[/url][/*]
+[list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V3 Larger Backpacks 60[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/342]Bdub's Vehicles (2.0)[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/305]Bigger Backpack[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/7554]Endless Harvest[/url][/*]
