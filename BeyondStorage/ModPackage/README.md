@@ -192,21 +192,26 @@ the Nexus Mod mod details section more easily.
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
 
 [list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V3 Larger Backpacks 60[/url][/*]
+[*][url=https://www.nexusmods.com/7daystodie/mods/870]AGF - V3 - HUD PLUS[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/342]Bdub's Vehicles (2.0)[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/305]Bigger Backpack[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/7554]Endless Harvest[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/5458]IZY-All in One Gun Pack v5.1[/url][/*]
+[*][url=https://www.nexusmods.com/7daystodie/mods/10753]Jakmeister999's Enhanced HUD and UI (V3.0)[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/5418]Reclaim Storage Crates[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/8634]Recipe Tracker[/url][/*]
 [*][url=https://7daystodiemods.com/vehicle-madness]Vehicle Madness[/url][/*][/list]
+
+📋Note that not all of these mods have been fully converted to v3.x of 7 Days to Die.
 
 ### 🤷🏼‍Maybe compatible:
 
 Should be compatible, but haven't tested this recently. Feedback welcome on Discord.
 
-[list][*][url=https://www.nexusmods.com/7daystodie/mods/7632]Jakmeister999's Enhanced HUD (V2.x)[/url][/*]
-[*][url=https://www.nexusmods.com/7daystodie/mods/7786]PROJECT Z FULL VERSION[/url][/*]
+[list][*][url=https://www.nexusmods.com/7daystodie/mods/7786]PROJECT Z FULL VERSION[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/1357]QuickStack [/url][/*][/list]
+
+📋Note that not all of these mods have been fully converted to v3.x of 7 Days to Die.
 
 ### ❌Not considered compatible:
 
