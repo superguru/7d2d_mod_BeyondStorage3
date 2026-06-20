@@ -32,8 +32,9 @@ internal static class ItemActionRanged_Ext
         }
 
         // Ammo available in bag or toolbelt
-        if (_actionData.invData.holdingEntity.bag.GetItemCount(ammoItemValue) > 0 ||
-            _actionData.invData.holdingEntity.inventory.GetItemCount(ammoItemValue) > 0)
+        Bag bag = _actionData.invData.holdingEntity.bag;
+        if (_actionData.invData.holdingEntity.inventory.GetItemCount(ammoItemValue) > 0 ||
+            (bag != null && bag.GetItemCount(ammoItemValue) > 0))
         {
             __result = true;
             return false;
