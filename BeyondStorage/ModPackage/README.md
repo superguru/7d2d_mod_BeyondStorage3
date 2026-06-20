@@ -191,7 +191,7 @@ the Nexus Mod mod details section more easily.
 
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
 
-[list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V3 Larger Backpacks 60[/url][/*]
+[list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V3 Larger Backpacks 60-72-84-119[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/870]AGF - V3 - HUD PLUS[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/342]Bdub's Vehicles (2.0)[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/305]Bigger Backpack[/url][/*]
