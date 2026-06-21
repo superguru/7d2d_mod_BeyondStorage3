@@ -6,6 +6,15 @@ Use resources from all of those when you refuel, paint, repair, pick locks, craf
 
 If you can do it from your player inventory, you can now also do it from your extended inventory.
 
+-----------------------------------------
+I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper).
+<!-- [color=#ff0000][BBCode][/color] [url=https://ko-fi.com/gazorper]Support me on Ko-fi[/url] [color=#ff0000][/BBCode][/color] -->
+
+<!--
+[url=https://ko-fi.com/gazorper][img=290x73]https://storage.ko-fi.com/cdn/kofi6.png[/img][/url] 
+-->
+<a href="https://ko-fi.com/gazorper" alt="Gazorper Ko-Fi support"><img src="https://storage.ko-fi.com/cdn/kofi6.png" alt="Gazorper Ko-Fi logo" width="290" height="73"></a>
+-----------------------------------------
 Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support. See the README.md file or the mod web page for the details.
 
 All support is via **[Discord at GAZ World](https://discord.gg/hAF5T4P9pE)** in the <span style="color:#4c5fd7;">**#beyond-storage3**</span> channel.
@@ -19,28 +28,19 @@ This is a [7 Days to Die](https://store.steampowered.com/app/251570/7_Days_to_Di
 See the media attached to the the [Nexus Mods Beyond Storage 3 mod page](https://www.nexusmods.com/7daystodie/mods/7809?tab=images) for some graphical illustrations of what the mod can be used for.
 <!-- [color=#ff0000][BBCode][/color] [url=https://www.nexusmods.com/7daystodie/mods/7809?tab=images]Nexus Mods Beyond Storage 3 mod page[/url][color=#ff0000][/BBCode][/color] -->
 
-## 🙋🏼About me
+## 🙋🏼About me ... and You!
 
 I'm just some guy trying to be the change we all want to see in the world...of games.
 
-I might be streaming, check [Twitch](https://www.twitch.tv/gazorper_stream)
-<!-- [color=#ff0000][BBCode][/color] [color=#00ffff][size=3][b]Twitch[/b][/size][/color] at [url=https://www.twitch.tv/gazorper_stream]https://www.twitch.tv/gazorper_stream[/url][color=#ff0000][/BBCode][/color] -->
+You can be a player, gamer, streamer, dev, more?
 
------------------------------------------
-If you like what I'm doing, or what I've done, you can [support me on Ko-fi](https://ko-fi.com/gazorper).
-<!-- [color=#ff0000][BBCode][/color] [url=https://ko-fi.com/gazorper]Support me on Ko-fi[/url] [color=#ff0000][/BBCode][/color] -->
-
-<!--
-[url=https://ko-fi.com/gazorper][img=290x73]https://storage.ko-fi.com/cdn/kofi6.png[/img][/url] 
--->
-<a href="https://ko-fi.com/gazorper" alt="Gazorper Ko-Fi support"><img src="https://storage.ko-fi.com/cdn/kofi6.png" alt="Gazorper Ko-Fi logo" width="290" height="73"></a>
-
------------------------------------------
+**You** can tell **everyone** you're streaming in the [Discord](https://discord.gg/WHkm3PGKKx)<span style="color:#4c5fd7;">**#announce-your-stream**</span> channel!
+<!-- [color=#ff0000][BBCode][/color][size=4][color=#20ff00][url=(https://discord.gg/WHkm3PGKKx)]#announce-your-stream[/url] on Discord[/color][color=#ff0000][/size][/BBCode][/color] -->
 
 ## 💾What to download
 
-- Use the main download for the latest version of 7 Days to Die v3.x (all builds)
-- For 7 Days v2.x see Old Files section
+- V3: Use the main download for the latest version of 7 Days to Die v3.x (all builds)
+- V2: For older versions of the game, like 7 Days v2.x, see Old Files section
  
 ## ⚙️Installation
 
@@ -187,21 +187,20 @@ the Nexus Mod mod details section more easily.
 
 ## 🤝Mod compatibility list
 
-### ✅Considered compatible:
+### ✅Considered compatible (V3):
 
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
-
 [list][*][url=https://www.nexusmods.com/7daystodie/mods/1684]AGF V3 Larger Backpacks 60-72-84-119[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/870]AGF - V3 - HUD PLUS[/url][/*]
-[*][url=https://www.nexusmods.com/7daystodie/mods/342]Bdub's Vehicles (2.0)[/url][/*]
-[*][url=https://www.nexusmods.com/7daystodie/mods/305]Bigger Backpack[/url][/*]
-[*][url=https://www.nexusmods.com/7daystodie/mods/7554]Endless Harvest[/url][/*]
-[*][url=https://www.nexusmods.com/7daystodie/mods/5458]IZY-All in One Gun Pack v5.1[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/10753]Jakmeister999's Enhanced HUD and UI (V3.0)[/url][/*]
+[*][url=https://www.nexusmods.com/7daystodie/mods/7554]Endless Harvest[/url][/*][/list]
+### Still not converted to V3, so not compatible yet:
+[list][*][url=https://www.nexusmods.com/7daystodie/mods/342]Bdub's Vehicles (2.0)[/url][/*]
+[*][url=https://www.nexusmods.com/7daystodie/mods/305]Bigger Backpack[/url][/*]
+[*][url=https://www.nexusmods.com/7daystodie/mods/5458]IZY-All in One Gun Pack v5.1[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/5418]Reclaim Storage Crates[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/8634]Recipe Tracker[/url][/*]
 [*][url=https://7daystodiemods.com/vehicle-madness]Vehicle Madness[/url][/*][/list]
-
 📋Note that not all of these mods have been fully converted to v3.x of 7 Days to Die.
 
 ### 🤷🏼‍Maybe compatible:
@@ -210,7 +209,6 @@ Should be compatible, but haven't tested this recently. Feedback welcome on Disc
 
 [list][*][url=https://www.nexusmods.com/7daystodie/mods/7786]PROJECT Z FULL VERSION[/url][/*]
 [*][url=https://www.nexusmods.com/7daystodie/mods/1357]QuickStack [/url][/*][/list]
-
 📋Note that not all of these mods have been fully converted to v3.x of 7 Days to Die.
 
 ### ❌Not considered compatible:
