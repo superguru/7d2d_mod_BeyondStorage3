@@ -101,6 +101,26 @@ internal static class XUiC_BagContainer_Ext
     }
 
     [HarmonyPostfix]
+    [HarmonyPatch(nameof(XUiC_BagContainer.OnOpen))]
+#if DEBUG
+    [HarmonyDebug]
+#endif
+    private static void XUiC_BagContainer_OnOpen(XUiC_BagContainer __instance)
+    {
+#if DEBUG
+        const string d_MethodName = nameof(XUiC_BagContainer_OnOpen);
+#endif
+
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
+#endif
+        __instance?.RefreshBindings();
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
+#endif
+    }
+
+    [HarmonyPostfix]
     [HarmonyPatch(nameof(XUiC_BagContainer.UpdateLockedSlots))]
 #if DEBUG
     [HarmonyDebug]

@@ -198,8 +198,9 @@ public static class WindowStateManager
     /// </summary>
     /// <returns>True if a storage container window is open, false otherwise</returns>
     /// <remarks>
-    /// Only returns true for storage containers (chests, safes, etc.) and drones.
+    /// Only returns true for storage containers (chests, safes, etc.).
     /// Random loot containers in the world (abandoned cars, dumpsters, etc.) are not considered storage.
+    /// Drones are tracked separately via <see cref="IsDroneWindowOpen"/>.
     /// </remarks>
     public static bool IsPlayerStorageOpen()
     {
@@ -209,11 +210,7 @@ public static class WindowStateManager
         }
     }
 
-    /// <summary>
-    /// Gets whether any loot container window is currently open, including non-storage world containers
-    /// </summary>
-    /// <returns>True if any loot window is open, false otherwise</returns>
-    public static bool IsLootContainerWindowOpen()
+    internal static bool IsAnyLootWindowOpen()
     {
         lock (s_lootLockObject)
         {
@@ -250,8 +247,14 @@ public static class WindowStateManager
     /// <param name="isStorage">True if the container is player-owned storage rather than world loot</param>
     internal static void OnStorageWindowOpened(XUiC_LootWindow window, bool isStorage)
     {
+#if DEBUG
+        const string d_MethodName = nameof(OnStorageWindowOpened);
+#endif
         lock (s_lootLockObject)
         {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+#endif
             if (s_isPlayerStorageWindowOpen || s_lootWindowInstance != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Storage container window opened while another was already tracked. Resetting state. Previous: {s_lootWindowInstance?.GetType().Name}, New: {window?.GetType().Name}");
@@ -261,6 +264,10 @@ public static class WindowStateManager
 
             s_lootWindowInstance = window;
             s_isPlayerStorageWindowOpen = isStorage;
+
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+#endif
         }
     }
 
@@ -270,8 +277,14 @@ public static class WindowStateManager
     /// <param name="window">The storage container window that closed</param>
     internal static void OnStorageWindowClosed(XUiC_LootWindow window)
     {
+#if DEBUG
+        const string d_MethodName = nameof(OnStorageWindowClosed);
+#endif
         lock (s_lootLockObject)
         {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+#endif
             if (window == s_lootWindowInstance)
             {
                 s_lootWindowInstance = null;
@@ -281,6 +294,9 @@ public static class WindowStateManager
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close storage container window that doesn't match tracked instance.");
             }
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+#endif
         }
     }
 
@@ -325,11 +341,10 @@ public static class WindowStateManager
         bool result =
             !IsDroneWindowOpen() &&
             !IsVehicleWindowOpen() &&
-            !IsPlayerStorageOpen() &&
-            !IsLootContainerWindowOpen();
+            !IsAnyLootWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (Drone: {IsDroneWindowOpen()}, Vehicle: {IsVehicleWindowOpen()}, Workstation: {IsWorkstationWindowOpen()}, Collector: {IsCollectorWindowOpen()}, PlayerStorage: {IsPlayerStorageOpen()}, LootContainer: {IsLootContainerWindowOpen()})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (Drone: {IsDroneWindowOpen()}, Vehicle: {IsVehicleWindowOpen()}, Workstation: {IsWorkstationWindowOpen()}, Collector: {IsCollectorWindowOpen()}, LootWindow: {IsAnyLootWindowOpen()})");
 #endif
 
         return result.ToString();

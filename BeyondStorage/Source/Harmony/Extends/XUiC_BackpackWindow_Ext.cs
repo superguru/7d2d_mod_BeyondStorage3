@@ -74,8 +74,13 @@ internal static class XUiC_BackpackWindow_Ext
         }
 
         WindowStateManager.OnBackpackWindowOpened(__instance);
+
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Backpack window opened");
+        //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
+#endif
+        __instance?.RefreshBindings();
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 
@@ -87,12 +92,17 @@ internal static class XUiC_BackpackWindow_Ext
     private static void XUiC_BackpackWindow_OnClose_Postfix(XUiC_BackpackWindow __instance)
     {
 #if DEBUG
-        //const string d_MethodName = nameof(XUiC_BackpackWindow_OnClose_Postfix);
+        const string d_MethodName = nameof(XUiC_BackpackWindow_OnClose_Postfix);
 #endif
+
         WindowStateManager.OnBackpackWindowClosed(__instance);
 
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Backpack window closed");
+        //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
+#endif
+        __instance?.RefreshBindings();
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 

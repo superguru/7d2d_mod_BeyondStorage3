@@ -103,9 +103,10 @@ internal static class XUiC_LootWindow_Ext
         const string d_MethodName = nameof(XUiC_LootWindow_OnOpen_Postfix);
 
         // Check for duplicate window open (should not happen)
-        if (WindowStateManager.IsPlayerStorageOpen())
+        if (WindowStateManager.IsAnyLootWindowOpen())
         {
-            ModLogger.DebugLog($"{d_MethodName}: LootWindow is already open for storage. This should not happen!");
+            var kind = WindowStateManager.IsPlayerStorageOpen() ? "player storage" : "world loot";
+            ModLogger.DebugLog($"{d_MethodName}: A loot window ({kind}) is already open. This should not happen!");
         }
 
         var tileEntity = __instance?.te;
@@ -124,7 +125,7 @@ internal static class XUiC_LootWindow_Ext
         {
             isPlayerStorage = storage.bPlayerStorage;
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for storage/isPlayerStorage: {storage}/{isPlayerStorage}");
+            //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for TEFeatureStorage. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
 #endif
         }
 
@@ -132,12 +133,19 @@ internal static class XUiC_LootWindow_Ext
         if (!isPlayerStorage)
         {
             isPlayerStorage = tileEntity.bPlayerStorage;
+#if DEBUG
+            //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for Player owned/created. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
+#endif
         }
 
         WindowStateManager.OnStorageWindowOpened(__instance, isPlayerStorage);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: LootWindow opened isPlayerStorage: {isPlayerStorage}, te: {tileEntity}, bPlayerStorage: {tileEntity.bPlayerStorage}, lootListName: {tileEntity.lootListName}");
+        //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
+#endif
+        __instance?.RefreshBindings();
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 
@@ -148,13 +156,20 @@ internal static class XUiC_LootWindow_Ext
 #endif
     private static void XUiC_LootWindow_OnClose_Postfix(XUiC_LootWindow __instance)
     {
+#if DEBUG
+        const string d_MethodName = nameof(XUiC_LootWindow_OnClose_Postfix);
+#endif
         WindowStateManager.OnStorageWindowClosed(__instance);
 
         // Clear the saved locked slots state when the window closes
         s_previousLockedSlots = null;
 
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: LootWindow closed");
+        //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
+#endif
+        __instance?.RefreshBindings();
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 
@@ -169,7 +184,10 @@ internal static class XUiC_LootWindow_Ext
         {
             case "bs_is_player_storage_open":
                 _value = WindowStateManager.IsPlayerStorageOpen() ? "true" : "false";
-                __result = true;
+                __result = true;  // This means that the binding name was a known one and we've set the value to whatever the binding resolves to 
+#if DEBUG
+                //ModLogger.DebugLog($"bs_is_player_storage_open: __instance={__instance != null}, _bindingName='{_bindingName}', _value = '{_value}', __result={__result}");
+#endif
                 return false; // Skip original method
         }
 
