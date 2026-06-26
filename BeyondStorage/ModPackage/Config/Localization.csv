@@ -1,13 +1,13 @@
-Key,File,Type,UsedInMainMenu,NoTranslate,English
-btnBeyondSmartCollectorPush_ToolTip,,,,,Pushes completed items from here to the nearest storages that already have that type of item
-btnBeyondSmartDronePullLoadout_ToolTip,,,,,Pull in items to top up the drone's loadout (the locked slots) from nearby storages
-btnBeyondSmartLootWindowPush_ToolTip,,,,,Pushes items from here to the nearest other storages that already have that type of item
-btnBeyondSmartPlayerInventoryPullLoadout_ToolTip,,,,,Pull in items to top up your backpack inventory loadout (the locked slots) from nearby storages
-btnBeyondSmartPlayerInventoryPush_ToolTip,,,,,Pushes items from unlocked slots in your backpack inventory to the nearest storages that already have that type of item
-btnBeyondSmartVehiclePullLoadout_ToolTip,,,,,Pull in items to top up the vehicle's loadout (the locked slots) from nearby storages
-btnBeyondSmartVehiclePush_ToolTip,,,,,Pushes items from unlocked slots in the drone/vehicle inventory to the nearest storages that already have that type of item
-btnBeyondSmartWorkstationOutputPush_ToolTip,,,,,Pushes completed items from here to the nearest storages that already have that type of item
-loadingBeyondStorage,UI,Loading Screen,x,,Please go to [4c5fd7]#beyond-storage3[-] on the [f46f30]Discord server[-] for mod support. See the README.md file or the mod web page for the details.
-loadingBeyondStorage_title,UI,Loading Screen,x,,Beyond Storage mod support
-msgBeyondSmartPullLoadout_Result,,,,,You carefully topped up {0} stack(s) in the {1} loadout
-msgBeyondSmartPush_Result,,,,,Through hard work you moved {0} stack(s) from {1} to {2} storage(s)
+"Key","File","Type","UsedInMainMenu","NoTranslate","KeepLoaded","English"
+"btnBeyondSmartCollectorPush_ToolTip","","","","","","Pushes completed items from here to the nearest storages that already have that type of item"
+"btnBeyondSmartDronePullLoadout_ToolTip","","","","","","Pull in items to top up the drone's loadout (the locked slots) from nearby storages"
+"btnBeyondSmartLootWindowPush_ToolTip","","","","","","Pushes items from here to the nearest other storages that already have that type of item"
+"btnBeyondSmartPlayerInventoryPullLoadout_ToolTip","","","","","","Pull in items to top up your backpack inventory loadout (the locked slots) from nearby storages"
+"btnBeyondSmartPlayerInventoryPush_ToolTip","","","","","","Pushes items from unlocked slots in your backpack inventory to the nearest storages that already have that type of item"
+"btnBeyondSmartVehiclePullLoadout_ToolTip","","","","","","Pull in items to top up the vehicle's loadout (the locked slots) from nearby storages"
+"btnBeyondSmartVehiclePush_ToolTip","","","","","","Pushes items from unlocked slots in the drone/vehicle inventory to the nearest storages that already have that type of item"
+"btnBeyondSmartWorkstationOutputPush_ToolTip","","","","","","Pushes completed items from here to the nearest storages that already have that type of item"
+"loadingBeyondStorage","UI","Loading Screen","x","","","Please go to [4c5fd7]#beyond-storage3[-] on the [f46f30]Discord server[-] for mod support. See the README.md file or the mod web page for the details."
+"loadingBeyondStorage_title","UI","Loading Screen","x","","","Beyond Storage mod support"
+"msgBeyondSmartPullLoadout_Result","","","","","","You carefully topped up {0} stack(s) in the {1} loadout"
+"msgBeyondSmartPush_Result","","","","","","Through hard work you moved {0} stack(s) from {1} to {2} storage(s)"
