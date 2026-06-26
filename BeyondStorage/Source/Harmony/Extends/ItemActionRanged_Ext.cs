@@ -40,8 +40,8 @@ internal static class ItemActionRanged_Ext
             return false;
         }
 
-        // Fallback: infinite ammo or storage (mirrors original HasInfiniteAmmo fallback position)
-        __result = __instance.HasInfiniteAmmo(_actionData) || ItemCommon.HasItemInStorage(ammoItemValue);
+        // Fallback: infinite ammo or storage. Storage check is player-only — NPCs must not pull from player storage.
+        __result = __instance.HasInfiniteAmmo(_actionData) || (entityPlayerLocal != null && ItemCommon.HasItemInStorage(ammoItemValue));
         return false;
     }
 
