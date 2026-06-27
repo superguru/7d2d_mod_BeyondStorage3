@@ -1,4 +1,4 @@
-using BeyondStorage.Game.Item;
+﻿using BeyondStorage.Game.Item;
 using HarmonyLib;
 
 namespace BeyondStorage.Harmony.Extends;
@@ -37,7 +37,7 @@ internal static class EntityDrone_Ext
 
         // Storage has a repair kit — consume it and repair, mirroring original call order
         playerUI.xui.CollectedItemList.RemoveItemStack(new ItemStack(repairKitItem, 1));
-        __instance.PlaySound("crafting/craft_repair_item");
+        __instance.playSound("crafting/craft_repair_item");
         ItemCommon.ItemRemoveRemaining(repairKitItem, 1);
         __instance.performRepair();
         __instance.SendSyncData(16);
