@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias DotNetSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static ItemActionTextureBlock;
@@ -68,7 +69,7 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
         // State tracking for flood fill (matches original game logic)
         var visitedPositions = new Dictionary<Vector3i, bool>(); // bool = canExpand
         var visitedRays = new Dictionary<Vector2i, bool>();
-        var positionsToCheck = new Stack<Vector2i>();
+        var positionsToCheck = new DotNetSystem::System.Collections.Generic.Stack<Vector2i>();
         var worldRayHitInfo = new WorldRayHitInfo();
 
         positionsToCheck.Push(new Vector2i(0, 0));
@@ -414,7 +415,7 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
         return new BlockProcessResult { ShouldExpand = canExpand };
     }
 
-    private static void AddAdjacentPositions(Stack<Vector2i> positionsToCheck, Vector2i currentPosition)
+    private static void AddAdjacentPositions(DotNetSystem::System.Collections.Generic.Stack<Vector2i> positionsToCheck, Vector2i currentPosition)
     {
         positionsToCheck.Push(currentPosition + Vector2i.down);
         positionsToCheck.Push(currentPosition + Vector2i.up);
