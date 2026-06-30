@@ -40,6 +40,23 @@ public class StructuredField
         set => AsString = value.ToString(CultureInfo.InvariantCulture);
     }
 
+    public Vector3i? AsVector3i
+    {
+        get
+        {
+            var parts = AsString.Split(',');
+            if (parts.Length == 3
+                && int.TryParse(parts[0], out int x)
+                && int.TryParse(parts[1], out int y)
+                && int.TryParse(parts[2], out int z))
+            {
+                return new Vector3i(x, y, z);
+            }
+            return null;
+        }
+        set => AsString = value.HasValue ? $"{value.Value.x},{value.Value.y},{value.Value.z}" : "";
+    }
+
     public override string ToString() => $"{Length}:{AsString}";
 
     public bool AsBool

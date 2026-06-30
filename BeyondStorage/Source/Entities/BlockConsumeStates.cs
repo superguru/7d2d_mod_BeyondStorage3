@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Source.Game.Files;
 using BeyondStorage.Storage;
 using BeyondStorage.UI;
 
@@ -7,25 +8,23 @@ namespace BeyondStorage.Entities;
 
 internal static class BlockConsumeStates
 {
-    private static ConcurrentDictionary<Vector3i, bool> DisabledConsumptionBlocks
-    {
-        get; set;
-    }
+    private static ConcurrentDictionary<Vector3i, byte> DisabledConsumptionBlocks { get; } = new();
 
     private static readonly MethodCallTracker s_methodStats = new("BlockConsumeStates");
 
     public static void Init()
     {
-        DisabledConsumptionBlocks = new ConcurrentDictionary<Vector3i, bool>();
         s_methodStats.Clear();
 
-        //TODO: Load previous list from game save in single player
+        BlockConsumeStatePersistance.LoadDisabledBlocks(DisabledConsumptionBlocks);
+
         //TODO: Request sync from server in multiplayer
     }
 
     public static void Cleanup()
     {
-        DisabledConsumptionBlocks?.Clear();
+        DisabledConsumptionBlocks.Clear();
+
         s_methodStats.Clear();
     }
 
@@ -41,9 +40,11 @@ internal static class BlockConsumeStates
 
     public static void TurnConsumeOff(Vector3i block)
     {
+#if DEBUG
         const string d_MethodName = nameof(TurnConsumeOff);
+#endif
 
-        if (!DisabledConsumptionBlocks.TryAdd(block, true))
+        if (!DisabledConsumptionBlocks.TryAdd(block, 0))
         {
 #if DEBUG
             ModLogger.DebugLog($"{d_MethodName}: Block {block} already has consume turned off");
@@ -57,7 +58,7 @@ internal static class BlockConsumeStates
 
         OnBlockConsumeStateChanged();
 
-        // TODO: Send NetPackage to sync in multiplayer, otherwise Save in singleplayer. Or always Save?
+        // TODO: Send NetPackage to sync in multiplayer
     }
 
     public static void TurnConsumeOn(Vector3i block)
@@ -78,11 +79,12 @@ internal static class BlockConsumeStates
 
         OnBlockConsumeStateChanged();
 
-        // TODO: Send NetPackage to sync in multiplayer, otherwise Save in singleplayer. Or always Save?
+        // TODO: Send NetPackage to sync in multiplayer
     }
 
     private static void OnBlockConsumeStateChanged()
     {
+        BlockConsumeStatePersistance.SaveDisabledBlocks(DisabledConsumptionBlocks);
         StorageContextFactory.InvalidateCache();
         UIRefreshHelper.RefreshAllWindows(nameof(OnBlockConsumeStateChanged), isStackOperation: false);
     }

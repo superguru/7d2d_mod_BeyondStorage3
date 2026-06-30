@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 
 namespace BeyondStorage.Source.Persistance;
@@ -23,11 +23,28 @@ public class StructuredFile
      * multiple tags are allowed per file. a tag is the same concept as a record type, or the classifier for the line of data
      ***/
 
-    private readonly Dictionary<string, StructuredRecord> _records = [];
+    private readonly Dictionary<string, List<StructuredRecord>> _records = [];
     private StructuredRecord _meta = null;
 
     public int Version => _meta?.GetField("ver")?.AsInt ?? 0;
     public bool HasMeta => _meta != null;
+
+    public int RecordCount
+    {
+        get
+        {
+            int count = 0;
+            foreach (var list in _records.Values)
+            {
+                count += list.Count;
+            }
+            return count;
+        }
+    }
+
+    public int RecordTagCount => _records.Count;
+
+    public IReadOnlyCollection<string> GetRecordTags() => _records.Keys;
 
     public void Clear()
     {
@@ -42,13 +59,25 @@ public class StructuredFile
 
     public StructuredRecord GetRecord(string tag)
     {
-        _records.TryGetValue(tag.ToLowerInvariant(), out StructuredRecord record);
-        return record;
+        _records.TryGetValue(tag.ToLowerInvariant(), out var list);
+        return list?.Count > 0 ? list[0] : null;
+    }
+
+    public IReadOnlyList<StructuredRecord> GetRecordsByTag(string tag)
+    {
+        _records.TryGetValue(tag.ToLowerInvariant(), out var list);
+        return list ?? (IReadOnlyList<StructuredRecord>)[];
     }
 
     public void AddRecord(StructuredRecord record)
     {
-        _records[record.Tag] = record;
+        string tag = record.Tag;
+        if (!_records.TryGetValue(tag, out var list))
+        {
+            list = [];
+            _records[tag] = list;
+        }
+        list.Add(record);
     }
 
     public void SetMeta(int version)
@@ -101,7 +130,12 @@ public class StructuredFile
 
             if (!record.IsEmpty())
             {
-                _records[tag] = record;
+                if (!_records.TryGetValue(tag, out var list))
+                {
+                    list = [];
+                    _records[tag] = list;
+                }
+                list.Add(record);
             }
         }
     }
@@ -115,9 +149,12 @@ public class StructuredFile
             writer.WriteLine(_meta);
         }
 
-        foreach (var record in _records.Values)
+        foreach (var list in _records.Values)
         {
-            writer.WriteLine(record);
+            foreach (var record in list)
+            {
+                writer.WriteLine(record);
+            }
         }
     }
 }
