@@ -1,4 +1,5 @@
 ﻿using BeyondStorage.Data;
+using BeyondStorage.Entities;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Multiplayer;
 
@@ -62,6 +63,9 @@ internal static class TileEntityItemDiscovery
 
     private static bool ShouldProcessTileEntity(TileEntity tileEntity, TileEntityProcessingState state, out float distance)
     {
+#if DEBUG
+        const string d_MethodName = nameof(ShouldProcessTileEntity);
+#endif
         distance = 0f;
 
         if (tileEntity.IsRemoving)
@@ -70,6 +74,14 @@ internal static class TileEntityItemDiscovery
         }
 
         var tileEntityWorldPos = tileEntity.ToWorldPos();
+
+        if (BlockConsumeStates.IsConsumeOff(tileEntityWorldPos))
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: skipping block {tileEntity} at {tileEntityWorldPos}, because it has consume turned off");
+#endif
+            return false;
+        }
 
         // Early range check to avoid unnecessary processing
         if (!state.World.IsWithinRange(tileEntityWorldPos, state.Config.Range, out distance))
