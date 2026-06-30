@@ -2,18 +2,13 @@
 
 internal static class ConsumeCapabilityChecker_TEFeatureStorage
 {
-    internal static (bool Applies, bool CanToggle) CanToggleConsume(object a)
+    internal static bool CanToggleConsume(object a)
     {
-        (bool Applies, bool ShouldToggle) canToggle = (false, false);
-
         if (a is not TEFeatureStorage storage)
         {
-            return canToggle;
+            return false;
         }
 
-        canToggle.Applies = true;
-        canToggle.ShouldToggle = storage.bPlayerStorage;
-
-        return canToggle;
+        return storage.bPlayerStorage;
     }
 }

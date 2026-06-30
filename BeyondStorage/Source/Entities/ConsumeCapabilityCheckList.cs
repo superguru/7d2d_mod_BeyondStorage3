@@ -7,13 +7,16 @@ internal static class ConsumeCapabilityCheckList
 {
     private static readonly object s_lock = new();
 
-    internal delegate (bool Applies, bool CanToggle) CanToggleConsumeCheck(object a);
+    internal delegate bool CanToggleConsumeCheck(object a);
 
     private static readonly HashSet<CanToggleConsumeCheck> s_canToggleConsumeEvents = [];
 
     internal static void AddCheck(CanToggleConsumeCheck check)
     {
-        s_canToggleConsumeEvents.Add(check);
+        lock (s_lock)
+        {
+            s_canToggleConsumeEvents.Add(check);
+        }
     }
 
     internal static bool AnyPasses(object a)
@@ -22,43 +25,27 @@ internal static class ConsumeCapabilityCheckList
         const string d_MethodName = nameof(AnyPasses);
 #endif
 
-#if DEBUG
-        int checkedCount = 0;
-        int appliesCount = 0;
-#endif
-
         if (a == null)
         {
 #if DEBUG
             ModLogger.DebugLog($"{d_MethodName}: checks auto-failed for null object");
 #endif
+            return false;
         }
 
-        bool result = false;
-
-        foreach (var check in s_canToggleConsumeEvents)
+        lock (s_lock)
         {
-#if DEBUG
-            checkedCount++;
-#endif
-            var (Applies, CanToggle) = check(a);
-            if (Applies)
+            foreach (var check in s_canToggleConsumeEvents)
             {
-#if DEBUG
-                appliesCount++;
-#endif
-                if (CanToggle)
+                bool canToggle = check(a);
+
+                if (canToggle)
                 {
-                    result = true;
-                    break;
+                    return true;
                 }
             }
+
+            return false;
         }
-
-#if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Check result={result}, checkedCount={checkedCount}, appliesCount={appliesCount}, a={a.GetType()}");
-#endif
-
-        return result;
     }
 }
