@@ -70,9 +70,9 @@
     <Compile Include="Source\Data\StorageTargetAdapter.cs" />
     <Compile Include="Source\Diagnostics\DebugTools.cs" />
     <Compile Include="Source\Entities\BlockConsumeStates.cs" />
-    <Compile Include="Source\Entities\ConsumeCapabilityChecker_TEFeatureStorage.cs" />
-    <Compile Include="Source\Entities\ConsumeCapabilityCheckList.cs" />
     <Compile Include="Source\Entities\EntityHandler.cs" />
+    <Compile Include="Source\Game\Files\BlockConsumeStatePersistance.cs" />
+    <Compile Include="Source\Game\Files\GamePathProvider.cs" />
     <Compile Include="Source\Harmony\Extends\EntityDrone_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionRanged_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\TEFeatureAbs_Ext.cs" />

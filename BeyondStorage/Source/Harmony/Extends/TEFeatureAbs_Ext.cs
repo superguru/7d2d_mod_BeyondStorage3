@@ -1,7 +1,6 @@
 ﻿
 using System;
 using BeyondStorage.Entities;
-using BeyondStorage.Infrastructure;
 using HarmonyLib;
 
 namespace BeyondStorage.Harmony.Extends;
@@ -19,39 +18,23 @@ internal static class TEFeatureAbs_Ext
 #endif
     private static void TEFeatureAbs_AllowBlockActivationCommand(TEFeatureAbs __instance, ITileEntityFeature _module, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityAlive _entityFocusing, ref bool __result)
     {
-        const string d_MethodName = nameof(TEFeatureAbs.AllowBlockActivationCommand);
-
-        if (__instance == null)
+        if (__instance is TEFeatureStorage storage)
         {
-            ModLogger.DebugLog($"{d_MethodName}: Cannot operate on null block");
-            return;
+            var isPlayerStorage = storage.bPlayerStorage;
+
+            if (__instance.CommandIs(_commandName, "Consume_Off"))
+            {
+                __result = isPlayerStorage && BlockConsumeStates.IsConsumeOn(_blockPos);
+                return;
+            }
+
+            if (__instance.CommandIs(_commandName, "Consume_On"))
+            {
+                __result = isPlayerStorage && BlockConsumeStates.IsConsumeOff(_blockPos);
+                return;
+            }
         }
 
-        var allowConsumeOps = ConsumeCapabilityCheckList.AnyPasses(__instance);
-        if (!allowConsumeOps)
-        {
-#if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: cmd=?, __result={__result}, no checks passed");
-#endif
-            return;  // we won't check anything else if this block isn't even eligible for consumption
-        }
-
-        if (__instance.CommandIs(_commandName, "Consume_Off"))
-        {
-            __result = BlockConsumeStates.IsConsumeOn(_blockPos);
-#if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: cmd=consume_off, __result={__result}");
-#endif
-            return;
-        }
-
-        if (__instance.CommandIs(_commandName, "Consume_On"))
-        {
-            __result = BlockConsumeStates.IsConsumeOff(_blockPos);
-#if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: cmd=consume_on, __result={__result}");
-#endif
-            return;
-        }
+        __result = true;
     }
 }
