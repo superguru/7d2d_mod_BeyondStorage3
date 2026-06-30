@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Storage;
+using BeyondStorage.UI;
 
 namespace BeyondStorage.Entities;
 
@@ -83,5 +84,6 @@ internal static class BlockConsumeStates
     private static void OnBlockConsumeStateChanged()
     {
         StorageContextFactory.InvalidateCache();
+        UIRefreshHelper.RefreshAllWindows(nameof(OnBlockConsumeStateChanged), isStackOperation: false);
     }
 }
