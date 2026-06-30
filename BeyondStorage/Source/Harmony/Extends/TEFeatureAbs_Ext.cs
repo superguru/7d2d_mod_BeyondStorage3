@@ -17,16 +17,13 @@ internal static class TEFeatureAbs_Ext
 #if DEBUG
     [HarmonyDebug]
 #endif
-    private static void TEFeatureAbs_AllowBlockActivationCommand(TEFeatureSignable __instance, ITileEntityFeature _module, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityAlive _entityFocusing, ref bool __result)
+    private static void TEFeatureAbs_AllowBlockActivationCommand(TEFeatureAbs __instance, ITileEntityFeature _module, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityAlive _entityFocusing, ref bool __result)
     {
-#if DEBUG
         const string d_MethodName = nameof(TEFeatureAbs.AllowBlockActivationCommand);
-#endif
+
         if (__instance == null)
         {
             ModLogger.DebugLog($"{d_MethodName}: Cannot operate on null block");
-
-            __result = false;  // we don't handle this command
             return;
         }
 
@@ -36,7 +33,7 @@ internal static class TEFeatureAbs_Ext
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: cmd=?, __result={__result}, no checks passed");
 #endif
-            return;  // we won't check anything else if this thing isn't even eligible for consumption
+            return;  // we won't check anything else if this block isn't even eligible for consumption
         }
 
         if (__instance.CommandIs(_commandName, "Consume_Off"))

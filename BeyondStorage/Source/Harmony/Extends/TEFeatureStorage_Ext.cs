@@ -1,4 +1,6 @@
-﻿using System;
+﻿extern alias DotNetSystem;
+
+using System;
 using BeyondStorage.Entities;
 using BeyondStorage.Infrastructure;
 using HarmonyLib;
@@ -18,16 +20,10 @@ internal static class TEFeatureStorage_Ext
 #endif
     private static void TEFeatureStorage_InitBlockActivationCommands_Postfix(TEFeatureSignable __instance, Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData> _addCallback)
     {
-        //TODO: Lazy add TEFeatureAbs instance check for TEFeatureStorage.bPlayerStorage to delegate registry in a new class in Game\Features or Game\Components
-
-        _addCallback(new BlockActivationCommand("Consume_Off", "consume_off", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
-        _addCallback(new BlockActivationCommand("Consume_On", "consume_on", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
+        // Icons seem swapped below, but it shows a nice green tick if the block is currently ✅On, and a red cross if it's currently ❌Off
+        _addCallback(new BlockActivationCommand(_text: "Consume_Off", _icon: "consume_on", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
+        _addCallback(new BlockActivationCommand(_text: "Consume_On", _icon: "consume_off", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
         // See TEFeatureAbs patch methods for the AllowBlockActivationCommand extension
-    }
-
-    private static void IsPlayerStorage(TEFeatureAbs __instance, ref bool __result)
-    {
-
     }
 
     [HarmonyPostfix]
@@ -37,9 +33,8 @@ internal static class TEFeatureStorage_Ext
 #endif
     private static void TEFeatureStorage_OnBlockActivated_Postfix(TEFeatureSignable __instance, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityPlayerLocal _player, ref bool __result)
     {
-#if DEBUG
         const string d_MethodName = nameof(TEFeatureStorage.OnBlockActivated);
-#endif
+
         if (__result)
         {
 #if DEBUG
@@ -52,7 +47,6 @@ internal static class TEFeatureStorage_Ext
         {
             ModLogger.DebugLog($"{d_MethodName}: Cannot operate on null block");
 
-            __result = false;  // we don't handle this command
             return;
         }
 
@@ -63,7 +57,6 @@ internal static class TEFeatureStorage_Ext
 #if DEBUG
             ModLogger.DebugLog($"{d_MethodName}: Cannot handle this command");
 #endif
-            __result = false;  // we did not handle this command
             return;
         }
 
@@ -82,5 +75,6 @@ internal static class TEFeatureStorage_Ext
 #if DEBUG
         ModLogger.DebugLog($"{d_MethodName}: Command handled and now ConsumeOn={BlockConsumeStates.IsConsumeOn(_blockPos)}");
 #endif
+        __result = true; // we did handle this command
     }
 }
