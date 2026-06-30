@@ -69,9 +69,14 @@
     <Compile Include="Source\Data\StorageSourceAdapterFactory.cs" />
     <Compile Include="Source\Data\StorageTargetAdapter.cs" />
     <Compile Include="Source\Diagnostics\DebugTools.cs" />
+    <Compile Include="Source\Entities\BlockConsumeStates.cs" />
+    <Compile Include="Source\Entities\ConsumeCapabilityChecker_TEFeatureStorage.cs" />
+    <Compile Include="Source\Entities\ConsumeCapabilityCheckList.cs" />
     <Compile Include="Source\Entities\EntityHandler.cs" />
     <Compile Include="Source\Harmony\Extends\EntityDrone_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionRanged_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\TEFeatureAbs_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\TEFeatureStorage_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\TileEntityWorkstation_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_BagStorageWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
@@ -165,11 +170,9 @@
     <Compile Include="Source\Data\ItemClassCache.cs" />
     <Compile Include="Source\Entities\LootableHandler.cs" />
     <Compile Include="Source\Storage\StorageContext.cs" />
-    <Compile Include="Source\Game\Block\BlockRepair.cs" />
-    <Compile Include="Source\Game\Block\BlockUpgrade.cs" />
     <Compile Include="Source\Configuration\ConfigSnapshot.cs" />
     <Compile Include="Source\Harmony\OneToManyDictionaryExtensions.cs" />
-    <Compile Include="Source\Multiplayer\TileEntityLockManager.cs" />
+    <Compile Include="Source\Multiplayer\TileEntityLocks.cs" />
     <Compile Include="Source\Game\Item\ItemCommon.cs" />
     <Compile Include="Source\Game\Item\ItemTexture.cs" />
     <Compile Include="Source\Game\Item\ItemCraft.cs" />
@@ -252,64 +255,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    <Reference Include="mscorlib">
+      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\mscorlib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System.Collections.Immutable, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.10.0.6\lib\net462\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="netstandard">
+      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\netstandard.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Composition.AttributedModel, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Composition.AttributedModel.10.0.6\lib\net462\System.Composition.AttributedModel.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Convention, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Composition.Convention.10.0.6\lib\net462\System.Composition.Convention.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Hosting, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Composition.Hosting.10.0.6\lib\net462\System.Composition.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Runtime, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Composition.Runtime.10.0.6\lib\net462\System.Composition.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Composition.TypedParts.10.0.6\lib\net462\System.Composition.TypedParts.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Pipelines, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.10.0.6\lib\net462\System.IO.Pipelines.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.Metadata.10.0.6\lib\net462\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages, Version=10.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encoding.CodePages.10.0.6\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Channels, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Channels.10.0.6\lib\net462\System.Threading.Channels.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System" Aliases="global,DotNetSystem" />
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>

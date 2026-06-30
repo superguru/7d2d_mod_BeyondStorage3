@@ -1,4 +1,5 @@
 ﻿using BeyondStorage.Data;
+using BeyondStorage.Entities;
 using BeyondStorage.Multiplayer;
 using BeyondStorage.UI;
 using static ModEvents;
@@ -10,9 +11,18 @@ public static class ModLifecycleManager
     public static void GameStartDone(ref SGameStartDoneData data)
     {
         ModLogger.DebugLog("Game Start: Initializing...");
-        TileEntityLockManager.Init();
+
+        TileEntityLocks.Init();
+
+        BuildConsumeCapabilityCheckList();
+        BlockConsumeStates.Init();
 
         InitSinglePlayer();
+    }
+
+    private static void BuildConsumeCapabilityCheckList()
+    {
+        ConsumeCapabilityCheckList.AddCheck(ConsumeCapabilityChecker_TEFeatureStorage.CanToggleConsume);
     }
 
     private static void InitSinglePlayer()
@@ -30,6 +40,7 @@ public static class ModLifecycleManager
     public static void GameShutdown(ref SGameShutdownData data)
     {
         ModLogger.DebugLog("Game Shutdown: Cleaning up...");
-        TileEntityLockManager.Cleanup();
+        TileEntityLocks.Cleanup();
+        BlockConsumeStates.Cleanup();
     }
 }
