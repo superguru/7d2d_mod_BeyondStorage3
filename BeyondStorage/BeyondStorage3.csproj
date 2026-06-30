@@ -71,7 +71,7 @@
     <Compile Include="Source\Diagnostics\DebugTools.cs" />
     <Compile Include="Source\Entities\BlockConsumeStates.cs" />
     <Compile Include="Source\Entities\EntityHandler.cs" />
-    <Compile Include="Source\Game\Files\BlockConsumeStatePersistance.cs" />
+    <Compile Include="Source\Game\Files\BlockConsumeStatePersistence.cs" />
     <Compile Include="Source\Game\Files\GamePathProvider.cs" />
     <Compile Include="Source\Harmony\Extends\EntityDrone_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionRanged_Ext.cs" />
@@ -82,9 +82,9 @@
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
-    <Compile Include="Source\Persistance\StructuredField.cs" />
-    <Compile Include="Source\Persistance\StructuredFile.cs" />
-    <Compile Include="Source\Persistance\StructuredRecord.cs" />
+    <Compile Include="Source\Persistence\StructuredField.cs" />
+    <Compile Include="Source\Persistence\StructuredFile.cs" />
+    <Compile Include="Source\Persistence\StructuredRecord.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />

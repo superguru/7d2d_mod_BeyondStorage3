@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace BeyondStorage.Source.Persistance;
+namespace BeyondStorage.Source.Persistence;
 
 public class StructuredField
 {

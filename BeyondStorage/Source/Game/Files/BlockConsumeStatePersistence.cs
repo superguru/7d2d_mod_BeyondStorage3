@@ -1,10 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using BeyondStorage.Infrastructure;
-using BeyondStorage.Source.Persistance;
+using BeyondStorage.Source.Persistence;
 
 namespace BeyondStorage.Source.Game.Files;
 
-internal static class BlockConsumeStatePersistance
+internal static class BlockConsumeStatePersistence
 {
     private static readonly object s_lock = new();
 

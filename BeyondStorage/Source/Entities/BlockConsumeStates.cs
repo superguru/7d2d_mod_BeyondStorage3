@@ -16,7 +16,7 @@ internal static class BlockConsumeStates
     {
         s_methodStats.Clear();
 
-        BlockConsumeStatePersistance.LoadDisabledBlocks(DisabledConsumptionBlocks);
+        BlockConsumeStatePersistence.LoadDisabledBlocks(DisabledConsumptionBlocks);
 
         //TODO: Request sync from server in multiplayer
     }
@@ -84,7 +84,7 @@ internal static class BlockConsumeStates
 
     private static void OnBlockConsumeStateChanged()
     {
-        BlockConsumeStatePersistance.SaveDisabledBlocks(DisabledConsumptionBlocks);
+        BlockConsumeStatePersistence.SaveDisabledBlocks(DisabledConsumptionBlocks);
         StorageContextFactory.InvalidateCache();
         UIRefreshHelper.RefreshAllWindows(nameof(OnBlockConsumeStateChanged), isStackOperation: false);
     }

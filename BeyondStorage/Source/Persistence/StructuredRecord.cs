@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace BeyondStorage.Source.Persistance;
+namespace BeyondStorage.Source.Persistence;
 
 public class StructuredRecord
 {
