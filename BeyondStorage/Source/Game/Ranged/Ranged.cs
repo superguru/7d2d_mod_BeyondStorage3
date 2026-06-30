@@ -8,6 +8,7 @@ public static class Ranged
     // Used By:
     //      AnimatorRangedReloadState.GetAmmoCount (Weapon Reload - Get Total Ammo (not displayed))
     //      Animator3PRangedReloadState.GetAmmoCount (Weapon Reload - Get Total Ammo (not displayed))
+    //      XUiC_HUDStatBar_updateActiveItemAmmo (displayed)
     public static int GetAmmoCount(ItemValue itemValue)
     {
         const string d_MethodName = nameof(GetAmmoCount);
