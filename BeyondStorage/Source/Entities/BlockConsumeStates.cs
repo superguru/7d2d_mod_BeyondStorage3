@@ -1,11 +1,15 @@
 ﻿using System.Collections.Concurrent;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage;
 
 namespace BeyondStorage.Entities;
 
 internal static class BlockConsumeStates
 {
-    private static ConcurrentDictionary<Vector3i, bool> DisabledConsumptionBlocks { get; set; }
+    private static ConcurrentDictionary<Vector3i, bool> DisabledConsumptionBlocks
+    {
+        get; set;
+    }
 
     private static readonly MethodCallTracker s_methodStats = new("BlockConsumeStates");
 
@@ -50,6 +54,8 @@ internal static class BlockConsumeStates
         ModLogger.DebugLog($"{d_MethodName}: Block {block} consume turned off");
 #endif
 
+        OnBlockConsumeStateChanged();
+
         // TODO: Send NetPackage to sync in multiplayer, otherwise Save in singleplayer. Or always Save?
     }
 
@@ -69,6 +75,13 @@ internal static class BlockConsumeStates
         ModLogger.DebugLog($"{d_MethodName}: Block {block} consume turned on");
 #endif
 
+        OnBlockConsumeStateChanged();
+
         // TODO: Send NetPackage to sync in multiplayer, otherwise Save in singleplayer. Or always Save?
+    }
+
+    private static void OnBlockConsumeStateChanged()
+    {
+        StorageContextFactory.InvalidateCache();
     }
 }
