@@ -83,7 +83,7 @@ public class NetPackageLockedTEs : NetPackage
             return;
         }
 
-        TileEntityLockManager.UpdateLockedTEs(LockedTileEntities);
+        TileEntityLocks.UpdateLockedTEs(LockedTileEntities);
 #if DEBUG
         ModLogger.DebugLog($"NetPackageLockedTEs: size {Length}; count {EntryCount}");
 #endif

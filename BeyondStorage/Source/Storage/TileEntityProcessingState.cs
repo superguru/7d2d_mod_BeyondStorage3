@@ -40,6 +40,6 @@ internal class TileEntityProcessingState
         Config = context.Config;
         World = context.WorldPlayerContext;
         PlayerId = World.PlayerEntityId;
-        HasLockedEntities = TileEntityLockManager.LockedTileEntities.Count > 0;
+        HasLockedEntities = TileEntityLocks.LockedTileEntities.Count > 0;
     }
 }

@@ -80,7 +80,7 @@ internal static class TileEntityItemDiscovery
         // Check locks early
         if (state.HasLockedEntities)
         {
-            if (TileEntityLockManager.LockedTileEntities.TryGetValue(tileEntityWorldPos, out int entityId) &&
+            if (TileEntityLocks.LockedTileEntities.TryGetValue(tileEntityWorldPos, out int entityId) &&
                 entityId != state.PlayerId)
             {
                 return false;
@@ -98,7 +98,6 @@ internal static class TileEntityItemDiscovery
 
     private static void ProcessValidTileEntity(TileEntity tileEntity, TileEntityProcessingState state, float distance)
     {
-        // Process each type separately with clear logic and collect stats
         if (tileEntity is TileEntityCollector collector)
         {
             ProcessCollectorEntity(collector, state, distance);
@@ -111,7 +110,6 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
-        // Process lootables (containers) - always enabled since they're primary storage
         if (tileEntity.TryGetSelfOrFeature(out ITileEntityLootable lootable))
         {
             ProcessLootableEntity(lootable, tileEntity, distance, state);

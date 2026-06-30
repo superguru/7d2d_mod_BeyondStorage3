@@ -21,6 +21,8 @@ public static class ServerUtils
 
         SendCurrentLockedDict(data.ClientInfo);
 
+        //TODO: Send BlockConsumeStates from here
+
         if (ModConfig.ServerSyncConfig())
         {
             data.ClientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageBeyondStorageConfig>());
@@ -44,12 +46,12 @@ public static class ServerUtils
 
     private static void SendCurrentLockedDict(ClientInfo client)
     {
-        if (TileEntityLockManager.LockedTileEntities.IsEmpty || !IsValidDestination(client.entityId))
+        if (TileEntityLocks.LockedTileEntities.IsEmpty || !IsValidDestination(client.entityId))
         {
             return;
         }
 
-        var currentCopy = new Dictionary<Vector3i, int>(TileEntityLockManager.LockedTileEntities);
+        var currentCopy = new Dictionary<Vector3i, int>(TileEntityLocks.LockedTileEntities);
         client.SendPackage(NetPackageManager.GetPackage<NetPackageLockedTEs>().Setup(currentCopy));
 
 #if DEBUG
@@ -159,6 +161,6 @@ public static class ServerUtils
     {
         SingletonMonoBehaviour<ConnectionManager>.Instance?.SendPackage(new NetPackageLockedTEs().Setup(lockedDict));
 
-        TileEntityLockManager.UpdateLockedTEs(lockedDict);
+        TileEntityLocks.UpdateLockedTEs(lockedDict);
     }
 }

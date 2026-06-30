@@ -4,11 +4,11 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Multiplayer;
 
-public static class TileEntityLockManager
+public static class TileEntityLocks
 {
     public static ConcurrentDictionary<Vector3i, int> LockedTileEntities { get; private set; }
 
-    private static readonly MethodCallTracker s_methodStats = new("TileEntityLockManager");
+    private static readonly MethodCallTracker s_methodStats = new("TileEntityLocks");
 
     public static void Init()
     {
