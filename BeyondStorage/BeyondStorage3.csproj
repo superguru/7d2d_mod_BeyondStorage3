@@ -82,6 +82,9 @@
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
+    <Compile Include="Source\Persistance\StructuredField.cs" />
+    <Compile Include="Source\Persistance\StructuredFile.cs" />
+    <Compile Include="Source\Persistance\StructuredRecord.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />
