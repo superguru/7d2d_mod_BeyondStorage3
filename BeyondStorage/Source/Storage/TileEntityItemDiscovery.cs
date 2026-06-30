@@ -92,8 +92,7 @@ internal static class TileEntityItemDiscovery
         // Check locks early
         if (state.HasLockedEntities)
         {
-            if (TileEntityLocks.LockedTileEntities.TryGetValue(tileEntityWorldPos, out int entityId) &&
-                entityId != state.PlayerId)
+            if (TileEntityLocks.LockedTileEntities.TryGetValue(tileEntityWorldPos, out int entityId) && entityId != state.PlayerId)
             {
                 return false;
             }
