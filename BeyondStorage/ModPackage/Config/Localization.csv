@@ -11,5 +11,5 @@
 "loadingBeyondStorage_title","UI","Loading Screen","x","","","Beyond Storage mod support"
 "msgBeyondSmartPullLoadout_Result","","","","","","You carefully topped up {0} stack(s) in the {1} loadout"
 "msgBeyondSmartPush_Result","","","","","","Through hard work you moved {0} stack(s) from {1} to {2} storage(s)"
-"blockcommand_TEFeatureStorage:Consume_Off","UI","Radial blockcommand","","","","[436fff]Turn Consume Off[-]"
-"blockcommand_TEFeatureStorage:Consume_On","UI","Radial blockcommand","","","","[436fff]Turn Consume On[-]"
+"blockcommand_TEFeatureStorage:Consume_Off","UI","Radial blockcommand","","","","[ff00ff]Turn Consume Off[-]"
+"blockcommand_TEFeatureStorage:Consume_On","UI","Radial blockcommand","","","","[ff00ff]Turn Consume On[-]"
