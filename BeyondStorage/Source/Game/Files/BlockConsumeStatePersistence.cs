@@ -30,16 +30,7 @@ internal static class BlockConsumeStatePersistence
             var blockFile = new StructuredFile();
             string fileName = GetBlockConsumeStateFilePath();
 
-#if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: loading {disabledBlocks.Count} disabled blocks from {fileName}");
-#endif
-
             blockFile.ReadFile(fileName);
-
-#if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: ver:{blockFile.Version}, tags:{blockFile.RecordTagCount}, total records:{blockFile.RecordCount} in {fileName}");
-#endif
-
             foreach (var record in blockFile.GetRecordsByTag(BlockRecordTag))
             {
                 var field = record.GetField(BlockFieldName);
@@ -65,6 +56,9 @@ internal static class BlockConsumeStatePersistence
 #endif
                 disabledBlocks[pos.Value] = 0;
             }
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: loaded {disabledBlocks.Count} disabled blocks from {fileName}");
+#endif
         }
     }
 
