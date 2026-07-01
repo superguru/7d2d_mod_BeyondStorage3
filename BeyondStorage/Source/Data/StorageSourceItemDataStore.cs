@@ -18,7 +18,10 @@ internal class StorageSourceItemDataStore
     private readonly TargetDistanceStore _distanceStore = new();
     private readonly HashSet<IStorageSource> _registeredSources = [];
 
-    internal AllowedSourcesList AllowedSourcesSnapshot { get; }
+    internal AllowedSourcesList AllowedSourcesSnapshot
+    {
+        get;
+    }
 
     internal StorageSourceItemDataStore(AllowedSourcesList allowedSourcesSnapshot)
     {
@@ -136,7 +139,7 @@ internal class StorageSourceItemDataStore
         {
             var stack = items[i];
 
-            // 1. Classify consumable (non-empty) and register for pull operations
+            // 1. Classify consumable (non-empty) and register for consume operations
             if (ItemX.IsPopulated(stack))
             {
                 RegisterConsumableStack(source, stack);
@@ -284,6 +287,7 @@ internal class StorageSourceItemDataStore
 
     public List<ItemStack> GetItemStacksBySource(IStorageSource source)
     {
+        //TODO: Remove (from StorageContext) relies on this
         if (_itemStacksBySource.TryGetValue(source, out List<ItemStack> result))
         {
             return result;
@@ -296,7 +300,7 @@ internal class StorageSourceItemDataStore
     {
         if (filter == null)
         {
-            return false; // No filter means no items can be discovered
+            return false; // No filter means no items can have been discovered
         }
 
         // We just test if this filter has been found before
