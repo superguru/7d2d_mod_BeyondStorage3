@@ -158,7 +158,7 @@ internal class StorageSourceItemDataStore
         }
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Registering '{TypeNames.GetName(source.GetSourceType())}' as push target only");
+        //ModLogger.DebugLog($"{d_MethodName}: Registering '{TypeNames.GetName(source.GetSourceType())}' as push target only");
 #endif
         var slotData = target.GetSlotData();
         RegisterTargetableSource(source, target, distance, slotData, registerConsumableStacks: false);
