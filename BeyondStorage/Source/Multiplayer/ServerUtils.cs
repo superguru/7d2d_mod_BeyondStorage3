@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BeyondStorage.Configuration;
+using BeyondStorage.Entities;
 using BeyondStorage.Infrastructure;
 
 using static ModEvents;
@@ -20,8 +21,7 @@ public static class ServerUtils
         ModLogger.DebugLog($"client {data.ClientInfo}; isLocalPlayer {data.IsLocalPlayer}; entityId {data.EntityId}; respawn type {data.RespawnType}; pos {data.Position}");
 
         SendCurrentLockedDict(data.ClientInfo);
-
-        //TODO: Send BlockConsumeStates from here
+        SendCurrentConsumeStates(data.ClientInfo);
 
         if (ModConfig.ServerSyncConfig())
         {
@@ -42,6 +42,15 @@ public static class ServerUtils
         return connectionManager.IsServer &&
                !connectionManager.IsSinglePlayer &&
                data.ClientInfo != null;
+    }
+
+    private static void SendCurrentConsumeStates(ClientInfo client)
+    {
+        if (!IsValidDestination(client.entityId))
+        {
+            return;
+        }
+        BlockConsumeStates.SendConsumeStatesToClient(client);
     }
 
     private static void SendCurrentLockedDict(ClientInfo client)

@@ -193,6 +193,8 @@
     <Compile Include="Source\Entities\WorkstationHandler.cs" />
     <Compile Include="Source\Game\WorldPlayerContext.cs" />
     <Compile Include="Source\Multiplayer\NetPackageBeyondStorageConfig.cs" />
+    <Compile Include="Source\Multiplayer\NetPackageConsumeStateChange.cs" />
+    <Compile Include="Source\Multiplayer\NetPackageConsumeStates.cs" />
     <Compile Include="Source\Multiplayer\NetPackageLockedTEs.cs" />
     <Compile Include="Source\Multiplayer\ServerUtils.cs" />
     <Compile Include="Source\Diagnostics\StackTraceProvider.cs" />
