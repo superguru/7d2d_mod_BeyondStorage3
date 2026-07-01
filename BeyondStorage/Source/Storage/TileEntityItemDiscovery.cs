@@ -63,9 +63,6 @@ internal static class TileEntityItemDiscovery
 
     private static bool ShouldProcessTileEntity(TileEntity tileEntity, TileEntityProcessingState state, out float distance)
     {
-#if DEBUG
-        const string d_MethodName = nameof(ShouldProcessTileEntity);
-#endif
         distance = 0f;
 
         if (tileEntity.IsRemoving)
@@ -74,14 +71,6 @@ internal static class TileEntityItemDiscovery
         }
 
         var tileEntityWorldPos = tileEntity.ToWorldPos();
-
-        if (BlockConsumeStates.IsConsumeOff(tileEntityWorldPos))
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: skipping block {tileEntity} at {tileEntityWorldPos}, because it has consume turned off");
-#endif
-            return false;
-        }
 
         // Early range check to avoid unnecessary processing
         if (!state.World.IsWithinRange(tileEntityWorldPos, state.Config.Range, out distance))
@@ -138,6 +127,11 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
+        if (BlockConsumeStates.IsConsumeOff(collector.ToWorldPos()))
+        {
+            return;
+        }
+
         ProcessCollectorItems(collector, state, distance);
     }
 
@@ -183,7 +177,21 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
+        if (BlockConsumeStates.IsConsumeOff(workstation.ToWorldPos()))
+        {
+            ProcessWorkstationPushTargetOnly(workstation, distance, state);
+            return;
+        }
+
         ProcessWorkstationItems(workstation, distance, state);
+    }
+
+    private static void ProcessWorkstationPushTargetOnly(TileEntityWorkstation workstation, float distance, TileEntityProcessingState state)
+    {
+        var context = state.Context;
+        var sourceAdapter = StorageSourceAdapterFactory.CreateWorkstationStorageSourceAdapter(context, workstation);
+        context.Sources.DataStore.RegisterPushTargetOnly(sourceAdapter, distance);
+        state.ValidWorkstationsFound++;
     }
 
     private static bool ShouldProcessWorkstation(TileEntityWorkstation workstation)
@@ -228,7 +236,24 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
+        if (BlockConsumeStates.IsConsumeOff(tileEntity.ToWorldPos()))
+        {
+            ProcessLootablePushTargetOnly(lootable, tileEntity, distance, state);
+            return;
+        }
+
         ProcessLootableItems(lootable, tileEntity, distance, state);
+    }
+
+    private static void ProcessLootablePushTargetOnly(ITileEntityLootable lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
+    {
+        var context = state.Context;
+        var sourceAdapter = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
+
+        context.Sources.DataStore.RegisterPushTargetOnly(sourceAdapter, distance);
+
+        state.ValidLootablesFound++;
+        state.ValidContainersFound++;
     }
 
     private static bool ShouldProcessLootable(ITileEntityLootable lootable)
