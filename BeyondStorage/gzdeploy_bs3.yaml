@@ -1,0 +1,30 @@
+# gzdeploy_bs3.yaml - Deploy configuration for BeyondStorage3
+#
+# MSBuild post-build command (covers both Debug and Release):
+#   "$(SolutionDir)..\GAZ Mod Deploy\deploy_target_build.py" --config "$(ProjectDir)gzdeploy_bs3.yaml" $(Configuration)
+
+mod_name: BeyondStorage3
+project_dir: "D:\\Projects\\7 Days To Die\\projects\\Beyond Storage 3\\BeyondStorage\\"
+
+# output_dir is intentionally omitted — auto-derives to bin/Debug or bin/Release
+# based on the build_target passed on the command line.
+
+# --- Flags ---
+
+clean: false
+force: false
+no_pause: false
+verbose: false
+
+# --- File copy behaviour ---
+
+always_copy_masks:
+  - "*.png"
+
+# Uncomment and populate if BeyondStorage3 needs extra DLLs from the output dir:
+# additional_output_files:
+#   - "SomeLib.dll"
+
+# Uncomment and populate if BeyondStorage3 needs files from elsewhere on disk:
+# additional_files:
+#   - "C:/path/to/file.dll"
