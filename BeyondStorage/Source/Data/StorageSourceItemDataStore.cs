@@ -341,7 +341,6 @@ internal class StorageSourceItemDataStore
 
     public List<ItemStack> GetItemStacksBySource(IStorageSource source)
     {
-        //TODO: Remove (from StorageContext) relies on this
         if (_itemStacksBySource.TryGetValue(source, out List<ItemStack> result))
         {
             return result;
