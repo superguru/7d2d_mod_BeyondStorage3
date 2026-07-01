@@ -31,13 +31,13 @@ internal static class BlockConsumeStatePersistence
             string fileName = GetBlockConsumeStateFilePath();
 
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: fileName={fileName}");
+            ModLogger.DebugLog($"{d_MethodName}: loading {disabledBlocks.Count} disabled blocks from {fileName}");
 #endif
 
             blockFile.ReadFile(fileName);
 
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: ver:{blockFile.Version}, tags:{blockFile.RecordTagCount}, total records:{blockFile.RecordCount} in {fileName}");
+            //ModLogger.DebugLog($"{d_MethodName}: ver:{blockFile.Version}, tags:{blockFile.RecordTagCount}, total records:{blockFile.RecordCount} in {fileName}");
 #endif
 
             foreach (var record in blockFile.GetRecordsByTag(BlockRecordTag))
@@ -46,7 +46,7 @@ internal static class BlockConsumeStatePersistence
                 if (field == null)
                 {
 #if DEBUG
-                    ModLogger.DebugLog($"{d_MethodName}: skipping record with no {BlockFieldName} field");
+                    //ModLogger.DebugLog($"{d_MethodName}: skipping record with no {BlockFieldName} field");
 #endif
                     continue;
                 }
@@ -55,13 +55,13 @@ internal static class BlockConsumeStatePersistence
                 if (pos == null)
                 {
 #if DEBUG
-                    ModLogger.DebugLog($"{d_MethodName}: skipping record with unparseable position value='{field}'");
+                    //ModLogger.DebugLog($"{d_MethodName}: skipping record with unparseable position value='{field}'");
 #endif
                     continue;
                 }
 
 #if DEBUG
-                ModLogger.DebugLog($"{d_MethodName}: loaded disabled block at {pos.Value}");
+                //ModLogger.DebugLog($"{d_MethodName}: loaded disabled block at {pos.Value}");
 #endif
                 disabledBlocks[pos.Value] = 0;
             }
