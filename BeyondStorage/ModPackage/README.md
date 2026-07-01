@@ -111,6 +111,14 @@ What is considered Consuming?
 
 💡However, a locked slot will stop items in that slot from being moved in a bulk inventory transfer, just like in the base game.
 
+### 🔌Turning Consume On/Off for player storage
+
+You can access the radial menu for any player crafter storage, such as crates, and there you can turn Consume Off and On for that storage.
+
+This is persisted in the save game as a separate file, so you can remove the mod, add it back, use it in old or new games, it will just work.
+
+Additionally, this is synced across the network as well, so it fully supports multiplayer.
+
 ### ⏪Smart Push
 
 All sources listed in the Consume section, aside from the Toolbelt, has a Smart Push button added to the appropriate window.
