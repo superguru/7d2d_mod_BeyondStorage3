@@ -145,7 +145,7 @@ internal static class XUiC_LootWindow_Ext
 #endif
         __instance?.RefreshBindings();
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
+        //ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 
@@ -157,7 +157,7 @@ internal static class XUiC_LootWindow_Ext
     private static void XUiC_LootWindow_OnClose_Postfix(XUiC_LootWindow __instance)
     {
 #if DEBUG
-        const string d_MethodName = nameof(XUiC_LootWindow_OnClose_Postfix);
+        //const string d_MethodName = nameof(XUiC_LootWindow_OnClose_Postfix);
 #endif
         WindowStateManager.OnStorageWindowClosed(__instance);
 
@@ -169,7 +169,7 @@ internal static class XUiC_LootWindow_Ext
 #endif
         __instance?.RefreshBindings();
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
+        //ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 

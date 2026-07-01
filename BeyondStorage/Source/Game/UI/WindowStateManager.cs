@@ -248,12 +248,12 @@ public static class WindowStateManager
     internal static void OnStorageWindowOpened(XUiC_LootWindow window, bool isStorage)
     {
 #if DEBUG
-        const string d_MethodName = nameof(OnStorageWindowOpened);
+        //const string d_MethodName = nameof(OnStorageWindowOpened);
 #endif
         lock (s_lootLockObject)
         {
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
             if (s_isPlayerStorageWindowOpen || s_lootWindowInstance != null)
             {
@@ -266,7 +266,7 @@ public static class WindowStateManager
             s_isPlayerStorageWindowOpen = isStorage;
 
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
         }
     }
@@ -278,12 +278,12 @@ public static class WindowStateManager
     internal static void OnStorageWindowClosed(XUiC_LootWindow window)
     {
 #if DEBUG
-        const string d_MethodName = nameof(OnStorageWindowClosed);
+        //const string d_MethodName = nameof(OnStorageWindowClosed);
 #endif
         lock (s_lootLockObject)
         {
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
             if (window == s_lootWindowInstance)
             {
@@ -295,7 +295,7 @@ public static class WindowStateManager
                 ModLogger.Warning($"[WindowStateManager] Attempted to close storage container window that doesn't match tracked instance.");
             }
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
         }
     }

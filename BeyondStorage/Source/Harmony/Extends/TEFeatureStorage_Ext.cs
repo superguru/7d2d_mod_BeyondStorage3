@@ -33,21 +33,11 @@ internal static class TEFeatureStorage_Ext
 #endif
     private static void TEFeatureStorage_OnBlockActivated_Postfix(TEFeatureSignable __instance, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityPlayerLocal _player, ref bool __result)
     {
-        const string d_MethodName = nameof(TEFeatureStorage.OnBlockActivated);
+        const string d_MethodName = nameof(TEFeatureStorage_OnBlockActivated_Postfix);
 
         if (__result)
         {
-#if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Original method handled command");
-#endif
             return; // original handled the command
-        }
-
-        if (__instance == null)
-        {
-            ModLogger.DebugLog($"{d_MethodName}: Cannot operate on null block");
-
-            return;
         }
 
         bool isCmdTurnConsumeOff = __instance.CommandIs(_commandName, "Consume_Off");
@@ -72,9 +62,6 @@ internal static class TEFeatureStorage_Ext
             BlockConsumeStates.TurnConsumeOn(_blockPos);
         }
 
-#if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Command handled and now ConsumeOn={BlockConsumeStates.IsConsumeOn(_blockPos)}");
-#endif
         __result = true; // we did handle this command
     }
 }
