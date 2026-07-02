@@ -13,6 +13,9 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
     <LangVersion>default</LangVersion>
+    <GameInstallDir>D:\SteamLibrary\steamapps\common\7 Days To Die</GameInstallDir>
+    <GAZModDeployDir>$(MSBuildProjectDirectory)\..\..\GAZ Mod Deploy</GAZModDeployDir>
+    <StructuredTextProjectDir>..\..\..\..\DotNet\StructuredData\StructuredText</StructuredTextProjectDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -48,7 +51,7 @@
     <Error Condition="'$(CodeQualityChecksExitCode)' != '0'" Text="Code quality checks failed with exit code $(CodeQualityChecksExitCode). Build halted due to errors." />
   </Target>
   <PropertyGroup>
-    <DeployScriptScriptFullDir>$(MSBuildProjectDirectory)\..\..\GAZ Mod Deploy</DeployScriptScriptFullDir>
+    <DeployScriptScriptFullDir>$(GAZModDeployDir)</DeployScriptScriptFullDir>
   </PropertyGroup>
   <Target Name="DeployMod" AfterTargets="Build">
     <Message Text="Executing mod deployment task" Importance="High" />
@@ -219,18 +222,18 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\Mods\0_TFP_Harmony\0Harmony.dll</HintPath>
+      <HintPath>$(GameInstallDir)\Mods\0_TFP_Harmony\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Humanizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\packages\Humanizer.Core.3.0.10\lib\net48\Humanizer.dll</HintPath>
     </Reference>
     <Reference Include="LogLibrary">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\LogLibrary.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\LogLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -256,29 +259,33 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\mscorlib.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\mscorlib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\netstandard.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\netstandard.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="StructuredText">
-      <HintPath>..\..\..\..\DotNet\StructuredData\StructuredText\bin\Release\StructuredText.dll</HintPath>
+      <HintPath>$(StructuredTextProjectDir)\bin\Release\StructuredText.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" Aliases="global,DotNetSystem" />
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
