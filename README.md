@@ -7,10 +7,18 @@ In addition, you can easily PUSH from any of those sources to nearby crates, for
 This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
 
 ```
-You can look in the Old Files section for previous versions of the mod that supported various editions of 7 Days to Die v2
+You can look in the Old Files section on Nexus Mods for previous versions of the mod
+that supported various editions of 7 Days to Die v2.
+
+Additionally, check the History section below for versions that work on v1 of the game.
 ```
 
 The current source repository is located at https://github.com/superguru/7d2d_mod_BeyondStorage3.
+
+-----------------------------------------
+I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper).
+
+<a href="https://ko-fi.com/gazorper" alt="Gazorper Ko-Fi support"><img src="https://storage.ko-fi.com/cdn/kofi6.png" alt="Gazorper Ko-Fi logo" width="290" height="73"></a>
 
 ## Installation
 
@@ -20,17 +28,20 @@ INSTALL THE SAME VERSION OF THE MOD ON BOTH SERVER AND CLIENT.
 
 See the Troubleshooting section on the mod page if you have any issues.
 
-The compiled and packaged mod is available from https://www.nexusmods.com/7daystodie/mods/7809
+The compiled and packaged mod is available from:
+- [Nexus Mods](https://www.nexusmods.com/7daystodie/mods/7809)
+- [7 Days to Die Mods](https://7daystodiemods.com/mods/beyond-storage-3)
+- [The Fun Pimps](https://community.thefunpimps.com/resources/beyond-storage-3-everything-is-your-inventory.203/)
 
 ## Configuration
 
 The mod can be configured by editing the `config.json` file in the `Mods/BeyondStorage3/Config` folder.
 
-Please refer to the mod description on Nexus Mods for details of the configuration options.
+Please refer to the mod [README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/README.md) file for details of the configuration options.
 
 ## License
 
-This mod is licensed under the Apache-2.0 License. See the LICENSE.txt for details.
+This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See [LICENSE.txt](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/LICENSE.txt) for details.
 
 ## ⌛History
 
