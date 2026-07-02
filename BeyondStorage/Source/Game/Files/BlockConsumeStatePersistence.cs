@@ -1,6 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using StructuredText.StructuredText;
+
+#if DEBUG
 using BeyondStorage.Infrastructure;
-using BeyondStorage.Source.Persistence;
+#endif
 
 namespace BeyondStorage.Source.Game.Files;
 
@@ -42,7 +45,7 @@ internal static class BlockConsumeStatePersistence
                     continue;
                 }
 
-                var pos = field.AsVector3i;
+                var pos = Vector3i.Parse(field.AsString);
                 if (pos == null)
                 {
 #if DEBUG
@@ -54,7 +57,7 @@ internal static class BlockConsumeStatePersistence
 #if DEBUG
                 //ModLogger.DebugLog($"{d_MethodName}: loaded disabled block at {pos.Value}");
 #endif
-                disabledBlocks[pos.Value] = 0;
+                disabledBlocks[pos] = 0;
             }
 #if DEBUG
             ModLogger.DebugLog($"{d_MethodName}: loaded {disabledBlocks.Count} disabled blocks from {fileName}");

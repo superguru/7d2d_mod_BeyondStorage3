@@ -2,8 +2,11 @@
 
 using System;
 using BeyondStorage.Entities;
-using BeyondStorage.Infrastructure;
 using HarmonyLib;
+
+#if DEBUG
+using BeyondStorage.Infrastructure;
+#endif
 
 namespace BeyondStorage.Harmony.Extends;
 
@@ -33,7 +36,9 @@ internal static class TEFeatureStorage_Ext
 #endif
     private static void TEFeatureStorage_OnBlockActivated_Postfix(TEFeatureSignable __instance, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityPlayerLocal _player, ref bool __result)
     {
+#if DEBUG
         const string d_MethodName = nameof(TEFeatureStorage_OnBlockActivated_Postfix);
+#endif
 
         if (__result)
         {

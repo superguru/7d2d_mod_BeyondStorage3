@@ -22,8 +22,8 @@ always_copy_masks:
   - "*.png"
 
 # Uncomment and populate if BeyondStorage3 needs extra DLLs from the output dir:
-# additional_output_files:
-#   - "SomeLib.dll"
+additional_output_files:
+  - "StructuredText.dll"
 
 # Uncomment and populate if BeyondStorage3 needs files from elsewhere on disk:
 # additional_files:

@@ -82,9 +82,6 @@
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
-    <Compile Include="Source\Persistence\StructuredField.cs" />
-    <Compile Include="Source\Persistence\StructuredFile.cs" />
-    <Compile Include="Source\Persistence\StructuredRecord.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />
@@ -268,6 +265,10 @@
     <Reference Include="netstandard">
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\7 Days To Die\7DaysToDie_Data\Managed\netstandard.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="StructuredText">
+      <HintPath>..\..\..\..\DotNet\StructuredData\StructuredText\bin\Release\StructuredText.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" Aliases="global,DotNetSystem" />
     <Reference Include="UnityEngine.AnimationModule">
