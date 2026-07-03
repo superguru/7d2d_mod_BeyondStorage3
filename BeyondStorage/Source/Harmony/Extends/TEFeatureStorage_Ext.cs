@@ -16,16 +16,33 @@ namespace BeyondStorage.Harmony.Extends;
 #endif
 internal static class TEFeatureStorage_Ext
 {
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(TEFeatureStorage.InitBlockActivationCommands), [typeof(Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData>)])]
+#if DEBUG
+    [HarmonyDebug]
+#endif
+    private static bool TEFeatureStorage_InitBlockActivationCommands_Prefix(TEFeatureStorage __instance)
+    {
+        bool shouldRun = __instance?.FeatureData != null;
+#if DEBUG
+        if (!shouldRun)
+        {
+            ModLogger.DebugLog($"{nameof(TEFeatureStorage_InitBlockActivationCommands_Prefix)}: Skipping — FeatureData is null on instance {__instance}");
+        }
+#endif
+        return shouldRun;
+    }
+
     [HarmonyPostfix]
     [HarmonyPatch(nameof(TEFeatureStorage.InitBlockActivationCommands), [typeof(Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData>)])]
 #if DEBUG
     [HarmonyDebug]
 #endif
-    private static void TEFeatureStorage_InitBlockActivationCommands_Postfix(TEFeatureSignable __instance, Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData> _addCallback)
+    private static void TEFeatureStorage_InitBlockActivationCommands_Postfix(TEFeatureStorage __instance, Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData> _addCallback)
     {
         // Icons seem swapped below, but it shows a nice green tick if the block is currently ✅On, and a red cross if it's currently ❌Off
-        _addCallback(new BlockActivationCommand(_text: "Consume_Off", _icon: "consume_on", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
-        _addCallback(new BlockActivationCommand(_text: "Consume_On", _icon: "consume_off", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance?.FeatureData);
+        _addCallback(new BlockActivationCommand(_text: "Consume_Off", _icon: "consume_on", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
+        _addCallback(new BlockActivationCommand(_text: "Consume_On", _icon: "consume_off", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
         // See TEFeatureAbs patch methods for the AllowBlockActivationCommand extension
     }
 
@@ -34,7 +51,7 @@ internal static class TEFeatureStorage_Ext
 #if DEBUG
     [HarmonyDebug]
 #endif
-    private static void TEFeatureStorage_OnBlockActivated_Postfix(TEFeatureSignable __instance, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityPlayerLocal _player, ref bool __result)
+    private static void TEFeatureStorage_OnBlockActivated_Postfix(TEFeatureStorage __instance, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityPlayerLocal _player, ref bool __result)
     {
 #if DEBUG
         const string d_MethodName = nameof(TEFeatureStorage_OnBlockActivated_Postfix);
