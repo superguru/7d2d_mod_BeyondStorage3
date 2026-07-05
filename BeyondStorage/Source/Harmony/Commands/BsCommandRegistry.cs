@@ -17,7 +17,7 @@ internal class BsCommandRegistry
 
         var commandInfo = new CommandInfo
         {
-            Name = commandName.ToLower(),
+            Name = commandName.ToLowerInvariant(),
             Description = description ?? "No description available",
             Usage = usage ?? commandName
         };
@@ -38,18 +38,18 @@ internal class BsCommandRegistry
             return null;
         }
 
-        _registeredCommands.TryGetValue(commandName.ToLower(), out var commandInfo);
+        _registeredCommands.TryGetValue(commandName.ToLowerInvariant(), out var commandInfo);
         return commandInfo;
     }
 
     public static bool IsCommandRegistered(string commandName)
     {
-        return !string.IsNullOrEmpty(commandName) && _registeredCommands.ContainsKey(commandName.ToLower());
+        return !string.IsNullOrEmpty(commandName) && _registeredCommands.ContainsKey(commandName.ToLowerInvariant());
     }
 
     public static void UnregisterCommand(string commandName)
     {
-        if (!string.IsNullOrEmpty(commandName) && _registeredCommands.Remove(commandName.ToLower()))
+        if (!string.IsNullOrEmpty(commandName) && _registeredCommands.Remove(commandName.ToLowerInvariant()))
         {
             ModLogger.DebugLog($"Unregistered command: {commandName}");
         }
