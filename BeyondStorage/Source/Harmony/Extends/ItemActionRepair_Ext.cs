@@ -1,4 +1,5 @@
-﻿using BeyondStorage.Game.Item;
+﻿using System.Globalization;
+using BeyondStorage.Game.Item;
 using BeyondStorage.Infrastructure;
 using HarmonyLib;
 
@@ -100,7 +101,7 @@ internal static class ItemActionRepair_Ext
         ItemValue itemValue = ItemClass.GetItem(__instance.GetUpgradeItemName(block));
 
         // Get required count from block properties
-        if (!int.TryParse(block.Properties.GetString(Block.PropUpgradeBlockClass, Block.PropUpgradeBlockItemCount), out var requiredCount))
+        if (!int.TryParse(block.Properties.GetString(Block.PropUpgradeBlockClass, Block.PropUpgradeBlockItemCount), NumberStyles.Integer, CultureInfo.InvariantCulture, out var requiredCount))
         {
             __result = false;
             return false; // Skip original method
