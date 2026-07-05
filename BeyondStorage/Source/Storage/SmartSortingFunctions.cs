@@ -485,10 +485,7 @@ public class SmartSortingFunctions
                 break;
             }
 
-            // Pass the capped limit so TransferTargetSlotItems doesn't transfer more than the loadout slot needs
-            int tempRemaining = cappedTransferLimit;
-
-            var transferAmount = TransferTargetSlotItems(methodName, state, sourceSlot, loadoutSlot, maxStackSize, ref tempRemaining);
+            var transferAmount = TransferTargetSlotItems(methodName, state, sourceSlot, loadoutSlot, maxStackSize, cappedTransferLimit);
 
             sourceSlot.count = sourceSlotActualCount - transferAmount;
 
@@ -498,8 +495,12 @@ public class SmartSortingFunctions
 
             if (transferAmount > 0)
             {
-                // Reclassify source slot after transfer (might be partial now, or empty)
+                // Reclassify while itemValue is still intact, then clear if the slot is now empty
                 source.ReclassifySlot(sourceSlot);
+                if (sourceSlot.count == 0)
+                {
+                    sourceSlot.Clear();
+                }
             }
             else
             {
@@ -546,12 +547,17 @@ public class SmartSortingFunctions
                 }
             }
 
-            var transferAmount = TransferTargetSlotItems(methodName, state, sourceSlot, targetSlot, maxStackSize, ref sourceSlotRemaining);
-
-            transferCount += transferAmount;
+            var transferAmount = TransferTargetSlotItems(methodName, state, sourceSlot, targetSlot, maxStackSize, sourceSlotRemaining);
 
             if (transferAmount > 0)
             {
+                sourceSlotRemaining -= transferAmount;
+                sourceSlot.count = sourceSlotRemaining;
+                if (sourceSlotRemaining == 0)
+                {
+                    sourceSlot.Clear();
+                }
+                transferCount += transferAmount;
                 target.ReclassifySlot(targetSlot);
             }
             else
@@ -572,7 +578,7 @@ public class SmartSortingFunctions
         }
     }
 
-    private static int TransferTargetSlotItems(string methodName, StorageOperationState state, ItemStack sourceSlot, ItemStack targetSlot, int maxStackSize, ref int sourceSlotRemaining)
+    private static int TransferTargetSlotItems(string methodName, StorageOperationState state, ItemStack sourceSlot, ItemStack targetSlot, int maxStackSize, int transferLimit)
     {
         if (targetSlot == null || sourceSlot == null)
         {
@@ -582,7 +588,7 @@ public class SmartSortingFunctions
         // Calculate available space in target slot
         int targetSlotSpace = maxStackSize - ItemX.CurrentStackSizeOf(targetSlot);
 
-        int transferAmount = Math.Min(sourceSlotRemaining, targetSlotSpace);
+        int transferAmount = Math.Min(transferLimit, targetSlotSpace);
         if (transferAmount <= 0)
         {
             return 0;
@@ -607,17 +613,6 @@ public class SmartSortingFunctions
         targetSlot.count += transferAmount;
 
         // Calculate ACTUAL amount transferred by checking what changed
-        int actualTransferAmount = targetSlot.count - targetCountBefore;
-
-        // Update tracking variables with ACTUAL amount
-        sourceSlotRemaining -= actualTransferAmount;
-        sourceSlot.count = sourceSlotRemaining;
-
-        if (sourceSlotRemaining == 0)
-        {
-            sourceSlot.Clear();
-        }
-
-        return actualTransferAmount;
+        return targetSlot.count - targetCountBefore;
     }
 }
