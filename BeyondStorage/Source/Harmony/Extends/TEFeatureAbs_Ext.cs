@@ -18,23 +18,21 @@ internal static class TEFeatureAbs_Ext
 #endif
     private static void TEFeatureAbs_AllowBlockActivationCommand(TEFeatureAbs __instance, ITileEntityFeature _module, ReadOnlySpan<char> _commandName, WorldBase _world, Vector3i _blockPos, BlockValue _blockValue, EntityAlive _entityFocusing, ref bool __result)
     {
-        if (__instance is TEFeatureStorage storage)
+        if (__instance is not TEFeatureStorage storage)
         {
-            var isPlayerStorage = storage.bPlayerStorage;
-
-            if (__instance.CommandIs(_commandName, "Consume_Off"))
-            {
-                __result = isPlayerStorage && BlockConsumeStates.IsConsumeOn(_blockPos);
-                return;
-            }
-
-            if (__instance.CommandIs(_commandName, "Consume_On"))
-            {
-                __result = isPlayerStorage && BlockConsumeStates.IsConsumeOff(_blockPos);
-                return;
-            }
+            return;
         }
 
-        __result = true;
+        var isPlayerStorage = storage.bPlayerStorage;
+
+        if (__instance.CommandIs(_commandName, "Consume_Off"))
+        {
+            __result = isPlayerStorage && BlockConsumeStates.IsConsumeOn(_blockPos);
+
+        }
+        else if (__instance.CommandIs(_commandName, "Consume_On"))
+        {
+            __result = isPlayerStorage && BlockConsumeStates.IsConsumeOff(_blockPos);
+        }
     }
 }
