@@ -166,40 +166,44 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         return null;
     }
 
+    // Used by push: returns the partial slot with the most items (closest to full),
+    // so pushes complete existing stacks before starting new ones.
     internal ItemStack GetNextPartialStackFor(int itemType)
     {
-        if (_partialSlots.TryGetValue(itemType, out var slots))
+        if (!_partialSlots.TryGetValue(itemType, out var slots) || slots.Count == 0)
         {
-            var count = slots.Count;
-            if (count > 0)
+            return null;
+        }
+
+        var best = slots[0];
+        for (int i = 1; i < slots.Count; i++)
+        {
+            if (slots[i].count > best.count)
             {
-                return slots[count - 1];
+                best = slots[i];
             }
         }
-
-        return null;
+        return best;
     }
 
+    // Used by pull: returns the partial slot with the fewest items first so it empties
+    // completely, then falls back to filled slots. This consolidates storage over time.
     internal ItemStack GetNextPopulatedStackFor(int itemType)
     {
-        // Prefer partial stacks over filled stacks:
-        // - partial stacks are valid for Pull (as a source) and Push (as a destination)
-        // - filled stacks are only valid for Pull (as a source), like for loadout top ups
-        // ==>> so either empty the partial stacks first, or fill the partial stacks first, depending on the operation type
-
-        var nextPartial = GetNextPartialStackFor(itemType);
-        if (nextPartial != null)
+        if (_partialSlots.TryGetValue(itemType, out var partialSlots) && partialSlots.Count > 0)
         {
-            return nextPartial;
+            var best = partialSlots[0];
+            for (int i = 1; i < partialSlots.Count; i++)
+            {
+                if (partialSlots[i].count < best.count)
+                {
+                    best = partialSlots[i];
+                }
+            }
+            return best;
         }
 
-        var nextFilled = GetNextFilledStackFor(itemType);
-        if (nextFilled != null)
-        {
-            return nextFilled;
-        }
-
-        return null;
+        return GetNextFilledStackFor(itemType);
     }
 
     internal string GetName()
