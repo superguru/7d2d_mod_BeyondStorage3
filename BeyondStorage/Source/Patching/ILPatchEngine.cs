@@ -32,7 +32,9 @@ public static class ILPatchEngine
 
         if (request.ExtraLogging)
         {
+#if DEBUG
             ModLogger.DebugLog($"Inserted {replacementCount} instructions at {FormatILPosition(replacementPosition)} (original match at {FormatILPosition(originalMatchPosition)}) in {request.TargetMethodName}");
+#endif
         }
     }
 
@@ -84,15 +86,19 @@ public static class ILPatchEngine
 
             if (request.ExtraLogging)
             {
+#if DEBUG
                 ModLogger.DebugLog($"Appended {instructionsToAppend} additional instructions to end of method in {request.TargetMethodName}");
+#endif
             }
         }
 
         if (request.ExtraLogging)
         {
+#if DEBUG
             ModLogger.DebugLog($"Overwrote {instructionsToOverwrite} instructions starting at {FormatILPosition(replacementPosition)}" +
                             (instructionsToAppend > 0 ? $" and appended {instructionsToAppend} additional instructions" : "") +
                             $" in {request.TargetMethodName}");
+#endif
         }
     }
 
@@ -104,8 +110,9 @@ public static class ILPatchEngine
     /// <returns>PatchResults indicating if any patches were applied</returns>
     public static PatchResponse ApplyPatches(PatchRequest request)
     {
+#if DEBUG
         ModLogger.Info($"Transpiling {request.TargetMethodName}");
-
+#endif
         int searchIndex = 0;
         var response = new PatchResponse();
 
@@ -121,14 +128,16 @@ public static class ILPatchEngine
             {
                 break; // No more matches found
             }
-
+#if DEBUG
             ModLogger.DebugLog($"Found patch point at {FormatILPosition(matchIndex)} in {request.TargetMethodName}");
-
+#endif
             var patchResult = TryApplyPatch(request, response, matchIndex);
             if (patchResult.success)
             {
                 searchIndex = patchResult.nextSearchIndex;
+#if DEBUG
                 ModLogger.DebugLog($"Applied {request.TargetMethodName} patch #{response.Count} at {FormatILPosition(patchResult.replacementPosition)} (original match at {FormatILPosition(matchIndex)})");
+#endif
             }
             else
             {
@@ -144,7 +153,9 @@ public static class ILPatchEngine
     {
         if (request.MaxPatches > 0 && response.Count >= request.MaxPatches)
         {
+#if DEBUG
             ModLogger.DebugLog($"Reached maximum patches ({request.MaxPatches}) for {request.TargetMethodName}. Stopping further patches.");
+#endif
             return true;
         }
         return false;
@@ -207,7 +218,9 @@ public static class ILPatchEngine
     {
         if (request.ExtraLogging)
         {
+#if DEBUG
             ModLogger.DebugLog($"Replacement position {FormatILPosition(replacementPosition)} is {reason}. Skipping patch of {request.TargetMethodName}");
+#endif
         }
     }
 
@@ -229,39 +242,41 @@ public static class ILPatchEngine
     {
         if (response.Count > 0)
         {
+#if DEBUG
             ModLogger.Info($"Successfully patched {request.TargetMethodName} in {response.Count} places");
-
+#endif
             // Log detailed position information for successful patches
             if (request.ExtraLogging && response.Positions.Count > 0)
             {
+#if DEBUG
                 var positionDetails = response.Positions
                     .Select((pos, index) => $"{FormatILPosition(pos)} (match: {FormatILPosition(response.OriginalPositions[index])})")
                     .ToArray();
                 ModLogger.DebugLog($"Patch positions for {request.TargetMethodName}: {string.Join(", ", positionDetails)}");
+#endif
             }
         }
         else
         {
+#if DEBUG
             ModLogger.Warning($"No patches applied to {request.TargetMethodName}");
+#endif
         }
     }
 
     public class PatchRequest
     {
-        private List<CodeInstruction> _originalInstructions;
-        private List<CodeInstruction> _newInstructions;
-
         /// <summary>
         /// The original IL instructions to patch.
         /// </summary>
         public List<CodeInstruction> OriginalInstructions
         {
-            get => _originalInstructions;
+            get;
             set
             {
-                _originalInstructions = value;
+                field = value;
                 // Default NewInstructions to a copy of OriginalInstructions for safety
-                _newInstructions = value?.ToList() ?? [];
+                NewInstructions = value?.ToList() ?? [];
             }
         }
 
@@ -273,29 +288,38 @@ public static class ILPatchEngine
         {
             get
             {
-                if (_newInstructions == null)
+                if (field == null)
                 {
-                    _newInstructions = _originalInstructions?.ToList() ?? [];
+                    field = OriginalInstructions?.ToList() ?? [];
                 }
-                return _newInstructions;
+                return field;
             }
-            set => _newInstructions = value;
+            set;
         }
 
         /// <summary>
         /// The pattern of instructions to search for.
         /// </summary>
-        public List<CodeInstruction> SearchPattern { get; set; }
+        public List<CodeInstruction> SearchPattern
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The instructions to use as replacement.
         /// </summary>
-        public List<CodeInstruction> ReplacementInstructions { get; set; }
+        public List<CodeInstruction> ReplacementInstructions
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The name of the method being patched (for logging).
         /// </summary>
-        public string TargetMethodName { get; set; }
+        public string TargetMethodName
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Offset from match start where replacement begins (can be negative).
@@ -328,7 +352,13 @@ public static class ILPatchEngine
         /// <summary>
         /// Indicates whether any patches were applied.
         /// </summary>
-        public bool IsPatched { get { return Count > 0; } }
+        public bool IsPatched
+        {
+            get
+            {
+                return Count > 0;
+            }
+        }
 
         /// <summary>
         /// The number of patches that were successfully applied.
@@ -345,7 +375,9 @@ public static class ILPatchEngine
         /// </summary>
         public List<int> OriginalPositions { get; set; } = [];
 
-        public PatchResponse() { }
+        public PatchResponse()
+        {
+        }
 
         /// <summary>
         /// Adds a patch record with the replacement position and original match position.
