@@ -2,7 +2,7 @@
 <xml>
   <Name value="BeyondStorage3"/>
   <DisplayName value="Beyond Storage 3"/>
-  <Version value="3.0.4"/>
+  <Version value="3.0.6"/>
   <Description value="All PULL and PUSH inventory operations like painting, crafting, paying for things, lock picking, refuelling, reloading, repairing, upgrading, and auto-sorting loot can now be done from your extended inventory, including storage crates, vehicles, drones, collectors, workstations"/>
   <Author value="superguru, gazorper, unv_Annihilator, aedenthorn"/>
   <Website value="https://github.com/superguru/7d2d_mod_BeyondStorage3"/>
