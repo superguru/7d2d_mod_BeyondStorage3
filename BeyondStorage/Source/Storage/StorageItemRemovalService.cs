@@ -89,8 +89,12 @@ public static class StorageItemRemovalService
         // Use the pre-classified consumable stacks from the data store — these are live references
         // to the original ItemStack objects, so count mutations apply directly to the underlying storage.
         // Empty slots that have been depleted since registration are handled by the count <= 0 guard below.
+        // Sort ascending by count so the smallest stacks are consumed first, which empties them
+        // completely and keeps storage consolidated rather than partially draining many stacks.
         var itemStacks = context.Sources.DataStore.GetItemStacksBySource(source);
-        var stackLength = itemStacks.Count;
+        var sortedStacks = new List<ItemStack>(itemStacks);
+        sortedStacks.Sort((a, b) => (a?.count ?? 0).CompareTo(b?.count ?? 0));
+        var stackLength = sortedStacks.Count;
 
         for (var iStack = 0; iStack < stackLength; iStack++)
         {
@@ -99,7 +103,7 @@ public static class StorageItemRemovalService
                 break;
             }
 
-            var stack = itemStacks[iStack];
+            var stack = sortedStacks[iStack];
 
             if (stack?.count <= 0)
             {
