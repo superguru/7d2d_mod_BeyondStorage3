@@ -129,25 +129,12 @@ public static class StorageItemRemovalService
                 break;
             }
 
-            if (itemCanStack)
-            {
-                gameTrackedRemovedItems?.Add(new ItemStack(itemValue.Clone(), countToRemove));
+            // Snapshot itemValue before mutation — Drain may clear the slot.
+            int trackedCount = itemCanStack ? countToRemove : 1;
+            gameTrackedRemovedItems?.Add(new ItemStack(itemValue.Clone(), trackedCount));
 
-                stack.count -= countToRemove;
-                stillNeeded -= countToRemove;
-
-                if (stack.count == 0)
-                {
-                    stack.Clear();
-                }
-            }
-            else
-            {
-                gameTrackedRemovedItems?.Add(new ItemStack(itemValue.Clone(), 1));
-
-                stack.Clear();
-                --stillNeeded;
-            }
+            int drained = SlotMutation.Drain(stack, countToRemove, itemCanStack);
+            stillNeeded -= drained;
         }
 
         int removed = originalNeeded - stillNeeded;

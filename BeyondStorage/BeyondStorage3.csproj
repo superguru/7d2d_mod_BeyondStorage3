@@ -65,6 +65,7 @@
     <Compile Include="Source\Configuration\ConfigReloadHelper.cs" />
     <Compile Include="Source\Data\CollectionHelper.cs" />
     <Compile Include="Source\Data\SlotMaps.cs" />
+    <Compile Include="Source\Data\SlotMutation.cs" />
     <Compile Include="Source\Data\SourceSlotData.cs" />
     <Compile Include="Source\Data\TargetDistanceStore.cs" />
     <Compile Include="Source\Data\IStorageTarget.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Source\Storage\EntityItemDiscovery.cs" />
     <Compile Include="Source\Storage\EntityProcessingState.cs" />
     <Compile Include="Source\Storage\StorageSourcePolicy.cs" />
+    <Compile Include="Source\Storage\ItemTransferEngine.cs" />
     <Compile Include="Source\Storage\SmartSortingFunctions.cs" />
     <Compile Include="Source\Storage\ItemScope.cs" />
     <Compile Include="Source\Storage\StorageOperationState.cs" />
