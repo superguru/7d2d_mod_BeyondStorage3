@@ -29,7 +29,7 @@ internal static class XUiC_BagStorageWindowGroup_Ext
         WindowStateManager.OnBagStorageWindowOpened(__instance);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Opened");
+        //ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Opened");
 #endif
     }
 
@@ -41,13 +41,13 @@ internal static class XUiC_BagStorageWindowGroup_Ext
     private static void XUiC_BagStorageWindowGroup_OnClose_Postfix(XUiC_BagStorageWindowGroup __instance)
     {
 #if DEBUG
-        const string d_MethodName = nameof(XUiC_BagStorageWindowGroup_OnClose_Postfix);
+        //const string d_MethodName = nameof(XUiC_BagStorageWindowGroup_OnClose_Postfix);
 #endif
 
         WindowStateManager.OnBagStorageWindowClosed(__instance);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Closed");
+        //ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Closed");
 #endif
     }
 }

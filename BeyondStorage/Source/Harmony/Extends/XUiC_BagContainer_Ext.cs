@@ -108,7 +108,7 @@ internal static class XUiC_BagContainer_Ext
     private static void XUiC_BagContainer_OnOpen(XUiC_BagContainer __instance)
     {
 #if DEBUG
-        const string d_MethodName = nameof(XUiC_BagContainer_OnOpen);
+        //const string d_MethodName = nameof(XUiC_BagContainer_OnOpen);
 #endif
 
 #if DEBUG
@@ -116,7 +116,7 @@ internal static class XUiC_BagContainer_Ext
 #endif
         __instance?.RefreshBindings();
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
+        //ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
 #endif
     }
 

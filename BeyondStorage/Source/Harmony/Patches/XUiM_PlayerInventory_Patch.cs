@@ -19,7 +19,6 @@ internal static class XUiM_PlayerInventory_Patch
     private static IEnumerable<CodeInstruction> XUiM_PlayerInventory_HasItems_Patch(IEnumerable<CodeInstruction> originalInstructions)
     {
         var targetMethodName = $"{typeof(XUiM_PlayerInventory)}.{nameof(XUiM_PlayerInventory.HasItems)}";
-        ModLogger.Info($"Transpiling {targetMethodName}");
 
         var searchPattern = new List<CodeInstruction>
         {
