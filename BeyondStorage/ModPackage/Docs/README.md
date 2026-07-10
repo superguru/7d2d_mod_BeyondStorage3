@@ -1,6 +1,5 @@
 # Beyond Storage 3 - Everything Is Your Inventory
-I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper)
-Hundreds of hours go into making a mod like this, not to mention supporting it.
+I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper), as **hundreds of hours** go into making a mod like this, keeping it up to date with newer game versions, not to mention supporting it.
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/gazorper-kofi.png)](https://ko-fi.com/gazorper)
 
 Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support.
@@ -11,24 +10,23 @@ You should also look at the Media Gallery on the mod distribution site where you
 
 ## What can this do?
 ### Extended Inventory - Everything Is Your Inventory (aka inventory network)
-Items that exist in any of these places are now part of the your **extended inventory**:
-- Player backpack
-- Storage crates
-- Containers like refrigerators, wall safes, lockers, etc. that you crafted and placed
-- Workstation outputs, such as items produced in Campfire, Forge, Dew Collector, Apiary, Workbench, Chem Station, Cement Mixer, and so on
-- Vehicle storage like Bicycle, 4x4, Minibike, Motorcycle, Gyrocopter, and so on
-- Drone storage
-### Consume from the extended inventory
-Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks, pay traders and vending machines, and of course craft things. 
-The Backpack items are used first, just like in the base game, and after that this is the order of storages where items are Consumed from:
+Items that exist in any of these places are now added to your Backpack and Toolbelt, and become part of your **extended inventory**:
 1. Drones
 2. Collectors, such as Apiaries and Dew Collectors
-3. Workstations
-4. Containers
-5. Vehicles
+3. Workstations like Campfire, Forge, Dew Collector, Apiary, Workbench, Chem Station, Cement Mixer, and so on
+4. Containers like crates, and things like refrigerators, wall safes, lockers, etc. that you crafted and placed
+5. Vehicles like Bicycle, 4x4, Minibike, Motorcycle, Gyrocopter, and so on
 
+This is also the order in which items are consumed from, so Backpack and Toolbelt items are used first, just like in the base game, and after that Drones, then Collectors, etc.
+
+![Player Crafted Wall Safe Consume Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
+An example of a player crafted storage, in this case a Wall Safe.
+
+### Consume from the extended inventory
+Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks, pay traders and vending machines, and of course craft things. 
+![Consume from Useful Drone](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_from_useful_drone.jpg)
 Items from the source slots with the least items are used first.
-You can turn off Consume from specific blocks, like from a Wooden Crate or a Locker using the radial menu.
+You can turn off Consume for specific blocks, like for a Wooden Crate or a Locker using the radial menu.
 ![Consume On/Off radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
 ### Smart sorting
 #### Push to surrounding storage
@@ -60,7 +58,8 @@ Before leaving the base, I just use Smart Pull to Top Up my Bicycle Load Out, an
 Items are only pulled from immovable storage like crates and other user created and placed containers.
 So <span style="color:#ff2222;">**you can't pull in**</span> ammo from your Bicycle into your Drone, for instance.
 Pulling in items will not overflow to empty slots, whether they're locked or not. All it does is fill up a slot with an existing item until the maximum stack size for that item is reached.
-
+![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
+This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 #### On Mission, aka cool things you didn't know you could do
 If you are out of range of your base, then you're classified to be **On Mission**.
 In this situation, pushing from your Backpack (Player Inventory) will use your vehicles and drones that are nearby as the destination to bulk move items to if there are already items of that type in them.
