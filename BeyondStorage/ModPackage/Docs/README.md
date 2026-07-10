@@ -1,5 +1,6 @@
 # Beyond Storage 3 - Everything Is Your Inventory
 I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper), as **hundreds of hours** go into making a mod like this, keeping it up to date with newer game versions, not to mention supporting it.
+
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/gazorper-kofi.png)](https://ko-fi.com/gazorper)
 
 Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support.
@@ -63,3 +64,10 @@ This is my office desk that I **crafted and placed myself**. It is also part of 
 #### On Mission, aka cool things you didn't know you could do
 If you are out of range of your base, then you're classified to be **On Mission**.
 In this situation, pushing from your Backpack (Player Inventory) will use your vehicles and drones that are nearby as the destination to bulk move items to if there are already items of that type in them.
+![Bicycle Prefilled On Mission](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/bicycle_prefilled_on_mission.jpg)
+Some random stuff I looted on the way to a job and then placed in the Bicycle storage.
+When I do the job, I can Smart Push these kinds of items directly to the Bicycle from within the POI. No need to run out to the vehicle, unless it's a new type of item.
+Don't waste your time making and dealing with dump chests!
+
+
+
