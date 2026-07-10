@@ -79,26 +79,46 @@ Don't waste your time making and dealing with dump chests!
 
 ### ⌨️Console Commands (when you press F1)
 
-|Command|Description|
-|:----|:----|
-| bshelp | List available commands with their descriptions |
-| bsclearcache | Invalidates cache and reloads items from storages |
-| bsreloadconfig | Reload the config as per the current config.json file (maybe you modified it in a text editor) |
-| bssetconfig | Change the value of a config property |
-| bsshowconfig | Displays the current active config settings |
+```text
++----------------+--------------------------------------------------------------+
+| Command        | Description                                                  |
++----------------+--------------------------------------------------------------+
+| bshelp         | List available commands with their descriptions              |
++----------------+--------------------------------------------------------------+
+| bsclearcache   | Invalidates cache and reloads items from storages            |
++----------------+--------------------------------------------------------------+
+| bsreloadconfig | Reload the config as per the current config.json file        |
+|                | (maybe you modified it in a text editor)                     |
++----------------+--------------------------------------------------------------+
+| bssetconfig    | Change the value of a config property                        |
++----------------+--------------------------------------------------------------+
+| bsshowconfig   | Displays the current active config settings                  |
++----------------+--------------------------------------------------------------+
+```
 
 ### ❄️Config file
-
 The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 
-|Setting|Default|Description|
-|:----|:----|:----|
-| range | -1.0 | Distance in metres for Consume, Smart Push, or SmartPull. Less than 0 means everything loaded by the game, which is effectively around 200m. |
-| consumeFromDrones | true | |
-| consumeFromVehicles | true | |
-| serverSyncConfig | true | Force clients to load the mod config settings from the server when a player connects |
-| isDebug | false | Logs additional information that might be useful for troubleshooting problems. You can generally leave this turned off. |
-
+```text
++---------------------+---------+--------------------------------------------------------------+
+| Setting             | Default | Description                                                  |
++---------------------+---------+--------------------------------------------------------------+
+| range               | -1.0    | Distance in metres for Consume, Smart Push, or SmartPull.    |
+|                     |         | Less than 0 means everything loaded by the game, which is    |
+|                     |         | effectively around 200m.                                     |
++---------------------+---------+--------------------------------------------------------------+
+| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull            |
++---------------------+---------+--------------------------------------------------------------+
+| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull            |
++---------------------+---------+--------------------------------------------------------------+
+| serverSyncConfig    | true    | Force clients to load the mod config settings from the       |
+|                     |         | server when a player connects                                |
++---------------------+---------+--------------------------------------------------------------+
+| isDebug             | false   | Logs additional information that might be useful for         |
+|                     |         | troubleshooting problems. You can generally leave this       |
+|                     |         | turned off.                                                  |
++---------------------+---------+--------------------------------------------------------------+
+```
 Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.
 
 The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.
