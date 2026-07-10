@@ -191,13 +191,13 @@ For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you
 
 ## License
 
-This mod is licensed under the Apache-2.0 License. See the LICENSE.txt for details.
+This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/LICENSE.txt) for details.
 
 ## ⌛History
 
 [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake was almost certainly the first mod to introduce the "remote broadcasting" of items for crafting, as if you had a gigantic inventory that included your storage crates.
 
-[CRAFTFROMCONTAINERS](https://github.com/aedenthorn/7D2DMods) by aedenthorn implemented this for later versions of the game, as Undead Legacy was not available for post A21 at the time. The source code is on [GitHub](https://github.com/aedenthorn/7D2DMods)
+[Craft From Containers](https://www.nexusmods.com/7daystodie/mods/2196?tab=description) by aedenthorn implemented this for later versions of the game, as Undead Legacy was not available for post A21 at the time. The source code is on [GitHub](https://github.com/aedenthorn/7D2DMods)
 
 [1.0 Beyond Storage](https://www.nexusmods.com/7daystodie/mods/5087) was refactored and updated for 7 Days to Die v1 by unv-annihilator and extended this idea, based on the code from aedenthorn. This brought the addition of vehicles to pull items from. The code quality and stability of this mod high. See [https://github.com/unv-annihilator/7D2D_Mods/tree/main](https://github.com/unv-annihilator/7D2D_Mods/tree/main) for that fork.
 
