@@ -34,7 +34,7 @@ I'm just some guy trying to be the change we all want to see in the world...of g
 
 You can be a player, gamer, streamer, dev, more?
 
-**You** can tell **everyone** you're streaming in the [Discord](https://discord.gg/WHkm3PGKKx)<span style="color:#4c5fd7;">**#announce-your-stream**</span> channel!
+**You** can tell **everyone** you're streaming in the [Discord](https://discord.gg/WHkm3PGKKx)<span style="color:#4c5fd7;">**#stream-sharing**</span> channel!
 <!-- [color=#ff0000][BBCode][/color][size=4][color=#20ff00][url=(https://discord.gg/WHkm3PGKKx)]#announce-your-stream[/url] on Discord[/color][color=#ff0000][/size][/BBCode][/color] -->
 
 ## 💾What to download
