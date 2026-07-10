@@ -138,3 +138,75 @@ Install the same version on **CLIENT AND SERVER** if you are hosting or particip
 - [How to add Mods to your 7D2D game](https://www.nexusmods.com/7daystodie/articles/889)
 - [Basic troubleshooting for mods](https://www.nexusmods.com/7daystodie/articles/787)
 
+## 🏆Credits
+- [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake for inspiring us all
+- [aedenthorn](https://github.com/aedenthorn) for the original mod
+- [unv-annihilator](https://github.com/unv-annihilator) for the 7 Days to Die v1 fork
+- [superguru](https://github.com/superguru) for the 7 Days to Die v2 refactor
+- [gazorper](https://next.nexusmods.com/profile/gazorper/mods) for the Beyond Storage 3 mod
+- For v2.5.x mod series: Compatibility code copied (with permission) from Jakmeister999's Enhanced HUD (V2.3) mod
+- The 7 Days to Die community for their support and contributions
+
+## 🤝Mod compatibility list
+
+### ✅Considered compatible (V3):
+
+I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
+- [AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
+- [AGF - V3 - HUD PLUS](https://www.nexusmods.com/7daystodie/mods/870)
+- [Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
+- [CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
+- [Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
+- [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
+- [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
+- [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
+- [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
+- [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
+- [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
+
+### Still not converted to V3, so not compatible yet:
+- [Bigger Backpack](https://www.nexusmods.com/7daystodie/mods/305)
+- [IZY-All in One Gun Pack v5.1](https://www.nexusmods.com/7daystodie/mods/5458)
+- [Vehicle Madness](https://7daystodiemods.com/vehicle-madness)
+
+### ❌Not considered compatible:
+
+#### General
+
+Don't use any remote crafting type of mods at the same time. 
+
+They are generally not compatible with each other. 
+
+Just pick one you like and use that.
+
+#### SCore
+
+For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
+- Remote Crafting
+- Remote Repair/Upgrade
+
+#### Others (not compatible)
+
+- ❌[Advanced UI](https://www.nexusmods.com/7daystodie/mods/8289)
+
+## License
+
+This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/LICENSE.txt) for details.
+
+## ⌛History
+
+[Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake was almost certainly the first mod to introduce the "remote broadcasting" of items for crafting, as if you had a gigantic inventory that included your storage crates.
+
+[Craft From Containers](https://www.nexusmods.com/7daystodie/mods/2196?tab=description) by aedenthorn implemented this for later versions of the game, as Undead Legacy was not available for post A21 at the time. The source code is on [GitHub](https://github.com/aedenthorn/7D2DMods)
+
+[1.0 Beyond Storage](https://www.nexusmods.com/7daystodie/mods/5087) was refactored and updated for 7 Days to Die v1 by unv-annihilator and extended this idea, based on the code from aedenthorn. This brought the addition of vehicles to pull items from. The code quality and stability of this mod high. See [https://github.com/unv-annihilator/7D2D_Mods/tree/main](https://github.com/unv-annihilator/7D2D_Mods/tree/main) for that fork.
+
+[Beyond Storage 2](https://github.com/superguru/7d2d_mod_BeyondStorage2) added pulling from all conceivable sources, like drones, workstation outputs, dew collectors. Also added all inventory operations like paying for items at a trader, painting, lock picking. The mod also fixes many notification bugs from the original game, and all operations are seamless. Pushing items from any place you can pull from, in order to auto-sort items, was also added.
+
+## 🚅Why use this mod?
+
+I would recommend Beyond Storage 3 over other "craft from container" type mods, due to speed, stability, functionality, and code quality.
+
+The UI and game functionality integration is exceptional, and the mod is very stable and ⚡⚡⚡lightning⚡⚡⚡ fast.
+
+*** PACKAGED aka MOD FRONT PAGE README.md EOF ***
