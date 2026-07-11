@@ -59,7 +59,7 @@
   </Target>
   <Target Name="DeployMod" AfterTargets="Build" DependsOnTargets="ConvertMDtoBBCode">
     <Message Text="Executing mod deployment task" Importance="High" />
-    <Exec Command="python &quot;$(GAZModDeployDir)\deploy_target_build.py&quot; --config &quot;$(ProjectDir)\gzdeploy_bs3.yaml&quot; &quot;$(Configuration)&quot;" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
+    <Exec Command="python &quot;$(GAZModDeployDir)\deploy_target_build.py&quot; --config &quot;$(ProjectDir)\gazdeploy_bs3.yaml&quot; &quot;$(Configuration)&quot;" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
       <Output TaskParameter="ExitCode" PropertyName="DeployModExitCode" />
     </Exec>
     <Error Condition="'$(DeployModExitCode)' != '0'" Text="Deployment failed with exit code $(DeployModExitCode)" />
@@ -218,7 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ModPackage\Config\loadingscreen.xml" />
-    <None Include="gzdeploy_bs3.yaml" />
+    <None Include="gazdeploy_bs3.yaml" />
     <None Include="ModPackage\Config\Localization.csv" />
     <Content Include="ModPackage\Config\XUi_InGame\windows.xml" />
     <Content Include="ModPackage\LICENSE.txt" />

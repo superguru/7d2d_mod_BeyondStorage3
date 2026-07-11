@@ -1,4 +1,4 @@
-# gzdeploy_bs3.yaml - Deploy configuration for BeyondStorage3
+# gazdeploy_bs3.yaml - Deploy configuration for BeyondStorage3
 #
 # MSBuild post-build command (covers both Debug and Release):
 #   "$(SolutionDir)..\GAZ Mod Deploy\deploy_target_build.py" --config "$(ProjectDir)gzdeploy_bs3.yaml" $(Configuration)
