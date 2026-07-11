@@ -39,6 +39,7 @@ It's recommended to use the Release build type for assembly references and for d
 
 Update these path properties in the .csproj itself:
 - `GameInstallDir`
+- `MDtoBBCodeDir`
 - `GAZModDeployDir`
 - `StructuredTextProjectDir`
 
