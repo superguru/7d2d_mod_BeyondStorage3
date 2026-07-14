@@ -107,6 +107,11 @@ Also, Land Claim Blocks prevent enemy damage to your Ally group's blocks.
 2. Move the storage out of range of your Ally. But if your friend runs over to your storage, they would come in range of it, and then be able to use the items inside. This is just a sort of general suggestion.
 3. You can turn Consume Off or On for a storage. This will mean anyone in your Ally group can still Smart Push or Pull to and from it, but no-one, including yourself, can Consume from it.
 
+#### Locking your storage
+You can lock your storage **with a PIN**. Then only someone with the PIN can open the storage physically, and the same goes for their extended inventory.
+
+So lock it **with a PIN**, don't share the PIN, and then only you can Consume from it, and only you can Smart Push and Pull to and from it.
+
 #### Short Summary about Multiplayer storage
 In this game, there is no concept whatsoever of a particular Player owning a Crate or any other storage.
 
