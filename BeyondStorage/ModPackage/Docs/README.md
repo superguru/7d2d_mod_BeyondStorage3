@@ -142,6 +142,9 @@ Please report any bugs or issues you find on [Discord at GAZ World](https://disc
 
 The people on Discord are quite helpful too.
 
+## 🌐Translations
+- 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
+
 ## 🧩Troubleshooting
 Things don't seem to work? Try these steps first.
 
