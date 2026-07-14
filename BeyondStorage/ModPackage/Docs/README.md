@@ -199,6 +199,12 @@ They are generally not compatible with each other.
 
 Just pick one you like and use that.
 
+### Overhaul Mods
+
+Most overhaul mods will replace your Backpack, Workstations, and other windows in the game.
+
+That will make the Smart Push and Pull buttons from Beyond Storage invisible, so a lot of the functionality will then be inaccessible.
+
 #### SCore
 
 For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
