@@ -75,6 +75,43 @@ Some random stuff I looted on the way to a job and then placed in the Bicycle st
 When I do the job, I can Smart Push these kinds of items directly to the Bicycle from within the POI. No need to run out to the vehicle, unless it's a new type of item.
 Don't waste your time making and dealing with dump chests!
 
+### 🤼‍♀️Multiplayer Explained
+Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
+
+So if you build a Crate, anyone of your Allies can access it.
+
+When you read this documentation you will see it mentions "Player crafted storage", and it's important to understand this concept.
+
+- Did you craft the Wooden Crate? Then that's a "Player crafted storage".
+- Did your friend - who is multiplaying with you and is an All - craft the Wooden Crate? Then that's also a "Player crafted storage".
+
+BUT: Just because you crafted and placed a Wooden Crate, you don't own that crate. No-one owns it.
+
+You can run over to your friend's base, or to a crate that they built and placed, and just open it and take what's inside, or perhaps put some items into the crate.
+
+All of these storages are all part of you and anyone of your Allies' extended inventory, providing it's in **range**.
+
+#### What about land claims?
+Placing a Land Claim Block does not mean you claim **ownership** over anything.
+
+This is just how the game works. 
+
+Zombies don't spawn in range of a Land Claim Block, unless it's a Blood Moon.
+
+Enemies - players who are not Allies - don't spawn there at any time.
+
+Also, Land Claim Blocks prevent enemy damage to your Ally group's blocks.
+
+#### So what can you do to prevent your friend from using items in "your" storage?
+1. Do not ally with that player. Allies **share everything** except Vehicles and Drones.
+2. Move the storage out of range of your Ally. But if your friend runs over to your storage, they would come in range of it, and then be able to use the items inside. This is just a sort of general suggestion.
+3. You can turn Consume Off or On for a storage. This will mean anyone in your Ally group can still Smart Push or Pull to and from it, but no-one, including yourself, can Consume from it.
+
+#### Short Summary about Multiplayer storage
+In this game, there is no concept whatsoever of a particular Player owning a Crate or any other storage.
+
+A Player can only own a Vehicle or a Drone.
+
 ## Console and Config
 
 ### ⌨️Console Commands (when you press F1)
