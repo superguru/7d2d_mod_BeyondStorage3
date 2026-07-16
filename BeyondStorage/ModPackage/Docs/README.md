@@ -217,31 +217,31 @@ Install the same version on **CLIENT AND SERVER** if you are hosting or particip
 ### ✅Considered compatible (V3):
 
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
-- ✅[AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
-- ✅[AGF - V3 - HUD PLUS](https://www.nexusmods.com/7daystodie/mods/870)
-- ✅[Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
-- ✅[CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
-- ✅[Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
-- ✅🆕[IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
-- ✅🆕IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
-- ✅[Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
-- ✅[PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
-- ✅[RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
-- ✅[Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
-- ✅[Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
-- ✅[Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
-- ✅🆕[Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
+- ✅ [AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
+- ✅ [AGF - V3 - HUD PLUS](https://www.nexusmods.com/7daystodie/mods/870)
+- ✅ [Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
+- ✅ [CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
+- ✅ [Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
+- ✅ 🆕[IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
+- ✅ 🆕IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
+- ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
+- ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
+- ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
+- ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
+- ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
+- ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
+- ✅ 🆕[Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
 
 #### Common Dependencies
-- ✅🆕[0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
-- ✅🆕[Gears](https://www.nexusmods.com/7daystodie/mods/4017)
+- ✅🆕 [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
+- ✅🆕 [Gears](https://www.nexusmods.com/7daystodie/mods/4017)
 
 ##### SCore
 For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
 - Remote Crafting
 - Remote Repair/Upgrade
  
-### ❌Not considered compatible:
+### ❌ Not considered compatible:
 
 #### General
 
@@ -259,7 +259,7 @@ That will make the Smart Push and Pull buttons from Beyond Storage invisible, so
 
 #### Others (not compatible)
 
-- ❌[Advanced UI](https://www.nexusmods.com/7daystodie/mods/8289)
+- ❌ [Advanced UI](https://www.nexusmods.com/7daystodie/mods/8289)
 
 ## License
 
