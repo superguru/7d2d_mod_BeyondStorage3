@@ -222,15 +222,15 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ [Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
 - ✅ [CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
 - ✅ [Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
-- ✅ 🆕[IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
-- ✅ 🆕IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
+- ✅🆕 [IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
+- ✅🆕 IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
 - ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
 - ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
 - ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
 - ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
 - ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
 - ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
-- ✅ 🆕[Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
+- ✅🆕 [Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
 
 #### Common Dependencies
 - ✅🆕 [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
