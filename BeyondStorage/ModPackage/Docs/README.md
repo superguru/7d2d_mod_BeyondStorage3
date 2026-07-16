@@ -214,7 +214,7 @@ Install the same version on **CLIENT AND SERVER** if you are hosting or particip
 
 ## 🤝Mod compatibility list
 
-### ✅Considered compatible (V3):
+### ✅ Considered compatible (V3):
 
 I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
 - ✅ [AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
