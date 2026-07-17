@@ -490,96 +490,10 @@ internal class StorageSourceItemDataStore
         return $"{dataStoreInfo} | FilterStore: {filterStoreInfo}";
     }
 
-    /// <summary>
-    /// Invalidates all cached filter lists except the master unfiltered cache.
-    /// Used when filter logic changes but the master data is still valid.
-    /// </summary>
-    internal void InvalidateFilterCaches()
-    {
-        // Clear all filter caches except the master unfiltered one
-        var allFilters = _collectionStore.GetAllFilters().ToList();
-        foreach (var filter in allFilters)
-        {
-            if (!filter.IsUnfiltered)
-            {
-                _collectionStore.ClearStacksForFilter(filter);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Checks if the data store has any cached stacks for the specified filter.
-    /// </summary>
-    /// <param name="filter">The filter to check</param>
-    /// <returns>True if cached data exists for the filter</returns>
-    internal bool HasCachedStacksForFilter(UniqueItemTypes filter)
-    {
-        if (filter == null)
-        {
-            return false;
-        }
-
-        return _collectionStore.ContainsStacksForFilter(filter);
-    }
-
     internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedSourcesList allowedSourcePolicy, ItemScope filter)
     {
         // These are already naturally in the config.range, because of the tile entity discovery process
         var storages = _distanceStore.GetClosestStorageSources(allowedSourcePolicy, filter);
         return storages;
-    }
-
-    /// <summary>
-    /// Builds slot maps from <paramref name="slotData"/> and registers the target in the distance store.
-    /// Slot maps are cloned per operation at query time, so classification only happens once here at registration.
-    /// </summary>
-    private void RegisterPushTarget(IStorageTarget target, float distance, SourceSlotData slotData)
-    {
-        var allItemsMap = BuildSlotMap(slotData.AllSlots);
-        var pushableMap = BuildPushableSlotMap(slotData.AllSlots, slotData.LockedSlots);
-        _distanceStore.Add(target, distance, allItemsMap, pushableMap);
-    }
-
-    /// <summary>
-    /// Builds a slot map from all slots including empty and locked ones.
-    /// Used for the all-items target map which tracks the full slot state of the storage.
-    /// </summary>
-    private static SlotMaps BuildSlotMap(ItemStack[] items)
-    {
-        var itemsLength = items.Length;
-        var maps = new SlotMaps(Math.Max(ItemX.GetAverageMaxStackSizeOf(items), itemsLength));
-
-        for (int i = 0; i < itemsLength; i++)
-        {
-            maps.RegisterSlot(items[i]);
-        }
-
-        return maps;
-    }
-
-    /// <summary>
-    /// Builds a slot map containing only unlocked slots.
-    /// Locked slot indices are skipped; all other slots including empty ones are registered
-    /// so the target adapter can track available space correctly.
-    /// </summary>
-    private static SlotMaps BuildPushableSlotMap(ItemStack[] items, PackedBoolArray lockedSlots)
-    {
-        var itemsLength = items.Length;
-        var lockedLength = lockedSlots?.Length ?? 0;
-        var hasLocks = lockedLength > 0;
-        var maps = new SlotMaps(Math.Max(ItemX.GetAverageMaxStackSizeOf(items), itemsLength));
-
-        for (int i = 0; i < itemsLength; i++)
-        {
-            // Skip locked slots — they are excluded from push targets
-            if (hasLocks && i < lockedLength && lockedSlots[i])
-            {
-                continue;
-            }
-
-            maps.RegisterSlot(items[i]);
-        }
-
-        return maps;
     }
 }
