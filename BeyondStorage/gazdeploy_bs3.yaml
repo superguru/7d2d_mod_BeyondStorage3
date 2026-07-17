@@ -4,7 +4,7 @@
 #   "$(SolutionDir)..\GAZ Mod Deploy\deploy_target_build.py" --config "$(ProjectDir)gzdeploy_bs3.yaml" $(Configuration)
 
 mod_name: BeyondStorage3
-project_dir: "D:\\Projects\\7 Days To Die\\projects\\Beyond Storage 3\\BeyondStorage\\"
+project_dir: "D:/Projects/7 Days To Die/projects/Beyond Storage 3/BeyondStorage"
 output_dir: bin/{build_target}  # {build_target} is substituted at runtime
 
 # output_dir is intentionally omitted — auto-derives to bin/Debug or bin/Release

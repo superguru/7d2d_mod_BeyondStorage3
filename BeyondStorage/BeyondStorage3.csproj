@@ -16,8 +16,8 @@
     <GameInstallDir>D:\SteamLibrary\steamapps\common\7 Days To Die</GameInstallDir>
     <MDtoBBCodeDir>D:\Projects\python\md_to_bbcode</MDtoBBCodeDir>
     <ModPackageDocReadMeDir>$(MSBuildProjectDirectory)\ModPackage\Docs</ModPackageDocReadMeDir>
-    <GAZModDeployDir>$(MSBuildProjectDirectory)\..\..\GAZ Mod Deploy</GAZModDeployDir>
-    <StructuredTextProjectDir>..\..\..\..\DotNet\StructuredData\StructuredText</StructuredTextProjectDir>
+    <GAZModDeployDir>D:\Projects\7 Days To Die\projects\GAZ Mod Deploy</GAZModDeployDir>
+    <StructuredTextProjectDir>D:\Projects\DotNet\StructuredData\StructuredText</StructuredTextProjectDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -59,7 +59,7 @@
   </Target>
   <Target Name="DeployMod" AfterTargets="Build" DependsOnTargets="ConvertMDtoBBCode">
     <Message Text="Executing mod deployment task" Importance="High" />
-    <Exec Command="python &quot;$(GAZModDeployDir)\deploy_target_build.py&quot; --config &quot;$(ProjectDir)\gazdeploy_bs3.yaml&quot; &quot;$(Configuration)&quot;" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
+    <Exec Command="python &quot;$(GAZModDeployDir)\deploy_target_build.py&quot; --config &quot;$(MSBuildProjectDirectory)\gazdeploy_bs3.yaml&quot; &quot;$(Configuration)&quot;" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
       <Output TaskParameter="ExitCode" PropertyName="DeployModExitCode" />
     </Exec>
     <Error Condition="'$(DeployModExitCode)' != '0'" Text="Deployment failed with exit code $(DeployModExitCode)" />
