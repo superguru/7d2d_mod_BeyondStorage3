@@ -3,7 +3,7 @@ I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazor
 
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/superguru/refs/heads/master/images/superguru-kofi-orange.png)](https://ko-fi.com/gazorper)
 
-Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support.
+Please go to <span style="color:#4c5fd7;">**[#beyond-storage3](https://discord.gg/hAF5T4P9pE)**</span> on the <span style="color:#f46f30;">**[Discord server](https://discord.gg/q4uajGgpr)**</span> for mod support.
 
 Also see [Docs\README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md) in the mod package for the full documentation.
 
@@ -16,7 +16,7 @@ In addition, you can easily PUSH from any of those sources to nearby crates, for
 
 This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
 
-```
+```text
 You can look in the Old Files section on Nexus Mods for previous versions of the mod
 that supported various editions of 7 Days to Die v2.
 

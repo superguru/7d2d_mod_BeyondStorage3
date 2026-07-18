@@ -3,7 +3,7 @@ I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazor
 
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/superguru/refs/heads/master/images/superguru-kofi-orange.png)](https://ko-fi.com/gazorper)
 
-Please go to <span style="color:#4c5fd7;">**#beyond-storage3**</span> on the <span style="color:#f46f30;">**Discord server**</span> for mod support.
+Please go to <span style="color:#4c5fd7;">**[#beyond-storage3](https://discord.gg/hAF5T4P9pE)**</span> on the <span style="color:#f46f30;">**[Discord server](https://discord.gg/q4uajGgpr)**</span> for mod support.
 
 Also see [Docs\README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md) in the mod package for the full documentation.
 
@@ -180,7 +180,7 @@ If applicable to your game, also [Disable EAC on your server](https://shockbyte.
 
 Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
 
-Please report any bugs or issues you find on [Discord at GAZ World](https://discord.gg/hAF5T4P9pE), and I'll investigate it when I find the time.
+Please report any bugs or issues you find in Discord, and I'll investigate it when I find the time.
 
 The people on Discord are quite helpful too.
 
