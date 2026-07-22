@@ -1,4 +1,5 @@
-﻿using BeyondStorage.Data;
+﻿using BeyondStorage.Configuration;
+using BeyondStorage.Data;
 using BeyondStorage.Entities;
 using BeyondStorage.Multiplayer;
 using BeyondStorage.Source.Game.Files;
@@ -32,6 +33,9 @@ public static class ModLifecycleManager
         // The purpose of this is to avoid a flicker on the currency display, visible when first purchasing from a Trader due to cache initialisation
         var itemStack = CurrencyCache.GetEmptyCurrencyStack();
         UIRefreshHelper.LogAndRefreshUI(StackOps.Stack_LockStateChange_Operation, itemStack: itemStack);
+
+        // Now show the config values we're starting with
+        ConfigDisplayHelper.ShowConfig();
     }
 
     public static void GameShutdown(ref SGameShutdownData data)
