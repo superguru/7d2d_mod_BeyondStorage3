@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Diagnostics;
+
 internal static class TypeNames
 {
     public readonly struct TypeNameInfo(string abbrev, string name)
@@ -11,17 +12,18 @@ internal static class TypeNames
         public string Name { get; } = name;
     }
 
-    private static Dictionary<Type, TypeNameInfo> s_nonPluralNames;
     private static Dictionary<Type, TypeNameInfo> NonPluralNames
     {
         get
         {
-            if (s_nonPluralNames == null)
+            if (field == null)
             {
                 InitializeTypeNames();
             }
-            return s_nonPluralNames;
+            return field;
         }
+
+        set;
     }
 
     private const string NM_UNKNOWN_TYPE_ABBREV = "NM:UT";
@@ -30,9 +32,10 @@ internal static class TypeNames
 
     private static void InitializeTypeNames()
     {
-        s_nonPluralNames = new Dictionary<Type, TypeNameInfo>
+        NonPluralNames = new Dictionary<Type, TypeNameInfo>
         {
             { typeof(EntityDrone), new TypeNameInfo("DR", "Drone") },
+            { typeof(EntityLootContainer), new TypeNameInfo("DL", "Dropped Loot") },
             { typeof(TileEntityCollector), new TypeNameInfo("CO", "Collector") },
             { typeof(TileEntityWorkstation), new TypeNameInfo("WS", "Workstation") },
             { typeof(ITileEntityLootable), new TypeNameInfo("LC", "Lootable Container") },
