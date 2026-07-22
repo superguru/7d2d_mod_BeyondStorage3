@@ -330,7 +330,7 @@ public static class WindowStateManager
     internal static void OnBagContainerClosing(XUiC_BagContainer container)
     {
 #if DEBUG
-        const string d_MethodName = nameof(OnBagContainerClosing);
+        //const string d_MethodName = nameof(OnBagContainerClosing);
 #endif
         lock (s_bagContainerLockObject)
         {
@@ -420,17 +420,19 @@ public static class WindowStateManager
     {
         bool isDroneOpen = IsDroneWindowOpen();
         bool isVehicleOpen = IsVehicleWindowOpen();
-        bool isWorkstationOpen = IsWorkstationWindowOpen();
-        bool isCollectorOpen = IsCollectorWindowOpen();
         bool isAnyLootOpen = IsAnyLootWindowOpen();
+
+#if DEBUG
+        // These are not included in the result, but logged for debug purposes when the need arises:
+        //bool isWorkstationOpen = IsWorkstationWindowOpen();
+        //bool isCollectorOpen = IsCollectorWindowOpen();
+#endif
         bool isBagStorageOpen = IsBagStorageWindowOpen();
         bool isBagContainerOpen = IsBagContainerOpen();
 
         bool result =
             !isDroneOpen &&
             !isVehicleOpen &&
-            !isWorkstationOpen &&
-            !isCollectorOpen &&
             !isAnyLootOpen &&
             !isBagContainerOpen &&
             !isBagStorageOpen;
