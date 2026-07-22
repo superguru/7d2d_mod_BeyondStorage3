@@ -196,10 +196,10 @@ internal static class TileEntityItemDiscovery
 
     private static bool ShouldProcessWorkstation(TileEntityWorkstation workstation)
     {
-        if (!workstation.IsPlayerPlaced)
-        {
-            return false;
-        }
+        //if (!workstation.IsPlayerPlaced)
+        //{
+        //    return false;
+        //}
 
         return true;
     }
