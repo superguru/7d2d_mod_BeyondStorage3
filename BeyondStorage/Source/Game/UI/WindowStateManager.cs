@@ -335,7 +335,7 @@ public static class WindowStateManager
         lock (s_bagContainerLockObject)
         {
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Start: container={container}");
+            //ModLogger.DebugLog($"{d_MethodName}: Start: container={container}");
 #endif
             if (container == s_bagContainerInstance)
             {
@@ -346,7 +346,7 @@ public static class WindowStateManager
                 ModLogger.Warning($"[WindowStateManager] Attempted to close bag container that doesn't match tracked instance.");
             }
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: End: container={container}");
+            //ModLogger.DebugLog($"{d_MethodName}: End: container={container}");
 #endif
         }
     }
