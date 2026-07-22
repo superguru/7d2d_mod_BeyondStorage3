@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-# * text=auto
+* text=auto
 
 ###############################################################################
 # Just what is this thing called "text"?
@@ -9,8 +9,11 @@
 *.cs   text
 *.json text
 *.md   text
+*.py   text
+^.toml text
 *.txt  text
 *.xml  text
+*.yaml text
 
 ###############################################################################
 # Set default behavior for command prompt diff.
