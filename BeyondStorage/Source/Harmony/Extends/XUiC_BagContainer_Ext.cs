@@ -25,7 +25,7 @@ internal static class XUiC_BagContainer_Ext
     private static void XUiC_BagContainer_Init_Postfix(XUiC_BagContainer __instance)
     {
 #if DEBUG
-        const string d_MethodName = nameof(XUiC_BagContainer_Init_Postfix);
+        //sconst string d_MethodName = nameof(XUiC_BagContainer_Init_Postfix);
 #endif
         var btnBeyondSmartDronePullLoadout = UIControlHelpers.GetSmartDroneInventoryPullLoadoutButton(__instance);
         if (btnBeyondSmartDronePullLoadout != null)
@@ -50,7 +50,7 @@ internal static class XUiC_BagContainer_Ext
         {
             btnBeyondSmartDroppedLootPushButton.OnPress += SmartSortingCommon.SmartDroppedLootPush_EventHandler;
 #if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Smart dropped loot push button initialized");
+            //ModLogger.DebugLog($"{d_MethodName}: Smart dropped loot push button initialized");
 #endif
         }
 
