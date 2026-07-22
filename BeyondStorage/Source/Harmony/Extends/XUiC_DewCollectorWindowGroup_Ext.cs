@@ -22,7 +22,7 @@ internal static class XUiC_DewCollectorWindowGroup_Ext
             ModLogger.Error($"{d_MethodName}: Collector Window is already open. This should not happen!");
         }
 
-        WindowStateManager.OnCollectorWindowOpened(__instance);
+        WindowStateManager.OnCollectorWindowOpening(__instance);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Collector Window Opened");
@@ -40,7 +40,7 @@ internal static class XUiC_DewCollectorWindowGroup_Ext
         //const string d_MethodName = nameof(XUiC_CollectorWindowGroup_OnClose_Postfix);
 #endif
 
-        WindowStateManager.OnCollectorWindowClosed(__instance);
+        WindowStateManager.OnCollectorWindowClosing(__instance);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Collector Window Closed");

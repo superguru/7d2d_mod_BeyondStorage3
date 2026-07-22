@@ -1,5 +1,4 @@
 ﻿using BeyondStorage.Game.UI;
-using BeyondStorage.Infrastructure;
 using HarmonyLib;
 
 namespace BeyondStorage.Source.Harmony.Extends;
@@ -18,18 +17,18 @@ internal static class XUiC_BagStorageWindowGroup_Ext
 #endif
     private static void XUiC_BagStorageWindowGroup_OnOpen_Postfix(XUiC_BagStorageWindowGroup __instance)
     {
-        const string d_MethodName = nameof(XUiC_BagStorageWindowGroup_OnOpen_Postfix);
-
-        // Check for duplicate window open (should not happen)
-        if (WindowStateManager.IsBagStorageWindowOpen())
-        {
-            ModLogger.Error($"{d_MethodName}: Bag Storage Window is already open. This should not happen!");
-        }
-
-        WindowStateManager.OnBagStorageWindowOpened(__instance);
+#if DEBUG
+        //const string d_MethodName = nameof(XUiC_BagStorageWindowGroup_OnOpen_Postfix);
+#endif
 
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Opened");
+        //ModLogger.DebugLog($"{d_MethodName} Start");
+#endif
+
+        WindowStateManager.OnBagStorageWindowOpening(__instance);
+
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName}: End. Bag Storage Window Opened for {__instance.lootContainer?.Name}");
 #endif
     }
 
@@ -44,7 +43,7 @@ internal static class XUiC_BagStorageWindowGroup_Ext
         //const string d_MethodName = nameof(XUiC_BagStorageWindowGroup_OnClose_Postfix);
 #endif
 
-        WindowStateManager.OnBagStorageWindowClosed(__instance);
+        WindowStateManager.OnBagStorageWindowClosing(__instance);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Closed");

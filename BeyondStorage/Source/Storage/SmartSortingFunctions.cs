@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Game.UI;
 using BeyondStorage.Infrastructure;
@@ -234,6 +234,33 @@ public class SmartSortingFunctions
         var targets = GetSmartPushTargets(context);
 
         ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
+    }
+
+    public static void SmartDroppedLootPush()
+    {
+        const string d_MethodName = nameof(SmartDroppedLootPush);
+
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from dropped loot");
+#endif
+
+        if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Validation failed, returning");
+            return;
+        }
+
+        var container = WindowStateManager.GetOpenWindowDroppedLoot();
+        if (container == null)
+        {
+            ModLogger.DebugLog($"{d_MethodName}: No open dropped loot window found, returning");
+            return;
+        }
+
+        var source = StorageSourceAdapterFactory.CreateDroppedLootSourceAdapter(context, container);
+        var targets = GetSmartPushTargets(context);
+
+        ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartPushTargets);
     }
 
     public static void SmartWorkstationOutputPush()

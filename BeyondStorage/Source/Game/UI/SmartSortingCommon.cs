@@ -39,6 +39,11 @@ public class SmartSortingCommon
         SmartSortingFunctions.SmartVehiclePush();
     }
 
+    public static void SmartDroppedLootPush_EventHandler(XUiController _sender, int _mouseButton)
+    {
+        SmartSortingFunctions.SmartDroppedLootPush();
+    }
+
     public static void SmartWorkstationOutputPush_EventHandler(XUiController _sender, int _mouseButton)
     {
         SmartSortingFunctions.SmartWorkstationOutputPush();

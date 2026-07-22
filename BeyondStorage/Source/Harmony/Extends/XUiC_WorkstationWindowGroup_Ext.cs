@@ -22,7 +22,7 @@ internal static class XUiC_WorkstationWindowGroup_Ext
             ModLogger.Error($"{d_MethodName}: Workstation Window is already open. This should not happen!");
         }
 
-        WindowStateManager.OnWorkstationWindowOpened(__instance);
+        WindowStateManager.OnWorkstationWindowOpening(__instance);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Workstation Window Opened");
@@ -39,7 +39,7 @@ internal static class XUiC_WorkstationWindowGroup_Ext
 #if DEBUG
 #endif
 
-        WindowStateManager.OnWorkstationWindowClosed(__instance);
+        WindowStateManager.OnWorkstationWindowClosing(__instance);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Workstation Window Closed");

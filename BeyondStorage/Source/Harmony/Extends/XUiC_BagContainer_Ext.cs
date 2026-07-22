@@ -25,7 +25,7 @@ internal static class XUiC_BagContainer_Ext
     private static void XUiC_BagContainer_Init_Postfix(XUiC_BagContainer __instance)
     {
 #if DEBUG
-        //const string d_MethodName = nameof(XUiC_BagContainer_Init_Postfix);
+        const string d_MethodName = nameof(XUiC_BagContainer_Init_Postfix);
 #endif
         var btnBeyondSmartDronePullLoadout = UIControlHelpers.GetSmartDroneInventoryPullLoadoutButton(__instance);
         if (btnBeyondSmartDronePullLoadout != null)
@@ -42,6 +42,15 @@ internal static class XUiC_BagContainer_Ext
             btnBeyondSmartPushButton.OnPress += SmartSortingCommon.SmartVehiclePush_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart vehicle push button initialized");
+#endif
+        }
+
+        var btnBeyondSmartDroppedLootPushButton = UIControlHelpers.GetSmartDroppedLootWindowPushButton(__instance);
+        if (btnBeyondSmartDroppedLootPushButton != null)
+        {
+            btnBeyondSmartDroppedLootPushButton.OnPress += SmartSortingCommon.SmartDroppedLootPush_EventHandler;
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Smart dropped loot push button initialized");
 #endif
         }
 
@@ -66,6 +75,11 @@ internal static class XUiC_BagContainer_Ext
         {
             case "bs_is_drone_window_open":
                 _value = WindowStateManager.IsDroneWindowOpen() ? "true" : "false";
+                __result = true;
+                return false; // Skip original method
+
+            case "bs_is_vehicle_window_open":
+                _value = WindowStateManager.IsVehicleWindowOpen() ? "true" : "false";
                 __result = true;
                 return false; // Skip original method
         }
@@ -101,6 +115,24 @@ internal static class XUiC_BagContainer_Ext
     }
 
     [HarmonyPostfix]
+    [HarmonyPatch(nameof(XUiC_BagContainer.OnClose))]
+#if DEBUG
+    [HarmonyDebug]
+#endif
+    private static void XUiC_BagContainer_OnClose(XUiC_BagContainer __instance)
+    {
+#if DEBUG
+        //const string d_MethodName = nameof(XUiC_BagContainer_OnClose);
+#endif
+
+        WindowStateManager.OnBagContainerClosing(__instance);
+
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName}: Bag Storage Window Closed");
+#endif
+    }
+
+    [HarmonyPostfix]
     [HarmonyPatch(nameof(XUiC_BagContainer.OnOpen))]
 #if DEBUG
     [HarmonyDebug]
@@ -112,11 +144,21 @@ internal static class XUiC_BagContainer_Ext
 #endif
 
 #if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName} Start");
+#endif
+
+        WindowStateManager.OnBagContainerOpening(__instance);
+
+#if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
 #endif
         __instance?.RefreshBindings();
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Bindings refreshed");
+#endif
+
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName} End. Bag container opened for {__instance.containerName}");
 #endif
     }
 

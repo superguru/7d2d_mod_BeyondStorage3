@@ -138,7 +138,7 @@ internal static class XUiC_LootWindow_Ext
 #endif
         }
 
-        WindowStateManager.OnStorageWindowOpened(__instance, isPlayerStorage);
+        WindowStateManager.OnStorageWindowOpening(__instance, isPlayerStorage);
 
 #if DEBUG
         //ModLogger.DebugLog($"{d_MethodName}: Refreshing bindings");
@@ -159,7 +159,7 @@ internal static class XUiC_LootWindow_Ext
 #if DEBUG
         //const string d_MethodName = nameof(XUiC_LootWindow_OnClose_Postfix);
 #endif
-        WindowStateManager.OnStorageWindowClosed(__instance);
+        WindowStateManager.OnStorageWindowClosing(__instance);
 
         // Clear the saved locked slots state when the window closes
         s_previousLockedSlots = null;

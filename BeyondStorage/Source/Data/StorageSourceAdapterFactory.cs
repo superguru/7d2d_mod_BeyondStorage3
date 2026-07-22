@@ -46,6 +46,19 @@ internal static class StorageSourceAdapterFactory
         );
     }
 
+    internal static StorageSourceAdapter<EntityLootContainer> CreateDroppedLootSourceAdapter(StorageContext context, EntityLootContainer container)
+    {
+        var sources = context.Sources;
+        return new StorageSourceAdapter<EntityLootContainer>(
+            container,
+            sources.EqualsLootContainerFunc,
+            sources.GetLootContainerAllItemsFunc,
+            sources.GetLootContainerLockedSlotsFunc,
+            sources.MarkLootContainerModifiedFunc,
+            sources.GetLootContainerNameFunc
+        );
+    }
+
     internal static StorageSourceAdapter<EntityPlayerLocal> CreatePlayerBackpackSourceAdapter(StorageContext context, EntityPlayerLocal player)
     {
         var sources = context.Sources;

@@ -26,6 +26,7 @@ internal static class XUiController_Ext
         (UIControlHelpers.GetSmartPlayerLootingPushButton,         btn => btn.OnPress -= SmartSortingCommon.SmartPlayerInventoryPush_EventHandler),
         (UIControlHelpers.GetSmartVehiclePullLoadoutButton,        btn => btn.OnPress -= SmartSortingCommon.SmartVehiclePullLoadout_EventHandler),
         (UIControlHelpers.GetSmartVehiclePushButton,               btn => btn.OnPress -= SmartSortingCommon.SmartVehiclePush_EventHandler),
+        (UIControlHelpers.GetSmartDroppedLootWindowPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartDroppedLootPush_EventHandler),
         (UIControlHelpers.GetSmartWorkstationOutputPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartWorkstationOutputPush_EventHandler),
     ];
 

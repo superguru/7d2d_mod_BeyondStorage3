@@ -20,7 +20,10 @@ public static class UIControlHelpers
     public const string SMART_COLLECTOR_PUSH_BUTTON_ID = "btnBeyondSmartCollectorPush";
 
     /// === Loot Window ===
-    public const string SMART_LOOT_WINDOW_PUSH_BUTTON_ID = "btnBeyondSmartStoragePush";  // For crates AND drones since they use the same loot window
+    public const string SMART_LOOT_WINDOW_PUSH_BUTTON_ID = "btnBeyondSmartStoragePush";
+
+    /// === Dropped Loot Window (lootbags) ===
+    public const string SMART_DROPPED_LOOT_WINDOW_PUSH_BUTTON_ID = "btnBeyondSmartDroppedLootPush";
 
     /// === Drone ===
     public const string SMART_DRONE_INVENTORY_PULL_LOADOUT_BUTTON_ID = "btnBeyondSmartDronePullLoadout";
@@ -65,6 +68,12 @@ public static class UIControlHelpers
     {
         var btnBeyondSmartLootWindowPush = GetSmartButtonByID(instance, SMART_LOOT_WINDOW_PUSH_BUTTON_ID);
         return btnBeyondSmartLootWindowPush;
+    }
+
+    public static XUiController GetSmartDroppedLootWindowPushButton(XUiController instance)
+    {
+        var btnBeyondSmartDroppedLootWindowPush = GetSmartButtonByID(instance, SMART_DROPPED_LOOT_WINDOW_PUSH_BUTTON_ID);
+        return btnBeyondSmartDroppedLootWindowPush;
     }
 
     public static XUiController GetSmartPlayerInventoryPullLoadoutButton(XUiController instance)

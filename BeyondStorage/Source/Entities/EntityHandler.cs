@@ -56,11 +56,11 @@ public static class EntityHandler
     }
 
     /// <summary>
-    /// Gets all item stacks from an vehicle's bag without any filtering.
+    /// Gets all item stacks from an entity's bag without any filtering.
     /// </summary>
-    /// <param name="entity">The vehicle to get items from</param>
-    /// <returns>Array of all ItemStack objects in the vehicle's bag, or an empty array if the bag is null or empty</returns>
-    public static ItemStack[] GetAllSlotItems(EntityAlive entity)
+    /// <param name="entity">The entity to get items from</param>
+    /// <returns>Array of all ItemStack objects in the entity's bag, or an empty array if the bag is null or empty</returns>
+    public static ItemStack[] GetAllSlotItems(Entity entity)
     {
         var items = entity?.bag?.items;
         if (items == null || items.Length == 0)
@@ -109,11 +109,20 @@ public static class EntityHandler
         WindowStateManager.SetOpenWindowEntitiesModified();
     }
 
-    /// <summary>
-    /// Marks a vehicle vehicle's storage as modified, updating both bag and loot container.
-    /// Triggers updates for vehicle bag, loot container, and notifies any open vehicle windows.
-    /// </summary>
-    /// <param name="vehicle">The vehicle vehicle whose storage was modified</param>
+    public static void MarkDroppedLootModified(EntityLootContainer container)
+    {
+        const string d_MethodName = nameof(MarkVehicleStorageModified);
+
+        if (container == null || container.bag == null)
+        {
+            ModLogger.DebugLog($"{d_MethodName}: entity or bag is null");
+            return;
+        }
+
+        container.OnBagModified();
+        WindowStateManager.SetOpenWindowEntitiesModified();
+    }
+
     public static void MarkVehicleStorageModified(EntityVehicle vehicle)
     {
         const string d_MethodName = nameof(MarkVehicleStorageModified);
