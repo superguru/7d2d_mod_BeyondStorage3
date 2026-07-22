@@ -260,7 +260,7 @@ public class SmartSortingFunctions
         var source = StorageSourceAdapterFactory.CreateDroppedLootSourceAdapter(context, container);
         var targets = GetSmartPushTargets(context);
 
-        ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartPushTargets);
+        ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
     }
 
     public static void SmartWorkstationOutputPush()
