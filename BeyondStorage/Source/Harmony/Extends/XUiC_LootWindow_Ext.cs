@@ -26,7 +26,7 @@ internal static class XUiC_LootWindow_Ext
         var btnBeyondSmartLootWindowPush = UIControlHelpers.GetSmartLootWindowPushButton(__instance);
         if (btnBeyondSmartLootWindowPush != null)
         {
-            btnBeyondSmartLootWindowPush.OnPress += SmartSortingCommon.SmartLootWindowPush_EventHandler;
+            btnBeyondSmartLootWindowPush.OnPress += SmartSortingCommon.SmartPushFromLootable_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart loot window push button initialized");
 #endif

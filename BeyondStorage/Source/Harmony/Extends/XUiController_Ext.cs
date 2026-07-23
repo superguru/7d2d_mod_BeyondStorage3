@@ -17,17 +17,17 @@ internal static class XUiController_Ext
 {
     private static readonly List<(Func<XUiController, XUiController> getter, Action<XUiController> unsubscribe)> s_buttonHandlerPairs =
     [
-        (UIControlHelpers.GetSmartCollectorPushButton,             btn => btn.OnPress -= SmartSortingCommon.SmartCollectorPush_EventHandler),
-        (UIControlHelpers.GetSmartDroneInventoryPullLoadoutButton, btn => btn.OnPress -= SmartSortingCommon.SmartDroneInventoryPullLoadout_EventHandler),
-        (UIControlHelpers.GetSmartLootWindowPushButton,            btn => btn.OnPress -= SmartSortingCommon.SmartLootWindowPush_EventHandler),
-        (UIControlHelpers.GetSmartPlayerInventoryPullLoadoutButton,btn => btn.OnPress -= SmartSortingCommon.SmartPlayerInventoryPullLoadout_EventHandler),
-        (UIControlHelpers.GetSmartPlayerLootingPullLoadoutButton,  btn => btn.OnPress -= SmartSortingCommon.SmartPlayerInventoryPullLoadout_EventHandler),
-        (UIControlHelpers.GetSmartPlayerInventoryPushButton,       btn => btn.OnPress -= SmartSortingCommon.SmartPlayerInventoryPush_EventHandler),
-        (UIControlHelpers.GetSmartPlayerLootingPushButton,         btn => btn.OnPress -= SmartSortingCommon.SmartPlayerInventoryPush_EventHandler),
-        (UIControlHelpers.GetSmartVehiclePullLoadoutButton,        btn => btn.OnPress -= SmartSortingCommon.SmartVehiclePullLoadout_EventHandler),
-        (UIControlHelpers.GetSmartVehiclePushButton,               btn => btn.OnPress -= SmartSortingCommon.SmartVehiclePush_EventHandler),
-        (UIControlHelpers.GetSmartDroppedLootWindowPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartDroppedLootPush_EventHandler),
-        (UIControlHelpers.GetSmartWorkstationOutputPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartWorkstationOutputPush_EventHandler),
+        (UIControlHelpers.GetSmartCollectorPushButton,             btn => btn.OnPress -= SmartSortingCommon.SmartPushFromCollector_EventHandler),
+        (UIControlHelpers.GetSmartDroneInventoryPullLoadoutButton, btn => btn.OnPress -= SmartSortingCommon.SmartPullToDroneLoadout_EventHandler),
+        (UIControlHelpers.GetSmartLootWindowPushButton,            btn => btn.OnPress -= SmartSortingCommon.SmartPushFromLootable_EventHandler),
+        (UIControlHelpers.GetSmartPlayerInventoryPullLoadoutButton,btn => btn.OnPress -= SmartSortingCommon.SmartPullToPlayerLoadout_EventHandler),
+        (UIControlHelpers.GetSmartPlayerLootingPullLoadoutButton,  btn => btn.OnPress -= SmartSortingCommon.SmartPullToPlayerLoadout_EventHandler),
+        (UIControlHelpers.GetSmartPlayerInventoryPushButton,       btn => btn.OnPress -= SmartSortingCommon.SmartPushFromPlayerBackpack_EventHandler),
+        (UIControlHelpers.GetSmartPlayerLootingPushButton,         btn => btn.OnPress -= SmartSortingCommon.SmartPushFromPlayerBackpack_EventHandler),
+        (UIControlHelpers.GetSmartVehiclePullLoadoutButton,        btn => btn.OnPress -= SmartSortingCommon.SmartPullToVehicleLoadout_EventHandler),
+        (UIControlHelpers.GetSmartVehiclePushButton,               btn => btn.OnPress -= SmartSortingCommon.SmartPushFromVehicleOrDrone_EventHandler),
+        (UIControlHelpers.GetSmartDroppedLootWindowPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartPushFromDroppedLoot_EventHandler),
+        (UIControlHelpers.GetSmartWorkstationOutputPushButton,     btn => btn.OnPress -= SmartSortingCommon.SmartPushFromWorkstation_EventHandler),
     ];
 
     [HarmonyPrefix]

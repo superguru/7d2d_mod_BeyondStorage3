@@ -22,7 +22,7 @@ internal static class XUiC_DewCollectorWindow_Ext
         var btnBeyondSmartButton = UIControlHelpers.GetSmartCollectorPushButton(__instance);
         if (btnBeyondSmartButton != null)
         {
-            btnBeyondSmartButton.OnPress += SmartSortingCommon.SmartCollectorPush_EventHandler;
+            btnBeyondSmartButton.OnPress += SmartSortingCommon.SmartPushFromCollector_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart collector push button initialized");
 #endif

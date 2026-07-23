@@ -24,7 +24,7 @@ internal static class XUiC_BackpackWindow_Ext
         var btnBeyondSmartPullButton = UIControlHelpers.GetSmartPlayerInventoryPullLoadoutButton(__instance);
         if (btnBeyondSmartPullButton != null)
         {
-            btnBeyondSmartPullButton.OnPress += SmartSortingCommon.SmartPlayerInventoryPullLoadout_EventHandler;
+            btnBeyondSmartPullButton.OnPress += SmartSortingCommon.SmartPullToPlayerLoadout_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart player inventory only pull loadout button initialized");
 #endif
@@ -33,7 +33,7 @@ internal static class XUiC_BackpackWindow_Ext
         var btnBeyondSmartPushButton = UIControlHelpers.GetSmartPlayerInventoryPushButton(__instance);
         if (btnBeyondSmartPushButton != null)
         {
-            btnBeyondSmartPushButton.OnPress += SmartSortingCommon.SmartPlayerInventoryPush_EventHandler;
+            btnBeyondSmartPushButton.OnPress += SmartSortingCommon.SmartPushFromPlayerBackpack_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart player inventory only push button initialized");
 #endif
@@ -42,7 +42,7 @@ internal static class XUiC_BackpackWindow_Ext
         var btnBeyondSmartLootingPullButton = UIControlHelpers.GetSmartPlayerLootingPullLoadoutButton(__instance);
         if (btnBeyondSmartLootingPullButton != null)
         {
-            btnBeyondSmartLootingPullButton.OnPress += SmartSortingCommon.SmartPlayerInventoryPullLoadout_EventHandler;
+            btnBeyondSmartLootingPullButton.OnPress += SmartSortingCommon.SmartPullToPlayerLoadout_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart player looting pull loadout button initialized");
 #endif
@@ -51,7 +51,7 @@ internal static class XUiC_BackpackWindow_Ext
         var btnBeyondSmartPushLootingButton = UIControlHelpers.GetSmartPlayerLootingPushButton(__instance);
         if (btnBeyondSmartPushLootingButton != null)
         {
-            btnBeyondSmartPushLootingButton.OnPress += SmartSortingCommon.SmartPlayerInventoryPush_EventHandler;
+            btnBeyondSmartPushLootingButton.OnPress += SmartSortingCommon.SmartPushFromPlayerBackpack_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart player looting push button initialized");
 #endif

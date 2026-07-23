@@ -18,7 +18,10 @@ namespace BeyondStorage;
 
 public class BeyondStorageMod : IModApi
 {
-    public static BeyondStorageMod Context { get; set; }
+    public static BeyondStorageMod Context
+    {
+        get; set;
+    }
 
     internal static Mod s_modInstance;
     private static string s_mod_assembly_path = "";
@@ -102,11 +105,16 @@ public class BeyondStorageMod : IModApi
 
             // General cache related suppression
             nameof(StorageContextFactory.InvalidateContext),
-            nameof(SmartSortingFunctions.SmartPlayerInventoryLoadoutPull),
-            nameof(SmartSortingFunctions.SmartPlayerInventoryPush),
-            nameof(SmartSortingFunctions.SmartVehicleLoadoutPull),
-            nameof(SmartSortingFunctions.SmartVehiclePush),
-            nameof(SmartSortingFunctions.SmartWorkstationOutputPush),
+
+            // Smart sorting functions
+            nameof(SmartSortingFunctions.SmartPullToPlayerLoadout),
+            nameof(SmartSortingFunctions.SmartPullToVehicleOrDroneLoadout),
+            nameof(SmartSortingFunctions.SmartPushFromCollector),
+            nameof(SmartSortingFunctions.SmartPushFromDroppedLoot),
+            nameof(SmartSortingFunctions.SmartPushFromLootable),
+            nameof(SmartSortingFunctions.SmartPushFromPlayerBackpack),
+            nameof(SmartSortingFunctions.SmartPushFromVehicleOrDrone),
+            nameof(SmartSortingFunctions.SmartPushFromWorkstation),
         ]);
     }
 }

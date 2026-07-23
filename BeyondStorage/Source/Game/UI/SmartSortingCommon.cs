@@ -4,48 +4,48 @@ namespace BeyondStorage.Game.UI;
 
 public class SmartSortingCommon
 {
-    public static void SmartCollectorPush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromCollector_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartCollectorPush();
+        SmartSortingFunctions.SmartPushFromCollector();
     }
 
-    public static void SmartPlayerInventoryPullLoadout_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPullToPlayerLoadout_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartPlayerInventoryLoadoutPull();
+        SmartSortingFunctions.SmartPullToPlayerLoadout();
     }
 
-    public static void SmartPlayerInventoryPush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromPlayerBackpack_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartPlayerInventoryPush();
+        SmartSortingFunctions.SmartPushFromPlayerBackpack();
     }
 
-    public static void SmartDroneInventoryPullLoadout_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPullToDroneLoadout_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartVehicleLoadoutPull();
+        SmartSortingFunctions.SmartPullToVehicleOrDroneLoadout();
     }
 
-    public static void SmartLootWindowPush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromLootable_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartLootWindowPush();
+        SmartSortingFunctions.SmartPushFromLootable();
     }
 
-    public static void SmartVehiclePullLoadout_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPullToVehicleLoadout_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartVehicleLoadoutPull();
+        SmartSortingFunctions.SmartPullToVehicleOrDroneLoadout();
     }
 
-    public static void SmartVehiclePush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromVehicleOrDrone_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartVehiclePush();
+        SmartSortingFunctions.SmartPushFromVehicleOrDrone();
     }
 
-    public static void SmartDroppedLootPush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromDroppedLoot_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartDroppedLootPush();
+        SmartSortingFunctions.SmartPushFromDroppedLoot();
     }
 
-    public static void SmartWorkstationOutputPush_EventHandler(XUiController _sender, int _mouseButton)
+    public static void SmartPushFromWorkstation_EventHandler(XUiController _sender, int _mouseButton)
     {
-        SmartSortingFunctions.SmartWorkstationOutputPush();
+        SmartSortingFunctions.SmartPushFromWorkstation();
     }
 }

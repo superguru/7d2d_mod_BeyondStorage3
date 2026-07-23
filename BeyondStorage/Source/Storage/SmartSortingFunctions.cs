@@ -24,9 +24,9 @@ public class SmartSortingFunctions
     private static IReadOnlyList<StorageTargetAdapter> GetSmartLoadoutPullSources(StorageContext context)
         => context.GetClosestStorageSources(StorageSourcePolicy.SmartLoadoutPullSources, ItemScope.PushableItems);
 
-    public static void SmartCollectorPush()
+    public static void SmartPushFromCollector()
     {
-        const string d_MethodName = nameof(SmartCollectorPush);
+        const string d_MethodName = nameof(SmartPushFromCollector);
 
 #if DEBUG
         ModLogger.DebugLog($"{d_MethodName}: Starting smart push from collector");
@@ -51,9 +51,9 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
     }
 
-    public static void SmartLootWindowPush()
+    public static void SmartPushFromLootable()
     {
-        const string d_MethodName = nameof(SmartLootWindowPush);
+        const string d_MethodName = nameof(SmartPushFromLootable);
 
 #if DEBUG
         ModLogger.DebugLog($"{d_MethodName}: Starting smart push from loot window");
@@ -72,15 +72,8 @@ public class SmartSortingFunctions
             return;
         }
 
-        SmartPushFromPlayerCreatedStorage(context, lootable);
-    }
-
-    private static void SmartPushFromPlayerCreatedStorage(StorageContext context, ITileEntityLootable lootable)
-    {
-        const string d_MethodName = nameof(SmartPushFromPlayerCreatedStorage);
-
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from player created storage");
+        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from '{lootable.lootListName}'");
 #endif
         var source = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
         var targets = GetSmartPushTargets(context);
@@ -88,39 +81,12 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
     }
 
-    public static void SmartDroneInventoryLoadoutPull(StorageContext context, EntityDrone drone)
+    public static void SmartPullToPlayerLoadout()
     {
-        const string d_MethodName = nameof(SmartDroneInventoryLoadoutPull);
+        const string d_MethodName = nameof(SmartPullToPlayerLoadout);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to drone storage");
-#endif
-
-        var loadout = StorageSourceAdapterFactory.CreateDroneStorageSourceAdapter(context, drone);
-        var sources = GetSmartLoadoutPullSources(context);
-
-        ItemTransferEngine.PerformSmartLoadoutPull(d_MethodName, context, loadout, sources);
-    }
-
-    private static void SmartPushFromDroneStorage(StorageContext context, EntityDrone drone)
-    {
-        const string d_MethodName = nameof(SmartPushFromDroneStorage);
-
-#if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from drone storage");
-#endif
-        var source = StorageSourceAdapterFactory.CreateDroneStorageSourceAdapter(context, drone);
-        var targets = GetSmartPushTargets(context);
-
-        ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
-    }
-
-    public static void SmartPlayerInventoryLoadoutPull()
-    {
-        const string d_MethodName = nameof(SmartPlayerInventoryLoadoutPull);
-
-#if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to player inventory");
+        ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to player loadout");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -135,12 +101,12 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartLoadoutPull(d_MethodName, context, loadout, sources);
     }
 
-    public static void SmartPlayerInventoryPush()
+    public static void SmartPushFromPlayerBackpack()
     {
-        const string d_MethodName = nameof(SmartPlayerInventoryPush);
+        const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from player inventory");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -155,12 +121,12 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
     }
 
-    public static void SmartVehicleLoadoutPull()
+    public static void SmartPullToVehicleOrDroneLoadout()
     {
-        const string d_MethodName = nameof(SmartVehicleLoadoutPull);
+        const string d_MethodName = nameof(SmartPullToVehicleOrDroneLoadout);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to vehicle/drone");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -172,35 +138,46 @@ public class SmartSortingFunctions
         var drone = WindowStateManager.GetOpenWindowDrone();
         if (drone != null)
         {
-            SmartDroneInventoryLoadoutPull(context, drone);
+#if DEBUG
+            //ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to drone loadout");
+#endif
+
+            var loadout = StorageSourceAdapterFactory.CreateDroneStorageSourceAdapter(context, drone);
+            var sources = GetSmartLoadoutPullSources(context);
+
+            ItemTransferEngine.PerformSmartLoadoutPull(d_MethodName, context, loadout, sources);
             return;
         }
 
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: No open drone found for pull, going to try vehicle3");
+        //ModLogger.DebugLog($"{d_MethodName}: No drone found, checking for vehicle");
 #endif
 
         var vehicle = WindowStateManager.GetOpenWindowVehicle();
-        if (vehicle == null)
+        if (vehicle != null)
         {
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: No open vehicle3 found for pull, returning");
+            //ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to vehicle loadout");
 #endif
+            var loadout = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
+            var sources = GetSmartLoadoutPullSources(context);
+
+            ItemTransferEngine.PerformSmartLoadoutPull(d_MethodName, context, loadout, sources);
+
             return;
         }
 
-        var loadout = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
-        var sources = GetSmartLoadoutPullSources(context);
-
-        ItemTransferEngine.PerformSmartLoadoutPull(d_MethodName, context, loadout, sources);
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Nothing eligible found");
+#endif
     }
 
-    public static void SmartVehiclePush()
+    public static void SmartPushFromVehicleOrDrone()
     {
-        const string d_MethodName = nameof(SmartVehiclePush);
+        const string d_MethodName = nameof(SmartPushFromVehicleOrDrone);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from vehicle/drone");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -209,39 +186,49 @@ public class SmartSortingFunctions
             return;
         }
 
-        // Drone storage is opened via the loot window — handle it before the generic lootable path
         var drone = WindowStateManager.GetOpenWindowDrone();
         if (drone != null)
         {
-            SmartPushFromDroneStorage(context, drone);
+#if DEBUG
+            //ModLogger.DebugLog($"{d_MethodName}: Starting smart push from drone");
+#endif
+            var source = StorageSourceAdapterFactory.CreateDroneStorageSourceAdapter(context, drone);
+            var targets = GetSmartPushTargets(context);
+
+            ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
+
             return;
         }
 
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: No open drone found for push, going to try vehicle3");
+        //ModLogger.DebugLog($"{d_MethodName}: No drone found, checking for vehicle");
 #endif
 
         var vehicle = WindowStateManager.GetOpenWindowVehicle();
-        if (vehicle == null)
+        if (vehicle != null)
         {
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: No open vehicle3 found for push, returning");
+            //ModLogger.DebugLog($"{d_MethodName}: Starting smart push from vehicle");
 #endif
+            var source = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
+            var targets = GetSmartPushTargets(context);
+
+            ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
+
             return;
         }
 
-        var source = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
-        var targets = GetSmartPushTargets(context);
-
-        ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
+#if DEBUG
+        ModLogger.DebugLog($"{d_MethodName}: Nothing eligible found");
+#endif
     }
 
-    public static void SmartDroppedLootPush()
+    public static void SmartPushFromDroppedLoot()
     {
-        const string d_MethodName = nameof(SmartDroppedLootPush);
+        const string d_MethodName = nameof(SmartPushFromDroppedLoot);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from dropped loot");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -253,7 +240,7 @@ public class SmartSortingFunctions
         var container = WindowStateManager.GetOpenWindowDroppedLoot();
         if (container == null)
         {
-            ModLogger.DebugLog($"{d_MethodName}: No open dropped loot window found, returning");
+            ModLogger.DebugLog($"{d_MethodName}: No open dropped loot found, returning");
             return;
         }
 
@@ -263,12 +250,12 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartPush(d_MethodName, context, source, targets, GetSmartOnMissionPushTargets);
     }
 
-    public static void SmartWorkstationOutputPush()
+    public static void SmartPushFromWorkstation()
     {
-        const string d_MethodName = nameof(SmartWorkstationOutputPush);
+        const string d_MethodName = nameof(SmartPushFromWorkstation);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from workstation");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))

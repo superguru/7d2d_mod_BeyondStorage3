@@ -33,13 +33,13 @@ internal static class XUiC_BagContainer_Ext
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart drone pull loadout button initialized");
 #endif
-            btnBeyondSmartDronePullLoadout.OnPress += SmartSortingCommon.SmartDroneInventoryPullLoadout_EventHandler;
+            btnBeyondSmartDronePullLoadout.OnPress += SmartSortingCommon.SmartPullToDroneLoadout_EventHandler;
         }
 
         var btnBeyondSmartPushButton = UIControlHelpers.GetSmartVehiclePushButton(__instance);
         if (btnBeyondSmartPushButton != null)
         {
-            btnBeyondSmartPushButton.OnPress += SmartSortingCommon.SmartVehiclePush_EventHandler;
+            btnBeyondSmartPushButton.OnPress += SmartSortingCommon.SmartPushFromVehicleOrDrone_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart vehicle push button initialized");
 #endif
@@ -48,7 +48,7 @@ internal static class XUiC_BagContainer_Ext
         var btnBeyondSmartDroppedLootPushButton = UIControlHelpers.GetSmartDroppedLootWindowPushButton(__instance);
         if (btnBeyondSmartDroppedLootPushButton != null)
         {
-            btnBeyondSmartDroppedLootPushButton.OnPress += SmartSortingCommon.SmartDroppedLootPush_EventHandler;
+            btnBeyondSmartDroppedLootPushButton.OnPress += SmartSortingCommon.SmartPushFromDroppedLoot_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart dropped loot push button initialized");
 #endif
@@ -57,7 +57,7 @@ internal static class XUiC_BagContainer_Ext
         var btnBeyondSmartPullButton = UIControlHelpers.GetSmartVehiclePullLoadoutButton(__instance);
         if (btnBeyondSmartPullButton != null)
         {
-            btnBeyondSmartPullButton.OnPress += SmartSortingCommon.SmartVehiclePullLoadout_EventHandler;
+            btnBeyondSmartPullButton.OnPress += SmartSortingCommon.SmartPullToVehicleLoadout_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart vehicle pull loadout button initialized");
 #endif

@@ -22,7 +22,7 @@ internal static class XUiC_WorkstationOutputWindow_Ext
         var btnBeyondSmartButton = UIControlHelpers.GetSmartWorkstationOutputPushButton(__instance);
         if (btnBeyondSmartButton != null)
         {
-            btnBeyondSmartButton.OnPress += SmartSortingCommon.SmartWorkstationOutputPush_EventHandler;
+            btnBeyondSmartButton.OnPress += SmartSortingCommon.SmartPushFromWorkstation_EventHandler;
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Smart workstation output push button initialized");
 #endif
