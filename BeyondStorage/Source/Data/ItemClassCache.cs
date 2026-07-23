@@ -113,11 +113,16 @@ public static class ItemClassCache
     /// Resolves the max stack size for a given item type by looking up the ItemClass and handling fallbacks.
     /// </summary>
     /// <param name="itemType">The item type to resolve</param>
-    /// <returns>The resolved max stack size, or 1 if not found</returns>
+    /// <returns>The resolved max stack size, or 0 if not found</returns>
     private static int ResolveMaxStackSize(int itemType)
     {
-        var itemClass = ItemClass.GetForId(itemType);
-        return itemClass?.Stacknumber?.Value ?? 0;
+        ItemClass itemClass = itemType <= 0 ? null : ItemClass.GetForId(itemType);
+        if (itemClass == null)
+        {
+            return 0;
+        }
+
+        return itemClass.MaxCount;
     }
 
     public static int LookupMaxStackSize(ItemValue itemValue)
