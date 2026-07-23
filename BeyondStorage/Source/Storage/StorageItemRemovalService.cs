@@ -148,7 +148,7 @@ public static class StorageItemRemovalService
 #if DEBUG
         if (stillNeeded < 0)
         {
-            //ModLogger.DebugLog($"{methodName}: stillNeeded after {nameInfo.Abbrev} should not be negative, but is {stillNeeded}");
+            ModLogger.DebugLog($"{methodName}: stillNeeded after {nameInfo.Abbrev} should not be negative, but is {stillNeeded}");
             stillNeeded = 0;
         }
 #endif
