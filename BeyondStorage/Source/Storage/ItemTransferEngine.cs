@@ -39,7 +39,7 @@ internal static class ItemTransferEngine
 
             var state = new StorageOperationState(loadout.GetName(), SmartTransferOperation.TopUp);
 
-            PullSourceItemsToLoadout(methodName, state, sources, loadout);
+            PullSourceItemsToLoadout(methodName, state, loadout, sources);
 
             ModLogger.DebugLog($"{methodName}: {state}");
 
@@ -112,8 +112,8 @@ internal static class ItemTransferEngine
     private static void PullSourceItemsToLoadout<T>(
         string methodName,
         StorageOperationState state,
-        IReadOnlyList<StorageTargetAdapter> sources,
-        StorageSourceAdapter<T> loadout) where T : class
+        StorageSourceAdapter<T> loadout,
+        IReadOnlyList<StorageTargetAdapter> sources) where T : class
     {
         var loadoutSlotData = loadout.GetSlotData();
         var loadoutSlots = ItemX.GetFilteredItems(
