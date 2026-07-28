@@ -45,6 +45,11 @@ The 16 Water will also by moved to any crates or other player storage if there i
 This works from anywhere and anything where you see the Smart Push button.
 Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Everything is included.
 
+### Topping up your Vehicle and Drone Load Out (Push to Load Out first)
+Pushing items from your Backpack or from a Storage container like a Crate will first try to fill up any **Load Out** slots, and then move anything that's left to the surrounding storages.
+
+This should help keeping your bullets, lock picks, repair kits, and bandages stocked up without too much personal intervention.
+
 ### Pushing and Locked Slots
 Locking a slot means that you are turning Off any bulk transfers from that slot, just like in the base game.
 So if you always want to keep Wood in your Backpack, lock the slot it's in, and Smart Push will leave it alone.
@@ -68,12 +73,15 @@ Pulling in items will not overflow to empty slots, whether they're locked or not
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 
 ### On Mission, aka cool things you didn't know you could do
+Since v3.1.1, if you put down a dump chest, then that will be filled first, after that the Vehicles and/or Drones.
+
 If you are out of range of your base, then you're classified to be **On Mission**.
 In this situation, pushing from your Backpack (Player Inventory) will use your vehicles and drones that are nearby as the destination to bulk move items to if there are already items of that type in them.
 ![Bicycle Prefilled On Mission](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/bicycle_prefilled_on_mission.jpg)
 Some random stuff I looted on the way to a job and then placed in the Bicycle storage.
 When I do the job, I can Smart Push these kinds of items directly to the Bicycle from within the POI. No need to run out to the vehicle, unless it's a new type of item.
 Don't waste your time making and dealing with dump chests!
+
 
 ### 🤼‍♀️Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
@@ -152,9 +160,6 @@ The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 | consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull            |
 +---------------------+---------+--------------------------------------------------------------+
 | consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull            |
-+---------------------+---------+--------------------------------------------------------------+
-| serverSyncConfig    | true    | Force clients to load the mod config settings from the       |
-|                     |         | server when a player connects                                |
 +---------------------+---------+--------------------------------------------------------------+
 | isDebug             | false   | Logs additional information that might be useful for         |
 |                     |         | troubleshooting problems. You can generally leave this       |
