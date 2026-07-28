@@ -29,6 +29,12 @@ public class SmartSortingFunctions
         ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, targets);
     }
 
+    private static void HandlePushToMulti<S>(string methodName, StorageContext context, StorageSourceAdapter<S> source) where S : class
+    {
+        HandlePushToLoadouts(methodName, context, source);
+        HandlePushToStorages(methodName, context, source);
+    }
+
     private static void HandlePullFromStorages<L>(string methodName, StorageContext context, StorageSourceAdapter<L> loadout) where L : class
     {
         var sources = TransferAdapterServer.GetSmartPullSourceAdapters();
@@ -124,7 +130,7 @@ public class SmartSortingFunctions
         }
 
         var source = StorageSourceAdapterFactory.CreateCollectorStorageSourceAdapter(context, collector);
-        HandlePushToStorages(d_MethodName, context, source);
+        HandlePushToMulti(d_MethodName, context, source);
     }
 
     public static void SmartPushFromLootable()
@@ -152,7 +158,7 @@ public class SmartSortingFunctions
         ModLogger.DebugLog($"{d_MethodName}: Starting smart push from '{lootable.lootListName}'");
 #endif
         var source = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
-        HandlePushToStorages(d_MethodName, context, source);
+        HandlePushToMulti(d_MethodName, context, source);
     }
 
     public static void SmartPushFromPlayerBackpack()
@@ -170,8 +176,7 @@ public class SmartSortingFunctions
         }
 
         var source = StorageSourceAdapterFactory.CreatePlayerBackpackSourceAdapter(context, context.Player);
-        HandlePushToLoadouts(d_MethodName, context, source);
-        HandlePushToStorages(d_MethodName, context, source);
+        HandlePushToMulti(d_MethodName, context, source);
     }
     public static void SmartPushFromVehicleOrDrone()
     {
@@ -242,7 +247,7 @@ public class SmartSortingFunctions
         }
 
         var source = StorageSourceAdapterFactory.CreateDroppedLootSourceAdapter(context, container);
-        HandlePushToStorages(d_MethodName, context, source);
+        HandlePushToMulti(d_MethodName, context, source);
     }
 
     public static void SmartPushFromWorkstation()
@@ -267,6 +272,6 @@ public class SmartSortingFunctions
         }
 
         var source = StorageSourceAdapterFactory.CreateWorkstationStorageSourceAdapter(context, workstation);
-        HandlePushToStorages(d_MethodName, context, source);
+        HandlePushToMulti(d_MethodName, context, source);
     }
 }
