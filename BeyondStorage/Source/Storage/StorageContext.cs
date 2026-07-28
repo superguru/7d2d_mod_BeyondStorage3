@@ -117,7 +117,7 @@ public sealed class StorageContext
         }
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedSourcesList allowedSourcePolicy, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageAdapters(AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
     {
         LoadCache();
 

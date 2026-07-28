@@ -90,6 +90,11 @@
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPullLoadoutSourceAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\TransferAdapterServer.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartOnMissionTargetAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushTransferAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\ITransferAdapter.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />
@@ -164,7 +169,7 @@
     <Compile Include="Source\Infrastructure\TypeMatchingHelper.cs" />
     <Compile Include="Source\Storage\EntityItemDiscovery.cs" />
     <Compile Include="Source\Storage\EntityProcessingState.cs" />
-    <Compile Include="Source\Storage\StorageSourcePolicy.cs" />
+    <Compile Include="Source\Storage\StorageAdapterPolicy.cs" />
     <Compile Include="Source\Storage\ItemTransferEngine.cs" />
     <Compile Include="Source\Storage\SmartSortingFunctions.cs" />
     <Compile Include="Source\Storage\ItemScope.cs" />
@@ -174,7 +179,7 @@
     <Compile Include="Source\UI\UIRefreshHelper.cs" />
     <Compile Include="Source\Infrastructure\ValidationHelper.cs" />
     <Compile Include="Source\Infrastructure\WorldTools.cs" />
-    <Compile Include="Source\Storage\AllowedSourcesList.cs" />
+    <Compile Include="Source\Storage\AllowedAdapterTypeList.cs" />
     <Compile Include="Source\Storage\ItemStackCacheManager.cs" />
     <Compile Include="Source\Data\ItemClassCache.cs" />
     <Compile Include="Source\Entities\LootableHandler.cs" />

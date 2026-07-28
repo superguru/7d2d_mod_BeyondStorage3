@@ -7,29 +7,29 @@ namespace BeyondStorage.Storage;
 /// Provides immutable allowed source lists for each storage operation type.
 /// Each list is built once at first access and never changes.
 /// </summary>
-internal static class StorageSourcePolicy
+internal static class StorageAdapterPolicy
 {
 
     /// <summary>Gets the allowed source types for smart push operations.</summary>
-    internal static AllowedSourcesList SmartPushSources { get; } = BuildSmartPushSources();
+    internal static AllowedAdapterTypeList SmartPushAdapters { get; } = BuildSmartPushAdapterList();
 
     /// <summary>Gets the allowed source types for smart push operations while On Mission.</summary>
-    internal static AllowedSourcesList SmartOnMissionPushSources { get; } = BuildSmartOnMissionPushSources();
+    internal static AllowedAdapterTypeList SmartOnMissionPushAdapters { get; } = BuildSmartOnMissionPushAdapterList();
 
     /// <summary>Gets the allowed source types for smart loadout pull operations.</summary>
-    internal static AllowedSourcesList SmartLoadoutPullSources { get; } = BuildSmartLoadoutPullSources();
+    internal static AllowedAdapterTypeList SmartLoadoutPullAdapters { get; } = BuildSmartLoadoutPullAdapterList();
 
-    private static AllowedSourcesList BuildSmartPushSources()
+    private static AllowedAdapterTypeList BuildSmartPushAdapterList()
     {
         var types = new List<Type>
         {
             typeof(ITileEntityLootable),
         };
 
-        return new AllowedSourcesList(types);
+        return new AllowedAdapterTypeList(types);
     }
 
-    private static AllowedSourcesList BuildSmartOnMissionPushSources()
+    private static AllowedAdapterTypeList BuildSmartOnMissionPushAdapterList()
     {
         var types = new List<Type>
         {
@@ -37,10 +37,10 @@ internal static class StorageSourcePolicy
             typeof(EntityVehicle),
         };
 
-        return new AllowedSourcesList(types);
+        return new AllowedAdapterTypeList(types);
     }
 
-    private static AllowedSourcesList BuildSmartLoadoutPullSources()
+    private static AllowedAdapterTypeList BuildSmartLoadoutPullAdapterList()
     {
         var types = new List<Type>
         {
@@ -48,6 +48,6 @@ internal static class StorageSourcePolicy
             typeof(ITileEntityLootable),
         };
 
-        return new AllowedSourcesList(types);
+        return new AllowedAdapterTypeList(types);
     }
 }

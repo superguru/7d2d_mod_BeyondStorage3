@@ -20,12 +20,12 @@ internal class StorageSourceItemDataStore
     private readonly TargetDistanceStore _distanceStore = new();
     private readonly HashSet<IStorageSource> _registeredSources = [];
 
-    internal AllowedSourcesList AllowedSourcesSnapshot
+    internal AllowedAdapterTypeList AllowedSourcesSnapshot
     {
         get;
     }
 
-    internal StorageSourceItemDataStore(AllowedSourcesList allowedSourcesSnapshot)
+    internal StorageSourceItemDataStore(AllowedAdapterTypeList allowedSourcesSnapshot)
     {
         if (allowedSourcesSnapshot == null)
         {
@@ -490,7 +490,7 @@ internal class StorageSourceItemDataStore
         return $"{dataStoreInfo} | FilterStore: {filterStoreInfo}";
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedSourcesList allowedSourcePolicy, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
     {
         // These are already naturally in the config.range, because of the tile entity discovery process
         var storages = _distanceStore.GetClosestStorageSources(allowedSourcePolicy, filter);

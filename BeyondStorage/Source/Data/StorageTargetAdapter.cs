@@ -6,6 +6,8 @@ namespace BeyondStorage.Data;
 
 internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
 {
+    internal const int DEFAULT_TARGET_ADAPTER_LIST_CAPACITY = 48;
+
     private readonly IStorageTarget _source;
 
     private readonly List<ItemStack> _emptySlots;
@@ -21,7 +23,15 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         maps.GetSlotDataLists(out _filledSlots, out _partialSlots, out _emptySlots);
     }
 
-    public float Distance { get; }
+    internal static List<StorageTargetAdapter> CreateTargetAdapterList()
+    {
+        return new List<StorageTargetAdapter>(DEFAULT_TARGET_ADAPTER_LIST_CAPACITY);
+    }
+
+    public float Distance
+    {
+        get;
+    }
 
     public bool Equals(StorageTargetAdapter other)
     {

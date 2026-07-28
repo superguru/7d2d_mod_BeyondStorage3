@@ -9,11 +9,11 @@ namespace BeyondStorage.Storage;
 /// <summary>
 /// Captures the allowed storage source types for a given configuration snapshot.
 /// </summary>
-internal sealed class AllowedSourcesList
+internal sealed class AllowedAdapterTypeList
 {
     private readonly List<Type> _allowSourceTypes;
 
-    public AllowedSourcesList(IEnumerable<Type> allowedSourceTypes)
+    public AllowedAdapterTypeList(IEnumerable<Type> allowedSourceTypes)
     {
         if (allowedSourceTypes == null)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage.TransferTargets;
 using BeyondStorage.UI;
 
 namespace BeyondStorage.Storage;
@@ -17,11 +18,51 @@ internal static class ItemTransferEngine
     internal static readonly object s_smartPullLock = new();
     internal static readonly object s_smartPushLock = new();
 
+    private static IReadOnlyList<StorageTargetAdapter> GetAdapterStorages(
+        string methodName,
+        StorageContext context,
+        IReadOnlyList<ITransferAdapter> adapters)
+    {
+        if (adapters == null || adapters.Count == 0)
+        {
+            ModLogger.DebugLog($"{methodName} was given null or no adapters");
+            return [];
+        }
+
+        var result = StorageTargetAdapter.CreateTargetAdapterList();
+
+        for (int i = 0; i < adapters.Count; i++)
+        {
+            var adapter = adapters[i];
+            if (adapter == null)
+            {
+                ModLogger.DebugLog($"{methodName} found that adapter {i} was null, skipping");
+                continue;
+            }
+
+            var targets = adapter.GetAdapters(context);
+            if (targets == null || targets.Count == 0)
+            {
+#if DEBUG
+                ModLogger.DebugLog($"{methodName} received null or no targets from set '{adapter.GetAdapterName()}', skipping");
+#endif
+                continue;
+            }
+
+            result.AddRange(targets);
+#if DEBUG
+            ModLogger.DebugLog($"{methodName} added {targets.Count} targets from '{adapter.GetAdapterName()}'");
+#endif
+        }
+
+        return result;
+    }
+
     internal static void PerformSmartLoadoutPull<T>(
         string methodName,
         StorageContext context,
         StorageSourceAdapter<T> loadout,
-        IReadOnlyList<StorageTargetAdapter> sources) where T : class
+        IReadOnlyList<ITransferAdapter> sourceAdapters) where T : class
     {
         lock (s_smartPullLock)
         {
@@ -31,12 +72,19 @@ internal static class ItemTransferEngine
                 return;
             }
 
+            var sources = GetAdapterStorages(methodName, context, sourceAdapters);
+
             if (sources == null || sources.Count == 0)
             {
+#if DEBUG
                 ModLogger.DebugLog($"{methodName}: No source storages found, returning");
+#endif
                 return;
             }
 
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: Found {sources.Count} source storages, proceeding");
+#endif
             var state = new StorageOperationState(loadout.GetName(), SmartTransferOperation.TopUp);
 
             PullSourceItemsToLoadout(methodName, state, loadout, sources);
@@ -60,8 +108,7 @@ internal static class ItemTransferEngine
         string methodName,
         StorageContext context,
         StorageSourceAdapter<S> source,
-        IReadOnlyList<StorageTargetAdapter> targets,
-        Func<StorageContext, IReadOnlyList<StorageTargetAdapter>> onMissionFallback) where S : class
+        IReadOnlyList<ITransferAdapter> targetAdapters) where S : class
     {
         lock (s_smartPushLock)
         {
@@ -71,21 +118,19 @@ internal static class ItemTransferEngine
                 return false;
             }
 
+            var targets = GetAdapterStorages(methodName, context, targetAdapters);
+
             if (targets == null || targets.Count == 0)
             {
-                ModLogger.DebugLog($"{methodName}: No target storages found, trying to find if On Mission");
-
-                targets = onMissionFallback(context);
-
-                if (targets == null || targets.Count == 0)
-                {
-                    ModLogger.DebugLog($"{methodName}: No on mission target storages found, returning");
-                    return false;
-                }
-
-                ModLogger.DebugLog($"{methodName}: Found {targets.Count} on mission target storages, proceeding with smart push");
+#if DEBUG
+                ModLogger.DebugLog($"{methodName}: No target storages found, returning");
+#endif
+                return false;
             }
 
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: Found {targets.Count} target storages, proceeding");
+#endif
             var state = new StorageOperationState(source.GetName(), SmartTransferOperation.Push);
 
             PushSourceItemsToTarget(methodName, state, source, targets, allowPushToEmpty: false);
@@ -240,6 +285,7 @@ internal static class ItemTransferEngine
         int maxStackSize,
         ref int loadoutSlotRequiredAmount)
     {
+        var originalItemType = ItemX.ItemTypeOf(loadoutSlot);
         int transferCount = 0;
         int initialStackSize = maxStackSize - loadoutSlotRequiredAmount;
 
@@ -288,7 +334,7 @@ internal static class ItemTransferEngine
         if (transferCount > 0)
         {
             int currentStackSize = maxStackSize - loadoutSlotRequiredAmount;
-            state.RecordTransfer(source, loadoutSlot, initialStackSize, currentStackSize, maxStackSize, transferCount);
+            state.RecordTransfer(source, loadoutSlot, originalItemType, initialStackSize, currentStackSize, maxStackSize, transferCount);
             return true;
         }
 
@@ -306,6 +352,7 @@ internal static class ItemTransferEngine
         int maxStackSize,
         ref int sourceSlotRemaining) where S : class
     {
+        var originalItemType = ItemX.ItemTypeOf(sourceSlot);
         int transferCount = 0;
         int initialStackSize = sourceSlotRemaining;
 
@@ -352,9 +399,11 @@ internal static class ItemTransferEngine
         if (transferCount > 0)
         {
             int currentStackSize = sourceSlotRemaining;
+
             source.MarkModified();
             target.MarkModified();
-            state.RecordTransfer(target, sourceSlot, initialStackSize, currentStackSize, maxStackSize, transferCount);
+
+            state.RecordTransfer(target, sourceSlot, originalItemType, initialStackSize, currentStackSize, maxStackSize, transferCount);
         }
     }
 }

@@ -196,7 +196,7 @@ public static class StorageContextFactory
         s_contextCache.InvalidateCache(nameof(InvalidateContext));
     }
 
-    private static AllowedSourcesList BuildAllowedSourcesSnapshot(ConfigSnapshot config)
+    private static AllowedAdapterTypeList BuildAllowedSourcesSnapshot(ConfigSnapshot config)
     {
         var types = new List<Type>();
 
@@ -219,6 +219,6 @@ public static class StorageContextFactory
             types.Add(typeof(EntityVehicle));
         }
 
-        return new AllowedSourcesList(types);
+        return new AllowedAdapterTypeList(types);
     }
 }
