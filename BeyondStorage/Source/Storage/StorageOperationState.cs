@@ -19,12 +19,18 @@ internal class StorageOperationState
     /// <summary>
     /// Gets the name of the master storage involved in this operation.
     /// </summary>
-    public string MasterStorageName { get; }
+    public string MasterStorageName
+    {
+        get;
+    }
 
     /// <summary>
     /// Gets the type of transfer operation being performed.
     /// </summary>
-    public SmartTransferOperation Operation { get; }
+    public SmartTransferOperation Operation
+    {
+        get;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StorageOperationState"/> class.
@@ -99,7 +105,7 @@ internal class StorageOperationState
     /// <summary>
     /// Records that items were affected by the operation
     /// </summary>
-    internal void RecordTransfer(StorageTargetAdapter storage, ItemStack stack, int initialStackSize, int currentStackSize, int maxStackSize, int transferCount)
+    internal void RecordTransfer(StorageTargetAdapter storage, ItemStack stack, int originalItemType, int initialStackSize, int currentStackSize, int maxStackSize, int transferCount)
     {
         if (storage == null || stack == null || maxStackSize <= 0 || transferCount <= 0)
         {
@@ -112,10 +118,9 @@ internal class StorageOperationState
             _ = _affectedStacks.Add(stack);
         }
 
-        var itemType = ItemX.ItemTypeOf(stack);
-        if (itemType != UniqueItemTypes.EMPTY)
+        if (originalItemType != UniqueItemTypes.EMPTY)
         {
-            _ = _uniqueItems.Add(itemType);
+            _ = _uniqueItems.Add(originalItemType);
         }
 
         if (transferCount > 0)
