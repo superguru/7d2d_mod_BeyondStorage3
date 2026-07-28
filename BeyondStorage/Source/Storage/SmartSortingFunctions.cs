@@ -29,7 +29,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromCollector);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from collector");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -56,7 +56,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromLootable);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart push from loot window");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -86,7 +86,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPullToPlayerLoadout);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to player loadout");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting smart pull to player loadout");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -106,7 +106,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -126,7 +126,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPullToVehicleOrDroneLoadout);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -177,7 +177,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromVehicleOrDrone);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -228,7 +228,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromDroppedLoot);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -255,7 +255,7 @@ public class SmartSortingFunctions
         const string d_MethodName = nameof(SmartPushFromWorkstation);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
