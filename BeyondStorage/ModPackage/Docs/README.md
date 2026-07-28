@@ -46,7 +46,7 @@ This works from anywhere and anything where you see the Smart Push button.
 Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Everything is included.
 
 ### Topping up your Vehicle and Drone Load Out (Push to Load Out first)
-Pushing items from your Backpack, a Storage container like a Crate, or from a Workstation like a Forge or Workbench, etc. will first try to fill up any **Load Out** slots, and then move anything that's left to the surrounding storages.
+Pushing items from your Backpack, a Storage container like a Crate, Dropped Loot bags, or from a Workstation like a Forge or Workbench, etc. will first try to fill up any **Load Out** slots, and then move anything that's left to the surrounding storages.
 
 This should help keeping your bullets, lock picks, repair kits, and bandages stocked up without too much personal intervention.
 
@@ -71,17 +71,6 @@ So <span style="color:#ff2222;">**you can't pull in**</span> ammo from your Bicy
 Pulling in items will not overflow to empty slots, whether they're locked or not. All it does is fill up a slot with an existing item until the maximum stack size for that item is reached.
 ![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
-
-### On Mission, aka cool things you didn't know you could do
-Since v3.1.1, if you put down a dump chest, then that will be filled first, after that the Vehicles and/or Drones.
-
-If you are out of range of your base, then you're classified to be **On Mission**.
-In this situation, pushing from your Backpack (Player Inventory) will use your vehicles and drones that are nearby as the destination to bulk move items to if there are already items of that type in them.
-![Bicycle Prefilled On Mission](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/bicycle_prefilled_on_mission.jpg)
-Some random stuff I looted on the way to a job and then placed in the Bicycle storage.
-When I do the job, I can Smart Push these kinds of items directly to the Bicycle from within the POI. No need to run out to the vehicle, unless it's a new type of item.
-Don't waste your time making and dealing with dump chests!
-
 
 ### 🤼‍♀️Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
@@ -286,4 +275,4 @@ I would recommend Beyond Storage 3 over other "craft from container" type mods, 
 
 The UI and game functionality integration is exceptional, and the mod is very stable and ⚡⚡⚡lightning⚡⚡⚡ fast.
 
-*** PACKAGED aka MOD FRONT PAGE README.md EOF ***
+*** PACKAGED aka MOD DOCUMENTATION PAGE README.md EOF ***

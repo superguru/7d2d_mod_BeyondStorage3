@@ -9,5 +9,5 @@ internal class SmartPushLoadoutTargetAdapter : ITransferAdapter
         => nameof(SmartPushLoadoutTargetAdapter);
 
     IReadOnlyList<StorageTargetAdapter> ITransferAdapter.GetAdapters(StorageContext context)
-        => context.GetClosestStorageAdapters(StorageAdapterAllowLists.SmartPushLoadoutAdapters, ItemScope.Loadout);
+        => context.GetClosestStorageAdapters(StorageAdapterAllowLists.SmartPushMobileAdapters, ItemScope.Loadout);
 }

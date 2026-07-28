@@ -94,8 +94,8 @@
     <Compile Include="Source\Storage\TransferTargets\SmartPullLoadoutSourceAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPushLoadoutTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\TransferAdapterServer.cs" />
-    <Compile Include="Source\Storage\TransferTargets\SmartOnMissionTargetAdapter.cs" />
-    <Compile Include="Source\Storage\TransferTargets\SmartPushTargetAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushMobileTargetAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushStationaryTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\ITransferAdapter.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />

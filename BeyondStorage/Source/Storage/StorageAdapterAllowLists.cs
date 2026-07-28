@@ -13,10 +13,7 @@ internal static class StorageAdapterAllowLists
     /// <summary>Gets the allowed source types for smart push operations.</summary>
     internal static AllowedAdapterTypeList SmartPushAdapters { get; } = BuildSmartPushAdapterList();
 
-    internal static AllowedAdapterTypeList SmartPushLoadoutAdapters { get; } = BuildSmartPushLoadoutAdapterList();
-
-    /// <summary>Gets the allowed source types for smart push operations while On Mission.</summary>
-    internal static AllowedAdapterTypeList SmartOnMissionPushAdapters { get; } = BuildSmartOnMissionPushAdapterList();
+    internal static AllowedAdapterTypeList SmartPushMobileAdapters { get; } = BuildSmartPushMobileAdapterList();
 
     /// <summary>Gets the allowed source types for smart loadout pull operations.</summary>
     internal static AllowedAdapterTypeList SmartLoadoutPullAdapters { get; } = BuildSmartLoadoutPullAdapterList();
@@ -31,18 +28,7 @@ internal static class StorageAdapterAllowLists
         return new AllowedAdapterTypeList(types);
     }
 
-    private static AllowedAdapterTypeList BuildSmartPushLoadoutAdapterList()
-    {
-        var types = new List<Type>
-        {
-            typeof(EntityDrone),
-            typeof(EntityVehicle),
-        };
-
-        return new AllowedAdapterTypeList(types);
-    }
-
-    private static AllowedAdapterTypeList BuildSmartOnMissionPushAdapterList()
+    private static AllowedAdapterTypeList BuildSmartPushMobileAdapterList()
     {
         var types = new List<Type>
         {

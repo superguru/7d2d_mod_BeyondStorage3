@@ -8,8 +8,8 @@ internal static class TransferAdapterServer
     internal static IReadOnlyList<ITransferAdapter> GetSmartPushTargetAdapters()
     {
         return [
-            new SmartPushTargetAdapter(),
-            new SmartOnMissionTargetAdapter(),
+            new SmartPushStationaryTargetAdapter(),
+            new SmartPushMobileTargetAdapter(),
         ];
     }
 
