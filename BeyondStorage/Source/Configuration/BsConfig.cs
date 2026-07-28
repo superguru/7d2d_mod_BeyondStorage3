@@ -29,12 +29,6 @@ public class BsConfig
     /// </summary>
     public bool consumeFromVehicles = true;
 
-    // ========== Multiplayer =========
-    /// <summary>
-    /// If set true on a server it will force all clients to use server settings for Beyond Storage
-    /// </summary>
-    public bool serverSyncConfig = true;
-
     // ========== Housekeeping =========
     /// <summary>
     /// If set true additional logging will be printed to logs/console

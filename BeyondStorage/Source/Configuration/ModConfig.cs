@@ -477,11 +477,6 @@ public static class ModConfig
         return IsConfigLoaded && ClientConfig.isDebug;
     }
 
-    public static bool ServerSyncConfig()
-    {
-        return ClientConfig.serverSyncConfig;
-    }
-
     /// <summary>
     /// Safely deserialize config JSON with additional error handling
     /// </summary>
@@ -705,7 +700,6 @@ public static class ModConfig
             range = legacyConfig.range,
             consumeFromDrones = legacyConfig.consumeFromDrones,
             consumeFromVehicles = legacyConfig.consumeFromVehicles,
-            serverSyncConfig = legacyConfig.serverSyncConfig,
             isDebug = legacyConfig.isDebug,
             metaDescription = legacyConfig.metaDescription
         };

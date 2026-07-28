@@ -77,7 +77,7 @@ public static class ConfigVersioning
                 // pullFromCollectors removed in 2.6.9
                 // pullFromWorkstationOutputs removed in 2.6.9
                 consumeFromVehicles = legacyConfig.pullFromVehicleStorage,
-                serverSyncConfig = legacyConfig.serverSyncConfig,
+                // serverSyncConfig removed in 3.1.1
                 isDebug = legacyConfig.isDebug
                 // isDebugLogSettingsAccess removed in 2.6.7
             };
@@ -141,6 +141,12 @@ public static class ConfigVersioning
         if (fromVersion < new Version("2.6.9"))
         {
             migratedConfig = MigrateTo269(migratedConfig);
+        }
+
+        // Migration to version 3.1.1: Remove serverSyncConfig setting
+        if (fromVersion < new Version("3.1.1"))
+        {
+            migratedConfig = MigrateTo311(migratedConfig);
         }
 
         migratedConfig.version = CurrentVersion;
@@ -234,6 +240,18 @@ public static class ConfigVersioning
     }
 
     /// <summary>
+    /// Migrates config to version 3.1.1
+    /// Changes: Removes the serverSyncConfig setting — server config sync is now always enabled.
+    /// </summary>
+    private static BsConfig MigrateTo311(BsConfig config)
+    {
+        const string d_MethodName = nameof(MigrateTo311);
+        ModLogger.Info($"{d_MethodName}: Applying migration to version 3.1.1");
+        ModLogger.Info($"{d_MethodName}: 'serverSyncConfig' has been removed — server config sync is now always enabled");
+        return config;
+    }
+
+    /// <summary>
     /// Pre-processes raw config JSON to apply field renames before deserialization.
     /// Must be called before deserializing into BsConfig to preserve renamed field values.
     /// </summary>
@@ -268,6 +286,12 @@ public static class ConfigVersioning
             {
                 jsonObject.Remove("pullFromCollectors");
                 jsonObject.Remove("pullFromWorkstationOutputs");
+            }
+
+            // Pre-3.1.1: remove serverSyncConfig
+            if (version < new Version("3.1.1"))
+            {
+                jsonObject.Remove("serverSyncConfig");
             }
 
             return jsonObject.ToString(Formatting.None);

@@ -13,9 +13,6 @@ public sealed class ConfigSnapshot
     public bool ConsumeFromDrones { get; }
     public bool ConsumeFromVehicles { get; }
 
-    // ========== Multiplayer =========
-    public bool ServerSyncConfig { get; }
-
     // ========== Housekeeping =========
     public bool IsDebug { get; }
 
@@ -25,9 +22,6 @@ public sealed class ConfigSnapshot
         Range = ModConfig.Range();
         ConsumeFromDrones = ModConfig.ConsumeFromDrones();
         ConsumeFromVehicles = ModConfig.ConsumeFromVehicles();
-
-        // ========== Multiplayer =========
-        ServerSyncConfig = ModConfig.ServerSyncConfig();
 
         // ========== Housekeeping =========
         IsDebug = ModConfig.IsDebug();

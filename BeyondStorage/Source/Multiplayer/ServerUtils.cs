@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BeyondStorage.Configuration;
 using BeyondStorage.Entities;
 using BeyondStorage.Infrastructure;
 
@@ -23,10 +22,8 @@ public static class ServerUtils
         SendCurrentLockedDict(data.ClientInfo);
         SendCurrentConsumeStates(data.ClientInfo);
 
-        if (ModConfig.ServerSyncConfig())
-        {
-            data.ClientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageBeyondStorageConfig>());
-        }
+        // Server config sync is always on as of 3.1.1 — the serverSyncConfig toggle was removed.
+        data.ClientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageBeyondStorageConfig>());
     }
 
     private static bool ShouldProcessPlayerSpawn(SPlayerSpawnedInWorldData data)
