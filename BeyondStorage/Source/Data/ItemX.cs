@@ -320,14 +320,14 @@ public static class ItemX
     /// Empty slots are always filtered out.
     /// </summary>
     /// <param name="items">The item array to filter</param>
-    /// <param name="filter">The inventory filter to apply (AllItems, UnlockedOnly, or LockedOnly)</param>
+    /// <param name="filter">The inventory filter to apply (All, UnlockedOnly, or LockedOnly)</param>
     /// <param name="lockedSlots">The locked slots array, or null if slot locking is not supported</param>
     /// <returns>Array of non-empty ItemStack objects that pass the specified filter</returns>
     /// <remarks>
-    /// - SmartTransferOperation.AllItems: Returns all non-empty items regardless of lock status
+    /// - SmartTransferOperation.All: Returns all non-empty items regardless of lock status
     /// - SmartTransferOperation.UnlockedOnly: Returns only non-empty items from unlocked slots (or all if no lock data)
     /// - SmartTransferOperation.LockedOnly: Returns only non-empty items from locked slots (or all if no lock data)
-    /// When lock data is unavailable, UnlockedOnly and LockedOnly behave identically to AllItems.
+    /// When lock data is unavailable, UnlockedOnly and LockedOnly behave identically to All.
     /// </remarks>
     public static ItemStack[] GetFilteredItems(ItemStack[] items, StorageFilter filter, PackedBoolArray lockedSlots = null)
     {

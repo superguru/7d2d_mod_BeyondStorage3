@@ -181,13 +181,16 @@ internal class StorageSourceItemDataStore
         // itemsLength is a safe upper bound for distinct item type count
         var allItemsMap = new SlotMaps(itemsLength);
         var pushableMap = new SlotMaps(itemsLength);
+        var loadoutMap = new SlotMaps(itemsLength);
 
         for (int i = 0; i < itemsLength; i++)
         {
             var stack = items[i];
+            bool isLocked = hasLocks && i < lockedLength && lockedSlots[i];
+            bool isPopulated = ItemX.IsPopulated(stack);
 
             // 1. Classify consumable (non-empty) and register for consume operations
-            if (registerConsumableStacks && ItemX.IsPopulated(stack))
+            if (registerConsumableStacks && isPopulated)
             {
                 RegisterConsumableStack(source, stack);
             }
@@ -196,13 +199,19 @@ internal class StorageSourceItemDataStore
             allItemsMap.RegisterSlot(stack);
 
             // 3. Pushable map — locked slots excluded from push targets
-            if (!hasLocks || i >= lockedLength || !lockedSlots[i])
+            if (!isLocked)
             {
                 pushableMap.RegisterSlot(stack);
             }
+
+            // 4. Loadout map — populated locked slots only, reserved for topping up via Smart Loadout Pull
+            if (isLocked && isPopulated)
+            {
+                loadoutMap.RegisterSlot(stack);
+            }
         }
 
-        _distanceStore.Add(target, distance, allItemsMap, pushableMap);
+        _distanceStore.Add(target, distance, allItemsMap, pushableMap, loadoutMap);
     }
 
     /// <summary>

@@ -12,11 +12,11 @@ namespace BeyondStorage.Data;
 /// </summary>
 internal sealed class TargetDistanceStore
 {
-    private readonly List<(IStorageTarget Storage, float Distance, SlotMaps AllItems, SlotMaps Pushable)> _entries = [];
+    private readonly List<TargetEntry> _entries = [];
 
     public bool IsSorted { get; private set; } = true;
 
-    public void Add(IStorageTarget storage, float distance, SlotMaps allItemsMaps, SlotMaps pushableMaps)
+    public void Add(IStorageTarget storage, float distance, SlotMaps allItemsMaps, SlotMaps pushableMaps, SlotMaps loadoutMaps)
     {
         const string d_MethodName = nameof(Add);
 
@@ -26,7 +26,7 @@ internal sealed class TargetDistanceStore
             return;
         }
 
-        _entries.Add((storage, distance, allItemsMaps, pushableMaps));
+        _entries.Add(new TargetEntry(storage, distance, allItemsMaps, pushableMaps, loadoutMaps));
         IsSorted = false;
     }
 
@@ -50,7 +50,7 @@ internal sealed class TargetDistanceStore
         IsSorted = true;
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedAdapterTypes, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedAdapterTypes, ItemScope scope)
     {
         Sort();
 
@@ -62,12 +62,23 @@ internal sealed class TargetDistanceStore
             {
                 continue;
             }
-
-            // Clone gives each operation its own mutable copy for ReclassifySlot
-            var maps = filter == ItemScope.AllItems ? entry.AllItems.Clone() : entry.Pushable.Clone();
+            SlotMaps maps = SelectEntryByScope(entry, scope);
             result.Add(new StorageTargetAdapter(entry.Storage, entry.Distance, maps));
         }
 
         return result;
+    }
+
+    private static SlotMaps SelectEntryByScope(TargetEntry entry, ItemScope filter)
+    {
+        // Clone gives each operation its own mutable copy for ReclassifySlot
+        var maps = filter switch
+        {
+            ItemScope.All => entry.AllItems,
+            ItemScope.Loadout => entry.Loadout,
+            _ => entry.Pushable,
+        };
+
+        return maps.Clone();
     }
 }

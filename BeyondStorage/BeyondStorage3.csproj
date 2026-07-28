@@ -72,6 +72,7 @@
     <Compile Include="Source\Data\SlotMutation.cs" />
     <Compile Include="Source\Data\SourceSlotData.cs" />
     <Compile Include="Source\Data\TargetDistanceStore.cs" />
+    <Compile Include="Source\Data\TargetEntry.cs" />
     <Compile Include="Source\Data\IStorageTarget.cs" />
     <Compile Include="Source\Data\ListExtensions.cs" />
     <Compile Include="Source\Data\StorageSourceAdapterFactory.cs" />
@@ -91,9 +92,10 @@
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPullLoadoutSourceAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushLoadoutTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\TransferAdapterServer.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartOnMissionTargetAdapter.cs" />
-    <Compile Include="Source\Storage\TransferTargets\SmartPushTransferAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\ITransferAdapter.cs" />
     <Compile Include="Source\Storage\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
@@ -169,7 +171,7 @@
     <Compile Include="Source\Infrastructure\TypeMatchingHelper.cs" />
     <Compile Include="Source\Storage\EntityItemDiscovery.cs" />
     <Compile Include="Source\Storage\EntityProcessingState.cs" />
-    <Compile Include="Source\Storage\StorageAdapterPolicy.cs" />
+    <Compile Include="Source\Storage\StorageAdapterAllowLists.cs" />
     <Compile Include="Source\Storage\ItemTransferEngine.cs" />
     <Compile Include="Source\Storage\SmartSortingFunctions.cs" />
     <Compile Include="Source\Storage\ItemScope.cs" />

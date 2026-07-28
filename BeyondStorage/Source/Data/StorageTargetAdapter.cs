@@ -193,6 +193,7 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
                 best = slots[i];
             }
         }
+
         return best;
     }
 
@@ -231,7 +232,7 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         _source?.MarkModified();
     }
 
-    internal bool HasSameSource(IStorageSource other)
+    internal bool IsSameSource(IStorageSource other)
     {
         var result = _source.Equals(other);
 

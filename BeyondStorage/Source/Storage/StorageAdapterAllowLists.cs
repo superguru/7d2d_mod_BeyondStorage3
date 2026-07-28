@@ -7,11 +7,13 @@ namespace BeyondStorage.Storage;
 /// Provides immutable allowed source lists for each storage operation type.
 /// Each list is built once at first access and never changes.
 /// </summary>
-internal static class StorageAdapterPolicy
+internal static class StorageAdapterAllowLists
 {
 
     /// <summary>Gets the allowed source types for smart push operations.</summary>
     internal static AllowedAdapterTypeList SmartPushAdapters { get; } = BuildSmartPushAdapterList();
+
+    internal static AllowedAdapterTypeList SmartPushLoadoutAdapters { get; } = BuildSmartPushLoadoutAdapterList();
 
     /// <summary>Gets the allowed source types for smart push operations while On Mission.</summary>
     internal static AllowedAdapterTypeList SmartOnMissionPushAdapters { get; } = BuildSmartOnMissionPushAdapterList();
@@ -24,6 +26,17 @@ internal static class StorageAdapterPolicy
         var types = new List<Type>
         {
             typeof(ITileEntityLootable),
+        };
+
+        return new AllowedAdapterTypeList(types);
+    }
+
+    private static AllowedAdapterTypeList BuildSmartPushLoadoutAdapterList()
+    {
+        var types = new List<Type>
+        {
+            typeof(EntityDrone),
+            typeof(EntityVehicle),
         };
 
         return new AllowedAdapterTypeList(types);

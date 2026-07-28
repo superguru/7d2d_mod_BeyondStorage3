@@ -9,5 +9,5 @@ internal class SmartOnMissionTargetAdapter : ITransferAdapter
         => nameof(SmartOnMissionTargetAdapter);
 
     IReadOnlyList<StorageTargetAdapter> ITransferAdapter.GetAdapters(StorageContext context)
-        => context.GetClosestStorageAdapters(StorageAdapterPolicy.SmartOnMissionPushAdapters, ItemScope.AllItems);
+        => context.GetClosestStorageAdapters(StorageAdapterAllowLists.SmartOnMissionPushAdapters, ItemScope.All);
 }

@@ -2,6 +2,7 @@
 
 public enum ItemScope
 {
-    AllItems,
-    PushableItems,
+    All,
+    Loadout,
+    Pushable,
 }

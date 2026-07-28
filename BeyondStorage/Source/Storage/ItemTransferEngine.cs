@@ -25,7 +25,7 @@ internal static class ItemTransferEngine
     {
         if (adapters == null || adapters.Count == 0)
         {
-            ModLogger.DebugLog($"{methodName} was given null or no adapters");
+            ModLogger.DebugLog($"{methodName}: was given null or no adapters, returning");
             return [];
         }
 
@@ -36,7 +36,7 @@ internal static class ItemTransferEngine
             var adapter = adapters[i];
             if (adapter == null)
             {
-                ModLogger.DebugLog($"{methodName} found that adapter {i} was null, skipping");
+                ModLogger.DebugLog($"{methodName}: found that adapter {i} was null, skipping");
                 continue;
             }
 
@@ -44,14 +44,14 @@ internal static class ItemTransferEngine
             if (targets == null || targets.Count == 0)
             {
 #if DEBUG
-                ModLogger.DebugLog($"{methodName} received null or no targets from set '{adapter.GetAdapterName()}', skipping");
+                ModLogger.DebugLog($"{methodName}: received null or no targets from set '{adapter.GetAdapterName()}', skipping");
 #endif
                 continue;
             }
 
             result.AddRange(targets);
 #if DEBUG
-            ModLogger.DebugLog($"{methodName} added {targets.Count} targets from '{adapter.GetAdapterName()}'");
+            ModLogger.DebugLog($"{methodName}: added {targets.Count} targets from '{adapter.GetAdapterName()}'");
 #endif
         }
 
@@ -112,6 +112,9 @@ internal static class ItemTransferEngine
     {
         lock (s_smartPushLock)
         {
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: Starting");
+#endif
             if (source == null)
             {
                 ModLogger.DebugLog($"{methodName}: Source is null, returning");
@@ -200,7 +203,7 @@ internal static class ItemTransferEngine
                 }
 
                 var source = sources[k];
-                if (source.HasSameSource(loadout))
+                if (source.IsSameSource(loadout))
                 {
                     continue;
                 }
@@ -241,6 +244,9 @@ internal static class ItemTransferEngine
         for (int i = 0; i < sourceSlots.Length; i++)
         {
             var sourceSlot = sourceSlots[i];
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: Source slot {i} in {state.MasterStorageName} is item {sourceSlot}");
+#endif
             if (ItemX.IsEmpty(sourceSlot))
             {
                 continue;
@@ -266,8 +272,11 @@ internal static class ItemTransferEngine
                 }
 
                 var target = targets[k];
-                if (target.HasSameSource(source))
+                if (target.IsSameSource(source))
                 {
+#if DEBUG
+                    ModLogger.DebugLog($"{methodName}: target {target.GetName()} is the same as source {source.GetName()}");
+#endif
                     continue;
                 }
 

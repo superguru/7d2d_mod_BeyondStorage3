@@ -3,11 +3,11 @@ using BeyondStorage.Data;
 
 namespace BeyondStorage.Storage.TransferTargets;
 
-internal class SmartPushTransferAdapter : ITransferAdapter
+internal class SmartPushLoadoutTargetAdapter : ITransferAdapter
 {
     string ITransferAdapter.GetAdapterName()
-        => nameof(SmartPushTransferAdapter);
+        => nameof(SmartPushLoadoutTargetAdapter);
 
     IReadOnlyList<StorageTargetAdapter> ITransferAdapter.GetAdapters(StorageContext context)
-        => context.GetClosestStorageAdapters(StorageAdapterPolicy.SmartPushAdapters, ItemScope.AllItems);
+        => context.GetClosestStorageAdapters(StorageAdapterAllowLists.SmartPushLoadoutAdapters, ItemScope.Loadout);
 }
