@@ -9,15 +9,30 @@ namespace BeyondStorage.Storage;
 
 public sealed class StorageContext
 {
-    internal ConfigSnapshot Config { get; }
-    internal WorldPlayerContext WorldPlayerContext { get; }
-    internal StorageDataManager Sources { get; }
-    internal ItemStackCacheManager CacheManager { get; }
+    internal ConfigSnapshot Config
+    {
+        get;
+    }
+    internal WorldPlayerContext WorldPlayerContext
+    {
+        get;
+    }
+    internal StorageDataManager Sources
+    {
+        get;
+    }
+    internal ItemStackCacheManager CacheManager
+    {
+        get;
+    }
 
     internal EntityPlayerLocal Player => WorldPlayerContext.Player;
     internal XUiM_PlayerInventory PlayerInventory => Player.playerUI.xui.PlayerInventory;
 
-    private DateTime CreatedAt { get; }
+    private DateTime CreatedAt
+    {
+        get;
+    }
 
     internal StorageContext(ConfigSnapshot config, WorldPlayerContext worldPlayerContext, StorageDataManager sources, ItemStackCacheManager cacheManager)
     {
@@ -117,11 +132,11 @@ public sealed class StorageContext
         }
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageAdapters(AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageAdapters(AllowedAdapterTypeList allowedAdapterTypes, ItemScope filter)
     {
         LoadCache();
 
-        var storages = StorageQueryService.GetClosestStorageSources(this, allowedSourcePolicy, filter);
+        var storages = StorageQueryService.GetClosestStorageSources(this, allowedAdapterTypes, filter);
         return storages;
     }
 

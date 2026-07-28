@@ -32,9 +32,9 @@ public static class StorageQueryService
         return true;
     }
 
-    internal static IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(StorageContext context, AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
+    internal static IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(StorageContext context, AllowedAdapterTypeList allowedAdapterTypes, ItemScope filter)
     {
-        var storages = context.Sources.GetClosestStorageSources(allowedSourcePolicy, filter);
+        var storages = context.Sources.GetClosestStorageSources(allowedAdapterTypes, filter);
         return storages;
     }
 

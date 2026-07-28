@@ -99,9 +99,9 @@ public class StorageDataManager
         return DataStore.GetFilteredItemCount(filter);
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedAdapterTypes, ItemScope filter)
     {
-        var storages = DataStore.GetClosestStorageSources(allowedSourcePolicy, filter);
+        var storages = DataStore.GetClosestStorageSources(allowedAdapterTypes, filter);
         return storages;
     }
 }

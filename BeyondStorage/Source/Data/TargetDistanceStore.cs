@@ -50,7 +50,7 @@ internal sealed class TargetDistanceStore
         IsSorted = true;
     }
 
-    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedSourcePolicy, ItemScope filter)
+    internal IReadOnlyList<StorageTargetAdapter> GetClosestStorageSources(AllowedAdapterTypeList allowedAdapterTypes, ItemScope filter)
     {
         Sort();
 
@@ -58,7 +58,7 @@ internal sealed class TargetDistanceStore
         for (int i = 0; i < _entries.Count; i++)
         {
             var entry = _entries[i];
-            if (!allowedSourcePolicy.IsAllowedSource(entry.Storage.GetSourceType()))
+            if (!allowedAdapterTypes.IsAllowedSource(entry.Storage.GetSourceType()))
             {
                 continue;
             }
