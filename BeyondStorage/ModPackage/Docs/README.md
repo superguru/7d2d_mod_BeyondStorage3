@@ -46,7 +46,7 @@ This works from anywhere and anything where you see the Smart Push button.
 Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Everything is included.
 
 ### Topping up your Vehicle and Drone Load Out (Push to Load Out first)
-Pushing items from your Backpack or from a Storage container like a Crate will first try to fill up any **Load Out** slots, and then move anything that's left to the surrounding storages.
+Pushing items from your Backpack, a Storage container like a Crate, or from a Workstation like a Forge or Workbench, etc. will first try to fill up any **Load Out** slots, and then move anything that's left to the surrounding storages.
 
 This should help keeping your bullets, lock picks, repair kits, and bandages stocked up without too much personal intervention.
 
