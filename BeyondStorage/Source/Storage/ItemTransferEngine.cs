@@ -66,6 +66,9 @@ internal static class ItemTransferEngine
     {
         lock (s_smartPullLock)
         {
+#if DEBUG
+            //ModLogger.DebugLog($"{methodName}: Starting");
+#endif
             if (loadout == null)
             {
                 ModLogger.DebugLog($"{methodName}: Loadout is null, returning");
@@ -113,7 +116,7 @@ internal static class ItemTransferEngine
         lock (s_smartPushLock)
         {
 #if DEBUG
-            ModLogger.DebugLog($"{methodName}: Starting");
+            //ModLogger.DebugLog($"{methodName}: Starting");
 #endif
             if (source == null)
             {
@@ -245,7 +248,7 @@ internal static class ItemTransferEngine
         {
             var sourceSlot = sourceSlots[i];
 #if DEBUG
-            ModLogger.DebugLog($"{methodName}: Source slot {i} in {state.MasterStorageName} is item {sourceSlot}");
+            //ModLogger.DebugLog($"{methodName}: Source slot {i} in {state.MasterStorageName} is item {sourceSlot}");
 #endif
             if (ItemX.IsEmpty(sourceSlot))
             {
