@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage.SmartSorting;
 using BeyondStorage.Storage.TransferTargets;
 using BeyondStorage.UI;
 
@@ -11,7 +12,7 @@ namespace BeyondStorage.Storage;
 /// Engine layer for smart push and pull transfers.
 /// Owns the transfer loops, per-operation slot-map reclassification,
 /// and the deferred MarkModified pattern.
-/// Called exclusively by <see cref="SmartSortingFunctions"/>.
+/// Called exclusively by <see cref="SmartPushOperations"/>.
 /// </summary>
 internal static class ItemTransferEngine
 {
@@ -97,7 +98,7 @@ internal static class ItemTransferEngine
             if (state.StackCount > 0)
             {
                 context.ShowLocalPlayerNotification(
-                    SmartSortingFunctions.MSG_SMART_PULL_LOADOUT_RESULT,
+                    SmartPullOperations.MSG_SMART_PULL_LOADOUT_RESULT,
                     state.StackCount,
                     state.MasterStorageName);
                 context.InvalidateCache();
@@ -148,7 +149,7 @@ internal static class ItemTransferEngine
             if (anyPushed)
             {
                 context.ShowLocalPlayerNotification(
-                    SmartSortingFunctions.MSG_SMART_PUSH_RESULT,
+                    SmartPushOperations.MSG_SMART_PUSH_RESULT,
                     state.StackCount,
                     state.MasterStorageName,
                     state.StorageCount);
@@ -211,7 +212,7 @@ internal static class ItemTransferEngine
                     continue;
                 }
 
-                if (PullToLoadoutSlots(methodName, state, loadoutSlot, source, itemType, maxStackSize, ref loadoutSlotRequiredAmount))
+                if (PullToLoadoutSlots(state, loadoutSlot, source, itemType, maxStackSize, ref loadoutSlotRequiredAmount))
                 {
                     modifiedSources.Add(source);
                 }
@@ -283,13 +284,12 @@ internal static class ItemTransferEngine
                     continue;
                 }
 
-                PushToTarget(methodName, state, source, sourceSlot, target, itemType, allowPushToEmpty, maxStackSize, ref sourceSlotRemaining);
+                PushToTarget(state, source, sourceSlot, target, itemType, allowPushToEmpty, maxStackSize, ref sourceSlotRemaining);
             }
         }
     }
 
     private static bool PullToLoadoutSlots(
-        string methodName,
         StorageOperationState state,
         ItemStack loadoutSlot,
         StorageTargetAdapter source,
@@ -354,7 +354,6 @@ internal static class ItemTransferEngine
     }
 
     private static void PushToTarget<S>(
-        string methodName,
         StorageOperationState state,
         StorageSourceAdapter<S> source,
         ItemStack sourceSlot,

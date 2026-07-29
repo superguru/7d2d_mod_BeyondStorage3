@@ -9,6 +9,8 @@ using BeyondStorage.Game.Recipe;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Multiplayer;
 using BeyondStorage.Storage;
+using BeyondStorage.Storage.SmartSorting;
+
 
 #if DEBUG
 using HarmonyLib.Tools;
@@ -107,14 +109,14 @@ public class BeyondStorageMod : IModApi
             nameof(StorageContextFactory.InvalidateContext),
 
             // Smart sorting functions
-            nameof(SmartSortingFunctions.SmartPullToPlayerLoadout),
-            nameof(SmartSortingFunctions.SmartPullToVehicleOrDroneLoadout),
-            nameof(SmartSortingFunctions.SmartPushFromCollector),
-            nameof(SmartSortingFunctions.SmartPushFromDroppedLoot),
-            nameof(SmartSortingFunctions.SmartPushFromLootable),
-            nameof(SmartSortingFunctions.SmartPushFromPlayerBackpack),
-            nameof(SmartSortingFunctions.SmartPushFromVehicleOrDrone),
-            nameof(SmartSortingFunctions.SmartPushFromWorkstation),
+            nameof(SmartPullOperations.SmartPullToPlayerLoadout),
+            nameof(SmartPullOperations.SmartPullToVehicleOrDroneLoadout),
+            nameof(SmartPushOperations.SmartPushFromCollector),
+            nameof(SmartPushOperations.SmartPushFromDroppedLoot),
+            nameof(SmartPushOperations.SmartPushFromLootable),
+            nameof(SmartPushOperations.SmartPushFromPlayerBackpack),
+            nameof(SmartPushOperations.SmartPushFromVehicleOrDrone),
+            nameof(SmartPushOperations.SmartPushFromWorkstation),
         ]);
     }
 }
