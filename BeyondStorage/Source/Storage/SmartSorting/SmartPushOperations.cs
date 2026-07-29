@@ -21,17 +21,17 @@ public class SmartPushOperations
     {
         if (scope.HasFlag(SmartPushScope.LoadoutsOnly))
         {
-            ItemTransferEngine.PerformSmartPush($"{methodName}.L", context, source, TransferAdapterServer.SmartPushLoadoutTargetAdapter());
+            ItemTransferEngine.PerformSmartPush($"{methodName}.LOD", context, source, TransferAdapterServer.SmartPushLoadoutTargetAdapter());
         }
 
         if (scope.HasFlag(SmartPushScope.StoragesOnly))
         {
-            ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, TransferAdapterServer.GetSmartPushTargetAdapters());
+            ItemTransferEngine.PerformSmartPush($"{methodName}.STO", context, source, TransferAdapterServer.GetSmartPushTargetAdapters());
         }
 
         if (scope.HasFlag(SmartPushScope.OverflowToEmpty))
         {
-            ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, TransferAdapterServer.GetSmartPushTargetOverflowAdapters());
+            ItemTransferEngine.PerformSmartPush($"{methodName}.OVR", context, source, TransferAdapterServer.GetSmartPushTargetOverflowAdapters());
         }
     }
 

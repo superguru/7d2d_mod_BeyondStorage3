@@ -15,10 +15,17 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
     private readonly Dictionary<int, List<ItemStack>> _filledSlots;
     private readonly Dictionary<int, List<ItemStack>> _partialSlots;
 
-    public StorageTargetAdapter(IStorageTarget source, float distance, SlotMaps maps)
+    // True for adapters built from a scope whose slot map only ever contains empty slots
+    // (e.g. ItemScope.Empty) — such adapters can never have a filled/partial entry for any
+    // item type, so the "storage already stocks this item type" eligibility check in
+    // GetNextEmptyStackFor must be skipped, or it would never return a slot.
+    private readonly bool _anyItemTypeEligibleForEmptySlots;
+
+    public StorageTargetAdapter(IStorageTarget source, float distance, SlotMaps maps, bool anyItemTypeEligibleForEmptySlots)
     {
         _source = source;
         Distance = distance;
+        _anyItemTypeEligibleForEmptySlots = anyItemTypeEligibleForEmptySlots;
 
         maps.GetSlotDataLists(out _filledSlots, out _partialSlots, out _emptySlots);
     }
@@ -146,15 +153,22 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
 
     /// <summary>
     /// Returns the next empty slot eligible to receive <paramref name="itemType"/>, or null if none qualify.
-    /// An empty slot only qualifies if this storage already holds the item type in a filled or partial
-    /// slot — this keeps items consolidated into storages that already stock them rather than spreading
-    /// a single item type across every storage with free space.
+    /// Unless this adapter was built with unrestricted empty-slot eligibility, an empty slot only
+    /// qualifies if this storage already holds the item type in a filled or partial slot — this keeps
+    /// items consolidated into storages that already stock them rather than spreading a single item
+    /// type across every storage with free space.
     /// </summary>
     internal ItemStack GetNextEmptyStackFor(int itemType)
     {
         if (_emptySlots.Count == 0)
         {
             return null;
+        }
+
+        if (_anyItemTypeEligibleForEmptySlots)
+        {
+            // This will be the "first available" slot in the storage, starting from top to bottom, left to right
+            return _emptySlots[_emptySlots.Count - 1];
         }
 
         // Only eligible to fill an empty slot if the storage already holds this item type

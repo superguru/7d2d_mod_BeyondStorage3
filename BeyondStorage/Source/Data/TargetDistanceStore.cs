@@ -63,7 +63,7 @@ internal sealed class TargetDistanceStore
                 continue;
             }
             SlotMaps maps = SelectEntryByScope(entry, scope);
-            result.Add(new StorageTargetAdapter(entry.Storage, entry.Distance, maps));
+            result.Add(new StorageTargetAdapter(entry.Storage, entry.Distance, maps, anyItemTypeEligibleForEmptySlots: scope == ItemScope.Empty));
         }
 
         return result;
