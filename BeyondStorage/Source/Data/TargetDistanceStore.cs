@@ -76,8 +76,15 @@ internal sealed class TargetDistanceStore
         {
             ItemScope.All => entry.AllItems,
             ItemScope.Loadout => entry.Loadout,
-            _ => entry.Pushable,
+            ItemScope.Pushable => entry.Pushable,
+            _ => null,
         };
+
+        if (maps == null)
+        {
+            ModLogger.DebugLog($"Cannot select slot map from filter {filter}. Changed to empty slot map as mitigation.");
+            maps = new();
+        }
 
         return maps.Clone();
     }
