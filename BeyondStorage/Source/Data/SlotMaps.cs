@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Data;
 
@@ -91,13 +90,5 @@ internal sealed class SlotMaps
         }
 
         slots.Add(slot);
-
-        if (slots.Count > _itemListCapacity)
-        {
-#if DEBUG
-            ModLogger.DebugLog($"Slot list for item type {ItemX.Info(slot)} exceeded capacity of {_itemListCapacity}.");
-#endif
-            _itemListCapacity *= 2;
-        }
     }
 }
