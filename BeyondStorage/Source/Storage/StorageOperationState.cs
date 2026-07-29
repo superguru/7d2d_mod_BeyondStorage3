@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BeyondStorage.Data;
+using BeyondStorage.Storage.SmartSorting;
 
 namespace BeyondStorage.Storage;
 
@@ -11,9 +12,7 @@ internal class StorageOperationState
 {
 
     private readonly HashSet<StorageTargetAdapter> _affectedStorages = [];
-#pragma warning disable IDE0028 // Simplify collection initialization
     private readonly HashSet<ItemStack> _affectedStacks = new(ItemStackReferenceComparer.Instance);
-#pragma warning restore IDE0028 // Simplify collection initialization
     private readonly HashSet<int> _uniqueItems = [];
 
     /// <summary>

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
-using BeyondStorage.Storage.SmartSorting;
 using BeyondStorage.Storage.TransferTargets;
 using BeyondStorage.UI;
 
-namespace BeyondStorage.Storage;
+namespace BeyondStorage.Storage.SmartSorting;
 
 /// <summary>
 /// Engine layer for smart push and pull transfers.

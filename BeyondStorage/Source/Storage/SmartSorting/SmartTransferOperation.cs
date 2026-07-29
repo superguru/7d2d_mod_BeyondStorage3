@@ -1,4 +1,4 @@
-﻿namespace BeyondStorage.Storage;
+﻿namespace BeyondStorage.Storage.SmartSorting;
 
 public enum SmartTransferOperation
 {

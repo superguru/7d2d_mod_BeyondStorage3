@@ -98,7 +98,7 @@
     <Compile Include="Source\Storage\TransferTargets\SmartPushMobileTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPushStationaryTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\ITransferAdapter.cs" />
-    <Compile Include="Source\Storage\SmartTransferOperation.cs" />
+    <Compile Include="Source\Storage\SmartSorting\SmartTransferOperation.cs" />
     <Compile Include="Source\Storage\StorageFilter.cs" />
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />
     <Compile Include="Source\Game\UI\UIControlHelpers.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="Source\Storage\EntityItemDiscovery.cs" />
     <Compile Include="Source\Storage\EntityProcessingState.cs" />
     <Compile Include="Source\Storage\StorageAdapterAllowLists.cs" />
-    <Compile Include="Source\Storage\ItemTransferEngine.cs" />
+    <Compile Include="Source\Storage\SmartSorting\ItemTransferEngine.cs" />
     <Compile Include="Source\Storage\SmartSorting\SmartPushOperations.cs" />
     <Compile Include="Source\Storage\ItemScope.cs" />
     <Compile Include="Source\Storage\StorageOperationState.cs" />
