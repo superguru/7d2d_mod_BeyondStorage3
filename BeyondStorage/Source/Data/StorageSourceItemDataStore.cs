@@ -10,9 +10,8 @@ namespace BeyondStorage.Data;
 internal class StorageSourceItemDataStore
 {
     private readonly Dictionary<IStorageSource, List<ItemStack>> _itemStacksBySource = [];
-#pragma warning disable IDE0028 // Simplify collection initialization
     private readonly Dictionary<ItemStack, IStorageSource> _sourcesByItemStack = new(ItemStackReferenceComparer.Instance);
-#pragma warning restore IDE0028 // Simplify collection initialization
+
     // Consume-eligible sources only. Sources registered via RegisterPushTargetOnly are intentionally
     // absent — they must not appear in item count or HasItem checks used by consume operations.
     private readonly Dictionary<Type, List<IStorageSource>> _sourcesByType = [];
@@ -179,9 +178,10 @@ internal class StorageSourceItemDataStore
         var hasLocks = lockedLength > 0;
 
         // itemsLength is a safe upper bound for distinct item type count
-        var allItemsMap = new SlotMaps(itemsLength);
-        var pushableMap = new SlotMaps(itemsLength);
-        var loadoutMap = new SlotMaps(itemsLength);
+        var all = new SlotMaps(itemsLength);
+        var pushable = new SlotMaps(itemsLength);
+        var loadout = new SlotMaps(itemsLength);
+        var empty = new SlotMaps(itemsLength);
 
         for (int i = 0; i < itemsLength; i++)
         {
@@ -196,22 +196,28 @@ internal class StorageSourceItemDataStore
             }
 
             // 2. All-items map — every slot regardless of lock or fill state
-            allItemsMap.RegisterSlot(stack);
+            all.RegisterSlot(stack);
 
             // 3. Pushable map — locked slots excluded from push targets
             if (!isLocked)
             {
-                pushableMap.RegisterSlot(stack);
+                pushable.RegisterSlot(stack);
             }
 
             // 4. Loadout map — populated locked slots only, reserved for topping up via Smart Loadout Pull
             if (isLocked && isPopulated)
             {
-                loadoutMap.RegisterSlot(stack);
+                loadout.RegisterSlot(stack);
+            }
+
+            // 5. Empty map
+            if (!isPopulated)
+            {
+                empty.RegisterSlot(stack);
             }
         }
 
-        _distanceStore.Add(target, distance, allItemsMap, pushableMap, loadoutMap);
+        _distanceStore.Add(target, distance, all, pushable, loadout, empty);
     }
 
     /// <summary>

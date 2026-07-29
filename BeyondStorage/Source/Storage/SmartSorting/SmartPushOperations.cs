@@ -14,24 +14,25 @@ public class SmartPushOperations
 {
     public const string MSG_SMART_PUSH_RESULT = "msgBeyondSmartPush_Result";
 
-    private static void HandlePushToLoadouts<S>(string methodName, StorageContext context, StorageSourceAdapter<S> source) where S : class
+    private static void HandlePushToStorages<S>(
+        string methodName, StorageContext context,
+        StorageSourceAdapter<S> source,
+        SmartPushScope scope) where S : class
     {
-        var targets = TransferAdapterServer.SmartPushLoadoutTargetAdapter();
+        if (scope.HasFlag(SmartPushScope.LoadoutsOnly))
+        {
+            ItemTransferEngine.PerformSmartPush($"{methodName}.L", context, source, TransferAdapterServer.SmartPushLoadoutTargetAdapter());
+        }
 
-        ItemTransferEngine.PerformSmartPush($"{methodName}.L", context, source, targets);
-    }
+        if (scope.HasFlag(SmartPushScope.StoragesOnly))
+        {
+            ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, TransferAdapterServer.GetSmartPushTargetAdapters());
+        }
 
-    private static void HandlePushToStorages<S>(string methodName, StorageContext context, StorageSourceAdapter<S> source) where S : class
-    {
-        var targets = TransferAdapterServer.GetSmartPushTargetAdapters();
-
-        ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, targets);
-    }
-
-    private static void HandlePushToMulti<S>(string methodName, StorageContext context, StorageSourceAdapter<S> source) where S : class
-    {
-        HandlePushToLoadouts(methodName, context, source);
-        HandlePushToStorages(methodName, context, source);
+        if (scope.HasFlag(SmartPushScope.OverflowToEmpty))
+        {
+            ItemTransferEngine.PerformSmartPush($"{methodName}.S", context, source, TransferAdapterServer.GetSmartPushTargetOverflowAdapters());
+        }
     }
 
     public static void SmartPushFromCollector(XUiController _sender, int _mouseButton)
@@ -56,7 +57,7 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateCollectorStorageSourceAdapter(context, collector);
-        HandlePushToMulti(d_MethodName, context, source);
+        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
     }
 
     public static void SmartPushFromLootable(XUiController _sender, int _mouseButton)
@@ -84,17 +85,17 @@ public class SmartPushOperations
         ModLogger.DebugLog($"{d_MethodName}: Starting smart push from '{lootable.lootListName}'");
 #endif
         var source = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
-        HandlePushToMulti(d_MethodName, context, source);
+        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
     }
 
     public static void SmartPushFromPlayerBackpack(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
-        var shiftIsPressed = InputUtils.ShiftKeyPressed;
+        var isShiftPressed = InputUtils.ShiftKeyPressed;
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting. Called from {_sender}({_mouseButton}), ShiftKey={shiftIsPressed}");
+        ModLogger.DebugLog($"{d_MethodName}: Starting. Called from {_sender}({_mouseButton}), ShiftKey={isShiftPressed}");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -104,7 +105,9 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreatePlayerBackpackSourceAdapter(context, context.Player);
-        HandlePushToMulti(d_MethodName, context, source);
+        var scope = SmartPushScope.LoadoutsThenStorages;
+        scope |= isShiftPressed ? SmartPushScope.OverflowToEmpty : SmartPushScope.Nowhere;
+        HandlePushToStorages(d_MethodName, context, source, scope);
     }
     public static void SmartPushFromVehicleOrDrone(XUiController _sender, int _mouseButton)
     {
@@ -127,7 +130,7 @@ public class SmartPushOperations
             //ModLogger.DebugLog($"{methodName}: Starting smart push from drone");
 #endif
             var source = StorageSourceAdapterFactory.CreateDroneStorageSourceAdapter(context, drone);
-            HandlePushToStorages(d_MethodName, context, source);
+            HandlePushToStorages(d_MethodName, context, source, SmartPushScope.StoragesOnly);
 
             return;
         }
@@ -143,7 +146,7 @@ public class SmartPushOperations
             //ModLogger.DebugLog($"{methodName}: Starting smart push from vehicle");
 #endif
             var source = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
-            HandlePushToStorages(d_MethodName, context, source);
+            HandlePushToStorages(d_MethodName, context, source, SmartPushScope.StoragesOnly);
 
             return;
         }
@@ -175,7 +178,7 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateDroppedLootSourceAdapter(context, container);
-        HandlePushToMulti(d_MethodName, context, source);
+        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
     }
 
     public static void SmartPushFromWorkstation(XUiController _sender, int _mouseButton)
@@ -200,6 +203,6 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateWorkstationStorageSourceAdapter(context, workstation);
-        HandlePushToMulti(d_MethodName, context, source);
+        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
     }
 }

@@ -16,7 +16,7 @@ internal sealed class TargetDistanceStore
 
     internal bool IsSorted { get; private set; } = true;
 
-    internal void Add(IStorageTarget storage, float distance, SlotMaps allItemsMaps, SlotMaps pushableMaps, SlotMaps loadoutMaps)
+    internal void Add(IStorageTarget storage, float distance, SlotMaps all, SlotMaps pushable, SlotMaps loadout, SlotMaps empty)
     {
         const string d_MethodName = nameof(Add);
 
@@ -26,7 +26,7 @@ internal sealed class TargetDistanceStore
             return;
         }
 
-        _entries.Add(new TargetEntry(storage, distance, allItemsMaps, pushableMaps, loadoutMaps));
+        _entries.Add(new TargetEntry(storage, distance, all, pushable, loadout, empty));
         IsSorted = false;
     }
 
@@ -69,20 +69,21 @@ internal sealed class TargetDistanceStore
         return result;
     }
 
-    private static SlotMaps SelectEntryByScope(TargetEntry entry, ItemScope filter)
+    private static SlotMaps SelectEntryByScope(TargetEntry entry, ItemScope scope)
     {
         // Clone gives each operation its own mutable copy for ReclassifySlot
-        var maps = filter switch
+        var maps = scope switch
         {
-            ItemScope.All => entry.AllItems,
+            ItemScope.All => entry.All,
             ItemScope.Loadout => entry.Loadout,
             ItemScope.Pushable => entry.Pushable,
+            ItemScope.Empty => entry.Empty,
             _ => null,
         };
 
         if (maps == null)
         {
-            ModLogger.DebugLog($"Cannot select slot map from filter {filter}. Changed to empty slot map as mitigation.");
+            ModLogger.DebugLog($"Cannot select slot map from scope {scope}. Changed to empty slot map as mitigation.");
             maps = new();
         }
 

@@ -91,9 +91,12 @@
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
+    <Compile Include="Source\Storage\SmartSorting\SmartPushScope.cs" />
     <Compile Include="Source\Storage\SmartSorting\SmartPullOperations.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPullLoadoutSourceAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPushLoadoutTargetAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushMobileTargetOverflowAdapter.cs" />
+    <Compile Include="Source\Storage\TransferTargets\SmartPushStationaryTargetOverflowAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\TransferAdapterServer.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPushMobileTargetAdapter.cs" />
     <Compile Include="Source\Storage\TransferTargets\SmartPushStationaryTargetAdapter.cs" />

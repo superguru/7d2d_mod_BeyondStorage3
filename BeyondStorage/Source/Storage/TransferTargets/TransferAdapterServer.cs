@@ -13,6 +13,14 @@ internal static class TransferAdapterServer
         ];
     }
 
+    internal static IReadOnlyList<ITransferAdapter> GetSmartPushTargetOverflowAdapters()
+    {
+        return [
+            new SmartPushStationaryTargetOverflowAdapter(),
+            new SmartPushMobileTargetOverflowAdapter(),
+        ];
+    }
+
     internal static IReadOnlyList<ITransferAdapter> SmartPushLoadoutTargetAdapter()
     {
         return [

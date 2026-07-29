@@ -11,7 +11,7 @@ internal sealed class SlotMaps
 {
     internal const int DEFAULT_ITEMTYPES_CAPACITY = 1024;
 
-    private int _itemListCapacity = CollectionFactory.DEFAULT_ITEMSTACK_LIST_CAPACITY;
+    private readonly int _itemListCapacity = CollectionFactory.DEFAULT_ITEMSTACK_LIST_CAPACITY;
 
     private readonly Dictionary<int, List<ItemStack>> _filled;
     private readonly Dictionary<int, List<ItemStack>> _partial;
@@ -23,12 +23,10 @@ internal sealed class SlotMaps
     {
         _itemListCapacity = Math.Max(itemListCapacity, CollectionFactory.DEFAULT_ITEMSTACK_LIST_CAPACITY);
 
-#pragma warning disable IDE0028 // Simplify collection initialization
         // This method of initialization directly allocates the correct capacity, which is a speed optimisation strategy
         _filled = new Dictionary<int, List<ItemStack>>(_itemListCapacity);
         _partial = new Dictionary<int, List<ItemStack>>(_itemListCapacity);
         _empty = new List<ItemStack>(_itemListCapacity);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     /// <summary>

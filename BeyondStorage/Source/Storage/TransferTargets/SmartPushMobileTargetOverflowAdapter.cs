@@ -1,0 +1,13 @@
+﻿using System.Collections.Generic;
+using BeyondStorage.Data;
+
+namespace BeyondStorage.Storage.TransferTargets;
+
+internal class SmartPushMobileTargetOverflowAdapter : ITransferAdapter
+{
+    string ITransferAdapter.GetAdapterName()
+        => nameof(SmartPushMobileTargetAdapter);
+
+    IReadOnlyList<StorageTargetAdapter> ITransferAdapter.GetAdapters(StorageContext context)
+        => context.GetClosestStorageAdapters(StorageAdapterAllowLists.SmartPushMobileAdapters, ItemScope.Empty);
+}

@@ -1,4 +1,4 @@
-namespace BeyondStorage.Data;
+﻿namespace BeyondStorage.Data;
 
 /// <summary>
 /// A single registered push/pull target held by <see cref="TargetDistanceStore"/>.
@@ -6,18 +6,21 @@ namespace BeyondStorage.Data;
 /// </summary>
 internal sealed class TargetEntry
 {
-    internal IStorageTarget Storage { get; }
-    internal float Distance { get; }
-    internal SlotMaps AllItems { get; }
-    internal SlotMaps Pushable { get; }
-    internal SlotMaps Loadout { get; }
+    internal IStorageTarget Storage => field;
+    internal float Distance => field;
+    internal SlotMaps All => field;
+    internal SlotMaps Pushable => field;
+    internal SlotMaps Loadout => field;
+    internal SlotMaps Empty => field;
 
-    internal TargetEntry(IStorageTarget storage, float distance, SlotMaps allItems, SlotMaps pushable, SlotMaps loadout)
+    internal TargetEntry(IStorageTarget storage, float distance, SlotMaps all, SlotMaps pushable, SlotMaps loadout, SlotMaps empty)
     {
         Storage = storage;
         Distance = distance;
-        AllItems = allItems;
+
+        All = all;
         Pushable = pushable;
         Loadout = loadout;
+        Empty = empty;
     }
 }

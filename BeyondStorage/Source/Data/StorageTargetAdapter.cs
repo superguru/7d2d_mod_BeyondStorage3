@@ -144,6 +144,12 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         slots.Add(slot);
     }
 
+    /// <summary>
+    /// Returns the next empty slot eligible to receive <paramref name="itemType"/>, or null if none qualify.
+    /// An empty slot only qualifies if this storage already holds the item type in a filled or partial
+    /// slot — this keeps items consolidated into storages that already stock them rather than spreading
+    /// a single item type across every storage with free space.
+    /// </summary>
     internal ItemStack GetNextEmptyStackFor(int itemType)
     {
         if (_emptySlots.Count == 0)
@@ -162,6 +168,9 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         return null;
     }
 
+    /// <summary>
+    /// Returns a fully-stacked slot already holding <paramref name="itemType"/>, or null if none exist.
+    /// </summary>
     internal ItemStack GetNextFilledStackFor(int itemType)
     {
         if (_filledSlots.TryGetValue(itemType, out var slots))
@@ -176,8 +185,10 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         return null;
     }
 
-    // Used by push: returns the partial slot with the most items (closest to full),
-    // so pushes complete existing stacks before starting new ones.
+    /// <summary>
+    /// Used by push: returns the partial slot holding <paramref name="itemType"/> with the most items
+    /// (closest to full), so pushes complete existing stacks before starting new ones.
+    /// </summary>
     internal ItemStack GetNextPartialStackFor(int itemType)
     {
         if (!_partialSlots.TryGetValue(itemType, out var slots) || slots.Count == 0)
@@ -197,8 +208,10 @@ internal class StorageTargetAdapter : IEquatable<StorageTargetAdapter>
         return best;
     }
 
-    // Used by pull: returns the partial slot with the fewest items first so it empties
-    // completely, then falls back to filled slots. This consolidates storage over time.
+    /// <summary>
+    /// Used by pull: returns the partial slot holding <paramref name="itemType"/> with the fewest items
+    /// first so it empties completely, then falls back to a filled slot. This consolidates storage over time.
+    /// </summary>
     internal ItemStack GetNextPopulatedStackFor(int itemType)
     {
         if (_partialSlots.TryGetValue(itemType, out var partialSlots) && partialSlots.Count > 0)

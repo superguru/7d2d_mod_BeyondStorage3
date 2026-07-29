@@ -5,4 +5,5 @@ public enum ItemScope
     All,
     Loadout,
     Pushable,
+    Empty,
 }
