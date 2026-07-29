@@ -21,7 +21,7 @@ public class SmartPullOperations
         ItemTransferEngine.PerformSmartLoadoutPull(methodName, context, loadout, sources);
     }
 
-    public static void SmartPullToPlayerLoadout()
+    public static void SmartPullToPlayerLoadout(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPullToPlayerLoadout);
 
@@ -39,7 +39,7 @@ public class SmartPullOperations
         HandlePullFromStorages(d_MethodName, context, loadout);
     }
 
-    public static void SmartPullToVehicleOrDroneLoadout()
+    public static void SmartPullToVehicleOrDroneLoadout(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPullToVehicleOrDroneLoadout);
 

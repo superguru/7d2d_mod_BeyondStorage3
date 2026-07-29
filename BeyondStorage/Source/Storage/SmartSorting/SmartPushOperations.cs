@@ -34,7 +34,7 @@ public class SmartPushOperations
         HandlePushToStorages(methodName, context, source);
     }
 
-    public static void SmartPushFromCollector()
+    public static void SmartPushFromCollector(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromCollector);
 
@@ -59,7 +59,7 @@ public class SmartPushOperations
         HandlePushToMulti(d_MethodName, context, source);
     }
 
-    public static void SmartPushFromLootable()
+    public static void SmartPushFromLootable(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromLootable);
 
@@ -87,7 +87,7 @@ public class SmartPushOperations
         HandlePushToMulti(d_MethodName, context, source);
     }
 
-    public static void SmartPushFromPlayerBackpack()
+    public static void SmartPushFromPlayerBackpack(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
@@ -104,7 +104,7 @@ public class SmartPushOperations
         var source = StorageSourceAdapterFactory.CreatePlayerBackpackSourceAdapter(context, context.Player);
         HandlePushToMulti(d_MethodName, context, source);
     }
-    public static void SmartPushFromVehicleOrDrone()
+    public static void SmartPushFromVehicleOrDrone(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromVehicleOrDrone);
 
@@ -151,7 +151,7 @@ public class SmartPushOperations
 #endif
     }
 
-    public static void SmartPushFromDroppedLoot()
+    public static void SmartPushFromDroppedLoot(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromDroppedLoot);
 
@@ -176,7 +176,7 @@ public class SmartPushOperations
         HandlePushToMulti(d_MethodName, context, source);
     }
 
-    public static void SmartPushFromWorkstation()
+    public static void SmartPushFromWorkstation(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromWorkstation);
 
