@@ -14,9 +14,9 @@ internal sealed class TargetDistanceStore
 {
     private readonly List<TargetEntry> _entries = [];
 
-    public bool IsSorted { get; private set; } = true;
+    internal bool IsSorted { get; private set; } = true;
 
-    public void Add(IStorageTarget storage, float distance, SlotMaps allItemsMaps, SlotMaps pushableMaps, SlotMaps loadoutMaps)
+    internal void Add(IStorageTarget storage, float distance, SlotMaps allItemsMaps, SlotMaps pushableMaps, SlotMaps loadoutMaps)
     {
         const string d_MethodName = nameof(Add);
 
@@ -33,7 +33,7 @@ internal sealed class TargetDistanceStore
     /// <summary>
     /// Sorts entries by distance ascending. No-op if already sorted.
     /// </summary>
-    public void Sort()
+    internal void Sort()
     {
         if (IsSorted)
         {
@@ -44,7 +44,7 @@ internal sealed class TargetDistanceStore
         IsSorted = true;
     }
 
-    public void Clear()
+    internal void Clear()
     {
         _entries.Clear();
         IsSorted = true;
