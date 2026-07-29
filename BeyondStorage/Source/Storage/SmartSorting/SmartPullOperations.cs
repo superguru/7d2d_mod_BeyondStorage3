@@ -26,7 +26,7 @@ public class SmartPullOperations
         const string d_MethodName = nameof(SmartPullToPlayerLoadout);
 
 #if DEBUG
-        //ModLogger.DebugLog($"{methodName}: Starting smart pull to player loadout");
+        //ModLogger.DebugLog($"{methodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
