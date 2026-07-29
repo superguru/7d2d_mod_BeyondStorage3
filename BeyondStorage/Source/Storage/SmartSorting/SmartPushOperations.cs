@@ -91,8 +91,10 @@ public class SmartPushOperations
     {
         const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
+        var shiftIsPressed = InputUtils.ShiftKeyPressed;
+
 #if DEBUG
-        //ModLogger.DebugLog($"{methodName}: Starting");
+        ModLogger.DebugLog($"{d_MethodName}: Starting. Called from {_sender}({_mouseButton}), ShiftKey={shiftIsPressed}");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
