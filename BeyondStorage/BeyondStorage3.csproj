@@ -308,6 +308,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ModPackage\config.json" />
+    <None Include="ModPackage\Docs\CHANGELOG.md" />
     <None Include="ModPackage\Docs\README.md" />
     <None Include="packages.config" />
     <None Include="README.md" />
