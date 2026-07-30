@@ -14,6 +14,14 @@ public class SmartPushOperations
 {
     public const string MSG_SMART_PUSH_RESULT = "msgBeyondSmartPush_Result";
 
+    private static SmartPushScope GetScopeFromInputState(XUiController _sender, int _mouseButton)
+    {
+        var isShiftPressed = InputUtils.ShiftKeyPressed;
+        var scope = SmartPushScope.LoadoutsThenStorages;
+        scope |= isShiftPressed ? SmartPushScope.OverflowToEmpty : SmartPushScope.Nowhere;
+        return scope;
+    }
+
     private static void HandlePushToStorages<S>(
         string methodName, StorageContext context,
         StorageSourceAdapter<S> source,
@@ -92,10 +100,10 @@ public class SmartPushOperations
     {
         const string d_MethodName = nameof(SmartPushFromPlayerBackpack);
 
-        var isShiftPressed = InputUtils.ShiftKeyPressed;
+        SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Starting. Called from {_sender}({_mouseButton}), ShiftKey={isShiftPressed}");
+        //ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -105,10 +113,9 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreatePlayerBackpackSourceAdapter(context, context.Player);
-        var scope = SmartPushScope.LoadoutsThenStorages;
-        scope |= isShiftPressed ? SmartPushScope.OverflowToEmpty : SmartPushScope.Nowhere;
         HandlePushToStorages(d_MethodName, context, source, scope);
     }
+
     public static void SmartPushFromVehicleOrDrone(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromVehicleOrDrone);
@@ -160,6 +167,8 @@ public class SmartPushOperations
     {
         const string d_MethodName = nameof(SmartPushFromDroppedLoot);
 
+        SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
+
 #if DEBUG
         //ModLogger.DebugLog($"{methodName}: Starting");
 #endif
@@ -178,7 +187,7 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateDroppedLootSourceAdapter(context, container);
-        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
+        HandlePushToStorages(d_MethodName, context, source, scope);
     }
 
     public static void SmartPushFromWorkstation(XUiController _sender, int _mouseButton)
