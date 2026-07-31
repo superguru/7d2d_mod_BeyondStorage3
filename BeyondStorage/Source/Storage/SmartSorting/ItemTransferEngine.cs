@@ -149,6 +149,7 @@ internal static class ItemTransferEngine
                     SmartPullOperations.MSG_SMART_PULL_LOADOUT_RESULT,
                     state.StackCount,
                     state.MasterStorageName);
+
                 context.InvalidateCache();
             }
 
@@ -201,6 +202,7 @@ internal static class ItemTransferEngine
                     state.StackCount,
                     state.MasterStorageName,
                     state.StorageCount);
+
                 context.InvalidateCache();
             }
 
