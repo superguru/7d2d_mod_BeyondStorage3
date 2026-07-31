@@ -58,6 +58,55 @@ internal static class ItemTransferEngine
         return result;
     }
 
+    private static (bool isRelevantSlotValid, (int maxStackSize, int itemType) value) IsTransferRelevantSlotValid(
+    string methodName,
+    StorageOperationState state,
+    int slotIndex,
+    ItemStack slot)
+    {
+#if DEBUG
+        //ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is item {slot}");
+#endif
+
+        // 1. Not valid if empty
+        if (ItemX.IsEmpty(slot))
+        {
+            return (isRelevantSlotValid: false, value: default);
+        }
+
+        // 2. Not valid if quest item
+        var isQuestItem = ItemX.IsQuestItem(slot);
+        if (isQuestItem)
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is a quest item, skipping");
+#endif
+            return (isRelevantSlotValid: false, value: default);
+        }
+
+        // 3. Not valid if invalid max stack size
+        int maxStackSize = ItemX.MaxStackSizeOf(slot);
+        if (maxStackSize <= 0)
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} has invalid max stack size {maxStackSize}, skipping");
+#endif
+            return (isRelevantSlotValid: false, value: default);
+        }
+
+        // 4. Not valid if item is of invalid type
+        int itemType = ItemX.ItemTypeOf(slot);
+        if (itemType <= UniqueItemTypes.EMPTY)
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is of invalid type {itemType}, skipping");
+#endif
+            return (isRelevantSlotValid: false, value: default);
+        }
+
+        return (isRelevantSlotValid: true, value: default);
+    }
+
     internal static void PerformSmartLoadoutPull<T>(
         string methodName,
         StorageContext context,
@@ -260,55 +309,6 @@ internal static class ItemTransferEngine
                 PushToTarget(state, source, sourceSlot, target, itemType, allowPushToEmpty, maxStackSize, ref sourceSlotRemaining);
             }
         }
-    }
-
-    private static (bool isRelevantSlotValid, (int maxStackSize, int itemType) value) IsTransferRelevantSlotValid(
-        string methodName,
-        StorageOperationState state,
-        int slotIndex,
-        ItemStack slot)
-    {
-#if DEBUG
-        //ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is item {slot}");
-#endif
-
-        // 1. Not valid if empty
-        if (ItemX.IsEmpty(slot))
-        {
-            return (isRelevantSlotValid: false, value: default);
-        }
-
-        // 2. Not valid if quest item
-        var isQuestItem = ItemX.IsQuestItem(slot);
-        if (isQuestItem)
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is a quest item, skipping");
-#endif
-            return (isRelevantSlotValid: false, value: default);
-        }
-
-        // 3. Not valid if invalid max stack size
-        int maxStackSize = ItemX.MaxStackSizeOf(slot);
-        if (maxStackSize <= 0)
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} has invalid max stack size {maxStackSize}, skipping");
-#endif
-            return (isRelevantSlotValid: false, value: default);
-        }
-
-        // 4. Not valid if item is of invalid type
-        int itemType = ItemX.ItemTypeOf(slot);
-        if (itemType <= UniqueItemTypes.EMPTY)
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is of invalid type {itemType}, skipping");
-#endif
-            return (isRelevantSlotValid: false, value: default);
-        }
-
-        return (isRelevantSlotValid: true, value: default);
     }
 
     private static bool PullToLoadoutSlots(
