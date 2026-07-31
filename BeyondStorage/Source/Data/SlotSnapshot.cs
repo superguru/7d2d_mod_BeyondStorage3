@@ -13,7 +13,10 @@ public sealed class SlotSnapshot
     /// <summary>
     /// Whether the slot instance passed to the constructor was null.
     /// </summary>
-    public bool IsNullInstance { get; }
+    public bool IsNullInstance
+    {
+        get;
+    }
 
     public bool IsValid { get; set; } = true;
 
@@ -24,17 +27,26 @@ public sealed class SlotSnapshot
     /// <summary>
     /// The slot number within the inventory container.
     /// </summary>
-    public int SlotNumber { get; }
+    public int SlotNumber
+    {
+        get;
+    }
 
     /// <summary>
     /// The type of location where this slot exists (Backpack, ToolBelt, Container, etc.).
     /// </summary>
-    public XUiC_ItemStack.StackLocationTypes SlotLocation { get; }
+    public XUiC_ItemStack.StackLocationTypes SlotLocation
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether this slot is currently selected in the UI.
     /// </summary>
-    public bool IsSelected { get; }
+    public bool IsSelected
+    {
+        get;
+    }
 
     #endregion
 
@@ -43,38 +55,59 @@ public sealed class SlotSnapshot
     /// <summary>
     /// Whether the ItemStack contained in this slot is null.
     /// </summary>
-    public bool IsStackNull { get; }
+    public bool IsStackNull
+    {
+        get;
+    }
 
     /// <summary>
     /// Human-readable description of the item stack contents.
     /// Format: "ItemName:Count" or "null:0" for empty slots.
     /// </summary>
-    public string ItemDescription { get; }
+    public string ItemDescription
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether the slot contains a valid, non-empty ItemStack.
     /// </summary>
-    public bool IsStackPresent { get; }
+    public bool IsStackPresent
+    {
+        get;
+    }
 
     /// <summary>
     /// The count of items in the stack (0 if stack is null or empty).
     /// </summary>
-    public int ItemCount { get; }
+    public int ItemCount
+    {
+        get;
+    }
 
     /// <summary>
     /// The item type ID (0 if stack is null or empty).
     /// </summary>
-    public int ItemType { get; }
+    public int ItemType
+    {
+        get;
+    }
 
     /// <summary>
     /// The item quality level (0 if stack is null or has no quality).
     /// </summary>
-    public int ItemQuality { get; }
+    public int ItemQuality
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether the item stack is empty (null or has no items).
     /// </summary>
-    public bool IsEmpty { get; }
+    public bool IsEmpty
+    {
+        get;
+    }
 
     #endregion
 
@@ -83,18 +116,27 @@ public sealed class SlotSnapshot
     /// <summary>
     /// Whether the slot has any type of lock applied (user lock, quest lock, etc.).
     /// </summary>
-    public bool IsSlotLocked { get; }
+    public bool IsSlotLocked
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether this slot is currently involved in a drag and drop operation.
     /// </summary>
-    public bool IsDragAndDrop { get; }
+    public bool IsDragAndDrop
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether items can be dropped into this slot.
     /// Controls whether drag and drop operations are permitted.
     /// </summary>
-    public bool AllowDropping { get; }
+    public bool AllowDropping
+    {
+        get;
+    }
 
     #endregion
 
@@ -103,17 +145,26 @@ public sealed class SlotSnapshot
     /// <summary>
     /// Whether this slot is located in the player's inventory (backpack or toolbelt).
     /// </summary>
-    public bool IsPlayerInventory { get; }
+    public bool IsPlayerInventory
+    {
+        get;
+    }
 
     /// <summary>
     /// Whether this slot is located in a storage container (not player inventory).
     /// </summary>
-    public bool IsStorageInventory { get; }
+    public bool IsStorageInventory
+    {
+        get;
+    }
 
     /// <summary>
     /// Human-readable name of the inventory type ("PLAYER" or "STORAGE").
     /// </summary>
-    public string InventoryName { get; }
+    public string InventoryName
+    {
+        get;
+    }
 
     #endregion
 
@@ -122,23 +173,28 @@ public sealed class SlotSnapshot
     /// <summary>
     /// Single character representation of stack presence ("1" if present, "0" if empty).
     /// </summary>
-    public string PresenceIndicator { get; }
+    public string PresenceIndicator
+    {
+        get;
+    }
 
     /// <summary>
     /// Emoji representation of lock state (🔒 if locked, 📂 if unlocked).
     /// </summary>
-    public string LockIndicator { get; }
+    public string LockIndicator
+    {
+        get;
+    }
 
-    private long _originalCallCount;
     public long OriginalCallCount
     {
-        get
-        {
-            return _originalCallCount;
-        }
+        get;
         set
         {
-            if (_originalCallCount <= 0) { _originalCallCount = value; }
+            if (field <= 0)
+            {
+                field = value;
+            }
         }
     }
 
@@ -161,7 +217,7 @@ public sealed class SlotSnapshot
         {
             // Use default values for null slot instance
             SlotNumber = -1;
-            SlotLocation = default(XUiC_ItemStack.StackLocationTypes);
+            SlotLocation = default;
             IsSelected = false;
             IsStackNull = true;
             IsSlotLocked = false;
