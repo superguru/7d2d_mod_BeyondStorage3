@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeyondStorage.Data;
 using BeyondStorage.Storage.SmartSorting;
 
@@ -52,6 +53,23 @@ internal class StorageOperationState
     /// Gets the number of distinct storages affected during this operation.
     /// </summary>
     public int StorageCount => _affectedStorages.Count;
+
+    public string GetStoragesDescription()
+    {
+        var storageCount = StorageCount;
+        var result = storageCount.ToString();
+
+        if (storageCount == 1)
+        {
+            var storage = _affectedStorages.SingleOrDefault();
+            if (storage != null)
+            {
+                result = storage.GetName();
+            }
+        }
+
+        return result;
+    }
 
     /// <summary>
     /// Gets the number of distinct item stacks affected.

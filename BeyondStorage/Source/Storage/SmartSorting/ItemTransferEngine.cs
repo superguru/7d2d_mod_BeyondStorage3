@@ -59,10 +59,11 @@ internal static class ItemTransferEngine
     }
 
     private static (bool isRelevantSlotValid, (int maxStackSize, int itemType) value) IsTransferRelevantSlotValid(
-    string methodName,
-    StorageOperationState state,
-    int slotIndex,
-    ItemStack slot)
+        string methodName,
+        StorageOperationState state,
+        int slotIndex,
+        ItemStack slot
+    )
     {
 #if DEBUG
         //ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is item {slot}");
@@ -71,6 +72,9 @@ internal static class ItemTransferEngine
         // 1. Not valid if empty
         if (ItemX.IsEmpty(slot))
         {
+#if DEBUG
+            ModLogger.DebugLog($"{methodName}: slot {slotIndex} in {state.MasterStorageName} is empty, skipping");
+#endif
             return (isRelevantSlotValid: false, value: default);
         }
 
@@ -104,7 +108,7 @@ internal static class ItemTransferEngine
             return (isRelevantSlotValid: false, value: default);
         }
 
-        return (isRelevantSlotValid: true, value: default);
+        return (isRelevantSlotValid: true, value: (maxStackSize, itemType));
     }
 
     internal static bool PerformSmartLoadoutPull<T>(
@@ -221,13 +225,9 @@ internal static class ItemTransferEngine
             SmartPushOperations.MSG_SMART_PUSH_RESULT,
             state.StackCount,
             state.MasterStorageName,
-            state.StorageCount);
-
-
-        // Through hard work you moved {0} stack(s) from {1} to {2}
+            state.GetStoragesDescription());
 
         context.InvalidateCache();
-
         UIRefreshHelper.ValidateAndRefreshUI(context, methodName);
 
         return true;
