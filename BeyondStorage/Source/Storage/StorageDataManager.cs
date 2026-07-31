@@ -56,7 +56,7 @@ public class StorageDataManager
     public readonly Func<EntityPlayerLocal, PackedBoolArray> GetPlayerToolbeltLockedSlotsFunc = _ => null; // Toolbelt has no lock slots
 
     public Action<EntityPlayerLocal> MarkPlayerInventoryModifiedFunc = player => EntityHandler.MarkPlayerInventoryModified(player);
-    public readonly Func<EntityPlayerLocal, string> GetPlayerNameFunc = player => EntityHandler.GetPlayerName(player);
+    public readonly Func<EntityPlayerLocal, string> GetPlayerNameFunc = player => EntityHandler.GetPlayerBackpackName();
 
     // ── Vehicle ──────────────────────────────────────────────────────────────
     public readonly Func<EntityVehicle, EntityVehicle, bool> EqualsVehicleFunc = (a, b) => ReferenceEquals(a, b);

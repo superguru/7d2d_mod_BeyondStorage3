@@ -55,6 +55,14 @@ public static class EntityHandler
         return name;
     }
 
+    public static string GetPlayerBackpackName()
+    {
+        const string d_MethodName = nameof(GetPlayerBackpackName);
+        string name = "Backpack";
+
+        return GameTools.GetLocalisedValue(d_MethodName, name);
+    }
+
     /// <summary>
     /// Gets all item stacks from an entity's bag without any filtering.
     /// </summary>
