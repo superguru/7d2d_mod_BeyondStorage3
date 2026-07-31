@@ -107,7 +107,7 @@ internal static class ItemTransferEngine
         return (isRelevantSlotValid: true, value: default);
     }
 
-    internal static void PerformSmartLoadoutPull<T>(
+    internal static bool PerformSmartLoadoutPull<T>(
         string methodName,
         StorageContext context,
         StorageSourceAdapter<T> loadout,
@@ -121,7 +121,7 @@ internal static class ItemTransferEngine
             if (loadout == null)
             {
                 ModLogger.DebugLog($"{methodName}: Loadout is null, returning");
-                return;
+                return false;
             }
 
             var sources = GetAdapterStorages(methodName, context, sourceAdapters);
@@ -131,7 +131,7 @@ internal static class ItemTransferEngine
 #if DEBUG
                 ModLogger.DebugLog($"{methodName}: No source storages found, returning");
 #endif
-                return;
+                return false;
             }
 
 #if DEBUG
@@ -143,18 +143,28 @@ internal static class ItemTransferEngine
 
             ModLogger.DebugLog($"{methodName}: {state}");
 
-            if (state.StackCount > 0)
-            {
-                context.ShowLocalPlayerNotification(
-                    SmartPullOperations.MSG_SMART_PULL_LOADOUT_RESULT,
-                    state.StackCount,
-                    state.MasterStorageName);
-
-                context.InvalidateCache();
-            }
-
-            UIRefreshHelper.ValidateAndRefreshUI(context, methodName);
+            var anyPulled = OnSmartPullCompleted(methodName, context, state);
+            return anyPulled;
         }
+    }
+
+    private static bool OnSmartPullCompleted(string methodName, StorageContext context, StorageOperationState state)
+    {
+        if (state.StackCount == 0)
+        {
+            return false;
+        }
+
+        context.ShowLocalPlayerNotification(
+            SmartPullOperations.MSG_SMART_PULL_LOADOUT_RESULT,
+            state.StackCount,
+            state.MasterStorageName);
+
+        context.InvalidateCache();
+
+        UIRefreshHelper.ValidateAndRefreshUI(context, methodName);
+
+        return true;
     }
 
     internal static bool PerformSmartPush<S>(
@@ -194,21 +204,33 @@ internal static class ItemTransferEngine
 
             ModLogger.DebugLog($"{methodName}: {state}");
 
-            var anyPushed = state.StackCount > 0;
-            if (anyPushed)
-            {
-                context.ShowLocalPlayerNotification(
-                    SmartPushOperations.MSG_SMART_PUSH_RESULT,
-                    state.StackCount,
-                    state.MasterStorageName,
-                    state.StorageCount);
-
-                context.InvalidateCache();
-            }
-
-            UIRefreshHelper.ValidateAndRefreshUI(context, methodName);
+            var anyPushed = OnSmartPushCompleted(methodName, context, state);
             return anyPushed;
         }
+    }
+
+    private static bool OnSmartPushCompleted(string methodName, StorageContext context, StorageOperationState state)
+    {
+        if (state.StackCount == 0)
+        {
+            return false;
+        }
+
+        // Through hard work you moved {0} stack(s) from {1} to {2} storage(s)
+        context.ShowLocalPlayerNotification(
+            SmartPushOperations.MSG_SMART_PUSH_RESULT,
+            state.StackCount,
+            state.MasterStorageName,
+            state.StorageCount);
+
+
+        // Through hard work you moved {0} stack(s) from {1} to {2}
+
+        context.InvalidateCache();
+
+        UIRefreshHelper.ValidateAndRefreshUI(context, methodName);
+
+        return true;
     }
 
     private static void PullSourceItemsToLoadout<T>(
