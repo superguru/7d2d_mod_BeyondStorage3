@@ -2,7 +2,9 @@
 <windows>
 
   <!-- Player Inventory -->
-  <setattribute xpath="/windows/window[@name='windowBackpack']/rect[@name='header']/rect[@controller='ContainerStandardControls']" name="pos">175,0 </setattribute>
+  <setattribute xpath="/windows/window[@name='windowBackpack']/rect[@name='header']/rect[@controller='ContainerStandardControls']" name="pos">175, 0</setattribute>
+
+  <setattribute xpath="/windows/window[@name='windowBackpack']/rect[@name='header']/rect[@controller='ContainerStandardControls']/button[@name='btnClearInventory']" name="pos">160, -22</setattribute>
 
   <append xpath="/windows/window[@name='windowBackpack']/rect[@name='header']/rect[@controller='ContainerStandardControls']">
 
@@ -21,7 +23,9 @@
   <!-- Player Inventory for AGF V3 Larger Backpacks 60-72-84-119 -->
   <conditional>
     <if cond="mod_loaded('AGF-BackpackPlus-060Slots') or mod_loaded('AGF-BackpackPlus-072Slots') or mod_loaded('AGF-BackpackPlus-084Slots') or mod_loaded('AGF-BackpackPlus-119Slots')">
-      <setattribute xpath="/windows/window[@name='windowBackpackAGF']/rect[@name='header']/rect[@controller='ContainerStandardControls']" name="pos">175,0 </setattribute>
+      <setattribute xpath="/windows/window[@name='windowBackpackAGF']/rect[@name='header']/rect[@controller='ContainerStandardControls']" name="pos">175, 0</setattribute>
+
+      <setattribute xpath="/windows/window[@name='windowBackpackAGF']/rect[@name='header']/rect[@controller='ContainerStandardControls']/button[@name='btnClearInventory']" name="pos">160, -22</setattribute>
 
       <append xpath="/windows/window[@name='windowBackpackAGF']/rect[@name='header']/rect[@controller='ContainerStandardControls']">
 
