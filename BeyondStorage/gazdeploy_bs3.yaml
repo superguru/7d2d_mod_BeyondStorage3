@@ -14,7 +14,6 @@ output_dir: bin/{build_target}  # {build_target} is substituted at runtime
 
 force: false
 no_pause: false
-verbose: false
 
 # --- File copy behaviour ---
 
