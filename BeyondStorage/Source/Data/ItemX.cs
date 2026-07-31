@@ -120,6 +120,11 @@ public static class ItemX
         return ItemClassCache.LookupMaxStackSize(itemValue);
     }
 
+    public static bool IsQuestItem(ItemStack stack)
+    {
+        return stack?.itemValue?.ItemClass?.IsQuestItem ?? false;
+    }
+
     public static int MaxStackSizeOf(ItemStack stack)
     {
         return ItemClassCache.LookupMaxStackSize(stack);

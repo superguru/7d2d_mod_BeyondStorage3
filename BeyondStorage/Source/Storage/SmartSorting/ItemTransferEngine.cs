@@ -255,6 +255,15 @@ internal static class ItemTransferEngine
                 continue;
             }
 
+            var isQuestItem = ItemX.IsQuestItem(sourceSlot);
+            if (isQuestItem)
+            {
+#if DEBUG
+                ModLogger.DebugLog($"{methodName}: Source slot {i} in {state.MasterStorageName} is a quest item, skipping");
+#endif
+                continue;
+            }
+
             int maxStackSize = ItemX.MaxStackSizeOf(sourceSlot);
             if (maxStackSize <= 0)
             {
@@ -265,6 +274,14 @@ internal static class ItemTransferEngine
             }
 
             int itemType = ItemX.ItemTypeOf(sourceSlot);
+            if (itemType <= UniqueItemTypes.EMPTY)
+            {
+#if DEBUG
+                ModLogger.DebugLog($"{methodName}: Source slot {i} in {state.MasterStorageName} is of invalid type {itemType}, skipping");
+#endif
+                continue;
+            }
+
             int sourceSlotRemaining = ItemX.CurrentStackSizeOf(sourceSlot);
 
             for (int k = 0; k < targets.Count; k++)
