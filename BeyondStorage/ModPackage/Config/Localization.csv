@@ -13,3 +13,7 @@
 "msgBeyondSmartPush_Result","","","","","","Through hard work you moved {0} stack(s) from {1} to {2} storage(s)"
 "blockcommand_TEFeatureStorage:Consume_Off","UI","Radial blockcommand","","","","Turn Consume Off"
 "blockcommand_TEFeatureStorage:Consume_On","UI","Radial blockcommand","","","","Turn Consume On"
+"bsSettingGeneral","UI","Menu","x","","","General"
+"bsSettingGeneralTooltip","UI","Menu","x","","","General settings for Beyond Storage"
+"bsSettingIsDebug","","","","","","Debug Logging"
+"bsSettingIsDebugTooltip","","","","","","Turns Debug level logging On or Off"

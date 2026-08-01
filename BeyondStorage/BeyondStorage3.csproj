@@ -67,6 +67,9 @@
   <ItemGroup>
     <Compile Include="Source\Configuration\ConfigDisplayHelper.cs" />
     <Compile Include="Source\Configuration\ConfigReloadHelper.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsConversions.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsGeneralSettings.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsMod_Init.cs" />
     <Compile Include="Source\Data\CollectionHelper.cs" />
     <Compile Include="Source\Data\SlotMaps.cs" />
     <Compile Include="Source\Data\SlotMutation.cs" />
@@ -234,6 +237,7 @@
     <Content Include="ModPackage\Config\XUi_InGame\windows.xml" />
     <Content Include="ModPackage\LICENSE.txt" />
     <Content Include="ModPackage\ModInfo.xml" />
+    <Content Include="ModPackage\ModSettings.xml" />
     <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_pull_loadout.png" />
     <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_push.png" />
   </ItemGroup>
@@ -245,6 +249,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="GearsAPI">
+      <HintPath>Uploads\GearsAPI_DLL\GearsAPI.dll</HintPath>
     </Reference>
     <Reference Include="Humanizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\packages\Humanizer.Core.3.0.10\lib\net48\Humanizer.dll</HintPath>

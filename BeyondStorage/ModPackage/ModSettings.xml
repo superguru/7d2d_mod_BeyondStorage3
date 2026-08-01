@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ModSettings>
+  <Global>
+    <Tab name="General">
+      <Category name="General" displayKey="bsSettingGeneral" tooltipKey="bsSettingGeneralTooltip">
+        <Switch name="IsDebug" displayKey="bsSettingIsDebug" tooltipKey="bsSettingIsDebugTooltip" value="Off" defaultValue="Off" leftValue="Off" rightValue="On"/>
+      </Category>
+    </Tab>
+  </Global>
+</ModSettings>

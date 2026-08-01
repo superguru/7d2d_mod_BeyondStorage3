@@ -2,9 +2,11 @@
 <xml>
   <Name value="BeyondStorage3"/>
   <DisplayName value="Beyond Storage 3"/>
-  <Version value="3.1.3"/>
+  <Icon value="Docs/BS3_Icon_225x225.jpg"/>
+  <Banner value="Docs/BS3_Banner_Top_1280x357.jpg"/>
+  <Version value="3.1.4"/>
   <Description value="Everything Is Your Inventory. Consume, Push, and Pull items from everywhere that has a storage."/>
-  <Author value="superguru, gazorper, unv_Annihilator, aedenthorn"/>
+  <Author value="superguru, gazorper"/>
   <Website value="https://github.com/superguru/7d2d_mod_BeyondStorage3"/>
   <MainReleaseSite value="https://www.nexusmods.com/7daystodie/mods/7809" />
   <AltSite_7DaysToDieMods value="https://7daystodiemods.com/mods/beyond-storage-3"/>
