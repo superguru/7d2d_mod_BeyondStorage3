@@ -1,4 +1,13 @@
-﻿__🚀 Released v3.1.2 [Discord Secret Club exclusive]__
+﻿__🚧 WIP v3.1.4__
+- 🙋 Any bugs to report?
+
+__🚀 Released v3.1.3__
+- ✅ Use the localised name for Backpack rather than player name for messages about smart sorting functions
+- ✅ Do not allow quest items to be moved during smart sorting operations (for future features)
+- ✅ Improve messages about source and target storages for smart sorting
+- ♻ Move Creative only mode button Clear inventory so it doesn't clash with Smart buttons
+
+__🚀 Released v3.1.2 [Discord Secret Club exclusive]__
 - 🪲 Don't bulk move quest items such as the White River Supplies during Smart Push to overflow storages (move to overflow hidden feature)
 - ✅ Use the localised name for Backpack rather than player name for messages about smart sorting functions
 - 🙋 Any bugs to report?
