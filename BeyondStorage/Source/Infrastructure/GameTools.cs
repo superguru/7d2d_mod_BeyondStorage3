@@ -9,9 +9,8 @@ public static class GameTools
         (bool passed, string value) = CheckGamePrerequisites(methodName);
         if (!passed)
         {
-#if DEBUG
             ModLogger.DebugLog($"{methodName}: Game prerequisites not met, returning key as fallback: '{localisationKey}'");
-#endif
+
             return localisationKey; // Return the key as fallback, not empty string
         }
 
@@ -20,13 +19,17 @@ public static class GameTools
         // Fallback to key if localization not found
         if (string.IsNullOrEmpty(localisedMessageFmt))
         {
-            ModLogger.DebugLog($"{methodName}: No localization found for key '{localisationKey}', using key as fallback");
+#if DEBUG
+            //ModLogger.DebugLog($"{methodName}: No localization found for key '{localisationKey}', using key as fallback");
+#endif
             return localisationKey;
         }
 
         if (formatArgs == null || formatArgs.Length == 0)
         {
-            ModLogger.DebugLog($"{methodName}: No format arguments provided, returning localised message: '{localisedMessageFmt}'");
+#if DEBUG
+            //ModLogger.DebugLog($"{methodName}: No format arguments provided, returning localised message: '{localisedMessageFmt}'");
+#endif
             return localisedMessageFmt;
         }
 
