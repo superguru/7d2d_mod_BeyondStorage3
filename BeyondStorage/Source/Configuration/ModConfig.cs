@@ -416,7 +416,7 @@ public static class ModConfig
             {
                 var configPath = GetConfigFilePath();
                 SaveConfig(configPath);
-                ModLogger.Info("Validated config saved to config file.");
+                ModLogger.DebugLog("Validated config saved to config file.");
             }
             catch (Exception ex)
             {
