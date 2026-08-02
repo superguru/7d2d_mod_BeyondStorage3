@@ -1,7 +1,8 @@
 ﻿__🚧 WIP v3.1.4__
 - ✅ Added GEARS support for all mod settings
-- ✅ Allow smart push to vehicles of allied players as well as your own
-- ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour
+- ✅ Allow smart push to vehicles of allied players as well as your own, On by default
+- ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour, default is On
+- 👉🏼 WIP: Renaming the consumeXXX config settings to includeXXXinNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
 - 🙋 Any bugs to report?
 
 __🚀 Released v3.1.3__
@@ -36,6 +37,14 @@ __🚀 Released v3.1.1__
 For game V3.1.x or later only. Many cool changes. Read the Changelog for a summarised list.
 
 Go to #beyond-storage3 on Discord for mod support. First try reading the Docs/README.md file or the mod web page.
+```
+
+```text
+- ✅ Added 
+- ♻ Fixed 
+- ❌ Removed 
+- 👉🏼 WIP: 
+- 💭 Considering 
 ```
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
