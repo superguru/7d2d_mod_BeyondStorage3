@@ -10,9 +10,16 @@ namespace BeyondStorage.Harmony.Commands;
 
 internal static class BsConfigPropertyRegistry
 {
-    private static readonly Dictionary<string, ConfigPropertyInfo> s_registeredProperties = [];
     private static bool s_isInitialized = false;
     private static readonly object s_lockObject = new();
+
+    private static readonly Dictionary<string, ConfigPropertyInfo> s_registeredProperties = [];
+
+    /// <summary>
+    /// Returns an enumerable view of all registered properties. 
+    /// Safe for read-only enumeration without exposing the underlying dictionary.
+    /// </summary>
+    public static IEnumerable<ConfigPropertyInfo> RegisteredProperties => s_registeredProperties.Values;
 
     /// <summary>
     /// Initializes and registers all available configuration properties
@@ -42,18 +49,23 @@ internal static class BsConfigPropertyRegistry
 
         // Register all available properties
         RegisterProperty("range", "float", GameTools.GetLocalisedValue(d_MethodName, ConfigLocalisation.RANGE_SETTING_TOOLTIP_KEY),
+            config => config.range.ToString("F1"),
             (config, value) => config.range = ParseFloat(value));
 
         RegisterProperty("allowPushToAlliedVehicles", "bool", ConfigLocalisation.ALLOW_PUSH_TO_ALLIED_VEHICLES_SETTING_TOOLTIP_KEY,
-            (config, value) => config.consumeFromDrones = ParseBool(value));
+            config => config.allowPushToAlliedVehicles.ToString(),
+            (config, value) => config.allowPushToAlliedVehicles = ParseBool(value));
 
         RegisterProperty("consumeFromDrones", "bool", ConfigLocalisation.CONSUME_FROM_DRONES_SETTING_TOOLTIP_KEY,
+            config => config.consumeFromDrones.ToString(),
             (config, value) => config.consumeFromDrones = ParseBool(value));
 
         RegisterProperty("consumeFromVehicles", "bool", ConfigLocalisation.CONSUME_FROM_VEHICLES_TOOLTIP_KEY,
+            config => config.consumeFromVehicles.ToString(),
             (config, value) => config.consumeFromVehicles = ParseBool(value));
 
         RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
+            config => config.isDebug.ToString(),
             (config, value) => config.isDebug = ParseBool(value));
     }
 
@@ -64,15 +76,21 @@ internal static class BsConfigPropertyRegistry
     /// <param name="type">The property type description</param>
     /// <param name="description">The property description</param>
     /// <param name="setValue">Action to set the property value, null for DEBUG-only properties</param>
-    private static void RegisterProperty(string propertyName, string type, string description, Action<BsConfig, string> setValue)
+    private static void RegisterProperty(string propertyName, string type, string description,
+        Func<BsConfig, string> getValue,
+        Action<BsConfig, string> setValue)
     {
+        const string d_MethodName = nameof(RegisterProperty);
+
         if (string.IsNullOrWhiteSpace(propertyName))
         {
             ModLogger.Error("Cannot register config property with null or empty name");
             return;
         }
 
-        var propertyInfo = new ConfigPropertyInfo(propertyName, type, description, setValue);
+        description = GameTools.GetLocalisedValue(d_MethodName, description);
+
+        var propertyInfo = new ConfigPropertyInfo(propertyName, type, description, getValue, setValue);
         s_registeredProperties[propertyName] = propertyInfo;
 
         ModLogger.DebugLog($"Registered config property: {propertyName} ({type})");
@@ -255,16 +273,23 @@ internal static class BsConfigPropertyRegistry
         {
             get;
         }
+        public Func<BsConfig, string> GetValue
+        {
+            get;
+        }
         public Action<BsConfig, string> SetValue
         {
             get;
         }
 
-        public ConfigPropertyInfo(string propertyName, string type, string description, Action<BsConfig, string> setValue)
+        public ConfigPropertyInfo(string propertyName, string type, string description,
+            Func<BsConfig, string> getValue,
+            Action<BsConfig, string> setValue)
         {
             PropertyName = propertyName;
             Type = type;
             Description = description;
+            GetValue = getValue;
             SetValue = setValue;
         }
     }

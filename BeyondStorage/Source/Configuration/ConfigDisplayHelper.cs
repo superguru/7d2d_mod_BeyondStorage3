@@ -1,4 +1,6 @@
-﻿using BeyondStorage.Infrastructure;
+﻿using System.Text;
+using BeyondStorage.Harmony.Commands;
+using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Configuration;
 
@@ -13,8 +15,19 @@ public static class ConfigDisplayHelper
     /// </summary>
     public static void ShowConfig()
     {
-        var snapshot = ConfigSnapshot.Current;
-        string configJson = snapshot.ToJson();
-        ModLogger.Info($"Current Config Snapshot:\n{configJson}\nDo not copy and paste this into the config.json file. The values above are formatted for reading in the console.");
+        var config = ModConfig.ClientConfig;
+        var props = BsConfigPropertyRegistry.RegisteredProperties;
+
+        var output = new StringBuilder();
+        output.AppendLine("Current config snapshot:");
+        output.AppendLine("{");
+        foreach (var prop in props)
+        {
+            output.AppendLine($"  '{prop.PropertyName}': {prop.Type} = {prop.GetValue(config)}; // {prop.Description}");
+        }
+        output.AppendLine("}");
+        output.AppendLine("Do not copy and paste this into the config.json file. The values above are formatted for reading in the console.");
+
+        ModLogger.Info(output.ToString());
     }
 }

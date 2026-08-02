@@ -367,7 +367,6 @@ public static class ModConfig
     /// </summary>
     public static void SaveConfig()
     {
-        var configPath = GetConfigFilePath();
         ValidateConfig(saveAlways: true);
     }
 
