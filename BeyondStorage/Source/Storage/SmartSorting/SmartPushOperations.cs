@@ -19,6 +19,7 @@ public class SmartPushOperations
         var isShiftPressed = InputUtils.ShiftKeyPressed;
         var scope = SmartPushScope.LoadoutsThenStorages;
         scope |= isShiftPressed ? SmartPushScope.OverflowToEmpty : SmartPushScope.Nowhere;
+
         return scope;
     }
 
@@ -47,6 +48,8 @@ public class SmartPushOperations
     {
         const string d_MethodName = nameof(SmartPushFromCollector);
 
+        SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
+
 #if DEBUG
         //ModLogger.DebugLog($"{methodName}: Starting");
 #endif
@@ -65,12 +68,14 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateCollectorStorageSourceAdapter(context, collector);
-        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
+        HandlePushToStorages(d_MethodName, context, source, scope);
     }
 
     public static void SmartPushFromLootable(XUiController _sender, int _mouseButton)
     {
         const string d_MethodName = nameof(SmartPushFromLootable);
+
+        SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
 
 #if DEBUG
         //ModLogger.DebugLog($"{methodName}: Starting");
@@ -93,7 +98,7 @@ public class SmartPushOperations
         ModLogger.DebugLog($"{d_MethodName}: Starting smart push from '{lootable.lootListName}'");
 #endif
         var source = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
-        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
+        HandlePushToStorages(d_MethodName, context, source, scope);
     }
 
     public static void SmartPushFromPlayerBackpack(XUiController _sender, int _mouseButton)
@@ -194,6 +199,8 @@ public class SmartPushOperations
     {
         const string d_MethodName = nameof(SmartPushFromWorkstation);
 
+        SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
+
 #if DEBUG
         //ModLogger.DebugLog($"{methodName}: Starting");
 #endif
@@ -212,6 +219,6 @@ public class SmartPushOperations
         }
 
         var source = StorageSourceAdapterFactory.CreateWorkstationStorageSourceAdapter(context, workstation);
-        HandlePushToStorages(d_MethodName, context, source, SmartPushScope.LoadoutsThenStorages);
+        HandlePushToStorages(d_MethodName, context, source, scope);
     }
 }
