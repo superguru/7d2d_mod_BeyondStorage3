@@ -176,22 +176,21 @@ A Player can only own a Vehicle or a Drone.
 The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 
 ```text
-+---------------------+---------+----------------------------------------------------------------+
-| Setting             | Default | Description                                                    |
-+---------------------+---------+----------------------------------------------------------------+
-| range               | -1.0    | Maximum distance in metres to look for storages.               |
-|                     |         | 0 means everything loaded by the game, usually a 200m radius.  |
-|                     |         | You can set this to 250m maximum, which is rounded up          |
-|                     |         | from the maximum the game will hold in memory. YMMV.           |
-+---------------------+---------+----------------------------------------------------------------+
-| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull              |
-+---------------------+---------+----------------------------------------------------------------+
-| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull              |
-+---------------------+---------+----------------------------------------------------------------+
-| isDebug             | false   | Logs additional information that might be useful for           |
-|                     |         | troubleshooting problems. You can generally leave this         |
-|                     |         | turned off.                                                    |
-+---------------------+---------+----------------------------------------------------------------+
++---------------------+---------+------------------------------------------------------------+
+| Setting             | Default | Description                                                |
++---------------------+---------+------------------------------------------------------------+
+| range               | 0. 0    | How far to look storages.                                  |
+|                     |         | 0.0 is everything in memory, max is 250m.                  |
+|                     |         | The game usually holds up to 200m radius.                  |
++---------------------+---------+------------------------------------------------------------+
+| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull          |
++---------------------+---------+------------------------------------------------------------+
+| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull          |
++---------------------+---------+------------------------------------------------------------+
+| isDebug             | false   | Logs additional information that might be useful for       |
+|                     |         | troubleshooting problems. You can generally leave this     |
+|                     |         | turned off.                                                |
++---------------------+---------+------------------------------------------------------------+
 ```
 
 **⚙︎⚙︎⚙︎ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ⚙︎⚙︎⚙︎** (Optional)

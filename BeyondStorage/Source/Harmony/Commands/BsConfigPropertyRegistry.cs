@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using BeyondStorage.Configuration;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Source.Configuration;
 
 namespace BeyondStorage.Harmony.Commands;
 
@@ -37,17 +38,22 @@ internal static class BsConfigPropertyRegistry
     /// </summary>
     private static void RegisterConfigurationProperties()
     {
+        const string d_MethodName = nameof(RegisterConfigurationProperties);
+
         // Register all available properties
-        RegisterProperty("range", "float", "How far to Consume from (-1 is infinite range)",
+        RegisterProperty("range", "float", GameTools.GetLocalisedValue(d_MethodName, ConfigLocalisation.RANGE_SETTING_TOOLTIP_KEY),
             (config, value) => config.range = ParseFloat(value));
 
-        RegisterProperty("consumeFromDrones", "bool", "Consume items from nearby drones",
+        RegisterProperty("allowPushToAlliedVehicles", "bool", ConfigLocalisation.ALLOW_PUSH_TO_ALLIED_VEHICLES_SETTING_TOOLTIP_KEY,
             (config, value) => config.consumeFromDrones = ParseBool(value));
 
-        RegisterProperty("consumeFromVehicles", "bool", "Consume items from nearby vehicles",
+        RegisterProperty("consumeFromDrones", "bool", ConfigLocalisation.CONSUME_FROM_DRONES_SETTING_TOOLTIP_KEY,
+            (config, value) => config.consumeFromDrones = ParseBool(value));
+
+        RegisterProperty("consumeFromVehicles", "bool", ConfigLocalisation.CONSUME_FROM_VEHICLES_TOOLTIP_KEY,
             (config, value) => config.consumeFromVehicles = ParseBool(value));
 
-        RegisterProperty("isDebug", "bool", "Enable additional logging",
+        RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
             (config, value) => config.isDebug = ParseBool(value));
     }
 
@@ -119,6 +125,7 @@ internal static class BsConfigPropertyRegistry
         return propertyName switch
         {
             "range" => config.range.ToString(CultureInfo.InvariantCulture),
+            "allowPushToAlliedVehicles" => config.allowPushToAlliedVehicles.ToString(),
             "consumeFromDrones" => config.consumeFromDrones.ToString(),
             "consumeFromVehicles" => config.consumeFromVehicles.ToString(),
             "isDebug" => config.isDebug.ToString(),
@@ -236,10 +243,22 @@ internal static class BsConfigPropertyRegistry
     /// </summary>
     public class ConfigPropertyInfo
     {
-        public string PropertyName { get; }
-        public string Type { get; }
-        public string Description { get; }
-        public Action<BsConfig, string> SetValue { get; }
+        public string PropertyName
+        {
+            get;
+        }
+        public string Type
+        {
+            get;
+        }
+        public string Description
+        {
+            get;
+        }
+        public Action<BsConfig, string> SetValue
+        {
+            get;
+        }
 
         public ConfigPropertyInfo(string propertyName, string type, string description, Action<BsConfig, string> setValue)
         {

@@ -8,6 +8,7 @@
           <Property type="incrementalValuesFloat" increment="5.0" minValue="0.0" maxValue="250.0"/>
           <Property type="formatter" formatString="F1" />
         </Slider>
+        <Switch name="AllowPushToAlliedVehicles" displayKey="bsSettingAllowPushToAlliedVehicles" tooltipKey="bsSettingAllowPushToAlliedVehiclesToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
         <Switch name="ConsumeFromDrones" displayKey="bsSettingConsumeFromDrones" tooltipKey="bsSettingConsumeFromDronesTooltip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
         <Switch name="ConsumeFromVehicles" displayKey="bsSettingConsumeFromVehicles" tooltipKey="bsSettingConsumeFromVehiclesTooltip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
         <Switch name="IsDebug" displayKey="bsSettingIsDebug" tooltipKey="bsSettingIsDebugTooltip" value="Off" defaultValue="Off" leftValue="Off" rightValue="On"/>

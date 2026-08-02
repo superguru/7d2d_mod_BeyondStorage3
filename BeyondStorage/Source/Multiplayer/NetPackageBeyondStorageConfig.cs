@@ -23,7 +23,8 @@ public class NetPackageBeyondStorageConfig : NetPackage
 
     // IMPORTANT: Update number if more options being sent
     // Update comment and value — 2 bools remaining as of v2.6.9
-    private const ushort BoolCount = 2;
+    // Update comment and value — 3 bools remaining as of v3.1.4
+    private const ushort BoolCount = 3;
 
     public override NetPackageDirection PackageDirection => NetPackageDirection.ToClient;
 
@@ -43,6 +44,7 @@ public class NetPackageBeyondStorageConfig : NetPackage
         binaryWriter.Write(ModConfig.ClientConfig.range);
         binaryWriter.Write(ModConfig.ClientConfig.consumeFromDrones);
         binaryWriter.Write(ModConfig.ClientConfig.consumeFromVehicles);
+        binaryWriter.Write(ModConfig.ClientConfig.allowPushToAlliedVehicles);
     }
 
     private bool ReadBool(PooledBinaryReader reader)
@@ -122,6 +124,7 @@ public class NetPackageBeyondStorageConfig : NetPackage
         ModConfig.ServerConfig.range = reader.ReadSingle();
         ModConfig.ServerConfig.consumeFromDrones = ReadBool(reader);
         ModConfig.ServerConfig.consumeFromVehicles = ReadBool(reader);
+        ModConfig.ServerConfig.allowPushToAlliedVehicles = ReadBool(reader);
 
         // Apply config versioning and migration to server config
         ModConfig.ServerConfig.version = CurrentNetConfigVersion;

@@ -9,9 +9,45 @@ internal static class GearsGeneralSettings
     internal static void Configure(IGlobalModSettingsCategory generalCategory)
     {
         ConfigureRangeSetting(generalCategory);
+        ConfigureAllowPushToAlliedVehiclesSetting(generalCategory);
         ConfigureConsumeFromDronesSetting(generalCategory);
         ConfigureConsumeFromVehiclesSetting(generalCategory);
         ConfigureIsDebugSetting(generalCategory);
+    }
+
+    internal static void ConfigureAllowPushToAlliedVehiclesSetting(IGlobalModSettingsCategory generalCategory)
+    {
+        var setting = (generalCategory.GetSetting("AllowPushToAlliedVehicles") as IGlobalValueSetting);
+        if (setting == null)
+        {
+            ModLogger.DebugLog($"Global settings loaded, but setting is null");
+            return;
+        }
+
+        setting.OnSettingChanged += SetAllowPushToAlliedVehicles;
+        SyncAllowPushToAlliedVehiclesSetting(setting);
+    }
+
+    private static void SetAllowPushToAlliedVehicles(IGlobalModSetting setting, string newValue)
+    {
+        var value = GearsConversions.ToBool(newValue, false);
+        var oldValue = ModConfig.ClientConfig.allowPushToAlliedVehicles;
+
+        if (oldValue != value)
+        {
+            ModConfig.ClientConfig.allowPushToAlliedVehicles = value;
+            ModConfig.SaveConfig();
+        }
+    }
+    private static void SyncAllowPushToAlliedVehiclesSetting(IGlobalValueSetting setting)
+    {
+        var modConfigValue = ModConfig.ClientConfig.allowPushToAlliedVehicles;
+
+        if (!GearsConversions.IsEqualValue(setting.CurrentValue, modConfigValue))
+        {
+            setting.CurrentValue = GearsConversions.FromBool(modConfigValue);
+            GearsModAPI.SaveGlobalSettings();
+        }
     }
 
     internal static void ConfigureRangeSetting(IGlobalModSettingsCategory generalCategory)
@@ -65,7 +101,7 @@ internal static class GearsGeneralSettings
     private static void SetConsumeFromDrones(IGlobalModSetting setting, string newValue)
     {
         var value = GearsConversions.ToBool(newValue, true);
-        var oldValue = ModConfig.ClientConfig.isDebug;
+        var oldValue = ModConfig.ClientConfig.consumeFromDrones;
 
         if (oldValue != value)
         {
@@ -101,7 +137,7 @@ internal static class GearsGeneralSettings
     private static void SetConsumeFromVehicles(IGlobalModSetting setting, string newValue)
     {
         var value = GearsConversions.ToBool(newValue, true);
-        var oldValue = ModConfig.ClientConfig.isDebug;
+        var oldValue = ModConfig.ClientConfig.consumeFromVehicles;
 
         if (oldValue != value)
         {

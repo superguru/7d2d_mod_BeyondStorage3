@@ -1,5 +1,6 @@
 ﻿using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
+using Platform;
 
 namespace BeyondStorage.Storage;
 
@@ -23,13 +24,14 @@ internal static class EntityItemDiscovery
         var entities = GameManager.Instance.World.Entities.list;
 
         // Cache configuration values
+        var allowPushToAlliedVehicles = processingState.Config.AllowPushToAlliedVehicles;
         var consumeFromVehicles = processingState.Config.ConsumeFromVehicles;
         var consumeFromDrones = processingState.Config.ConsumeFromDrones;
         var configRange = processingState.Config.Range;
 
         foreach (var entity in entities)
         {
-            ProcessEntity(entity, processingState, consumeFromVehicles, consumeFromDrones, configRange);
+            ProcessEntity(entity, processingState, allowPushToAlliedVehicles, consumeFromVehicles, consumeFromDrones, configRange);
         }
 
 #if DEBUG
@@ -66,7 +68,7 @@ internal static class EntityItemDiscovery
         return true;
     }
 
-    private static void ProcessEntity(Entity entity, EntityProcessingState state, bool pullFromVehicles, bool pullFromDrones, float configRange)
+    private static void ProcessEntity(Entity entity, EntityProcessingState state, bool allowPushToAlliedVehicles, bool consumeFromVehicles, bool consumeFromDrones, float configRange)
     {
         if (entity == null)
         {
@@ -81,13 +83,13 @@ internal static class EntityItemDiscovery
             return;
         }
 
-        if (pullFromVehicles && entity is EntityVehicle vehicle)
+        if (consumeFromVehicles && entity is EntityVehicle vehicle)
         {
-            ProcessVehicleEntity(vehicle, distance, state);
+            ProcessVehicleEntity(vehicle, distance, state, allowPushToAlliedVehicles);
             return;
         }
 
-        if (pullFromDrones && entity is EntityDrone drone)
+        if (consumeFromDrones && entity is EntityDrone drone)
         {
             ProcessDroneEntity(drone, distance, state);
             return;
@@ -96,11 +98,11 @@ internal static class EntityItemDiscovery
 
     #region Vehicle Processing
 
-    private static void ProcessVehicleEntity(EntityVehicle vehicle, float distance, EntityProcessingState state)
+    private static void ProcessVehicleEntity(EntityVehicle vehicle, float distance, EntityProcessingState state, bool allowPushToAlliedVehicles)
     {
         state.VehiclesProcessed++;
 
-        if (!ShouldProcessVehicle(vehicle, state))
+        if (!ShouldProcessVehicle(vehicle, state, allowPushToAlliedVehicles))
         {
             return;
         }
@@ -108,7 +110,7 @@ internal static class EntityItemDiscovery
         ProcessVehicleItems(vehicle, distance, state);
     }
 
-    private static bool ShouldProcessVehicle(EntityVehicle vehicle, EntityProcessingState state)
+    private static bool ShouldProcessVehicle(EntityVehicle vehicle, EntityProcessingState state, bool allowPushToAlliedVehicles)
     {
         // Check if vehicle has storage and items
         if (vehicle.bag == null || vehicle.bag.IsEmpty() || !vehicle.hasStorage())
@@ -116,14 +118,19 @@ internal static class EntityItemDiscovery
             return false;
         }
 
-        // Check if the local player is the owner of the vehicle
-        if (!vehicle.LocalPlayerIsOwner())
+        // Check if vehicle access is allowed for local player
+        if (!vehicle.isAllowedUser(PlatformManager.InternalLocalUserIdentifier))
+        {
+            return false;
+
+        }
+
+        if (vehicle.IsLockedForLocalPlayer(state.World.Player))
         {
             return false;
         }
 
-        // Check if vehicle is locked for local player
-        if (vehicle.IsLockedForLocalPlayer(state.World.Player))
+        if (!allowPushToAlliedVehicles && !vehicle.LocalPlayerIsOwner())
         {
             return false;
         }

@@ -16,24 +16,19 @@ public static class ConfigVersioning
     public const string FirstVersionedConfig = "2.3.0";
 
     /// <summary>
-    /// Cached current version - populated on first access
-    /// </summary>
-    private static string s_currentVersion = null;
-
-    /// <summary>
     /// Current config schema version - always matches ModInfo.Version (lazy loaded)
     /// </summary>
     public static string CurrentVersion
     {
         get
         {
-            if (string.IsNullOrEmpty(s_currentVersion))
+            if (string.IsNullOrEmpty(field))
             {
-                s_currentVersion = ModInfo.Version;
+                field = ModInfo.Version;
             }
-            return s_currentVersion;
+            return field;
         }
-    }
+    } = null;
 
     /// <summary>
     /// Detects if a config JSON string is legacy (pre-versioning)
@@ -149,6 +144,12 @@ public static class ConfigVersioning
             migratedConfig = MigrateTo311(migratedConfig);
         }
 
+        // Migration to version 3.1.4: Add AllowPushToAlliedVehicles
+        if (fromVersion < new Version("3.1.4"))
+        {
+            migratedConfig = MigrateTo314(migratedConfig);
+        }
+
         migratedConfig.version = CurrentVersion;
 
         ModLogger.Info($"{d_MethodName}: Successfully migrated config to version {CurrentVersion}");
@@ -248,6 +249,19 @@ public static class ConfigVersioning
         const string d_MethodName = nameof(MigrateTo311);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 3.1.1");
         ModLogger.Info($"{d_MethodName}: 'serverSyncConfig' has been removed — server config sync is now always enabled");
+        return config;
+    }
+
+    /// <summary>
+    /// Migrates config to version 3.1.4
+    /// Changes: Add AllowPushToAlliedVehicles, which defaults to true
+    /// </summary>
+    private static BsConfig MigrateTo314(BsConfig config)
+    {
+        const string d_MethodName = nameof(MigrateTo314);
+        ModLogger.Info($"{d_MethodName}: Applying migration to version 3.1.4");
+        config.allowPushToAlliedVehicles = true;
+        ModLogger.Info($"{d_MethodName}: 'allowPushToAlliedVehicles' has been added — default is true");
         return config;
     }
 

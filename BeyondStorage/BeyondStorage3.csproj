@@ -65,6 +65,7 @@
     <Error Condition="'$(DeployModExitCode)' != '0'" Text="Deployment failed with exit code $(DeployModExitCode)" />
   </Target>
   <ItemGroup>
+    <Compile Include="Source\Configuration\ConfigLocalisation.cs" />
     <Compile Include="Source\Configuration\ConfigDisplayHelper.cs" />
     <Compile Include="Source\Configuration\ConfigReloadHelper.cs" />
     <Compile Include="Source\Configuration\Gears\GearsConversions.cs" />

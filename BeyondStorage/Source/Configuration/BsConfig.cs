@@ -19,6 +19,8 @@ public class BsConfig
     /// </summary>
     public float range = -1.0f;
 
+    public bool allowPushToAlliedVehicles = true;
+
     /// <summary>
     /// If set to true it will try and pull items from nearby drones
     /// </summary>

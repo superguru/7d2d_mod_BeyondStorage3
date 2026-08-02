@@ -389,7 +389,9 @@ public static class ModConfig
             }
 
             File.WriteAllText(path, configJson);
+#if DEBUG
             ModLogger.DebugLog($"Config saved successfully ({configBytes} bytes)");
+#endif
         }
         catch (Exception e)
         {
@@ -466,6 +468,14 @@ public static class ModConfig
     {
         float serverValue = ServerConfig.range;
         float clientValue = ClientConfig.range;
+
+        return ServerUtils.HasServerConfig ? serverValue : clientValue;
+    }
+
+    public static bool AllowPushToAlliedVehicles()
+    {
+        bool serverValue = ServerConfig.allowPushToAlliedVehicles;
+        bool clientValue = ClientConfig.allowPushToAlliedVehicles;
 
         return ServerUtils.HasServerConfig ? serverValue : clientValue;
     }
@@ -712,6 +722,7 @@ public static class ModConfig
         {
             version = ConfigVersioning.CurrentVersion,
             range = legacyConfig.range,
+            allowPushToAlliedVehicles = newConfig.allowPushToAlliedVehicles,
             consumeFromDrones = legacyConfig.consumeFromDrones,
             consumeFromVehicles = legacyConfig.consumeFromVehicles,
             isDebug = legacyConfig.isDebug,

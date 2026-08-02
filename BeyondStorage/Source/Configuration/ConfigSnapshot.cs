@@ -9,17 +9,34 @@ namespace BeyondStorage.Configuration;
 public sealed class ConfigSnapshot
 {
     // ========== Source selection / eligibility =========
-    public float Range { get; }
-    public bool ConsumeFromDrones { get; }
-    public bool ConsumeFromVehicles { get; }
+    public float Range
+    {
+        get;
+    }
+    public bool AllowPushToAlliedVehicles
+    {
+        get;
+    }
+    public bool ConsumeFromDrones
+    {
+        get;
+    }
+    public bool ConsumeFromVehicles
+    {
+        get;
+    }
 
     // ========== Housekeeping =========
-    public bool IsDebug { get; }
+    public bool IsDebug
+    {
+        get;
+    }
 
     private ConfigSnapshot()
     {
         // ========== Source selection / eligibility =========
         Range = ModConfig.Range();
+        AllowPushToAlliedVehicles = ModConfig.AllowPushToAlliedVehicles();
         ConsumeFromDrones = ModConfig.ConsumeFromDrones();
         ConsumeFromVehicles = ModConfig.ConsumeFromVehicles();
 
