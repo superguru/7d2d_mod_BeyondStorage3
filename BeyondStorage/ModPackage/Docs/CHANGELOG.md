@@ -1,5 +1,7 @@
 ﻿__🚧 WIP v3.1.4__
-- ✅ Added GEARS support for mod settings
+- ✅ Added GEARS support for all mod settings
+- ✅ Allow smart push to vehicles of allied players as well as your own
+- ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour
 - 🙋 Any bugs to report?
 
 __🚀 Released v3.1.3__
