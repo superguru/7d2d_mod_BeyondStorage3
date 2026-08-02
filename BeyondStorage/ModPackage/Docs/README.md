@@ -179,13 +179,13 @@ The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 +---------------------------+---------+------------------------------------------------------------+
 | Setting                   | Default | Description                                                |
 +---------------------------+---------+------------------------------------------------------------+
-| allowPushToAlliedVehicles | On      | Allow smart push to send items to nearby vehicles          |
+| includeDrones             | On      | Whether to include nearby Drones in storage network        |
++---------------------------+---------+------------------------------------------------------------+
+| includeVehicles           | On      | Whether to include nearby Vehicles in storage network      |
++---------------------------+---------+------------------------------------------------------------+
+| allowPushToAlliedVehicles | On      | Allow smart push to send items to nearby Vehicles          |
 |                           |         | belonging to allies                                        |
 |                           |         | Only works if includeVehicles is On                        |
-+---------------------------+---------+------------------------------------------------------------+
-| includeDrones             | On      | You can turn off Consume, but not Smart Push/Pull          |
-+---------------------------+---------+------------------------------------------------------------+
-| includeVehicles           | On      | You can turn off Consume, but not Smart Push/Pull          |
 +---------------------------+---------+------------------------------------------------------------+
 | isDebug                   | Off     | Logs additional information that might be useful for       |
 |                           |         | troubleshooting problems. You can generally leave this     |
