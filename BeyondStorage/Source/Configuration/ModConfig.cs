@@ -368,7 +368,7 @@ public static class ModConfig
     public static void SaveConfig()
     {
         var configPath = GetConfigFilePath();
-        SaveConfig(configPath);
+        ValidateConfig(saveAlways: true);
     }
 
     /// <summary>
@@ -402,7 +402,7 @@ public static class ModConfig
     /// <summary>
     /// Validates and corrects configuration values. Saves config if any changes are made.
     /// </summary>
-    private static void ValidateConfig()
+    private static void ValidateConfig(bool saveAlways = false)
     {
         bool configChanged = false;
 
@@ -411,13 +411,13 @@ public static class ModConfig
         configChanged |= ValidateVersion();
 
         // Save config if any changes were made during validation
-        if (configChanged)
+        if (configChanged || saveAlways)
         {
             try
             {
                 var configPath = GetConfigFilePath();
                 SaveConfig(configPath);
-                ModLogger.Info("Config validation made corrections and saved updated config to file.");
+                ModLogger.Info("Validated config saved to config file.");
             }
             catch (Exception ex)
             {
@@ -434,7 +434,7 @@ public static class ModConfig
     {
         if (ClientConfig.range < RANGE_UNLIMITED)
         {
-            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to 0.0 (unlimited range).");
+            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to unlimited range");
             ClientConfig.range = RANGE_UNLIMITED;
             return true; // Config was modified
         }
