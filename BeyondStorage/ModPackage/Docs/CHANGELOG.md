@@ -1,4 +1,5 @@
 ﻿__🚧 WIP v3.1.4__
+- ✅ Added GEARS support for mod settings
 - 🙋 Any bugs to report?
 
 __🚀 Released v3.1.3__

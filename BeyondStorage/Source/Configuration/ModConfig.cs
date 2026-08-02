@@ -12,12 +12,18 @@ public static class ModConfig
     private const string ConfigFileName = "config.json";
     private const string ConfigBackupPrefix = "config.backup.";
 
+    public const float RANGE_MAX_USER_LIMIT = 250.0f; // Largest user settable maximum range
+    public const float RANGE_UNLIMITED = 0.0f;  // Whatever the game holds in memory
+
     /// <summary>
     /// Maximum allowed config file size in bytes (1KB) to prevent abuse
     /// </summary>
     private const long MaxConfigFileSize = 1024;
 
-    public static BsConfig ClientConfig { get; private set; }
+    public static BsConfig ClientConfig
+    {
+        get; private set;
+    }
     public static BsConfig ServerConfig { get; } = new();
     private static bool IsConfigLoaded { get; set; } = false;
 
@@ -424,12 +430,20 @@ public static class ModConfig
     /// <returns>True if the config was modified, false otherwise</returns>
     private static bool ValidateRangeOption()
     {
-        if (ClientConfig.range <= 0.0f && ClientConfig.range != -1.0f)
+        if (ClientConfig.range < RANGE_UNLIMITED)
         {
-            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to -1.0 (maximum range).");
-            ClientConfig.range = -1.0f;
+            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to 0.0 (unlimited range).");
+            ClientConfig.range = RANGE_UNLIMITED;
             return true; // Config was modified
         }
+
+        if (ClientConfig.range > RANGE_MAX_USER_LIMIT)
+        {
+            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to {RANGE_MAX_USER_LIMIT} (max user range limit).");
+            ClientConfig.range = RANGE_MAX_USER_LIMIT;
+            return true; // Config was modified
+        }
+
         return false; // No changes made
     }
 

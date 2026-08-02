@@ -176,25 +176,32 @@ A Player can only own a Vehicle or a Drone.
 The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 
 ```text
-+---------------------+---------+--------------------------------------------------------------+
-| Setting             | Default | Description                                                  |
-+---------------------+---------+--------------------------------------------------------------+
-| range               | -1.0    | Distance in metres for Consume, Smart Push, or SmartPull.    |
-|                     |         | Less than 0 means everything loaded by the game, which is    |
-|                     |         | effectively around 200m.                                     |
-+---------------------+---------+--------------------------------------------------------------+
-| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull            |
-+---------------------+---------+--------------------------------------------------------------+
-| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull            |
-+---------------------+---------+--------------------------------------------------------------+
-| isDebug             | false   | Logs additional information that might be useful for         |
-|                     |         | troubleshooting problems. You can generally leave this       |
-|                     |         | turned off.                                                  |
-+---------------------+---------+--------------------------------------------------------------+
++---------------------+---------+----------------------------------------------------------------+
+| Setting             | Default | Description                                                    |
++---------------------+---------+----------------------------------------------------------------+
+| range               | -1.0    | Maximum distance in metres to look for storages.               |
+|                     |         | 0 means everything loaded by the game, usually a 200m radius.  |
+|                     |         | You can set this to 250m maximum, which is rounded up          |
+|                     |         | from the maximum the game will hold in memory. YMMV.           |
++---------------------+---------+----------------------------------------------------------------+
+| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull              |
++---------------------+---------+----------------------------------------------------------------+
+| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull              |
++---------------------+---------+----------------------------------------------------------------+
+| isDebug             | false   | Logs additional information that might be useful for           |
+|                     |         | troubleshooting problems. You can generally leave this         |
+|                     |         | turned off.                                                    |
++---------------------+---------+----------------------------------------------------------------+
 ```
-Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.
 
-The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.
+**⚙︎⚙︎⚙︎ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ⚙︎⚙︎⚙︎** (Optional)
+All settings can be modified using the Gears interface.
+This is available at the game loading screen, and also in-game when you press \<ESC\> and click the \[MODS\] button.
+
+`Mods/BeyondStorage3/config.json` is the master source for config values, and changes to this file will override the settings saved in Gears. However Gears setting will always be synced when you access the Gears settings editing screen.
+
+*Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.*
+*The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.*
 
 #### 📝Notes:
 1. In the config file, true means On and false means Off
@@ -265,7 +272,7 @@ I run these mods, among others, and so the development and testing of this mod m
 
 #### Common Dependency Libraries that are compatible
 - ✅ [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
-- ✅ [Gears](https://www.nexusmods.com/7daystodie/mods/4017)
+- ✅ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) <- Beyond Storage supports settings changes using Gears
 
 ##### SCore (not really compatible)
 For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
