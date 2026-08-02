@@ -42,8 +42,8 @@ public class NetPackageBeyondStorageConfig : NetPackage
 
         // do not change the order of these
         binaryWriter.Write(ModConfig.ClientConfig.range);
-        binaryWriter.Write(ModConfig.ClientConfig.consumeFromDrones);
-        binaryWriter.Write(ModConfig.ClientConfig.consumeFromVehicles);
+        binaryWriter.Write(ModConfig.ClientConfig.includeDrones);
+        binaryWriter.Write(ModConfig.ClientConfig.includeVehicles);
         binaryWriter.Write(ModConfig.ClientConfig.allowPushToAlliedVehicles);
     }
 
@@ -122,8 +122,8 @@ public class NetPackageBeyondStorageConfig : NetPackage
         // update server config (or set if it's first time)
         // do not change the order of these
         ModConfig.ServerConfig.range = reader.ReadSingle();
-        ModConfig.ServerConfig.consumeFromDrones = ReadBool(reader);
-        ModConfig.ServerConfig.consumeFromVehicles = ReadBool(reader);
+        ModConfig.ServerConfig.includeDrones = ReadBool(reader);
+        ModConfig.ServerConfig.includeVehicles = ReadBool(reader);
         ModConfig.ServerConfig.allowPushToAlliedVehicles = ReadBool(reader);
 
         // Apply config versioning and migration to server config
@@ -147,8 +147,8 @@ public class NetPackageBeyondStorageConfig : NetPackage
 #if DEBUG
         ModLogger.DebugLog($"ModConfig.ServerConfig.version {ModConfig.ServerConfig.version}");
         ModLogger.DebugLog($"ModConfig.ServerConfig.range {ModConfig.ServerConfig.range}");
-        ModLogger.DebugLog($"ModConfig.ServerConfig.consumeFromDrones {ModConfig.ServerConfig.consumeFromDrones}");
-        ModLogger.DebugLog($"ModConfig.ServerConfig.consumeFromVehicles {ModConfig.ServerConfig.consumeFromVehicles}");
+        ModLogger.DebugLog($"ModConfig.ServerConfig.includeDrones {ModConfig.ServerConfig.includeDrones}");
+        ModLogger.DebugLog($"ModConfig.ServerConfig.includeVehicles {ModConfig.ServerConfig.includeVehicles}");
 #endif
     }
 

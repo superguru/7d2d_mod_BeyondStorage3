@@ -24,13 +24,13 @@ internal static class EntityItemDiscovery
 
         // Cache configuration values
         var allowPushToAlliedVehicles = processingState.Config.AllowPushToAlliedVehicles;
-        var consumeFromVehicles = processingState.Config.ConsumeFromVehicles;
-        var consumeFromDrones = processingState.Config.ConsumeFromDrones;
+        var includeVehicles = processingState.Config.IncludeVehicles;
+        var includeDrones = processingState.Config.IncludeDrones;
         var configRange = processingState.Config.Range;
 
         foreach (var entity in entities)
         {
-            ProcessEntity(entity, processingState, allowPushToAlliedVehicles, consumeFromVehicles, consumeFromDrones, configRange);
+            ProcessEntity(entity, processingState, allowPushToAlliedVehicles, includeVehicles, includeDrones, configRange);
         }
 
 #if DEBUG
@@ -67,7 +67,7 @@ internal static class EntityItemDiscovery
         return true;
     }
 
-    private static void ProcessEntity(Entity entity, EntityProcessingState state, bool allowPushToAlliedVehicles, bool consumeFromVehicles, bool consumeFromDrones, float configRange)
+    private static void ProcessEntity(Entity entity, EntityProcessingState state, bool allowPushToAlliedVehicles, bool includeVehicles, bool includeDrones, float configRange)
     {
         //const string d_MethodName = nameof(ProcessEntity);
 
@@ -84,13 +84,13 @@ internal static class EntityItemDiscovery
             return;
         }
 
-        if (consumeFromVehicles && entity is EntityVehicle vehicle)
+        if (includeVehicles && entity is EntityVehicle vehicle)
         {
             ProcessVehicleEntity(vehicle, distance, state, allowPushToAlliedVehicles);
             return;
         }
 
-        if (consumeFromDrones && entity is EntityDrone drone)
+        if (includeDrones && entity is EntityDrone drone)
         {
             ProcessDroneEntity(drone, distance, state);
             return;

@@ -176,21 +176,26 @@ A Player can only own a Vehicle or a Drone.
 The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 
 ```text
-+---------------------+---------+------------------------------------------------------------+
-| Setting             | Default | Description                                                |
-+---------------------+---------+------------------------------------------------------------+
-| range               | 0. 0    | How far to look storages.                                  |
-|                     |         | 0.0 is everything in memory, max is 250m.                  |
-|                     |         | The game usually holds up to 200m radius.                  |
-+---------------------+---------+------------------------------------------------------------+
-| consumeFromDrones   | true    | You can turn off Consume, but not Smart Push/Pull          |
-+---------------------+---------+------------------------------------------------------------+
-| consumeFromVehicles | true    | You can turn off Consume, but not Smart Push/Pull          |
-+---------------------+---------+------------------------------------------------------------+
-| isDebug             | false   | Logs additional information that might be useful for       |
-|                     |         | troubleshooting problems. You can generally leave this     |
-|                     |         | turned off.                                                |
-+---------------------+---------+------------------------------------------------------------+
++---------------------------+---------+------------------------------------------------------------+
+| Setting                   | Default | Description                                                |
++---------------------------+---------+------------------------------------------------------------+
+| allowPushToAlliedVehicles | On      | Allow smart push to send items to nearby vehicles          |
+|                           |         | belonging to allies                                        |
+|                           |         | Only works if includeVehicles is On                        |
++---------------------------+---------+------------------------------------------------------------+
+| includeDrones             | On      | You can turn off Consume, but not Smart Push/Pull          |
++---------------------------+---------+------------------------------------------------------------+
+| includeVehicles           | On      | You can turn off Consume, but not Smart Push/Pull          |
++---------------------------+---------+------------------------------------------------------------+
+| isDebug                   | Off     | Logs additional information that might be useful for       |
+|                           |         | troubleshooting problems. You can generally leave this     |
+|                           |         | turned off.                                                |
++---------------------------+---------+------------------------------------------------------------+
+| range                     | 0. 0    | Range to include in storage network.                       |
+|                           |         | 0.0 is everything in memory, max is 250m.                  |
+|                           |         | The game usually holds up to 200m radius.                  |
++---------------------------+---------+------------------------------------------------------------+
+*Off=false, On=True in config.json file.
 ```
 
 **⚙︎⚙︎⚙︎ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ⚙︎⚙︎⚙︎** (Optional)

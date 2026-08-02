@@ -56,13 +56,13 @@ internal static class BsConfigPropertyRegistry
             config => config.allowPushToAlliedVehicles.ToString(),
             (config, value) => config.allowPushToAlliedVehicles = ParseBool(value));
 
-        RegisterProperty("consumeFromDrones", "bool", ConfigLocalisation.CONSUME_FROM_DRONES_SETTING_TOOLTIP_KEY,
-            config => config.consumeFromDrones.ToString(),
-            (config, value) => config.consumeFromDrones = ParseBool(value));
+        RegisterProperty("includeDrones", "bool", ConfigLocalisation.INCLUDE_DRONES_SETTING_TOOLTIP_KEY,
+            config => config.includeDrones.ToString(),
+            (config, value) => config.includeDrones = ParseBool(value));
 
-        RegisterProperty("consumeFromVehicles", "bool", ConfigLocalisation.CONSUME_FROM_VEHICLES_TOOLTIP_KEY,
-            config => config.consumeFromVehicles.ToString(),
-            (config, value) => config.consumeFromVehicles = ParseBool(value));
+        RegisterProperty("includeVehicles", "bool", ConfigLocalisation.INCLUDE_VEHICLES_TOOLTIP_KEY,
+            config => config.includeVehicles.ToString(),
+            (config, value) => config.includeVehicles = ParseBool(value));
 
         RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
             config => config.isDebug.ToString(),
@@ -144,8 +144,8 @@ internal static class BsConfigPropertyRegistry
         {
             "range" => config.range.ToString(CultureInfo.InvariantCulture),
             "allowPushToAlliedVehicles" => config.allowPushToAlliedVehicles.ToString(),
-            "consumeFromDrones" => config.consumeFromDrones.ToString(),
-            "consumeFromVehicles" => config.consumeFromVehicles.ToString(),
+            "includeDrones" => config.includeDrones.ToString(),
+            "includeVehicles" => config.includeVehicles.ToString(),
             "isDebug" => config.isDebug.ToString(),
             _ => "Unknown"
         };

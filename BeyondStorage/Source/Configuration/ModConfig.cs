@@ -9,11 +9,11 @@ namespace BeyondStorage.Configuration;
 
 public static class ModConfig
 {
-    private const string ConfigFileName = "config.json";
-    private const string ConfigBackupPrefix = "config.backup.";
-
     public const float RANGE_MAX_USER_LIMIT = 250.0f; // Largest user settable maximum range
     public const float RANGE_UNLIMITED = 0.0f;  // Whatever the game holds in memory
+
+    private const string ConfigFileName = "config.json";
+    private const string ConfigBackupPrefix = "config.backup.";
 
     /// <summary>
     /// Maximum allowed config file size in bytes (1KB) to prevent abuse
@@ -479,18 +479,18 @@ public static class ModConfig
         return ServerUtils.HasServerConfig ? serverValue : clientValue;
     }
 
-    public static bool ConsumeFromDrones()
+    public static bool IncludeDrones()
     {
-        bool serverValue = ServerConfig.consumeFromDrones;
-        bool clientValue = ClientConfig.consumeFromDrones;
+        bool serverValue = ServerConfig.includeDrones;
+        bool clientValue = ClientConfig.includeDrones;
 
         return ServerUtils.HasServerConfig ? serverValue : clientValue;
     }
 
-    public static bool ConsumeFromVehicles()
+    public static bool IncludeVehicles()
     {
-        bool serverValue = ServerConfig.consumeFromVehicles;
-        bool clientValue = ClientConfig.consumeFromVehicles;
+        bool serverValue = ServerConfig.includeVehicles;
+        bool clientValue = ClientConfig.includeVehicles;
 
         return ServerUtils.HasServerConfig ? serverValue : clientValue;
     }
@@ -722,8 +722,6 @@ public static class ModConfig
             version = ConfigVersioning.CurrentVersion,
             range = legacyConfig.range,
             allowPushToAlliedVehicles = newConfig.allowPushToAlliedVehicles,
-            consumeFromDrones = legacyConfig.consumeFromDrones,
-            consumeFromVehicles = legacyConfig.consumeFromVehicles,
             isDebug = legacyConfig.isDebug,
             metaDescription = legacyConfig.metaDescription
         };

@@ -3,14 +3,14 @@
 <ModSettings>
   <Global>
     <Tab name="General">
-      <Category name="General" displayKey="bsSettingGeneral" tooltipKey="bsSettingGeneralTooltip">
-        <Slider name="Range" displayKey="bsSettingRange" tooltipKey="bsSettingRangeTooltip" value="0.0" defaultValue="0.0">
+      <Category name="General" displayKey="bsSettingGeneral" tooltipKey="bsSettingGeneralToolTip">
+        <Slider name="Range" displayKey="bsSettingRange" tooltipKey="bsSettingRangeToolTip" value="0.0" defaultValue="0.0">
           <Property type="incrementalValuesFloat" increment="5.0" minValue="0.0" maxValue="250.0"/>
           <Property type="formatter" formatString="F1" />
         </Slider>
+        <Switch name="IncludeDrones" displayKey="bsSettingIncludeDronesInNetwork" tooltipKey="bsSettingIncludeDronesInNetworkToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
+        <Switch name="IncludeVehicles" displayKey="bsSettingIncludeVehiclesInNetwork" tooltipKey="bsSettingIncludeVehiclesInNetworkToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
         <Switch name="AllowPushToAlliedVehicles" displayKey="bsSettingAllowPushToAlliedVehicles" tooltipKey="bsSettingAllowPushToAlliedVehiclesToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="ConsumeFromDrones" displayKey="bsSettingConsumeFromDrones" tooltipKey="bsSettingConsumeFromDronesTooltip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="ConsumeFromVehicles" displayKey="bsSettingConsumeFromVehicles" tooltipKey="bsSettingConsumeFromVehiclesTooltip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
         <Switch name="IsDebug" displayKey="bsSettingIsDebug" tooltipKey="bsSettingIsDebugTooltip" value="Off" defaultValue="Off" leftValue="Off" rightValue="On"/>
       </Category>
     </Tab>

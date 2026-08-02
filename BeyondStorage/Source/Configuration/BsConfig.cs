@@ -24,12 +24,12 @@ public class BsConfig
     /// <summary>
     /// If set to true it will try and pull items from nearby drones
     /// </summary>
-    public bool consumeFromDrones = true;
+    public bool includeDrones = true;
 
     /// <summary>
     /// If set to true it will try and pull items from nearby vehicle storages
     /// </summary>
-    public bool consumeFromVehicles = true;
+    public bool includeVehicles = true;
 
     // ========== Housekeeping =========
     /// <summary>

@@ -2,7 +2,7 @@
 - ✅ Added GEARS support for all mod settings
 - ✅ Allow smart push to vehicles of allied players as well as your own, On by default
 - ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour, default is On
-- 👉🏼 WIP: Renaming the consumeXXX config settings to includeXXXinNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
+- 👉🏼 WIP: Renamed the consumeXXX config settings to includeXXXInNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
 - 🙋 Any bugs to report?
 
 __🚀 Released v3.1.3__

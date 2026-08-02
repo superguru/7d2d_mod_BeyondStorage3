@@ -202,7 +202,7 @@ public static class StorageContextFactory
 
         // The order is important
 
-        if (config.ConsumeFromDrones)
+        if (config.IncludeDrones)
         {
             types.Add(typeof(EntityDrone));
         }
@@ -214,7 +214,7 @@ public static class StorageContextFactory
         // Lootables: Always allowed
         types.Add(typeof(ITileEntityLootable));
 
-        if (config.ConsumeFromVehicles)
+        if (config.IncludeVehicles)
         {
             types.Add(typeof(EntityVehicle));
         }

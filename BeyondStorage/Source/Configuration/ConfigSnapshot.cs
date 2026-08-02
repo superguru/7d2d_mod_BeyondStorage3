@@ -17,11 +17,11 @@ public sealed class ConfigSnapshot
     {
         get;
     }
-    public bool ConsumeFromDrones
+    public bool IncludeDrones
     {
         get;
     }
-    public bool ConsumeFromVehicles
+    public bool IncludeVehicles
     {
         get;
     }
@@ -37,8 +37,8 @@ public sealed class ConfigSnapshot
         // ========== Source selection / eligibility =========
         Range = ModConfig.Range();
         AllowPushToAlliedVehicles = ModConfig.AllowPushToAlliedVehicles();
-        ConsumeFromDrones = ModConfig.ConsumeFromDrones();
-        ConsumeFromVehicles = ModConfig.ConsumeFromVehicles();
+        IncludeDrones = ModConfig.IncludeDrones();
+        IncludeVehicles = ModConfig.IncludeVehicles();
 
         // ========== Housekeeping =========
         IsDebug = ModConfig.IsDebug();

@@ -68,10 +68,10 @@ public static class ConfigVersioning
             {
                 version = CurrentVersion,
                 range = legacyConfig.range,
-                consumeFromDrones = legacyConfig.pullFromDrones,
+                includeDrones = legacyConfig.pullFromDrones,
                 // pullFromCollectors removed in 2.6.9
                 // pullFromWorkstationOutputs removed in 2.6.9
-                consumeFromVehicles = legacyConfig.pullFromVehicleStorage,
+                includeVehicles = legacyConfig.pullFromVehicleStorage,
                 // serverSyncConfig removed in 3.1.1
                 isDebug = legacyConfig.isDebug
                 // isDebugLogSettingsAccess removed in 2.6.7
@@ -259,9 +259,12 @@ public static class ConfigVersioning
     private static BsConfig MigrateTo314(BsConfig config)
     {
         const string d_MethodName = nameof(MigrateTo314);
+
         ModLogger.Info($"{d_MethodName}: Applying migration to version 3.1.4");
+
         config.allowPushToAlliedVehicles = true;
         ModLogger.Info($"{d_MethodName}: 'allowPushToAlliedVehicles' has been added — default is true");
+
         return config;
     }
 
@@ -308,6 +311,12 @@ public static class ConfigVersioning
                 jsonObject.Remove("serverSyncConfig");
             }
 
+            if (version < new Version("3.1.4"))
+            {
+                jsonObject["includeDrones"] = jsonObject["consumeFromDrones"];
+                jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
+            }
+
             return jsonObject.ToString(Formatting.None);
         }
         catch (JsonException)
@@ -335,6 +344,8 @@ public static class ConfigVersioning
         public bool enableForVehicleRefuel = true;
         public bool enableForVehicleRepair = true;
         public bool serverSyncConfig = true;
+        public bool consumeFromDrones = true;
+        public bool consumeFromVehicles = true;
         public bool isDebug = false;
         // isDebugLogSettingsAccess intentionally omitted — removed in 2.6.7
     }

@@ -10,8 +10,8 @@ internal static class GearsGeneralSettings
     {
         ConfigureRangeSetting(generalCategory);
         ConfigureAllowPushToAlliedVehiclesSetting(generalCategory);
-        ConfigureConsumeFromDronesSetting(generalCategory);
-        ConfigureConsumeFromVehiclesSetting(generalCategory);
+        ConfigureIncludeDronesSetting(generalCategory);
+        ConfigureIncludeVehiclesSetting(generalCategory);
         ConfigureIsDebugSetting(generalCategory);
     }
 
@@ -85,34 +85,34 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureConsumeFromDronesSetting(IGlobalModSettingsCategory generalCategory)
+    internal static void ConfigureIncludeDronesSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("ConsumeFromDrones") as IGlobalValueSetting);
+        var setting = (generalCategory.GetSetting("IncludeDrones") as IGlobalValueSetting);
         if (setting == null)
         {
             ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
-        setting.OnSettingChanged += SetConsumeFromDrones;
-        SyncConsumeFromDronesSetting(setting);
+        setting.OnSettingChanged += SetIncludeDrones;
+        SyncIncludeDronesSetting(setting);
     }
 
-    private static void SetConsumeFromDrones(IGlobalModSetting setting, string newValue)
+    private static void SetIncludeDrones(IGlobalModSetting setting, string newValue)
     {
         var value = GearsConversions.ToBool(newValue, true);
-        var oldValue = ModConfig.ClientConfig.consumeFromDrones;
+        var oldValue = ModConfig.ClientConfig.includeDrones;
 
         if (oldValue != value)
         {
-            ModConfig.ClientConfig.consumeFromDrones = value;
+            ModConfig.ClientConfig.includeDrones = value;
             ModConfig.SaveConfig();
         }
     }
 
-    private static void SyncConsumeFromDronesSetting(IGlobalValueSetting setting)
+    private static void SyncIncludeDronesSetting(IGlobalValueSetting setting)
     {
-        var modConfigValue = ModConfig.ClientConfig.consumeFromDrones;
+        var modConfigValue = ModConfig.ClientConfig.includeDrones;
 
         if (!GearsConversions.IsEqualValue(setting.CurrentValue, modConfigValue))
         {
@@ -121,34 +121,34 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureConsumeFromVehiclesSetting(IGlobalModSettingsCategory generalCategory)
+    internal static void ConfigureIncludeVehiclesSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("ConsumeFromVehicles") as IGlobalValueSetting);
+        var setting = (generalCategory.GetSetting("IncludeVehicles") as IGlobalValueSetting);
         if (setting == null)
         {
             ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
-        setting.OnSettingChanged += SetConsumeFromVehicles;
-        SyncConsumeFromVehiclesSetting(setting);
+        setting.OnSettingChanged += SetIncludeVehicles;
+        SyncIncludeVehiclesSetting(setting);
     }
 
-    private static void SetConsumeFromVehicles(IGlobalModSetting setting, string newValue)
+    private static void SetIncludeVehicles(IGlobalModSetting setting, string newValue)
     {
         var value = GearsConversions.ToBool(newValue, true);
-        var oldValue = ModConfig.ClientConfig.consumeFromVehicles;
+        var oldValue = ModConfig.ClientConfig.includeVehicles;
 
         if (oldValue != value)
         {
-            ModConfig.ClientConfig.consumeFromVehicles = value;
+            ModConfig.ClientConfig.includeVehicles = value;
             ModConfig.SaveConfig();
         }
     }
 
-    private static void SyncConsumeFromVehiclesSetting(IGlobalValueSetting setting)
+    private static void SyncIncludeVehiclesSetting(IGlobalValueSetting setting)
     {
-        var modConfigValue = ModConfig.ClientConfig.consumeFromVehicles;
+        var modConfigValue = ModConfig.ClientConfig.includeVehicles;
 
         if (!GearsConversions.IsEqualValue(setting.CurrentValue, modConfigValue))
         {
