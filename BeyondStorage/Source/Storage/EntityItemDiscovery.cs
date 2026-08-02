@@ -1,6 +1,5 @@
 ﻿using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
-using Platform;
 
 namespace BeyondStorage.Storage;
 
@@ -35,7 +34,7 @@ internal static class EntityItemDiscovery
         }
 
 #if DEBUG
-        LogProcessingResults(d_MethodName, processingState);
+        //LogProcessingResults(d_MethodName, processingState);
 #endif
     }
 
@@ -114,8 +113,6 @@ internal static class EntityItemDiscovery
 
     private static bool ShouldProcessVehicle(EntityVehicle vehicle, EntityProcessingState state, bool allowPushToAlliedVehicles)
     {
-        const string d_MethodName = nameof(ShouldProcessVehicle);
-
         // Check if vehicle has storage and items
         if (vehicle.bag == null || vehicle.bag.IsEmpty() || !vehicle.hasStorage())
         {
@@ -123,33 +120,28 @@ internal static class EntityItemDiscovery
         }
 
         // Check if vehicle access is allowed for local player
-        if (!vehicle.IsUserAllowed(PlatformManager.InternalLocalUserIdentifier))
+        if (!vehicle.IsUserAllowed(state.World.InternalLocalUserIdentifier))
         {
-            ModLogger.DebugLog($"{d_MethodName}: !vehicle.IsUserAllowed, returning False");
             return false;
         }
 
         if (vehicle.IsLockedForLocalPlayer(state.World.Player))
         {
-            ModLogger.DebugLog($"{d_MethodName}: vehicle.IsLockedForLocalPlayer, returning False");
             return false;
         }
 
-        ModLogger.DebugLog($"{d_MethodName}: allowPushToAlliedVehicles={allowPushToAlliedVehicles}");
         if (!allowPushToAlliedVehicles && !vehicle.LocalPlayerIsOwner())
         {
-            ModLogger.DebugLog($"{d_MethodName}: !vehicle.LocalPlayerIsOwner(), allowPushToAlliedVehicles={allowPushToAlliedVehicles}, returning False");
             return false;
         }
 
-        ModLogger.DebugLog($"{d_MethodName}: returning True");
         return true;
     }
 
     private static int ProcessVehicleItems(EntityVehicle vehicle, float distance, EntityProcessingState state)
     {
 #if DEBUG
-        const string d_MethodName = nameof(ProcessVehicleItems);
+        //const string d_MethodName = nameof(ProcessVehicleItems);
 #endif
         var context = state.Context;
         var sourceAdapter = StorageSourceAdapterFactory.CreateVehicleStorageSourceAdapter(context, vehicle);
@@ -159,7 +151,7 @@ internal static class EntityItemDiscovery
 #if DEBUG
         if (consumableStacksRegistered > 0)
         {
-            ModLogger.DebugLog($"{d_MethodName}: {consumableStacksRegistered} item stacks pulled from {vehicle}");
+            //ModLogger.DebugLog($"{d_MethodName}: {consumableStacksRegistered} item stacks pulled from {vehicle}");
         }
 #endif
         return consumableStacksRegistered;
