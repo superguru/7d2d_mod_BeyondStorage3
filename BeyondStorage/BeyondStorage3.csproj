@@ -233,14 +233,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ModPackage\Config\loadingscreen.xml" />
-    <None Include="gazdeploy_bs3.yaml" />
-    <None Include="ModPackage\Config\Localization.csv" />
+    <Content Include="ModPackage\Config\Localization.csv" />
     <Content Include="ModPackage\Config\XUi_InGame\windows.xml" />
+    <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_pull_loadout.png" />
+    <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_push.png" />
     <Content Include="ModPackage\LICENSE.txt" />
     <Content Include="ModPackage\ModInfo.xml" />
     <Content Include="ModPackage\ModSettings.xml" />
-    <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_pull_loadout.png" />
-    <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_push.png" />
+    <Content Include="gazdeploy_bs3.yaml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
