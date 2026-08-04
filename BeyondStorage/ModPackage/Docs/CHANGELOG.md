@@ -1,9 +1,33 @@
-﻿__🚧 WIP v3.1.4__
+﻿__🚧 WIP v3.1.5__
+- 🙋 Any bugs to report?
+
+```text
+For game V3.1.x or later
+- Push to Allies' Vehicles! (can turn off)
+- Optional GEARS settings support
+- Read the Changelog for more
+
+Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
+```
+
+```text
+- ✅ Added 
+-  Changed
+- ♻ Fixed 
+- ❌ Removed 
+- 👉🏼 WIP: 
+- 💭 Considering 
+```
+
+__🚀 Released v3.1.4__
 - ✅ Added GEARS support for all mod settings
 - ✅ Allow smart push to vehicles of allied players as well as your own, On by default
 - ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour, default is On
-- 👉🏼 WIP: Renamed the consumeXXX config settings to includeXXXInNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
-- 🙋 Any bugs to report?
+- ✅ Added Shift Push to bulk transfer any leftover items after normal push to nearby storages, whether they already have other items of that type or not
+- 🚼 Renamed the consumeXXX config settings to includeXXXInNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
+
+📢 This mod version will only support game V3.1.0 and later
+📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
 
 __🚀 Released v3.1.3__
 - ✅ Use the localised name for Backpack rather than player name for messages about smart sorting functions
@@ -28,23 +52,5 @@ __🚀 Released v3.1.1__
 - ♻ Implemented Smart Push button on Dropped Loot containers
 - ❌ Remove **serverSyncConfig** config option. There is no reason to ever set it to False.
 - ♻ Small bug fixes that no-one even noticed :)
-
-📢 This mod version will only support game V3.1.0 and later
-
-📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/q4uajGgpr) for the release sites of this update.
-
-```text
-For game V3.1.x or later only. Many cool changes. Read the Changelog for a summarised list.
-
-Go to #beyond-storage3 on Discord for mod support. First try reading the Docs/README.md file or the mod web page.
-```
-
-```text
-- ✅ Added 
-- ♻ Fixed 
-- ❌ Removed 
-- 👉🏼 WIP: 
-- 💭 Considering 
-```
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
