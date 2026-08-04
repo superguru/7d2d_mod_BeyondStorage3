@@ -55,7 +55,7 @@ The 16 Water will also by moved to any crates or other player storage if there i
 This works from anywhere and anything where you see the Smart Push button.
 Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Everything is included.
 
-### Smart Push Order Of Operations
+### Smart Push Stages (aka Order Of Operations)
 
 1\) Pushing items from your anywhere will first try to fill any **Load Out slots (locked slots)**, and then move anything that's left to the surrounding storages.
 
