@@ -69,6 +69,7 @@ Nothing is bulk moved to workstation or collector outputs, because that makes no
 
 > 👆 Shift Push Mode: There is a stage 4 if you use Shift Push (click the button while holding Shift):
 > 4\) After the stages above, any remaining items (that there's room for somewhere) will be moved to any storages that have empty slots, whether already have items of that type or not.
+> You can Shift Push from all stationary storages, including workstations.
 
 This helps a lot when you are clearing a POI and you - and perhaps others that you're playing with - placed some dump chests. You can auto-sort items by bulk transferring them using Smart Push, which will fill up those chest, and then also any of your own vehicles and drones nearby that already have any of the remaining items that need to be moved.
 
