@@ -16,10 +16,12 @@ You should also look at the Media Gallery on the mod distribution site where you
  
 ## What can this do?
 There are three main functions:
-1. Consume - pay, paint, refuel, craft, upgrade, repair, reload
-2. Smart Sorting:
-    - Smart Push - move items to surrounding containers that already have the item being moved - works for everything
-    - Smart Pull - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
+- 1️⃣ <span style="text-decoration: underline;">Consume</span> - pay, paint, refuel, craft, upgrade, repair, reload
+- Smart Sorting:
+    - 2️⃣ <span style="text-decoration: underline;">Smart Push</span>
+        - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
+        - 👆 Shift Push Mode: Hold Shift and click the Smart Push button to move items to storages that have open slots, even if they **don't already have** the item being moved
+    - 3️⃣ <span style="text-decoration: underline;">Smart Pull</span> - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
 
 This is explained more fully below.
 
@@ -55,17 +57,20 @@ Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Eve
 
 ### Smart Push Order Of Operations
 
-Pushing items from your anywhere will first try to fill any **Load Out slots (locked slots)**, and then move anything that's left to the surrounding storages.
+1\) Pushing items from your anywhere will first try to fill any **Load Out slots (locked slots)**, and then move anything that's left to the surrounding storages.
 
 This should help with keeping your bullets, lock picks, repair kits, and bandages stocked up without too much other intervention.
 
-After this any container that can't move is tried, and items are sorted into the Crates, etc. per item type they already contain.
+2\) After this any container that can't move is tried, and items are sorted into the Crates, etc. per item type they already contain.
 
 Nothing is bulk moved to workstation or collector outputs, because that makes no sense.
 
-Lastly, if there's still something to move, then any mobile storages are tried, also looking for places that already contain the item types that need to be moved, thereby sorting them. Mobile storages are things like vehicles, and drones.
+3\) Lastly, if there's still something to move, then any mobile storages are tried, also looking for places that already contain the item types that need to be moved, thereby sorting them. Mobile storages are things like vehicles, and drones.
 
-This helps a lot when you are clearing a POI and you - and perhaps anyone you're playing with - placed some dump chests. You can auto-sort items by bulk transferring them using Smart Push, which will fill up those chest, and then also any of your own vehicles and drones nearby that already have any of the remaining items that need to be moved.
+> 👆 Shift Push Mode: There is a stage 4 if you use Shift Push (click the button while holding Shift):
+> 4\) After the stages above, any remaining items (that there's room for somewhere) will be moved to any storages that have empty slots, whether already have items of that type or not.
+
+This helps a lot when you are clearing a POI and you - and perhaps others that you're playing with - placed some dump chests. You can auto-sort items by bulk transferring them using Smart Push, which will fill up those chest, and then also any of your own vehicles and drones nearby that already have any of the remaining items that need to be moved.
 
 ### Pushing and Locked Slots
 Locking a slot means that you are turning Off any bulk transfers from that slot, just like in the base game. Slot locking prevents items from being bulk moved **OUT**, not in.
@@ -73,19 +78,6 @@ So if you always want to keep Wood in your Backpack, lock the slot it's in, and 
 ![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
 This is my Backpack top row from a current game. None of these items will be bulk moved out of the Backpack, whether using the game *Move All* or *Move and Fill* buttons, or using Smart Push.
 The 62 Polymers is not locked, so they can be moved is if there is a storage somewhere that already has some Polymers in it.
-
-### Smart Pull, aka Topping up your Load Out
-If you lock some slots in your Backpack (Player Inventory), or in Drones, vehicles like Motorcycle, Gyrocopter, and so on, then you can use those as your **Load Out** slots.
-Using the Smart Pull button will top up any items in those slots with any available items.
-![Smart Pull Loadout to Bicycle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/smart_pull_bicycle_loadout.jpg)
-This is my trusty Bicycle. I always keep Coins, Repair Kits, Lock picks, Shotgun Ammo, and Arrows in there.
-I never keep any of these items in my own inventory, so my Backpack is just for looted items and whatnot.
-Before leaving the base, I just use Smart Pull to Top Up my Bicycle Load Out, and I have a fresh load of bullets and other needful things to go **On Mission**.
-
-I also do a Smart Push from the Workbench to sort any produced ammo to, in this order:
-1. My Bicycle (or any vehicles or drones that belong to me, closest first) - top up the **Load Out slots (locked slots)**
-2. Stationary storage - Crates, player crafted storage, etc. with items matching the ones being transferred
-3. Mobile storage - vehicles and drones again, but this time not limited to locked slots, but any slot that already contains the items being transferred
 
 ## Overflow from Smart Push
 **Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate not has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
@@ -101,6 +93,19 @@ After the smart push:
 - Crate B has 10 Water, 1 empty slot <- 7 Water came in, and filled up the existing 3 Water slot
 
 📢**Note:** These examples are for the default max stack size of 10 in Vanilla default settings. You can change the stack size by using the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
+
+### Smart Pull, aka Topping up your Load Out
+If you lock some slots in your Backpack (Player Inventory), or in Drones, vehicles like Motorcycle, Gyrocopter, and so on, then you can use those as your **Load Out** slots.
+Using the Smart Pull button will top up any items in those slots with any available items.
+![Smart Pull Loadout to Bicycle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/smart_pull_bicycle_loadout.jpg)
+This is my trusty Bicycle. I always keep Coins, Repair Kits, Lock picks, Shotgun Ammo, and Arrows in there.
+I never keep any of these items in my own inventory, so my Backpack is just for looted items and whatnot.
+Before leaving the base, I just use Smart Pull to Top Up my Bicycle Load Out, and I have a fresh load of bullets and other needful things to go **On Mission**.
+
+I also do a Smart Push from the Workbench to sort any produced ammo to, in this order:
+1. My Bicycle (or any vehicles or drones that belong to me, closest first) - top up the **Load Out slots (locked slots)**
+2. Stationary storage - Crates, player crafted storage, etc. with items matching the ones being transferred
+3. Mobile storage - vehicles and drones again, but this time not limited to locked slots, but any slot that already contains the items being transferred
 
 ### Gotchas about Smart Pull
 Items are only pulled from stationary storages like crates and other user created and placed containers. Never from vehicles or drones.
