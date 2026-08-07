@@ -15,13 +15,34 @@ public sealed class WorldPlayerContext
     private const double DEFAULT_CACHE_DURATION = 2.0;
     private static readonly ExpiringCache<WorldPlayerContext> s_cache = new(DEFAULT_CACHE_DURATION, nameof(WorldPlayerContext)) { LogCacheUsage = false };
 
-    public World World { get; }
-    public EntityPlayerLocal Player { get; }
-    public Vector3 PlayerPosition { get; }
-    public PlatformUserIdentifierAbs InternalLocalUserIdentifier { get; }
-    public int PlayerEntityId { get; }
-    public List<Chunk> ChunkCacheCopy { get; }
-    public System.DateTime CreatedAt { get; }
+    public World World
+    {
+        get;
+    }
+    public EntityPlayerLocal Player
+    {
+        get;
+    }
+    public Vector3 PlayerPosition
+    {
+        get;
+    }
+    public PlatformUserIdentifierAbs InternalLocalUserIdentifier
+    {
+        get;
+    }
+    public int PlayerEntityId
+    {
+        get;
+    }
+    public List<Chunk> ChunkCacheCopy
+    {
+        get;
+    }
+    public System.DateTime CreatedAt
+    {
+        get;
+    }
 
     private WorldPlayerContext(World world, EntityPlayerLocal player, List<Chunk> chunkCacheCopy)
     {
@@ -110,6 +131,17 @@ public sealed class WorldPlayerContext
         }
 
         return new WorldPlayerContext(world, player, chunkCacheCopy);
+    }
+
+    public bool IsSameFactionAsPlayer(EntityAlive entity)
+    {
+        if (entity == null)
+        {
+            return false;
+        }
+
+        var entityFactionId = entity.factionId;
+        return (Player.factionId == entityFactionId);
     }
 
     /// <summary>

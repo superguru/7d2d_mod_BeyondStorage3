@@ -119,23 +119,17 @@ internal static class EntityItemDiscovery
             return false;
         }
 
-        // Check if vehicle access is allowed for local player
-        if (!vehicle.IsUserAllowed(state.World.InternalLocalUserIdentifier))
+        var isLocalPlayerAllowed = vehicle.IsUserAllowed(state.World.InternalLocalUserIdentifier);
+
+        if (WorldTools.IsSinglePlayer() || !allowPushToAlliedVehicles)
         {
-            return false;
+            return isLocalPlayerAllowed;
         }
 
-        if (vehicle.IsLockedForLocalPlayer(state.World.Player))
-        {
-            return false;
-        }
+        // allowPushToAlliedVehicles == true; multi-player-game == true;
+        var vehicleFactionMatches = state.World.IsSameFactionAsPlayer(vehicle);
 
-        if (!allowPushToAlliedVehicles && !vehicle.LocalPlayerIsOwner())
-        {
-            return false;
-        }
-
-        return true;
+        return isLocalPlayerAllowed || vehicleFactionMatches;
     }
 
     private static int ProcessVehicleItems(EntityVehicle vehicle, float distance, EntityProcessingState state)

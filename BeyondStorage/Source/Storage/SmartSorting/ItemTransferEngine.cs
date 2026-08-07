@@ -55,6 +55,7 @@ internal static class ItemTransferEngine
 #endif
         }
 
+        result.Sort(static (a, b) => a.Distance.CompareTo(b.Distance));  // need to ensure the merged result is also sorted
         return result;
     }
 
