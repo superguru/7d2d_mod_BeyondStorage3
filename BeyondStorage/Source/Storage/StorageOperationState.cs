@@ -54,6 +54,11 @@ internal class StorageOperationState
     /// </summary>
     public int StorageCount => _affectedStorages.Count;
 
+    /// <summary>
+    /// Returns a friendlier name for the affected storage(s).
+    /// Currently just either the singular storage name, or otherwise the count, but in future
+    /// maybe a concatenated version if there are 3 or less?
+    /// </summary>
     public string GetStoragesDescription()
     {
         var storageCount = StorageCount;

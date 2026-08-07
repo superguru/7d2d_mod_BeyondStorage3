@@ -13,6 +13,7 @@ namespace BeyondStorage.Storage.SmartSorting;
 public class SmartPushOperations
 {
     public const string MSG_SMART_PUSH_RESULT = "msgBeyondSmartPush_Result";
+    public const string MSG_SMART_PUSH_SINGLE_AFFECTED_RESULT = "msgBeyondSmartPushSingleAffected_Result";
 
     private static SmartPushScope GetScopeFromInputState(XUiController _sender, int _mouseButton)
     {

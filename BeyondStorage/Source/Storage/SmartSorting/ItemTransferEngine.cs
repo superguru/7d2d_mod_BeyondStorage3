@@ -216,15 +216,28 @@ internal static class ItemTransferEngine
 
     private static bool OnSmartPushCompleted(string methodName, StorageContext context, StorageOperationState state)
     {
-        if (state.StackCount == 0)
+        int stackCount = state.StackCount;
+        if (stackCount == 0)
         {
             return false;
         }
 
-        // Through hard work you moved {0} stack(s) from {1} to {2} storage(s)
+        string localisationKey = null;
+        int storageCount = state.StorageCount;
+        if (storageCount == 1)
+        {
+            // Through hard work you moved {0} stack(s) from {1} to {2}
+            localisationKey = SmartPushOperations.MSG_SMART_PUSH_SINGLE_AFFECTED_RESULT;
+        }
+        else
+        {
+            // Through hard work you moved {0} stack(s) from {1} to {2} storage(s)
+            localisationKey = SmartPushOperations.MSG_SMART_PUSH_RESULT;
+        }
+
         context.ShowLocalPlayerNotification(
-            SmartPushOperations.MSG_SMART_PUSH_RESULT,
-            state.StackCount,
+            localisationKey,
+            stackCount,
             state.MasterStorageName,
             state.GetStoragesDescription());
 

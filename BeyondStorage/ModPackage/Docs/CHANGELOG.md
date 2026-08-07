@@ -1,5 +1,6 @@
 ﻿__🔬 WIP v3.1.5__
 - ✅ Added Shift+Push information to the relevant button tooltips
+- ✅ Improve smart push notification message content
 - ♻ Fixed that eligible storages was sorted by type then closest, instead of just closest
 - ♻ Fixed that pushing to allies' vehicles didn't work
 - 🙋 Any bugs to report?
