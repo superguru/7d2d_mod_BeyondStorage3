@@ -274,6 +274,7 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ [IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
 - ✅ IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
 - ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
+- ✅ [(V3) Oakraven Fish Farm](https://www.nexusmods.com/7daystodie/mods/5189)
 - ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
 - ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
 - ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
