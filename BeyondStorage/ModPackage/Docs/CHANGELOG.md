@@ -1,4 +1,4 @@
-﻿__🔬 WIP v3.1.7__
+﻿__🚀 Released v3.1.7__
 - ✅ Added Shift+Push information to the relevant button tooltips
 - ✅ Improve smart push notification message content
 - ✅ Allow push from any loot window
@@ -9,8 +9,7 @@
 
 ```text
 For game V3.1.x or later
-- Push to Allies' Vehicles! (can turn off)
-- Optional GEARS settings support
+- Fixed that allied vehicles could sometimes not be found
 - Read the Changelog for more
 
 Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
