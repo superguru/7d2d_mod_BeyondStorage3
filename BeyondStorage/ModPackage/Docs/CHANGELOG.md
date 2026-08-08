@@ -1,11 +1,11 @@
-﻿__🚀 Released v3.1.7__
-- ✅ Added Shift+Push information to the relevant button tooltips
-- ✅ Improve smart push notification message content
-- ✅ Allow push from any loot window
-- ♻ Fixed that eligible storages was sorted by type then closest, instead of just closest
-- ♻ Fixed that pushing to allies' vehicles didn't work
-- ♻ Fixed that Shift Push to empty vehicles didn't work
+﻿__🚧 WIP  v3.1.8__
+- 
 - 🙋 Any bugs to report?
+
+📢 This mod version will only support game V3.1.0 and later
+📍 See the pinned message to find release sites for this update.
+
+📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
 
 ```text
 For game V3.1.x or later
@@ -29,15 +29,20 @@ Go to #beyond-storage3 on Discord for support. First read the Docs/README.md fil
 - 💭 Considering: 
 ```
 
+__🚀 Released v3.1.7__
+- ✅ Added Shift+Push information to the relevant button tooltips
+- ✅ Improve smart push notification message content
+- ✅ Allow push from any loot window
+- ♻ Fixed that eligible storages was sorted by type then closest, instead of just closest
+- ♻ Fixed that pushing to allies' vehicles didn't work
+- ♻ Fixed that Shift Push to empty vehicles didn't work
+
 __🚀 Released v3.1.4__
 - ✅ Added GEARS support for all mod settings
 - ✅ Allow smart push to vehicles of allied players as well as your own, On by default
 - ✅ Added new config setting `allowPushToAlliedVehicles` to control this behaviour, default is On
 - ✅ Added Shift Push to bulk transfer any leftover items after normal push to nearby storages, whether they already have other items of that type or not
 - 🚼 Renamed the consumeXXX config settings to includeXXXInNetwork, as that is what they really do. Localisation, source code and documentation need to be updated too.
-
-📢 This mod version will only support game V3.1.0 and later
-📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
 
 __🚀 Released v3.1.3__
 - ✅ Use the localised name for Backpack rather than player name for messages about smart sorting functions
