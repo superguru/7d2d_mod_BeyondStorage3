@@ -247,12 +247,12 @@ public static class WindowStateManager
     /// <summary>
     /// Gets the currently active storage container window instance
     /// </summary>
-    /// <returns>The active storage container window, or null if none is open or open window is not player storage</returns>
-    public static XUiC_LootWindow GetActiveStorageContainerWindow()
+    /// <returns>The active storage container window, or null if none is open</returns>
+    internal static XUiC_LootWindow GetActiveStorageContainerWindow()
     {
         lock (s_lootLockObject)
         {
-            return s_isPlayerStorageWindowOpen ? s_lootWindowInstance : null;
+            return s_lootWindowInstance;
         }
     }
 

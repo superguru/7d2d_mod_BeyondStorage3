@@ -79,7 +79,7 @@ public class SmartPushOperations
         SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
 
 #if DEBUG
-        //ModLogger.DebugLog($"{methodName}: Starting");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
@@ -176,7 +176,7 @@ public class SmartPushOperations
         SmartPushScope scope = GetScopeFromInputState(_sender, _mouseButton);
 
 #if DEBUG
-        //ModLogger.DebugLog($"{methodName}: Starting");
+        ModLogger.DebugLog($"{d_MethodName}: Starting");
 #endif
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))

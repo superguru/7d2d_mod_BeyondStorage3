@@ -184,10 +184,12 @@ internal static class XUiC_LootWindow_Ext
         {
             case "bs_is_player_storage_open":
                 _value = WindowStateManager.IsPlayerStorageOpen() ? "true" : "false";
-                __result = true;  // This means that the binding name was a known one and we've set the value to whatever the binding resolves to 
-#if DEBUG
-                //ModLogger.DebugLog($"bs_is_player_storage_open: __instance={__instance != null}, _bindingName='{_bindingName}', _value = '{_value}', __result={__result}");
-#endif
+                __result = true;  // This means that the binding name was a known one and we've set the value to whatever the binding resolves to
+                return false; // Skip original method
+
+            case "bs_is_any_loot_window_open":
+                _value = WindowStateManager.IsAnyLootWindowOpen() ? "true" : "false";
+                __result = true;  // This means that the binding name was a known one and we've set the value to whatever the binding resolves to
                 return false; // Skip original method
         }
 

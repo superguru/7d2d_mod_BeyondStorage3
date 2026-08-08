@@ -1,11 +1,11 @@
-﻿__🔬 WIP v3.1.5__
+﻿__🔬 WIP v3.1.7__
 - ✅ Added Shift+Push information to the relevant button tooltips
 - ✅ Improve smart push notification message content
+- ✅ Allow push from any loot window
 - ♻ Fixed that eligible storages was sorted by type then closest, instead of just closest
 - ♻ Fixed that pushing to allies' vehicles didn't work
+- ♻ Fixed that Shift Push to empty vehicles didn't work
 - 🙋 Any bugs to report?
-
-- 📜 TODO: Allow push from any loot window
 
 ```text
 For game V3.1.x or later
