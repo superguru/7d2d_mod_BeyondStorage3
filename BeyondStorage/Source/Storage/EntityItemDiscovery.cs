@@ -179,7 +179,7 @@ internal static class EntityItemDiscovery
         }
 
         // Check if drone has items
-        if (drone.bag == null || drone.bag.IsEmpty())
+        if (drone.bag == null)
         {
             return false;
         }
