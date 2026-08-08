@@ -133,15 +133,23 @@ public sealed class WorldPlayerContext
         return new WorldPlayerContext(world, player, chunkCacheCopy);
     }
 
-    public bool IsSameFactionAsPlayer(EntityAlive entity)
+    /// <summary>
+    /// Checks whether the given owner identifier is on the local player's in-game ally list.
+    /// </summary>
+    /// <remarks>
+    /// Entity.factionId is not usable for this: vehicles never have theirs assigned to the
+    /// owning player's faction (ItemActionSpawnVehicle only calls EntityVehicle.SetOwner, it
+    /// never sets factionId for vehicles), so it stays at its unset default. Ownership/allies
+    /// have to be resolved via the owner's PlatformUserIdentifierAbs and the Allies system instead.
+    /// </remarks>
+    public bool IsAlliedOwner(PlatformUserIdentifierAbs ownerId)
     {
-        if (entity == null)
+        if (ownerId == null)
         {
             return false;
         }
 
-        var entityFactionId = entity.factionId;
-        return (Player.factionId == entityFactionId);
+        return GameManager.Instance?.persistentPlayers?.Allies.IsAlly(InternalLocalUserIdentifier, ownerId) ?? false;
     }
 
     /// <summary>

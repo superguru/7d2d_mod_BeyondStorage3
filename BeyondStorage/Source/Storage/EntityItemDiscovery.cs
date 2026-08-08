@@ -113,8 +113,8 @@ internal static class EntityItemDiscovery
 
     private static bool ShouldProcessVehicle(EntityVehicle vehicle, EntityProcessingState state, bool allowPushToAlliedVehicles)
     {
-        // Check if vehicle has storage and items
-        if (vehicle.bag == null || vehicle.bag.IsEmpty() || !vehicle.hasStorage())
+        // Check if vehicle has storage
+        if (vehicle.bag == null || !vehicle.hasStorage())
         {
             return false;
         }
@@ -127,9 +127,9 @@ internal static class EntityItemDiscovery
         }
 
         // allowPushToAlliedVehicles == true; multi-player-game == true;
-        var vehicleFactionMatches = state.World.IsSameFactionAsPlayer(vehicle);
+        var isAlliedVehicle = state.World.IsAlliedOwner(vehicle.GetOwner());
 
-        return isLocalPlayerAllowed || vehicleFactionMatches;
+        return isLocalPlayerAllowed || isAlliedVehicle;
     }
 
     private static int ProcessVehicleItems(EntityVehicle vehicle, float distance, EntityProcessingState state)
