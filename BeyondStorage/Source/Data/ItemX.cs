@@ -110,6 +110,21 @@ public static class ItemX
         return ItemClassCache.LookupItemName(stack);
     }
 
+    public static string NameLocalisedOf(int itemType)
+    {
+        return ItemClassCache.LookupItemLocalisedName(itemType);
+    }
+
+    public static string NameLocalisedOf(ItemValue itemValue)
+    {
+        return ItemClassCache.LookupItemLocalisedName(itemValue);
+    }
+
+    public static string NameLocalisedOf(ItemStack stack)
+    {
+        return ItemClassCache.LookupItemLocalisedName(stack);
+    }
+
     public static int MaxStackSizeOf(int itemType)
     {
         return ItemClassCache.LookupMaxStackSize(itemType);

@@ -1,5 +1,5 @@
-﻿__🚧 WIP  v3.1.8__
-- 
+﻿__🚧 WIP v3.1.8__
+- ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
 - 🙋 Any bugs to report?
 
 📢 This mod version will only support game V3.1.0 and later
@@ -16,9 +16,9 @@ Go to #beyond-storage3 on Discord for support. First read the Docs/README.md fil
 ```
 
 ```text
-🔬 Experimental
-🚧 WIP 
-🚀 Released
+__🔬 Experimental v__
+__🚧 WIP v__
+__🚀 Released v__
 
 - ✅ Added 
 -  Changed

@@ -12,7 +12,8 @@ namespace BeyondStorage.Storage.SmartSorting;
 /// </summary>
 public class SmartPullOperations
 {
-    public const string MSG_SMART_PULL_LOADOUT_RESULT = "msgBeyondSmartPullLoadout_Result";
+    public const string MSG_SMART_PULL_MULTIPLE = "msgBeyondSmartPull_Multiple";
+    public const string MSG_SMART_PULL_SINGLE = "msgBeyondSmartPull_Single";
 
     private static void HandlePullFromStorages<L>(string methodName, StorageContext context, StorageSourceAdapter<L> loadout) where L : class
     {

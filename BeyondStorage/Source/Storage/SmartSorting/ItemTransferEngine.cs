@@ -153,16 +153,39 @@ internal static class ItemTransferEngine
         }
     }
 
+    private static string GetSmartPullResultLocalisationKey(int stackCount)
+    {
+        // Pre-condition: Logic for stackCount < 1 is handled elsewhere
+
+        // Default: You carefully topped up {0} slots in the {1}
+        string localisationKey = SmartPullOperations.MSG_SMART_PULL_MULTIPLE;
+
+        if (stackCount == 1)
+        {
+            localisationKey = SmartPullOperations.MSG_SMART_PULL_SINGLE;
+        }
+        else
+        {
+            // Case: Both counts are strictly greater than 1
+            // Use default of multiple slots topped up
+        }
+
+        return localisationKey;
+    }
+
     private static bool OnSmartPullCompleted(string methodName, StorageContext context, StorageOperationState state)
     {
-        if (state.StackCount == 0)
+        int stackCount = state.StackCount;
+        if (stackCount <= 0)
         {
             return false;
         }
 
+        string localisationKey = GetSmartPullResultLocalisationKey(stackCount);
+
         context.ShowLocalPlayerNotification(
-            SmartPullOperations.MSG_SMART_PULL_LOADOUT_RESULT,
-            state.StackCount,
+            localisationKey,
+            state.GetStacksDescription(),
             state.MasterStorageName);
 
         context.InvalidateCache();
@@ -214,30 +237,52 @@ internal static class ItemTransferEngine
         }
     }
 
+    private static string GetSmartPushResultLocalisationKey(int stackCount, int storageCount)
+    {
+        // Pre-condition: Logic for stackCount < 1 or storageCount < 1 is handled elsewhere
+
+        // Default: Through hard work you moved {0} stacks from {1} to {2} storages
+        string localisationKey = SmartPushOperations.MSG_SMART_PUSH_MANY_TO_MANY;
+
+        if (stackCount == 1 && storageCount == 1)
+        {
+            // Case: Both counts are exactly 1
+            localisationKey = SmartPushOperations.MSG_SMART_PUSH_ONE_TO_ONE;
+        }
+        else if (stackCount == 1 && storageCount > 1)
+        {
+            // Case: Stack is exactly 1, but Storage is greater than 1
+            localisationKey = SmartPushOperations.MSG_SMART_PUSH_ONE_TO_MANY;
+        }
+        else if (stackCount > 1 && storageCount == 1)
+        {
+            // Case: Stack is greater than 1, but Storage is exactly 1
+            localisationKey = SmartPushOperations.MSG_SMART_PUSH_MANY_TO_ONE;
+        }
+        else
+        {
+            // Case: Both counts are strictly greater than 1
+            // Use default of many to many
+        }
+
+        return localisationKey;
+    }
+
     private static bool OnSmartPushCompleted(string methodName, StorageContext context, StorageOperationState state)
     {
         int stackCount = state.StackCount;
-        if (stackCount == 0)
+        int storageCount = state.StorageCount;
+
+        if (stackCount <= 0 || storageCount <= 0)
         {
             return false;
         }
 
-        string localisationKey = null;
-        int storageCount = state.StorageCount;
-        if (storageCount == 1)
-        {
-            // Through hard work you moved {0} stack(s) from {1} to {2}
-            localisationKey = SmartPushOperations.MSG_SMART_PUSH_SINGLE_AFFECTED_RESULT;
-        }
-        else
-        {
-            // Through hard work you moved {0} stack(s) from {1} to {2} storage(s)
-            localisationKey = SmartPushOperations.MSG_SMART_PUSH_RESULT;
-        }
+        string localisationKey = GetSmartPushResultLocalisationKey(stackCount, storageCount);
 
         context.ShowLocalPlayerNotification(
             localisationKey,
-            stackCount,
+            state.GetStacksDescription(),
             state.MasterStorageName,
             state.GetStoragesDescription());
 

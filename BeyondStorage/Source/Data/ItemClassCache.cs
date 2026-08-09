@@ -63,6 +63,18 @@ public static class ItemClassCache
         }
     }
 
+    public static string LookupItemLocalisedName(int itemType)
+    {
+        const string d_MethodName = nameof(LookupItemLocalisedName);
+
+        var itemName = LookupItemName(itemType);
+        var localisedName = GameTools.GetLocalisedValue(d_MethodName, itemName);
+#if DEBUG
+        //ModLogger.DebugLog($"{d_MethodName} {itemType} -> {itemName} -> {localisedName}");
+#endif
+        return localisedName;
+    }
+
     public static string LookupItemName(ItemValue itemValue)
     {
         return LookupItemName(itemValue?.type ?? UniqueItemTypes.EMPTY);
@@ -71,6 +83,16 @@ public static class ItemClassCache
     public static string LookupItemName(ItemStack itemStack)
     {
         return LookupItemName(itemStack?.itemValue);
+    }
+
+    public static string LookupItemLocalisedName(ItemValue itemValue)
+    {
+        return LookupItemLocalisedName(itemValue?.type ?? UniqueItemTypes.EMPTY);
+    }
+
+    public static string LookupItemLocalisedName(ItemStack itemStack)
+    {
+        return LookupItemLocalisedName(itemStack?.itemValue);
     }
 
     public static int LookupMaxStackSize(int itemType)

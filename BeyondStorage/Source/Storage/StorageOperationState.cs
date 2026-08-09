@@ -77,6 +77,32 @@ internal class StorageOperationState
     }
 
     /// <summary>
+    /// Returns a friendlier name for the affected storage(s).
+    /// Currently just either the singular storage name, or otherwise the count, but in future
+    /// maybe a concatenated version if there are 3 or less?
+    /// </summary>
+    public string GetStacksDescription()
+    {
+        var stackCount = StackCount;
+        var result = stackCount.ToString();
+
+        if (ItemTypeCount > 0)
+        {
+            var itemType = _uniqueItems.FirstOrDefault();
+            if (itemType != UniqueItemTypes.EMPTY)
+            {
+                var localisedName = ItemX.NameLocalisedOf(itemType);
+                if (!string.IsNullOrEmpty(localisedName) && !string.IsNullOrWhiteSpace(localisedName))
+                {
+                    result = localisedName;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
     /// Gets the number of distinct item stacks affected.
     /// </summary>
     public int StackCount => _affectedStacks.Count;
