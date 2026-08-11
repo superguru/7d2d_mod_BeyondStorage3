@@ -86,7 +86,7 @@ internal class StorageOperationState
         var stackCount = StackCount;
         var result = stackCount.ToString();
 
-        if (ItemTypeCount > 0)
+        if (ItemTypeCount == 1)
         {
             var itemType = _uniqueItems.FirstOrDefault();
             if (itemType != UniqueItemTypes.EMPTY)
