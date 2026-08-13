@@ -57,11 +57,11 @@ Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Eve
 
 ### Smart Push Stages (aka Order Of Operations)
 
-1\) Pushing items from your anywhere will first try to fill any **Load Out slots (locked slots)**, and then move anything that's left to the surrounding storages.
+1\) Pushing items from anywhere will first try to fill any **Load Out slots (locked slots)** in vehicles and drones, and only afterwards move anything that's left to the surrounding storages.
 
-This should help with keeping your bullets, lock picks, repair kits, and bandages stocked up without too much other intervention.
+This should help with keeping your bullets, lock picks, repair kits, and bandages you keep in vehicle or drone **Load Out slots (locked slots)** stocked up without too much other intervention.
 
-2\) After this any container that can't move is tried, and items are sorted into the Crates, etc. per item type they already contain.
+2\) After this any stationary container (that can't move) is tried, and items are sorted into the surrounding Crates, and player created storage per item type they already contain.
 
 Nothing is bulk moved to workstation or collector outputs, because that makes no sense.
 
@@ -79,7 +79,7 @@ Locking a slot means that you are turning Off any bulk transfers from that slot,
 So if you always want to keep Wood in your Backpack, lock the slot it's in, and Smart Push will leave it alone.
 ![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
 This is my Backpack top row from a current game. None of these items will be bulk moved out of the Backpack, whether using the game *Move All* or *Move and Fill* buttons, or using Smart Push.
-The 62 Polymers is not locked, so they can be moved is if there is a storage somewhere that already has some Polymers in it.
+The 62 Polymers is not locked, so they can be moved.
 
 ## Overflow from Smart Push
 **Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate not has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
@@ -94,7 +94,7 @@ After the smart push:
 - Crate A has 10 Water, 5 Water <- 8 Water came in, filling the 3 Water slot, Then 5 was left to put in the empty slot
 - Crate B has 10 Water, 1 empty slot <- 7 Water came in, and filled up the existing 3 Water slot
 
-📢**Note:** These examples are for the default max stack size of 10 in Vanilla default settings. You can change the stack size by using the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
+📢**Note:** These examples are for the default max stack size of 10 Water in Vanilla default settings. You can change the stack size in the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
 
 ### Smart Pull, aka Topping up your Load Out
 If you lock some slots in your Backpack (Player Inventory), or in Drones, vehicles like Motorcycle, Gyrocopter, and so on, then you can use those as your **Load Out** slots.
@@ -104,7 +104,7 @@ This is my trusty Bicycle. I always keep Coins, Repair Kits, Lock picks, Shotgun
 I never keep any of these items in my own inventory, so my Backpack is just for looted items and whatnot.
 Before leaving the base, I just use Smart Pull to Top Up my Bicycle Load Out, and I have a fresh load of bullets and other needful things to go **On Mission**.
 
-I also do a Smart Push from the Workbench to sort any produced ammo to, in this order:
+I also do a Smart Push from the Workbench to sort any produced ammo to storages in the following order:
 1. My Bicycle (or any vehicles or drones that belong to me, closest first) - top up the **Load Out slots (locked slots)**
 2. Stationary storage - Crates, player crafted storage, etc. with items matching the ones being transferred
 3. Mobile storage - vehicles and drones again, but this time not limited to locked slots, but any slot that already contains the items being transferred
