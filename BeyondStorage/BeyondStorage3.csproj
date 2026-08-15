@@ -86,6 +86,9 @@
     <Compile Include="Source\Entities\EntityHandler.cs" />
     <Compile Include="Source\Game\Files\BlockConsumeStatePersistence.cs" />
     <Compile Include="Source\Game\Files\GamePathProvider.cs" />
+    <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesWindow.cs" />
+    <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesGrid.cs" />
+    <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_ItemGrid.cs" />
     <Compile Include="Source\Harmony\Extends\EntityDrone_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionRanged_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\TEFeatureAbs_Ext.cs" />
@@ -235,6 +238,7 @@
     <Content Include="ModPackage\Config\loadingscreen.xml" />
     <Content Include="ModPackage\Config\Localization.csv" />
     <Content Include="ModPackage\Config\XUi_InGame\windows.xml" />
+    <Content Include="ModPackage\Config\XUi_InGame\xui.xml" />
     <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_pull_loadout.png" />
     <Content Include="ModPackage\UIAtlases\UIAtlas\ui_symbol_beyond_smart_loot_push.png" />
     <Content Include="ModPackage\LICENSE.txt" />

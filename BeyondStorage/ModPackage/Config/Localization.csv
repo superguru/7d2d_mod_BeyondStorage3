@@ -29,3 +29,4 @@
 "bsSettingIncludeVehiclesInNetworkToolTip","UI","Menu","x","","","Whether to include nearby Vehicles in storage network"
 "bsSettingIsDebug","UI","Menu","x","","","Debug Logging"
 "bsSettingIsDebugTooltip","UI","Menu","x","","","Enable additional logging"
+"xuiBeyondUseables","UI","XUI","","","","Useables"

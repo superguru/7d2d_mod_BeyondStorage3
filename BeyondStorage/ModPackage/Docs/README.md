@@ -286,11 +286,21 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
 - ✅ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) <- Beyond Storage supports settings changes using Gears
 
-##### SCore (not really compatible)
+##### SCore (needs config changes)
 For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
 - Remote Crafting
 - Remote Repair/Upgrade
- 
+
+###### Examples of mods that turn these on:
+- [(V3) Preppocalypse](https://www.nexusmods.com/7daystodie/mods/5295)
+
+You will need to manually edit the Config/blocks.xml file to turn this off.
+
+```xml
+<set xpath="/blocks/block[@name='ConfigFeatureBlock']/property[@class='AdvancedRecipes']/property[@name='ReadFromContainers']/@value">false</set>
+```
+
+
 ### ❌ Not considered compatible:
 
 #### General
