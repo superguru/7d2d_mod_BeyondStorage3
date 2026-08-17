@@ -16,12 +16,15 @@ You should also look at the Media Gallery on the mod distribution site where you
  
 ## What can this do?
 There are three main functions:
-- 1️⃣ <span style="text-decoration: underline;">Consume</span> - pay, paint, refuel, craft, upgrade, repair, reload
-- Smart Sorting:
-    - 2️⃣ <span style="text-decoration: underline;">Smart Push</span>
-        - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
-        - 👆 Shift Push Mode: Hold Shift and click the Smart Push button to move items to storages that have open slots, even if they **don't already have** the item being moved
-    - 3️⃣ <span style="text-decoration: underline;">Smart Pull</span> - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
+
+![1](https://img.shields.io/badge/1-56a2f4) <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload
+
+![2](https://img.shields.io/badge/2-56a2f4) <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
+    - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
+    - 👆 Shift Push Mode: Hold Shift and click the Smart Push button to move items to storages that have open slots, even if they **don't already have** the item being moved
+
+![3](https://img.shields.io/badge/3-56a2f4) <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
+    - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
 
 This is explained more fully below.
 
@@ -275,6 +278,7 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
 - ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
 - ✅ [(V3) Oakraven Fish Farm](https://www.nexusmods.com/7daystodie/mods/5189)
+- ✅ [PGz XL Backpack V3](https://www.nexusmods.com/7daystodie/mods/10721)
 - ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
 - ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
 - ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
