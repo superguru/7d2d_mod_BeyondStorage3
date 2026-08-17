@@ -7,6 +7,9 @@ public static class ItemClassCache
 {
     private static readonly Dictionary<int, string> s_itemTypeNames = [];
     private static readonly Dictionary<int, int> s_itemMaxStackSizes = [];
+    private static readonly Dictionary<int, ItemActionEntryUse.ConsumeType> s_itemUseageTypes = [];
+    private static readonly Dictionary<ItemActionEntryUse.ConsumeType, HashSet<int>> s_useageTypeIndex = [];
+    private static bool s_useageIndexBuilt;
 
     private static int s_totalMaxStackSize = 0;
 
@@ -95,6 +98,138 @@ public static class ItemClassCache
         return LookupItemLocalisedName(itemStack?.itemValue);
     }
 
+    public static ItemActionEntryUse.ConsumeType LookupItemUseageType(int itemType)
+    {
+        if (itemType <= UniqueItemTypes.EMPTY)
+        {
+            return ItemActionEntryUse.ConsumeType.None;  // Don't cache constants/invalid types (covers WILDCARD, EMPTY, and < WILDCARD)
+        }
+
+        if (s_itemUseageTypes.TryGetValue(itemType, out var consumeType))
+        {
+            return consumeType;
+        }
+
+        consumeType = ResolveItemUseageType(itemType);
+        s_itemUseageTypes[itemType] = consumeType;
+        return consumeType;
+    }
+
+    /// <summary>
+    /// Resolves the use-action classification for a given item type by inspecting its ItemClass.Actions.
+    /// Mirrors the type mapping in XUiC_ItemActionList.AddActionActions, minus the stack-location-dependent
+    /// checks (UsePrompt/backpack-toolbelt), since this lookup has no UI stack context.
+    /// </summary>
+    /// <param name="itemType">The item type to resolve</param>
+    /// <returns>The resolved ConsumeType, or None if the item has no matching action</returns>
+    private static ItemActionEntryUse.ConsumeType ResolveItemUseageType(int itemType)
+    {
+        var actions = ItemClass.GetForId(itemType)?.Actions;
+        if (actions == null)
+        {
+            return ItemActionEntryUse.ConsumeType.None;
+        }
+
+        foreach (var action in actions)
+        {
+            switch (action)
+            {
+                case ItemActionEat:
+                    return ItemActionEntryUse.ConsumeType.Heal;
+                case ItemActionLearnRecipe:
+                case ItemActionGainSkill:
+                    return ItemActionEntryUse.ConsumeType.Read;
+                case ItemActionQuest:
+                    return ItemActionEntryUse.ConsumeType.Quest;
+                case ItemActionOpenBundle:
+                case ItemActionOpenLootBundle:
+                    return ItemActionEntryUse.ConsumeType.Open;
+            }
+        }
+
+        return ItemActionEntryUse.ConsumeType.None;
+    }
+
+    public static ItemActionEntryUse.ConsumeType LookupItemUseageType(ItemValue itemValue)
+    {
+        return LookupItemUseageType(itemValue?.type ?? UniqueItemTypes.EMPTY);
+    }
+
+    public static ItemActionEntryUse.ConsumeType LookupItemUseageType(ItemStack itemStack)
+    {
+        return LookupItemUseageType(itemStack?.itemValue);
+    }
+
+    /// <summary>
+    /// Returns every item type whose useage classification matches any of the given ConsumeTypes,
+    /// e.g. GetItemTypesWithUseageType(ConsumeType.Heal, ConsumeType.Quest).
+    /// Backed by a lazily-built reverse index over ItemClass.list, built once on first use.
+    /// </summary>
+    public static IReadOnlyCollection<int> GetItemTypesWithUseageType(params ItemActionEntryUse.ConsumeType[] consumeTypes)
+    {
+        EnsureUseageIndexBuilt();
+
+        if (consumeTypes == null || consumeTypes.Length == 0)
+        {
+            return [];
+        }
+
+        if (consumeTypes.Length == 1)
+        {
+            return s_useageTypeIndex.TryGetValue(consumeTypes[0], out var single) ? single : [];
+        }
+
+        var result = new HashSet<int>();
+        foreach (var consumeType in consumeTypes)
+        {
+            if (s_useageTypeIndex.TryGetValue(consumeType, out var itemTypes))
+            {
+                result.UnionWith(itemTypes);
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Populates s_useageTypeIndex by resolving every registered item type once. ItemClass.list is
+    /// only assigned once per game session (items.xml load), so a one-time build is safe to cache.
+    /// </summary>
+    private static void EnsureUseageIndexBuilt()
+    {
+        if (s_useageIndexBuilt)
+        {
+            return;
+        }
+        s_useageIndexBuilt = true;
+
+        var itemClasses = ItemClass.list;
+        if (itemClasses == null)
+        {
+            return;
+        }
+
+        for (int itemType = 1; itemType < itemClasses.Length; itemType++)
+        {
+            if (itemClasses[itemType] == null)
+            {
+                continue;
+            }
+
+            var consumeType = LookupItemUseageType(itemType);
+            if (consumeType == ItemActionEntryUse.ConsumeType.None)
+            {
+                continue;
+            }
+
+            if (!s_useageTypeIndex.TryGetValue(consumeType, out var itemTypes))
+            {
+                itemTypes = [];
+                s_useageTypeIndex[consumeType] = itemTypes;
+            }
+            itemTypes.Add(itemType);
+        }
+    }
+
     public static int LookupMaxStackSize(int itemType)
     {
         const string d_MethodName = nameof(LookupMaxStackSize);
@@ -155,12 +290,5 @@ public static class ItemClassCache
     public static int LookupMaxStackSize(ItemStack itemStack)
     {
         return LookupMaxStackSize(itemStack?.itemValue);
-    }
-
-    public static int GetAverageMaxStackSize()
-    {
-        int totalStacks = s_itemMaxStackSizes.Count;
-
-        return totalStacks > 0 ? s_totalMaxStackSize / totalStacks : CollectionFactory.DEFAULT_ITEMSTACK_LIST_CAPACITY;
     }
 }

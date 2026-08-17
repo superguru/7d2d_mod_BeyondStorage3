@@ -105,9 +105,9 @@ public static class ItemX
         return ItemClassCache.LookupItemName(itemValue);
     }
 
-    public static string NameOf(ItemStack stack)
+    public static string NameOf(ItemStack itemStack)
     {
-        return ItemClassCache.LookupItemName(stack);
+        return ItemClassCache.LookupItemName(itemStack);
     }
 
     public static string NameLocalisedOf(int itemType)
@@ -120,9 +120,19 @@ public static class ItemX
         return ItemClassCache.LookupItemLocalisedName(itemValue);
     }
 
-    public static string NameLocalisedOf(ItemStack stack)
+    public static string NameLocalisedOf(ItemStack itemStack)
     {
-        return ItemClassCache.LookupItemLocalisedName(stack);
+        return ItemClassCache.LookupItemLocalisedName(itemStack);
+    }
+
+    public static ItemActionEntryUse.ConsumeType UseageTypeOf(ItemValue itemValue)
+    {
+        return ItemClassCache.LookupItemUseageType(itemValue);
+    }
+
+    public static ItemActionEntryUse.ConsumeType UseageTypeOf(ItemStack itemStack)
+    {
+        return ItemClassCache.LookupItemUseageType(itemStack);
     }
 
     public static int MaxStackSizeOf(int itemType)
@@ -135,58 +145,53 @@ public static class ItemX
         return ItemClassCache.LookupMaxStackSize(itemValue);
     }
 
-    public static bool IsQuestItem(ItemStack stack)
+    public static bool IsQuestItem(ItemStack itemStack)
     {
-        return stack?.itemValue?.ItemClass?.IsQuestItem ?? false;
+        return itemStack?.itemValue?.ItemClass?.IsQuestItem ?? false;
     }
 
-    public static int MaxStackSizeOf(ItemStack stack)
+    public static int MaxStackSizeOf(ItemStack itemStack)
     {
-        return ItemClassCache.LookupMaxStackSize(stack);
+        return ItemClassCache.LookupMaxStackSize(itemStack);
     }
 
-    public static int GetAverageMaxStackSizeOf(ItemStack[] stacks)
+    public static int CurrentStackSizeOf(ItemStack itemStack)
     {
-        return ItemClassCache.GetAverageMaxStackSize();
+        return itemStack?.count ?? 0;
     }
 
-    public static int CurrentStackSizeOf(ItemStack stack)
+    public static bool IsEmpty(ItemStack itemStack)
     {
-        return stack?.count ?? 0;
+        return (CurrentStackSizeOf(itemStack) == 0);
     }
 
-    public static bool IsEmpty(ItemStack stack)
+    public static bool IsFull(ItemStack itemStack)
     {
-        return (CurrentStackSizeOf(stack) == 0);
-    }
-
-    public static bool IsFull(ItemStack stack)
-    {
-        var maxSize = MaxStackSizeOf(stack);
-        var currentSize = CurrentStackSizeOf(stack);
+        var maxSize = MaxStackSizeOf(itemStack);
+        var currentSize = CurrentStackSizeOf(itemStack);
 
         // maxSize of 0 means the slot is empty or invalid, so we consider it not full
         return (maxSize > 0) && (currentSize >= maxSize);
     }
 
-    public static bool IsPopulated(ItemStack stack)
+    public static bool IsPopulated(ItemStack itemStack)
     {
-        return !IsEmpty(stack);
+        return !IsEmpty(itemStack);
     }
 
-    public static int ItemTypeOf(ItemStack stack)
+    public static int ItemTypeOf(ItemStack itemStack)
     {
-        return stack?.itemValue?.type ?? UniqueItemTypes.EMPTY;
+        return itemStack?.itemValue?.type ?? UniqueItemTypes.EMPTY;
     }
 
     /// <summary>
     /// Determines if an ItemStack contains valid item data and has a positive count.
     /// </summary>
-    /// <param name="stack">The ItemStack to check for presence</param>
-    /// <returns>True if the stack is not null, not empty, and has valid item data; otherwise false</returns>
-    internal static bool IsStackPresent(ItemStack stack)
+    /// <param name="itemStack">The ItemStack to check for presence</param>
+    /// <returns>True if the itemStack is not null, not empty, and has valid item data; otherwise false</returns>
+    internal static bool IsStackPresent(ItemStack itemStack)
     {
-        return stack != null && !stack.IsEmpty();
+        return itemStack != null && !itemStack.IsEmpty();
     }
 
     #endregion
@@ -212,7 +217,7 @@ public static class ItemX
     /// Determines if an ItemStack is valid for operations.
     /// </summary>
     /// <param name="stack">The ItemStack to validate</param>
-    /// <returns>True if the stack is valid; otherwise false</returns>
+    /// <returns>True if the itemStack is valid; otherwise false</returns>
     public static bool IsValidItemStack(ItemStack stack)
     {
         return stack?.count > 0 &&
@@ -307,7 +312,7 @@ public static class ItemX
     /// Converts a boolean presence value to a single character display format.
     /// Used for compact logging and debugging output.
     /// </summary>
-    /// <param name="isPresent">Whether the item/stack is present</param>
+    /// <param name="isPresent">Whether the item/itemStack is present</param>
     /// <returns>"1" if present, "0" if not present</returns>
     internal static string E(bool isPresent) => P(!isPresent);
 
