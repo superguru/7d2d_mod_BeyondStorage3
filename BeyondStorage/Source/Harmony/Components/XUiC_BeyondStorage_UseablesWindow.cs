@@ -6,6 +6,11 @@ namespace BeyondStorage.Harmony.Components;
 [Preserve]
 public class XUiC_BeyondStorage_UseablesWindow : XUiController
 {
+    // Matches StorageContextFactory's context cache TTL — no point refreshing more often than
+    // the underlying storage counts can actually change.
+    private const float REFRESH_INTERVAL_SECONDS = 0.5f;
+    private float _refreshTimer;
+
     [PublicizedFrom(EAccessModifier.Private)]
     public XUiC_BeyondStorage_UseablesGrid useablesGrid;
 
@@ -18,6 +23,20 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     public override void Update(float _dt)
     {
         base.Update(_dt);
+
+        _refreshTimer += _dt;
+        if (_refreshTimer < REFRESH_INTERVAL_SECONDS)
+        {
+            return;
+        }
+        _refreshTimer = 0f;
+
+        if (WindowStateManager.IsOnlyPlayerBackpackOpenInternal())
+        {
+            return;
+        }
+
+        useablesGrid?.RefreshTopItems();
     }
 
     [PublicizedFrom(EAccessModifier.Protected)]

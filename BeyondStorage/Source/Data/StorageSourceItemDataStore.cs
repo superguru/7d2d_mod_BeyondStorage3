@@ -537,23 +537,27 @@ internal class StorageSourceItemDataStore
     }
 
     /// <summary>
-    /// Ranks the currently-known item types accepted by <paramref name="isCandidate"/> by their
-    /// current pooled count, descending, returning at most <paramref name="topN"/> entries. Only
-    /// item types already known to this store (see <see cref="GetKnownItemTypes"/>) are considered,
-    /// and their counts come from the prebuilt per-item-type filters — no storage source is re-walked.
+    /// Ranks the currently-known item types accepted by <paramref name="isCandidate"/> by
+    /// <paramref name="scoreSelector"/> (primary descending, then secondary descending, then pooled
+    /// count descending as a final tiebreak), returning at most <paramref name="topN"/> entries.
+    /// Count is always used as an availability filter (items with 0 in storage are excluded) and
+    /// reported for display; it only acts as a rank key once primary/secondary are tied — e.g. the
+    /// Useables window ranks food by nutrition value (primary) then net health effect (secondary)
+    /// so a real meal outranks abundant-but-harmful junk like rotting flesh, or ranks medicine by
+    /// heal amount (primary) then count (the tie-break, since secondary is unused there).
     /// </summary>
     /// <param name="isCandidate">
     /// O(1) membership test for a category, e.g. <see cref="UseableItemStore.IsHealItem"/>. Passed as
     /// a predicate rather than a collection so this store never needs to know the concrete set type.
     /// </param>
-    internal IReadOnlyList<(int ItemType, int Count)> GetTopItemsByCount(Func<int, bool> isCandidate, int topN)
+    internal IReadOnlyList<(int ItemType, int Count)> GetTopItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector, int topN)
     {
-        var top = new List<(int ItemType, int Count)>(topN);
-
-        if (isCandidate == null || topN <= 0)
+        if (isCandidate == null || scoreSelector == null || topN <= 0)
         {
-            return top;
+            return [];
         }
+
+        var candidates = new List<(int ItemType, int Count, float Primary, float Secondary)>();
 
         foreach (var itemType in GetKnownItemTypes())
         {
@@ -568,38 +572,30 @@ internal class StorageSourceItemDataStore
                 continue;
             }
 
-            InsertIntoTopN(top, (itemType, count), topN);
+            var (primary, secondary) = scoreSelector(itemType);
+            candidates.Add((itemType, count, primary, secondary));
+        }
+
+        // Candidate count is bounded by distinct item types actually in storage for this category —
+        // small enough that a full sort is simpler than bounded insertion and not worth optimizing.
+        candidates.Sort(static (a, b) =>
+        {
+            int cmp = b.Primary.CompareTo(a.Primary);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
+
+            cmp = b.Secondary.CompareTo(a.Secondary);
+            return cmp != 0 ? cmp : b.Count.CompareTo(a.Count);
+        });
+
+        var top = new List<(int ItemType, int Count)>(topN);
+        for (int i = 0; i < candidates.Count && i < topN; i++)
+        {
+            top.Add((candidates[i].ItemType, candidates[i].Count));
         }
 
         return top;
-    }
-
-    /// <summary>
-    /// Inserts <paramref name="entry"/> into the bounded, count-descending <paramref name="top"/> list,
-    /// keeping at most <paramref name="topN"/> entries. Avoids sorting the full candidate set.
-    /// </summary>
-    private static void InsertIntoTopN(List<(int ItemType, int Count)> top, (int ItemType, int Count) entry, int topN)
-    {
-        int insertAt = top.Count;
-        for (int i = 0; i < top.Count; i++)
-        {
-            if (entry.Count > top[i].Count)
-            {
-                insertAt = i;
-                break;
-            }
-        }
-
-        if (insertAt >= topN)
-        {
-            return;
-        }
-
-        top.Insert(insertAt, entry);
-
-        if (top.Count > topN)
-        {
-            top.RemoveAt(top.Count - 1);
-        }
     }
 }

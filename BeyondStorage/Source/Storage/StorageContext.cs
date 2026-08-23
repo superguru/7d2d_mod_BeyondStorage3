@@ -228,6 +228,24 @@ public sealed class StorageContext
 
         return StorageQueryService.HasItem(this, filter);
     }
+
+    /// <summary>
+    /// Ranks currently-registered item types accepted by <paramref name="isCandidate"/> by
+    /// <paramref name="scoreSelector"/> rather than pooled count — see
+    /// <see cref="StorageSourceItemDataStore.GetTopItemsByScore"/>.
+    /// </summary>
+    public IReadOnlyList<(int ItemType, int Count)> GetTopUseableItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector, int topN)
+    {
+        const string d_MethodName = nameof(GetTopUseableItemsByScore);
+
+        if (!EnsureValidCache(d_MethodName))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Cache validation failed, returning empty collection");
+            return [];
+        }
+
+        return Sources.DataStore.GetTopItemsByScore(isCandidate, scoreSelector, topN);
+    }
     #endregion
 
     #region Removal Operations - Delegate to StorageItemRemovalService

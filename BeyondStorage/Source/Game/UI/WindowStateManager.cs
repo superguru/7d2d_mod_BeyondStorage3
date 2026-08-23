@@ -416,7 +416,7 @@ public static class WindowStateManager
     /// Workstations and collectors count as "only backpack open" since they have no loot window.
     /// The backpack window itself has not yet opened when XUI calls this from GetBindingValue.
     /// </remarks>
-    private static bool IsOnlyPlayerStorageOpenInternal()
+    public static bool IsOnlyPlayerStorageOpenInternal()
     {
         bool result =
             !IsAnyLootWindowOpen() &&
@@ -437,7 +437,7 @@ public static class WindowStateManager
         return result.ToString();
     }
 
-    public static string IsOnlyPlayerBackpackOpen()
+    public static bool IsOnlyPlayerBackpackOpenInternal()
     {
         bool result =
             IsOnlyPlayerStorageOpenInternal() &&
@@ -445,9 +445,13 @@ public static class WindowStateManager
             !IsCollectorWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
+        ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
 #endif
+    }
 
+    public static string IsOnlyPlayerBackpackOpen()
+    {
+        var result = IsOnlyPlayerBackpackOpenInternal();
         return result.ToString();
     }
 
