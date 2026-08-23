@@ -168,6 +168,7 @@
     <Compile Include="Source\Data\StackOps.cs" />
     <Compile Include="Source\Data\StorageSourceAdapter.cs" />
     <Compile Include="Source\Data\StorageSourceItemDataStore.cs" />
+    <Compile Include="Source\Data\UseableItemStore.cs" />
     <Compile Include="Source\Data\TypeCastingHelper.cs" />
     <Compile Include="Source\Data\UniqueItemTypeCache.cs" />
     <Compile Include="Source\Diagnostics\TypeNames.cs" />

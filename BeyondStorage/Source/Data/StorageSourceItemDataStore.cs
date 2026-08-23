@@ -511,4 +511,95 @@ internal class StorageSourceItemDataStore
         var storages = _distanceStore.GetClosestStorageSources(allowedAdapterTypes, filter);
         return storages;
     }
+
+    /// <summary>
+    /// Returns every distinct item type currently registered in this data store (i.e. present in at
+    /// least one registered source with count > 0). Backed by the per-item-type filters that
+    /// <see cref="RegisterConsumableStack"/> already builds during the single registration pass, so
+    /// this does not re-walk any storage source.
+    /// </summary>
+    internal IReadOnlyCollection<int> GetKnownItemTypes()
+    {
+        var filters = _collectionStore.GetAllFilters();
+        var result = new List<int>(filters.Count);
+
+        foreach (var filter in filters)
+        {
+            if (filter.IsUnfiltered)
+            {
+                continue;
+            }
+
+            result.Add(filter.GetSingleType());
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Ranks the currently-known item types accepted by <paramref name="isCandidate"/> by their
+    /// current pooled count, descending, returning at most <paramref name="topN"/> entries. Only
+    /// item types already known to this store (see <see cref="GetKnownItemTypes"/>) are considered,
+    /// and their counts come from the prebuilt per-item-type filters — no storage source is re-walked.
+    /// </summary>
+    /// <param name="isCandidate">
+    /// O(1) membership test for a category, e.g. <see cref="UseableItemStore.IsHealItem"/>. Passed as
+    /// a predicate rather than a collection so this store never needs to know the concrete set type.
+    /// </param>
+    internal IReadOnlyList<(int ItemType, int Count)> GetTopItemsByCount(Func<int, bool> isCandidate, int topN)
+    {
+        var top = new List<(int ItemType, int Count)>(topN);
+
+        if (isCandidate == null || topN <= 0)
+        {
+            return top;
+        }
+
+        foreach (var itemType in GetKnownItemTypes())
+        {
+            if (!isCandidate(itemType))
+            {
+                continue;
+            }
+
+            var count = GetFilteredItemCount(new UniqueItemTypes(itemType));
+            if (count <= 0)
+            {
+                continue;
+            }
+
+            InsertIntoTopN(top, (itemType, count), topN);
+        }
+
+        return top;
+    }
+
+    /// <summary>
+    /// Inserts <paramref name="entry"/> into the bounded, count-descending <paramref name="top"/> list,
+    /// keeping at most <paramref name="topN"/> entries. Avoids sorting the full candidate set.
+    /// </summary>
+    private static void InsertIntoTopN(List<(int ItemType, int Count)> top, (int ItemType, int Count) entry, int topN)
+    {
+        int insertAt = top.Count;
+        for (int i = 0; i < top.Count; i++)
+        {
+            if (entry.Count > top[i].Count)
+            {
+                insertAt = i;
+                break;
+            }
+        }
+
+        if (insertAt >= topN)
+        {
+            return;
+        }
+
+        top.Insert(insertAt, entry);
+
+        if (top.Count > topN)
+        {
+            top.RemoveAt(top.Count - 1);
+        }
+    }
 }
