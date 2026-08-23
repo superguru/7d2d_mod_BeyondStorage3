@@ -1,5 +1,8 @@
 ﻿__🚧 WIP v3.1.8__
 - ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
+- ♻ Fixed that the default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
+- 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
+- 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 🙋 Any bugs to report?
 
 📢 This mod version will only support game V3.1.0 and later
