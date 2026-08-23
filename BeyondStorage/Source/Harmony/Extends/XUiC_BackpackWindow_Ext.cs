@@ -138,8 +138,8 @@ internal static class XUiC_BackpackWindow_Ext
 
         switch (bindingName)
         {
-            case "bs_is_player_backpack_only":
-                value = WindowStateManager.IsOnlyPlayerBackpackOpen();
+            case "bs_is_player_storage_only":
+                value = WindowStateManager.IsOnlyPlayerStorageOpen();
 #if DEBUG
                 //ModLogger.DebugLog($"{d_MethodName}: bindingName={bindingName}, value={value}");
 #endif

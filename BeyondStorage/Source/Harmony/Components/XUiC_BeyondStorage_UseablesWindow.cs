@@ -1,4 +1,5 @@
-﻿using UnityEngine.Scripting;
+﻿using BeyondStorage.Game.UI;
+using UnityEngine.Scripting;
 
 namespace BeyondStorage.Harmony.Components;
 
@@ -17,5 +18,25 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     public override void Update(float _dt)
     {
         base.Update(_dt);
+    }
+
+    [PublicizedFrom(EAccessModifier.Protected)]
+    public override bool GetBindingValueInternal(ref string value, string bindingName)
+    {
+#if DEBUG
+        //const string d_MethodName = nameof(GetBindingValueInternal);
+#endif
+        switch (bindingName)
+        {
+            case "bs_is_player_backpack_only":
+                value = WindowStateManager.IsOnlyPlayerBackpackOpen();
+#if DEBUG
+                //ModLogger.DebugLog($"{d_MethodName}: bindingName={bindingName}, value={value}");
+#endif
+                return true;  // We've handled it
+
+            default:
+                return base.GetBindingValueInternal(ref value, bindingName);
+        }
     }
 }

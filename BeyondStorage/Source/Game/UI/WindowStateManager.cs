@@ -409,36 +409,43 @@ public static class WindowStateManager
     }
 
     /// <summary>
-    /// Gets whether only the player backpack is open with no other container or vehicle window active.
+    /// Gets whether only the player backpack storage is open with no other container or vehicle window active.
     /// Returns a string for XUI data binding.
     /// </summary>
     /// <remarks>
     /// Workstations and collectors count as "only backpack open" since they have no loot window.
     /// The backpack window itself has not yet opened when XUI calls this from GetBindingValue.
     /// </remarks>
+    private static bool IsOnlyPlayerStorageOpenInternal()
+    {
+        bool result =
+            !IsAnyLootWindowOpen() &&
+            !IsVehicleWindowOpen() &&
+            !IsBagStorageWindowOpen() &&
+            !IsBagContainerOpen() &&
+            !IsDroneWindowOpen();
+
+#if DEBUG
+        //ModLogger.DebugLog($"IsOnlyPlayerStorageOpenInternal: {result} (L={IsAnyLootWindowOpen()}, V={isVehicleOpen}, S={IsBagStorageWindowOpen()}, B={IsBagContainerOpen()}, D={IsDroneWindowOpen()})");
+#endif
+        return result;
+    }
+
+    public static string IsOnlyPlayerStorageOpen()
+    {
+        var result = IsOnlyPlayerStorageOpenInternal();
+        return result.ToString();
+    }
+
     public static string IsOnlyPlayerBackpackOpen()
     {
-        bool isDroneOpen = IsDroneWindowOpen();
-        bool isVehicleOpen = IsVehicleWindowOpen();
-        bool isAnyLootOpen = IsAnyLootWindowOpen();
-
-#if DEBUG
-        // These are not included in the result, but logged for debug purposes when the need arises:
-        //bool isWorkstationOpen = IsWorkstationWindowOpen();
-        //bool isCollectorOpen = IsCollectorWindowOpen();
-#endif
-        bool isBagStorageOpen = IsBagStorageWindowOpen();
-        bool isBagContainerOpen = IsBagContainerOpen();
-
         bool result =
-            !isDroneOpen &&
-            !isVehicleOpen &&
-            !isAnyLootOpen &&
-            !isBagContainerOpen &&
-            !isBagStorageOpen;
+            IsOnlyPlayerStorageOpenInternal() &&
+            !IsWorkstationWindowOpen() &&
+            !IsCollectorWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (D={isDroneOpen}, V={isVehicleOpen}, W={isWorkstationOpen}, C={isCollectorOpen}, L={isAnyLootOpen}, S={isBagStorageOpen}, B={isBagContainerOpen})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
 #endif
 
         return result.ToString();

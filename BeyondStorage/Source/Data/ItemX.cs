@@ -125,6 +125,16 @@ public static class ItemX
         return ItemClassCache.LookupItemLocalisedName(itemStack);
     }
 
+    public static bool IsUsageType(ItemValue itemValue, ItemActionEntryUse.ConsumeType usage)
+    {
+        return (itemValue != null) && (UseageTypeOf(itemValue) == usage);
+    }
+
+    public static bool IsUsageType(ItemStack itemStack, ItemActionEntryUse.ConsumeType usage)
+    {
+        return (itemStack != null) && (UseageTypeOf(itemStack) == usage);
+    }
+
     public static ItemActionEntryUse.ConsumeType UseageTypeOf(ItemValue itemValue)
     {
         return ItemClassCache.LookupItemUseageType(itemValue);
@@ -216,14 +226,14 @@ public static class ItemX
     /// <summary>
     /// Determines if an ItemStack is valid for operations.
     /// </summary>
-    /// <param name="stack">The ItemStack to validate</param>
+    /// <param name="itemStack">The ItemStack to validate</param>
     /// <returns>True if the itemStack is valid; otherwise false</returns>
-    public static bool IsValidItemStack(ItemStack stack)
+    public static bool IsValidItemStack(ItemStack itemStack)
     {
-        return stack?.count > 0 &&
-               stack.itemValue?.ItemClass != null &&
-               !stack.itemValue.IsEmpty() &&
-               !string.IsNullOrEmpty(NameOf(stack));
+        return itemStack?.count > 0 &&
+               itemStack.itemValue?.ItemClass != null &&
+               !itemStack.itemValue.IsEmpty() &&
+               !string.IsNullOrEmpty(NameOf(itemStack));
     }
 
     /// <summary>
