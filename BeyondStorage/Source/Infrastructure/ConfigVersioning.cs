@@ -317,6 +317,13 @@ public static class ConfigVersioning
                 jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
             }
 
+            // Pre-3.1.8: rename incorrectly shipped includeFromVehicles -> includeVehicles
+            if (version < new Version("3.1.8") && jsonObject.ContainsKey("includeFromVehicles"))
+            {
+                jsonObject["includeVehicles"] = jsonObject["includeFromVehicles"];
+                jsonObject.Remove("includeFromVehicles");
+            }
+
             return jsonObject.ToString(Formatting.None);
         }
         catch (JsonException)
