@@ -1,18 +1,23 @@
-﻿__🚧 WIP v3.1.8__
+﻿__🚧 WIP v3.2.0__
 - ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
 - ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
 - ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
-- 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
-- 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 🙋 Any bugs to report?
 
-📢 This mod version will only support game V3.1.0 and later
+- 🤐 Secret feature which you can get access to if you like this update...
+
+📢 This mod version will only support game V3.1.0/3.2.0 and later
 📍 See the pinned message to find release sites for this update.
 
 📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
 
+
+- 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
+- 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
+
+
 ```text
-For game V3.1.x or later
+For game V3.1.x/3.2.x or later
 - Fixed that allied vehicles could sometimes not be found
 - Read the Changelog for more
 
@@ -31,6 +36,8 @@ __🚀 Released v__
 - 👉🏼 WIP: 
 - 📜 TODO: 
 - 💭 Considering: 
+
+- 🤐 Secret feature which you can get access to if you like this update...
 ```
 
 __🚀 Released v3.1.7__
