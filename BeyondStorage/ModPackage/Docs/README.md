@@ -27,7 +27,7 @@ There are four main functions:
     - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
 
 ![4](https://img.shields.io/badge/4-56a2f4) <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
-    - use the top 3 healing and top 3 food/drink items directly from the storage network using hotkeys
+    - use your best healing, food, and drink items directly from the storage network, via the Useables window, using hotkeys or a double-click
 
 This is explained more fully below.
 
@@ -88,7 +88,7 @@ This is my Backpack top row from a current game. None of these items will be bul
 The 62 Polymers is not locked, so they can be moved.
 
 ## Overflow from Smart Push
-**Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate not has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
+**Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate now has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
 
 **Example 2:** You have 10 Water to push, and there are two crates with 2 Water and 3 Water respectively. After the smart push, the two crates will have 10 Water and 5 Water respectively.
 
@@ -97,7 +97,7 @@ The 62 Polymers is not locked, so they can be moved.
 - Crate B has 3 Water, 1 empty slot.
 
 After the smart push:
-- Crate A has 10 Water, 5 Water <- 8 Water came in, filling the 3 Water slot, Then 5 was left to put in the empty slot
+- Crate A has 10 Water, 5 Water <- 8 Water came in, filling the 2 Water slot, Then 5 was left to put in the empty slot
 - Crate B has 10 Water, 1 empty slot <- 7 Water came in, and filled up the existing 3 Water slot
 
 📢**Note:** These examples are for the default max stack size of 10 Water in Vanilla default settings. You can change the stack size in the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
@@ -121,6 +121,24 @@ So <span style="color:#ff2222;">**you can't pull in**</span> ammo from your Bicy
 Pulling in items will not overflow to empty slots, whether they're locked or not. All it does is fill up a slot with an existing item until the maximum stack size for that item is reached.
 ![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
+
+### 🩹Use directly from your Extended Inventory (the Useables window)
+Next to your Backpack, you'll see a small **Useables** window with 6 slots, showing the best healing, food, and drink items currently available in your **Extended Inventory** (nearby storage, vehicles, drones, etc.) — not your Backpack, since those items are already right there next to it.
+
+It only appears when your Backpack is open by itself - it's hidden while a vehicle, workstation, trader, drone, or other container window is also open, so it never gets in the way.
+
+![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
+
+- **Top row:** your 3 best healing items, ranked by how much they actually heal, then by how many you have.
+- **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutritional value. If you don't have any drinks available, this fills in with more food instead (and the same the other way around), so you'll still see 3 useful items whenever you have any.
+
+An item with a health penalty (like Rotting Flesh) will always rank below a "clean" item of the same kind, even if you have a lot more of it.
+
+To use an item shown in the Useables window:
+- Press the number key (1-6) shown in the corner of its slot, or
+- Double-click the item's icon.
+
+A single click on a slot shows the same item info panel you'd see for a normal Backpack or Toolbelt item, without using it.
 
 ### 🤼‍♀️Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
@@ -204,7 +222,7 @@ The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 |                           |         | troubleshooting problems. You can generally leave this     |
 |                           |         | turned off.                                                |
 +---------------------------+---------+------------------------------------------------------------+
-| range                     | 0. 0    | Range to include in storage network.                       |
+| range                     | 0.0     | Range to include in storage network.                       |
 |                           |         | 0.0 is everything in memory, max is 250m.                  |
 |                           |         | The game usually holds up to 200m radius.                  |
 +---------------------------+---------+------------------------------------------------------------+
