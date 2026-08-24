@@ -70,6 +70,14 @@ internal static class TileEntityItemDiscovery
             return false;
         }
 
+        // Land claim (keystone) blocks have a TEFeatureStorage internally, but there's no base-game
+        // UI to access it — excluded from discovery entirely so Smart Push/Pull and consume
+        // operations never target it, regardless of which other feature interfaces it also exposes.
+        if (tileEntity.TryGetSelfOrFeature(out TEFeatureLandClaim keystone) && keystone != null)
+        {
+            return false;
+        }
+
         var tileEntityWorldPos = tileEntity.ToWorldPos();
 
         // Early range check to avoid unnecessary processing

@@ -120,22 +120,31 @@ internal static class XUiC_LootWindow_Ext
 
         bool isPlayerStorage = false;
 
-        // Check for TEFeatureStorage using comprehensive feature detection
-        if (tileEntity.TryGetSelfOrFeature(out TEFeatureStorage storage) && storage != null)
-        {
-            isPlayerStorage = storage.bPlayerStorage;
-#if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for TEFeatureStorage. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
-#endif
-        }
+        // Land claim (keystone) blocks have a TEFeatureStorage internally, but there's no base-game
+        // UI to access it — it must never be treated as player storage regardless of which check
+        // below would otherwise report it as such, or Smart Push could shove items into it with no
+        // way for the player to get them back.
+        bool isLandClaim = tileEntity.TryGetSelfOrFeature(out TEFeatureLandClaim keystone) && keystone != null;
 
-        // Check for player owned/created storage, for example player crafted desk safes, refrigerators, lockers, etc.
-        if (!isPlayerStorage)
+        if (!isLandClaim)
         {
-            isPlayerStorage = tileEntity.bPlayerStorage;
+            // Check for TEFeatureStorage using comprehensive feature detection
+            if (tileEntity.TryGetSelfOrFeature(out TEFeatureStorage storage) && storage != null)
+            {
+                isPlayerStorage = storage.bPlayerStorage;
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for Player owned/created. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
+                //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for TEFeatureStorage. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
 #endif
+            }
+
+            // Check for player owned/created storage, for example player crafted desk safes, refrigerators, lockers, etc.
+            if (!isPlayerStorage)
+            {
+                isPlayerStorage = tileEntity.bPlayerStorage;
+#if DEBUG
+                //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for Player owned/created. storage/isPlayerStorage: {isPlayerStorage}");
+#endif
+            }
         }
 
         WindowStateManager.OnStorageWindowOpening(__instance, isPlayerStorage);

@@ -88,6 +88,7 @@
     <Compile Include="Source\Game\Files\GamePathProvider.cs" />
     <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesWindow.cs" />
     <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesGrid.cs" />
+    <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_ItemStack.cs" />
     <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_ItemGrid.cs" />
     <Compile Include="Source\Harmony\Extends\EntityDrone_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionRanged_Ext.cs" />
