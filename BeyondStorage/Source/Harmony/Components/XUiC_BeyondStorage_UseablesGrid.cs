@@ -22,7 +22,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     public override void OnOpen()
     {
         base.OnOpen();
-        RefreshTopItems();
+        RefreshGridItems();
     }
 
     public override void OnClose()
@@ -37,9 +37,9 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     /// are display-only synthetic stacks, not live references to a storage slot — see
     /// StorageSourceItemDataStore.GetTopItemsByScore for how the ranking avoids re-walking storage.
     /// </summary>
-    internal void RefreshTopItems()
+    internal void RefreshGridItems()
     {
-        const string d_MethodName = nameof(RefreshTopItems);
+        const string d_MethodName = nameof(RefreshGridItems);
 
         if (!ValidationHelper.ValidateStorageContext(d_MethodName, out var context))
         {
@@ -47,6 +47,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             return;
         }
 
+        // Top means the highest ranked, based on various conditions such as buffs, debuffs, item count
         var healTop = context.GetTopUseableItemsByScore(UseableItemStore.IsHealItem, UseableItemStore.GetHealScore, ROW_SIZE);
         var foodTop = context.GetTopUseableItemsByScore(UseableItemStore.IsFoodItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
         var drinkTop = context.GetTopUseableItemsByScore(UseableItemStore.IsDrinkItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
@@ -114,7 +115,9 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         for (int i = 0; i < topItems.Count && i < ROW_SIZE; i++)
         {
             var (itemType, count) = topItems[i];
-            stacks[rowStart + i] = new ItemStack(new ItemValue(itemType), count);
+            var newStack = new ItemStack(new ItemValue(itemType), count);
+
+            stacks[rowStart + i] = newStack;
         }
     }
 
@@ -167,7 +170,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         {
             // Ranking was stale (e.g. someone/something else consumed it since the last refresh) —
             // nothing was removed, so just resync the display instead of using a phantom item.
-            RefreshTopItems();
+            RefreshGridItems();
             return;
         }
 
@@ -203,7 +206,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
 
         MarkUsePending();
         StorageContextFactory.InvalidateContext();
-        RefreshTopItems();
+        RefreshGridItems();
     }
 
     // Generous relative to any real eat/drink animation (a few seconds) — this only exists to catch
@@ -251,7 +254,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         }
 
         _pendingUseStartedAt = null;
-        RefreshTopItems();
+        RefreshGridItems();
     }
 
     private static ItemActionEntryUse.ConsumeType GetConsumeTypeForSlot(int slotIndex, int itemType)

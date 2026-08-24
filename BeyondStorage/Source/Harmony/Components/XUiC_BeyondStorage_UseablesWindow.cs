@@ -63,7 +63,7 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
         }
         _refreshTimer = 0f;
 
-        useablesGrid?.RefreshTopItems();
+        useablesGrid?.RefreshGridItems();
     }
 
     /// <summary>
