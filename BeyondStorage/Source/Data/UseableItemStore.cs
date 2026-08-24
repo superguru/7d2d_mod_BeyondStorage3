@@ -103,16 +103,29 @@ public static class UseableItemStore
     }
 
     /// <summary>
-    /// Score for ranking the Food/Drink row: (nutrition value, net health effect). Ranking by this
-    /// instead of raw count means a real meal outranks something abundant but harmful like rotting
-    /// flesh (+1 food, -3 health) despite it often being the most plentiful item in storage.
+    /// Large enough that any health-debuffed item's adjusted score stays below every non-debuffed
+    /// item's raw nutrition score (which items.xml keeps in the tens/low hundreds), while still
+    /// preserving relative ordering *within* each tier. This ranking is expected to evolve with
+    /// playtesting — tune this, or replace the tiering approach, as real items expose edge cases.
+    /// </summary>
+    private const float HEALTH_DEBUFF_TIER_PENALTY = 100000f;
+
+    /// <summary>
+    /// Score for ranking the Food/Drink row: (nutrition value, net health effect) — except a health
+    /// debuff (e.g. foodShamSandwich: +15 food, -5 health) demotes the item into a tier below every
+    /// non-debuffed food/drink outright, rather than only losing a tiebreak against similar-nutrition
+    /// items. Without this, a big enough nutrition value could still outrank "this hurts you".
+    /// Also means a real meal outranks something abundant but harmful like rotting flesh (+1 food,
+    /// -3 health) despite it often being the most plentiful item in storage.
     /// </summary>
     public static (float Primary, float Secondary) GetNutritionScore(int itemType)
     {
         EnsureBuilt();
         var nutrition = s_nutritionScore.TryGetValue(itemType, out var n) ? n : 0f;
         var health = s_healthScore.TryGetValue(itemType, out var h) ? h : 0f;
-        return (nutrition, health);
+
+        var primary = health < 0f ? nutrition - HEALTH_DEBUFF_TIER_PENALTY : nutrition;
+        return (primary, health);
     }
 
     /// <summary>
