@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage;
 using UnityEngine.Scripting;
 
 namespace BeyondStorage.Harmony.Components;
@@ -141,5 +142,139 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         ModLogger.DebugLog($"UpdateBackend: stackList.Length={stackList?.Length}");
         base.UpdateBackend(stackList);  // TODO: Should we be doing this?
         windowGroup.Controller.SetAllChildrenDirty();
+    }
+
+    /// <summary>
+    /// Uses whatever is currently displayed in <paramref name="slotIndex"/> (0-5), triggered by a
+    /// number-key press or a double-click on the cell. Removes exactly 1 unit from storage first,
+    /// then hands off to vanilla's own ItemActionEntryUse.OnActivated on this cell's controller so
+    /// animation/prompt/buff/XP/jar-refund logic is identical to using the item normally — this
+    /// mod only needs to source the 1 unit from storage instead of a real backpack/toolbelt slot.
+    /// </summary>
+    internal void TryUseSlot(int slotIndex)
+    {
+        const string d_MethodName = nameof(TryUseSlot);
+
+        var controllers = GetItemStackControllers();
+        if (slotIndex < 0 || slotIndex >= controllers.Length)
+        {
+            return;
+        }
+
+        var cellController = controllers[slotIndex];
+        var itemStack = cellController.ItemStack;
+        if (itemStack == null || itemStack.IsEmpty())
+        {
+            return;
+        }
+
+        var itemValue = itemStack.itemValue;
+        var consumeType = GetConsumeTypeForSlot(slotIndex, itemValue.type);
+
+        if (!CanUseNow(consumeType))
+        {
+            return;
+        }
+
+        // Skip prompted items (e.g. some medical items ask "use on self?") rather than risk
+        // stranding an already-removed unit behind a dialog the player might cancel.
+        if (RequiresPrompt(itemValue))
+        {
+            return;
+        }
+
+        if (!ValidationHelper.ValidateStorageContext(d_MethodName, out var context))
+        {
+            return;
+        }
+
+        var removedCount = context.RemoveRemaining(itemValue, 1);
+        if (removedCount != 1)
+        {
+            // Ranking was stale (e.g. someone/something else consumed it since the last refresh) —
+            // nothing was removed, so just resync the display instead of using a phantom item.
+            RefreshTopItems();
+            return;
+        }
+
+        cellController.ItemStack = new ItemStack(itemValue.Clone(), 1);
+        new ItemActionEntryUse(cellController, consumeType).OnActivated();
+
+        StorageContextFactory.InvalidateContext();
+        RefreshTopItems();
+    }
+
+    private static ItemActionEntryUse.ConsumeType GetConsumeTypeForSlot(int slotIndex, int itemType)
+    {
+        if (slotIndex < ROW_SIZE)
+        {
+            return ItemActionEntryUse.ConsumeType.Heal;
+        }
+
+        return UseableItemStore.IsDrinkItem(itemType) ? ItemActionEntryUse.ConsumeType.Drink : ItemActionEntryUse.ConsumeType.Eat;
+    }
+
+    /// <summary>
+    /// Mirrors ItemActionEntryUse.RefreshEnabled's gates, since we're bypassing the vanilla
+    /// click/enable pipeline entirely (our cells are locked) and calling OnActivated directly.
+    /// </summary>
+    private bool CanUseNow(ItemActionEntryUse.ConsumeType consumeType)
+    {
+        var entityPlayer = xui.playerUI.entityPlayer;
+        if (entityPlayer == null)
+        {
+            return false;
+        }
+
+        if (entityPlayer.AttachedToEntity)
+        {
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("ttCannotUseWhileOnVehicle"));
+            return false;
+        }
+
+        if (entityPlayer.inventory.IsHoldingItemActionRunning() || xui.IsUsingItemActionEntryUse)
+        {
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("isBusy"));
+            return false;
+        }
+
+        if (XUiC_AssembleWindowGroup.GetWindowGroup(xui).IsOpen)
+        {
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("ttCannotUseWhileAssembling"));
+            return false;
+        }
+
+        if (consumeType == ItemActionEntryUse.ConsumeType.Drink && XUiM_Player.GetWaterPercent(entityPlayer) >= 1f)
+        {
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("notThirsty"));
+            return false;
+        }
+
+        if (consumeType == ItemActionEntryUse.ConsumeType.Eat && XUiM_Player.GetFoodPercent(entityPlayer) >= 1f)
+        {
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("notHungry"));
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool RequiresPrompt(ItemValue itemValue)
+    {
+        var actions = itemValue.ItemClass?.Actions;
+        if (actions == null)
+        {
+            return false;
+        }
+
+        foreach (var action in actions)
+        {
+            if (action is ItemActionEat itemActionEat)
+            {
+                return itemActionEat.UsePrompt;
+            }
+        }
+
+        return false;
     }
 }

@@ -313,6 +313,10 @@
       <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>

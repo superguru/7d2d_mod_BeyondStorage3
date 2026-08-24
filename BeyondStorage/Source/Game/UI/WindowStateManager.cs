@@ -1,4 +1,5 @@
-﻿using BeyondStorage.Infrastructure;
+﻿using BeyondStorage.Harmony.Components;
+using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Game.UI;
 
@@ -9,30 +10,34 @@ namespace BeyondStorage.Game.UI;
 public static class WindowStateManager
 {
     // Collectors
-    private static readonly object s_collectorLockObject = new();
-    private static XUiC_DewCollectorWindowGroup s_collectorWindowInstance = null;
+    private static readonly object s_collectorLock = new();
+    private static XUiC_DewCollectorWindowGroup s_collectorWindow = null;
 
     // Dropped loot containers
-    private static readonly object s_bagContainerLockObject = new();
+    private static readonly object s_bagContainerLock = new();
     private static XUiC_BagContainer s_bagContainerInstance = null;
 
     // Lootable windows: Player Inventory, Player Crafted Storage, Storage Crates
-    private static readonly object s_lootLockObject = new();
-    private static XUiC_BackpackWindow s_backpackWindowInstance = null;
-    private static XUiC_LootWindow s_lootWindowInstance = null;
+    private static readonly object s_lootLock = new();
+    private static XUiC_BackpackWindow s_backpackWindow = null;
+    private static XUiC_LootWindow s_lootWindow = null;
     private static bool s_isPlayerStorageWindowOpen = false;
 
     // Vehicles + Drones
-    private static readonly object s_bagStorageWindowLockObject = new();
-    private static XUiC_BagStorageWindowGroup s_bagStorageWindowInstance = null;
+    private static readonly object s_bagStorageWindowLock = new();
+    private static XUiC_BagStorageWindowGroup s_bagStorageWindow = null;
 
     // Workstations
-    private static readonly object s_workstationLockObject = new();
-    private static XUiC_WorkstationWindowGroup s_workstationWindowInstance = null;
+    private static readonly object s_workstationLock = new();
+    private static XUiC_WorkstationWindowGroup s_workstationWindow = null;
+
+    // Useables
+    private static readonly object s_useablesWindowLock = new();
+    private static XUiC_BeyondStorage_UseablesWindow s_useablesWindow = null;
 
     // Entities associated with the currently open bag storage window.
     // Always update via SetOpenWindowEntities().
-    private static readonly object s_windowEntityLockObject = new();
+    private static readonly object s_windowEntityLock = new();
     private static EntityDrone s_droneForWindow;
     private static EntityVehicle s_vehicleForWindow;
     private static EntityLootContainer s_droppedLootForWindow;
@@ -45,9 +50,9 @@ public static class WindowStateManager
     /// <returns>The active bag storage window instance, or null if none is open</returns>
     public static XUiC_BagStorageWindowGroup GetBagStorageWindow()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            return s_bagStorageWindowInstance;
+            return s_bagStorageWindow;
         }
     }
 
@@ -57,9 +62,9 @@ public static class WindowStateManager
     /// <returns>True if a bag storage window is open, false otherwise</returns>
     public static bool IsBagStorageWindowOpen()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            return s_bagStorageWindowInstance != null;
+            return s_bagStorageWindow != null;
         }
     }
 
@@ -78,11 +83,11 @@ public static class WindowStateManager
     /// <returns>The vehicle entity, or null if no vehicle bag storage window is open</returns>
     internal static EntityVehicle GetOpenWindowVehicle()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            lock (s_windowEntityLockObject)
+            lock (s_windowEntityLock)
             {
-                return s_bagStorageWindowInstance == null ? null : s_vehicleForWindow;
+                return s_bagStorageWindow == null ? null : s_vehicleForWindow;
             }
         }
     }
@@ -93,22 +98,22 @@ public static class WindowStateManager
     /// <returns>The drone entity, or null if no drone bag storage window is open</returns>
     internal static EntityDrone GetOpenWindowDrone()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            lock (s_windowEntityLockObject)
+            lock (s_windowEntityLock)
             {
-                return s_bagStorageWindowInstance == null ? null : s_droneForWindow;
+                return s_bagStorageWindow == null ? null : s_droneForWindow;
             }
         }
     }
 
     internal static EntityLootContainer GetOpenWindowDroppedLoot()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            lock (s_windowEntityLockObject)
+            lock (s_windowEntityLock)
             {
-                return s_bagStorageWindowInstance == null ? null : s_droppedLootForWindow;
+                return s_bagStorageWindow == null ? null : s_droppedLootForWindow;
             }
         }
     }
@@ -119,18 +124,18 @@ public static class WindowStateManager
     /// <param name="window">The bag storage window that opened</param>
     internal static void OnBagStorageWindowOpening(XUiC_BagStorageWindowGroup window)
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
             if (window == null)
             {
                 ModLogger.Warning($"[WindowStateManager] Cannot track null Bag Storage window");
             }
-            else if (s_bagStorageWindowInstance != null)
+            else if (s_bagStorageWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Cannot track a second Bag Storage window while one is already open");
             }
 
-            s_bagStorageWindowInstance = window;
+            s_bagStorageWindow = window;
             SetOpenWindowEntities(window?.Entity);
         }
     }
@@ -141,22 +146,22 @@ public static class WindowStateManager
     /// <param name="window">The bag storage window that closed</param>
     internal static void OnBagStorageWindowClosing(XUiC_BagStorageWindowGroup window)
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
             if (window == null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close a null bag storage window");
             }
-            else if (s_bagStorageWindowInstance == null)
+            else if (s_bagStorageWindow == null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close bag storage window but there isn't one open");
             }
-            else if (s_bagStorageWindowInstance != window)
+            else if (s_bagStorageWindow != window)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close bag storage window that doesn't match tracked instance");
             }
 
-            s_bagStorageWindowInstance = null;
+            s_bagStorageWindow = null;
             SetOpenWindowEntities(null);
         }
     }
@@ -167,16 +172,16 @@ public static class WindowStateManager
     /// </summary>
     internal static void SetOpenWindowEntitiesModified()
     {
-        lock (s_bagStorageWindowLockObject)
+        lock (s_bagStorageWindowLock)
         {
-            if (s_bagStorageWindowInstance != null)
+            if (s_bagStorageWindow != null)
             {
                 if (GetOpenWindowDrone() != null || GetOpenWindowVehicle() != null || GetOpenWindowDroppedLoot() != null)
                 {
-                    s_bagStorageWindowInstance.IsDirty = true;
-                    s_bagStorageWindowInstance.SetAllChildrenDirty();
+                    s_bagStorageWindow.IsDirty = true;
+                    s_bagStorageWindow.SetAllChildrenDirty();
 
-                    var bag = s_bagStorageWindowInstance.Bag;
+                    var bag = s_bagStorageWindow.Bag;
                     bag?.onBackpackChanged();
                 }
             }
@@ -192,7 +197,7 @@ public static class WindowStateManager
 
     private static void SetOpenWindowDrone(Entity entity)
     {
-        lock (s_windowEntityLockObject)
+        lock (s_windowEntityLock)
         {
             s_droneForWindow = entity as EntityDrone;
         }
@@ -200,7 +205,7 @@ public static class WindowStateManager
 
     private static void SetOpenWindowVehicle(Entity entity)
     {
-        lock (s_windowEntityLockObject)
+        lock (s_windowEntityLock)
         {
             s_vehicleForWindow = entity as EntityVehicle;
         }
@@ -208,7 +213,7 @@ public static class WindowStateManager
 
     private static void SetOpenWindowDroppedLoot(Entity entity)
     {
-        lock (s_windowEntityLockObject)
+        lock (s_windowEntityLock)
         {
             s_droppedLootForWindow = entity as EntityLootContainer;
         }
@@ -229,7 +234,7 @@ public static class WindowStateManager
     /// </remarks>
     public static bool IsPlayerStorageOpen()
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
             //ModLogger.DebugLog($"IsplayerStorageOpen: IsBagStorageWindowOpen={IsBagStorageWindowOpen()}, s_bagContainerInstance='{s_bagContainerInstance?.containerName}'");
             return s_isPlayerStorageWindowOpen;
@@ -238,9 +243,9 @@ public static class WindowStateManager
 
     internal static bool IsAnyLootWindowOpen()
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            return s_lootWindowInstance != null;
+            return s_lootWindow != null;
         }
     }
 
@@ -250,9 +255,9 @@ public static class WindowStateManager
     /// <returns>The active storage container window, or null if none is open</returns>
     internal static XUiC_LootWindow GetActiveStorageContainerWindow()
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            return s_lootWindowInstance;
+            return s_lootWindow;
         }
     }
 
@@ -276,29 +281,29 @@ public static class WindowStateManager
 #if DEBUG
         //const string d_MethodName = nameof(OnStorageWindowOpening);
 #endif
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindow={s_lootWindow != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
-            if (s_isPlayerStorageWindowOpen || s_lootWindowInstance != null)
+            if (s_isPlayerStorageWindowOpen || s_lootWindow != null)
             {
-                ModLogger.Warning($"[WindowStateManager] Storage container window opened while another was already tracked. Resetting state. Previous: {s_lootWindowInstance?.GetType().Name}, New: {window?.GetType().Name}");
+                ModLogger.Warning($"[WindowStateManager] Storage container window opened while another was already tracked. Resetting state. Previous: {s_lootWindow?.GetType().Name}, New: {window?.GetType().Name}");
                 s_isPlayerStorageWindowOpen = false;
-                s_lootWindowInstance = null;
+                s_lootWindow = null;
             }
 
-            s_lootWindowInstance = window;
+            s_lootWindow = window;
             s_isPlayerStorageWindowOpen = isStorage;
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindow={s_lootWindow != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
         }
     }
 
     public static bool IsBagContainerOpen()
     {
-        lock (s_bagContainerLockObject)
+        lock (s_bagContainerLock)
         {
             return s_bagContainerInstance != null;
         }
@@ -309,7 +314,7 @@ public static class WindowStateManager
 #if DEBUG
         //const string d_MethodName = nameof(OnBagContainerOpening);
 #endif
-        lock (s_bagContainerLockObject)
+        lock (s_bagContainerLock)
         {
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Start: container={container}");
@@ -332,7 +337,7 @@ public static class WindowStateManager
 #if DEBUG
         //const string d_MethodName = nameof(OnBagContainerClosing);
 #endif
-        lock (s_bagContainerLockObject)
+        lock (s_bagContainerLock)
         {
 #if DEBUG
             //ModLogger.DebugLog($"{d_MethodName}: Start: container={container}");
@@ -360,22 +365,22 @@ public static class WindowStateManager
 #if DEBUG
         //const string d_MethodName = nameof(OnStorageWindowClosing);
 #endif
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: Start: s_lootWindow={s_lootWindow != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
-            if (window == s_lootWindowInstance)
+            if (window == s_lootWindow)
             {
-                s_lootWindowInstance = null;
+                s_lootWindow = null;
                 s_isPlayerStorageWindowOpen = false;
             }
-            else if (s_lootWindowInstance != null)
+            else if (s_lootWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close storage container window that doesn't match tracked instance.");
             }
 #if DEBUG
-            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindowInstance={s_lootWindowInstance != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
+            //ModLogger.DebugLog($"{d_MethodName}: End: s_lootWindow={s_lootWindow != null}, s_isPlayerStorageWindowOpen={s_isPlayerStorageWindowOpen}");
 #endif
         }
     }
@@ -390,9 +395,9 @@ public static class WindowStateManager
     /// <returns>The active backpack window instance, or null if none is open</returns>
     public static XUiC_BackpackWindow GetActiveBackpackWindow()
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            return s_backpackWindowInstance;
+            return s_backpackWindow;
         }
     }
 
@@ -402,9 +407,9 @@ public static class WindowStateManager
     /// <returns>True if the backpack window is open, false otherwise</returns>
     public static bool IsBackpackWindowOpen()
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            return s_backpackWindowInstance != null;
+            return s_backpackWindow != null;
         }
     }
 
@@ -419,6 +424,7 @@ public static class WindowStateManager
     public static bool IsOnlyPlayerStorageOpenInternal()
     {
         bool result =
+            //IsPlayerStorageOpen() &&
             !IsAnyLootWindowOpen() &&
             !IsVehicleWindowOpen() &&
             !IsBagStorageWindowOpen() &&
@@ -445,8 +451,9 @@ public static class WindowStateManager
             !IsCollectorWindowOpen();
 
 #if DEBUG
-        ModLogger.DebugLog($"IsPlayerBackpackOpenOnly: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
 #endif
+        return result;
     }
 
     public static string IsOnlyPlayerBackpackOpen()
@@ -461,14 +468,14 @@ public static class WindowStateManager
     /// <param name="backpackWindow">The backpack window that opened</param>
     internal static void OnBackpackWindowOpening(XUiC_BackpackWindow backpackWindow)
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            if (s_backpackWindowInstance != null)
+            if (s_backpackWindow != null)
             {
-                ModLogger.Warning($"[WindowStateManager] Backpack window opened while another was already tracked. Resetting state. Previous: {s_backpackWindowInstance?.GetType().Name}, New: {backpackWindow?.GetType().Name}");
+                ModLogger.Warning($"[WindowStateManager] Backpack window opened while another was already tracked. Resetting state. Previous: {s_backpackWindow?.GetType().Name}, New: {backpackWindow?.GetType().Name}");
             }
 
-            s_backpackWindowInstance = backpackWindow;
+            s_backpackWindow = backpackWindow;
         }
     }
 
@@ -478,14 +485,14 @@ public static class WindowStateManager
     /// <param name="backpackWindow">The backpack window that closed</param>
     internal static void OnBackpackWindowClosing(XUiC_BackpackWindow backpackWindow)
     {
-        lock (s_lootLockObject)
+        lock (s_lootLock)
         {
-            if (backpackWindow != s_backpackWindowInstance && s_backpackWindowInstance != null)
+            if (backpackWindow != s_backpackWindow && s_backpackWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close backpack window that doesn't match tracked instance.");
             }
 
-            s_backpackWindowInstance = null;
+            s_backpackWindow = null;
         }
     }
 
@@ -499,7 +506,7 @@ public static class WindowStateManager
     /// <returns>True if a drone bag storage window is open, false otherwise</returns>
     public static bool IsDroneWindowOpen()
     {
-        lock (s_windowEntityLockObject)
+        lock (s_windowEntityLock)
         {
             return s_droneForWindow != null;
         }
@@ -515,9 +522,9 @@ public static class WindowStateManager
     /// <returns>True if a workstation window is open, false otherwise</returns>
     public static bool IsWorkstationWindowOpen()
     {
-        lock (s_workstationLockObject)
+        lock (s_workstationLock)
         {
-            return s_workstationWindowInstance != null;
+            return s_workstationWindow != null;
         }
     }
 
@@ -527,9 +534,9 @@ public static class WindowStateManager
     /// <returns>The active workstation window instance, or null if none is open</returns>
     public static XUiC_WorkstationWindowGroup GetActiveWorkstationWindow()
     {
-        lock (s_workstationLockObject)
+        lock (s_workstationLock)
         {
-            return s_workstationWindowInstance;
+            return s_workstationWindow;
         }
     }
 
@@ -540,9 +547,9 @@ public static class WindowStateManager
     /// <returns>True if the window is the currently active workstation window</returns>
     public static bool IsCurrentlyActiveWorkstationWindow(XUiC_WorkstationWindowGroup window)
     {
-        lock (s_workstationLockObject)
+        lock (s_workstationLock)
         {
-            return s_workstationWindowInstance != null && s_workstationWindowInstance == window;
+            return s_workstationWindow != null && s_workstationWindow == window;
         }
     }
 
@@ -562,15 +569,15 @@ public static class WindowStateManager
     /// <param name="window">The workstation window that opened</param>
     internal static void OnWorkstationWindowOpening(XUiC_WorkstationWindowGroup window)
     {
-        lock (s_workstationLockObject)
+        lock (s_workstationLock)
         {
-            if (s_workstationWindowInstance != null)
+            if (s_workstationWindow != null)
             {
-                ModLogger.Warning($"[WindowStateManager] Workstation window opened while another was already tracked. Resetting state. Previous: {s_workstationWindowInstance?.GetType().Name}, New: {window?.GetType().Name}");
-                s_workstationWindowInstance = null;
+                ModLogger.Warning($"[WindowStateManager] Workstation window opened while another was already tracked. Resetting state. Previous: {s_workstationWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_workstationWindow = null;
             }
 
-            s_workstationWindowInstance = window;
+            s_workstationWindow = window;
         }
     }
 
@@ -580,15 +587,75 @@ public static class WindowStateManager
     /// <param name="window">The workstation window that closed</param>
     internal static void OnWorkstationWindowClosing(XUiC_WorkstationWindowGroup window)
     {
-        lock (s_workstationLockObject)
+        lock (s_workstationLock)
         {
-            if (s_workstationWindowInstance == window)
+            if (s_workstationWindow == window)
             {
-                s_workstationWindowInstance = null;
+                s_workstationWindow = null;
             }
-            else if (s_workstationWindowInstance != null)
+            else if (s_workstationWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close workstation window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    #endregion
+
+    #region Useables Window
+
+    public static XUiC_BeyondStorage_UseablesWindow GetActiveUseablesWindow()
+    {
+        lock (s_useablesWindowLock)
+        {
+            return s_useablesWindow;
+        }
+    }
+
+    public static bool IsUseablesWindowOpen()
+    {
+        lock (s_useablesWindowLock)
+        {
+            return s_useablesWindow != null;
+        }
+    }
+
+    internal static void OnUseablesWindowOpening(XUiC_BeyondStorage_UseablesWindow window)
+    {
+        lock (s_useablesWindowLock)
+        {
+            if (s_useablesWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Useables window opened while another was already tracked. Resetting state. Previous: {s_useablesWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_useablesWindow = null;
+            }
+
+            s_useablesWindow = window;
+        }
+    }
+
+    internal static void OnUseablesWindowClosing(XUiC_BeyondStorage_UseablesWindow window)
+    {
+        lock (s_useablesWindowLock)
+        {
+            if (s_useablesWindow == window)
+            {
+                s_useablesWindow = null;
+            }
+            else if (s_useablesWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Attempted to close useables window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    internal static void RefreshUseablesWindowBindings()
+    {
+        lock (s_useablesWindowLock)
+        {
+            if (s_useablesWindow != null)
+            {
+                s_useablesWindow.RefreshBindings();
             }
         }
     }
@@ -603,9 +670,9 @@ public static class WindowStateManager
     /// <returns>True if a collector window is open, false otherwise</returns>
     public static bool IsCollectorWindowOpen()
     {
-        lock (s_collectorLockObject)
+        lock (s_collectorLock)
         {
-            return s_collectorWindowInstance != null;
+            return s_collectorWindow != null;
         }
     }
 
@@ -615,9 +682,9 @@ public static class WindowStateManager
     /// <returns>The active collector window instance, or null if none is open</returns>
     public static XUiC_DewCollectorWindowGroup GetActiveCollectorWindow()
     {
-        lock (s_collectorLockObject)
+        lock (s_collectorLock)
         {
-            return s_collectorWindowInstance;
+            return s_collectorWindow;
         }
     }
 
@@ -637,15 +704,18 @@ public static class WindowStateManager
     /// <param name="window">The dew collector window that opened</param>
     internal static void OnCollectorWindowOpening(XUiC_DewCollectorWindowGroup window)
     {
-        lock (s_collectorLockObject)
+        lock (s_collectorLock)
         {
-            if (s_collectorWindowInstance != null)
+            if (s_collectorWindow != null)
             {
-                ModLogger.Warning($"[WindowStateManager] Collector window opened while another was already tracked. Resetting state. Previous: {s_collectorWindowInstance?.GetType().Name}, New: {window?.GetType().Name}");
-                s_collectorWindowInstance = null;
+                ModLogger.Warning($"[WindowStateManager] Collector window opened while another was already tracked. Resetting state. Previous: {s_collectorWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_collectorWindow = null;
             }
 
-            s_collectorWindowInstance = window;
+            s_collectorWindow = window;
+#if DEBUG
+            //ModLogger.DebugLog($"[WindowStateManager] Collector window opened. block={window?.te?.blockValue.Block?.GetBlockName() ?? "null"}");
+#endif
         }
     }
 
@@ -655,13 +725,16 @@ public static class WindowStateManager
     /// <param name="window">The dew collector window that closed</param>
     internal static void OnCollectorWindowClosing(XUiC_DewCollectorWindowGroup window)
     {
-        lock (s_collectorLockObject)
+        lock (s_collectorLock)
         {
-            if (s_collectorWindowInstance == window)
+#if DEBUG
+            //ModLogger.DebugLog($"[WindowStateManager] Collector window closing. block={window?.te?.blockValue.Block?.GetBlockName() ?? "null"}, tracked={s_collectorWindow != null}");
+#endif
+            if (s_collectorWindow == window)
             {
-                s_collectorWindowInstance = null;
+                s_collectorWindow = null;
             }
-            else if (s_collectorWindowInstance != null)
+            else if (s_collectorWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close collector window that doesn't match tracked instance.");
             }

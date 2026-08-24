@@ -19,13 +19,15 @@ internal static class XUiC_DewCollectorWindowGroup_Ext
         // Check for duplicate window open (should not happen)
         if (WindowStateManager.IsCollectorWindowOpen())
         {
-            ModLogger.Error($"{d_MethodName}: Collector Window is already open. This should not happen!");
+            ModLogger.Error($"{d_MethodName}: Collector Window Group is already open. This should not happen!");
         }
 
         WindowStateManager.OnCollectorWindowOpening(__instance);
 
+        WindowStateManager.RefreshUseablesWindowBindings();
+
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Collector Window Opened");
+        //ModLogger.DebugLog($"{d_MethodName}: Collector Window Group Opened");
 #endif
     }
 
@@ -42,8 +44,10 @@ internal static class XUiC_DewCollectorWindowGroup_Ext
 
         WindowStateManager.OnCollectorWindowClosing(__instance);
 
+        WindowStateManager.RefreshUseablesWindowBindings();
+
 #if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Collector Window Closed");
+        //ModLogger.DebugLog($"{d_MethodName}: Collector Window Group Closed");
 #endif
     }
 }

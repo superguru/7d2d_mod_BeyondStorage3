@@ -6,6 +6,7 @@ using BeyondStorage.Game.Functions;
 using BeyondStorage.Game.Item;
 using BeyondStorage.Game.Ranged;
 using BeyondStorage.Game.Recipe;
+using BeyondStorage.Harmony.Components;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Multiplayer;
 using BeyondStorage.Storage;
@@ -107,6 +108,7 @@ public class BeyondStorageMod : IModApi
 
             // General cache related suppression
             nameof(StorageContextFactory.InvalidateContext),
+            nameof(XUiC_BeyondStorage_UseablesGrid.RefreshTopItems),
 
             // Smart sorting functions
             nameof(SmartPullOperations.SmartPullToPlayerLoadout),
