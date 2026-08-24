@@ -1,7 +1,7 @@
 ﻿__🚧 WIP v3.1.8__
 - ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
 - ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
-- ♻ Fixed: Do not use land claim blocks as push targets
+- ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 - 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 🙋 Any bugs to report?
