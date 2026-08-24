@@ -15,9 +15,9 @@ You should also look at the Media Gallery on the mod distribution site where you
 - V2: For older versions of the game, like 7 Days v2.x, see Old Files section
  
 ## What can this do?
-There are three main functions:
+There are four main functions:
 
-![1](https://img.shields.io/badge/1-56a2f4) <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload
+![1](https://img.shields.io/badge/1-56a2f4) <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload.
 
 ![2](https://img.shields.io/badge/2-56a2f4) <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
     - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
@@ -25,6 +25,9 @@ There are three main functions:
 
 ![3](https://img.shields.io/badge/3-56a2f4) <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
     - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
+
+![4](https://img.shields.io/badge/4-56a2f4) <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
+    - use the top 3 healing and top 3 food/drink items directly from the storage network using hotkeys
 
 This is explained more fully below.
 
@@ -284,6 +287,7 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
 - ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
 - ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
+- ✅ [Remote Storage Access](https://www.nexusmods.com/7daystodie/mods/2197)
 - ✅ [Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
 
 #### Common Dependency Libraries that are compatible
