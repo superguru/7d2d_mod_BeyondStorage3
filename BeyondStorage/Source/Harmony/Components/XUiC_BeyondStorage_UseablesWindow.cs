@@ -54,7 +54,7 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
         }
 
         PollHotkeys();
-        PollDoubleClick();
+        PollClicks();
 
         _refreshTimer += _dt;
         if (_refreshTimer < REFRESH_INTERVAL_SECONDS)
@@ -83,12 +83,16 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     }
 
     /// <summary>
-    /// Detects a double-click on a cell as an alternate trigger for the same TryUseSlot action.
-    /// Cells are locked (see XUiC_BeyondStorage_UseablesGrid.LockCells) so the vanilla click
-    /// pipeline never fires, but XUiC_ItemStack.isOver is still updated on hover regardless of
-    /// lock state, so hover+mouse-button state read here independently is all that's needed.
+    /// Handles clicks on a cell: every click shows the item info panel (the same read-only display
+    /// vanilla shows for a normal backpack/toolbelt click — XUiC_ItemStack.HandleItemInspect() only
+    /// sets IsSelected and populates the info window, it never touches ItemStack contents, so it's
+    /// safe to call directly), and a second click within the double-click window additionally
+    /// triggers TryUseSlot. Cells are locked (see XUiC_BeyondStorage_UseablesGrid.LockCells) so the
+    /// vanilla click pipeline that would normally do both of these never runs, but
+    /// XUiC_ItemStack.isOver is still updated on hover regardless of lock state, so hover+mouse-
+    /// button state read here independently is all that's needed.
     /// </summary>
-    private void PollDoubleClick()
+    private void PollClicks()
     {
         if (!Input.GetMouseButtonDown(0))
         {
@@ -107,6 +111,8 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
             {
                 continue;
             }
+
+            controllers[i].HandleItemInspect();
 
             float now = Time.time;
             bool isDoubleClick = (now - _lastClickTime[i]) <= DOUBLE_CLICK_WINDOW_SECONDS;
