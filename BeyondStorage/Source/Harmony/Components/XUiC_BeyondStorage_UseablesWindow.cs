@@ -44,6 +44,10 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     {
         base.Update(_dt);
 
+        // Runs regardless of visibility so a stuck busy flag still recovers even if the player
+        // closed the backpack while a use was pending.
+        useablesGrid?.CheckStuckUseWatchdog();
+
         if (!viewComponent.isVisible)
         {
             return;

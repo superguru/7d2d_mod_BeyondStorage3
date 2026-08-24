@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BeyondStorage.Data;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Storage;
+using UnityEngine;
 using UnityEngine.Scripting;
 
 namespace BeyondStorage.Harmony.Components;
@@ -118,33 +119,6 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     }
 
     /// <summary>
-    /// Cells here are synthetic display stacks aggregated across possibly many storage sources, not
-    /// a reference to any single real slot, so picking one up would hand the player a free copy of
-    /// a real item without ever removing it from storage — a duplication bug, not just a UX wrinkle.
-    /// IsLocked gates the entire mouse/gamepad interaction block on XUiC_ItemStack (click, drag,
-    /// swap, partial-stack pickup), unlike AllowDropping which only gates drops landing on the slot —
-    /// AllowDropping is set too as a second layer, but IsLocked is what actually prevents pickup.
-    /// Re-applied after every refresh since SetStacks recreates the underlying ItemStack.
-    /// </summary>
-    private void LockCells()
-    {
-        var controllers = GetItemStackControllers();
-        for (int i = 0; i < controllers.Length; i++)
-        {
-            controllers[i].AllowDropping = false;
-            controllers[i].IsLocked = true;
-        }
-    }
-
-    [PublicizedFrom(EAccessModifier.Protected)]
-    public override void UpdateBackend(ItemStack[] stackList)
-    {
-        ModLogger.DebugLog($"UpdateBackend: stackList.Length={stackList?.Length}");
-        base.UpdateBackend(stackList);  // TODO: Should we be doing this?
-        windowGroup.Controller.SetAllChildrenDirty();
-    }
-
-    /// <summary>
     /// Uses whatever is currently displayed in <paramref name="slotIndex"/> (0-5), triggered by a
     /// number-key press or a double-click on the cell. Removes exactly 1 unit from storage first,
     /// then hands off to vanilla's own ItemActionEntryUse.OnActivated on this cell's controller so
@@ -198,9 +172,85 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         }
 
         cellController.ItemStack = new ItemStack(itemValue.Clone(), 1);
-        new ItemActionEntryUse(cellController, consumeType).OnActivated();
 
+        // ItemActionEntryUse.OnActivated (and the coroutine it may schedule for animated eat/drink
+        // actions) expects ParentActionList to be set — vanilla only ever constructs this via
+        // XUiC_ItemActionList.AddActionListEntry, which we bypass entirely. Without it,
+        // ItemActionEntryUse.SwitchBackCoroutine null-refs on base.ParentActionList.RefreshActionList()
+        // AFTER the eat animation finishes (a separate Unity coroutine tick we can't try/catch around
+        // from here), which aborts before it can reset xui.IsUsingItemActionEntryUse — permanently
+        // soft-locking every future use (vanilla included) behind the "isBusy" check. A bare instance
+        // is enough: RefreshActionList() only ever does `IsDirty = true`, and this one is never
+        // attached to the UI tree or rendered.
+        var entry = new ItemActionEntryUse(cellController, consumeType)
+        {
+            ParentActionList = new XUiC_ItemActionList()
+        };
+
+        try
+        {
+            entry.OnActivated();
+        }
+        catch (System.Exception ex)
+        {
+            // Covers only the synchronous portion of OnActivated — an exception from a coroutine it
+            // schedules for animated actions happens on a later, unrelated Unity tick and can't be
+            // caught here. MarkUsePending's watchdog (checked every frame) is the backstop for that.
+            ModLogger.Error($"{d_MethodName}: OnActivated threw for slot {slotIndex} ({itemValue.ItemClass?.GetItemName()}). Forcing busy-state recovery.", ex);
+            xui.IsUsingItemActionEntryUse = false;
+            cellController.HiddenLock = false;
+        }
+
+        MarkUsePending();
         StorageContextFactory.InvalidateContext();
+        RefreshTopItems();
+    }
+
+    // Generous relative to any real eat/drink animation (a few seconds) — this only exists to catch
+    // the busy flag getting stranded true by an exception in a later, unrelated coroutine tick that
+    // we have no way to try/catch around (see TryUseSlot). Checked every frame from the window.
+    private const float STUCK_USE_TIMEOUT_SECONDS = 10f;
+    private float? _pendingUseStartedAt;
+
+    private void MarkUsePending()
+    {
+        _pendingUseStartedAt = Time.time;
+    }
+
+    /// <summary>
+    /// Recovers from a soft lock if a use we triggered never cleared xui.IsUsingItemActionEntryUse
+    /// within a generous timeout — see the comment in TryUseSlot for why this can happen and why it
+    /// can't be caught with a try/catch at the call site.
+    /// </summary>
+    internal void CheckStuckUseWatchdog()
+    {
+        if (_pendingUseStartedAt == null)
+        {
+            return;
+        }
+
+        if (!xui.IsUsingItemActionEntryUse)
+        {
+            _pendingUseStartedAt = null; // completed normally
+            return;
+        }
+
+        if (Time.time - _pendingUseStartedAt.Value < STUCK_USE_TIMEOUT_SECONDS)
+        {
+            return;
+        }
+
+        ModLogger.Error($"{nameof(CheckStuckUseWatchdog)}: IsUsingItemActionEntryUse still true {STUCK_USE_TIMEOUT_SECONDS}s after a Useables window use — force-clearing to recover from a soft lock.");
+
+        xui.IsUsingItemActionEntryUse = false;
+
+        var controllers = GetItemStackControllers();
+        for (int i = 0; i < controllers.Length; i++)
+        {
+            controllers[i].HiddenLock = false;
+        }
+
+        _pendingUseStartedAt = null;
         RefreshTopItems();
     }
 
