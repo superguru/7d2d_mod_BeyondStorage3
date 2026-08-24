@@ -93,6 +93,29 @@
               controller="BeyondStorage.Harmony.Components.BeyondStorage_UseablesGrid, BeyondStorage3" repeat_content="true">
           <item_stack name="0" controller="BeyondStorage.Harmony.Components.BeyondStorage_ItemStack, BeyondStorage3"/>
         </grid>
+
+        <!-- Hotkey number badges (1-6), bottom-left of each cell. Grid starts at pos="3,-3" with
+             75x75 cells, so cell (row,col) top-left = (3 + col*75, -3 - row*75); these sit 4px in
+             from the left and 59px down from the cell top, near the bottom-left corner. Label pos
+             is shifted 2px further down than the background sprite so the glyph looks vertically
+             centered in the badge (text otherwise renders top-aligned within its box). -->
+        <sprite depth="19" pos="7,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="7,-64" width="14" height="12" text="[DECEA3]1" font_size="12" color="" justify="center"/>
+
+        <sprite depth="19" pos="82,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="82,-64" width="14" height="12" text="[DECEA3]2" font_size="12" color="" justify="center"/>
+
+        <sprite depth="19" pos="157,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="157,-64" width="14" height="12" text="[DECEA3]3" font_size="12" color="" justify="center"/>
+
+        <sprite depth="19" pos="7,-137" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="7,-139" width="14" height="12" text="[DECEA3]4" font_size="12" color="" justify="center"/>
+
+        <sprite depth="19" pos="82,-137" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="82,-139" width="14" height="12" text="[DECEA3]5" font_size="12" color="" justify="center"/>
+
+        <sprite depth="19" pos="157,-137" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
+        <label depth="20" pos="157,-139" width="14" height="12" text="[DECEA3]6" font_size="12" color="" justify="center"/>
       </rect>
     </window>
 
