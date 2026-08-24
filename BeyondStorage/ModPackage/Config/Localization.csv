@@ -30,3 +30,4 @@
 "bsSettingIsDebug","UI","Menu","x","","","Debug Logging"
 "bsSettingIsDebugTooltip","UI","Menu","x","","","Enable additional logging"
 "xuiBeyondUseables","UI","XUI","","","","Useables"
+"xuiBeyondUseablesHint","UI","XUI","","","","Double-click or press 1-6 to use"
