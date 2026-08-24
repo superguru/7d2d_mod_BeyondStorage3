@@ -297,7 +297,12 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             return false;
         }
 
-        if (consumeType == ItemActionEntryUse.ConsumeType.Drink && XUiM_Player.GetWaterPercent(entityPlayer) >= 1f)
+        // GetWaterPercent returns a 0-100 scale (Stats.Water.ValuePercentUI * 100f), unlike
+        // GetFoodPercent below which is a genuine 0-1 fraction — vanilla's own RefreshEnabled
+        // compares this against 1f too, so it blocks drinking at any hydration above 1%, not just
+        // at full. That's a real vanilla bug, just one almost nobody hits since drinking normally
+        // happens via the toolbelt, not this right-click "Use" action entry.
+        if (consumeType == ItemActionEntryUse.ConsumeType.Drink && XUiM_Player.GetWaterPercent(entityPlayer) >= 100f)
         {
             GameManager.ShowTooltip(entityPlayer, Localization.Get("notThirsty"));
             return false;
