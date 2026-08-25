@@ -118,7 +118,7 @@
         <label depth="20" pos="157,-139" width="14" height="12" text="[DECEA3]6" font_size="12" color="" justify="center"/>
       </rect>
 
-      <label name="bs_useables_hint" pos="0,-196" width="228" height="16" text="Double-click or press 1-6 to use"
+      <label name="bs_useables_hint" pos="0,-200" width="228" height="16" text="Double-click or press 1-6 to use"
              text_key="xuiBeyondUseablesHint" font_size="11" color="[lightGrey]" justify="center"/>
     </window>
 
