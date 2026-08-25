@@ -33,6 +33,11 @@ public class GearsModAPI : IGearsModApi
             return;
         }
 
+        ConfigureGeneralCategory();
+    }
+
+    private void ConfigureGeneralCategory()
+    {
         var generalTab = GearsGlobalSettings.GetTab("General");
         if (generalTab == null)
         {
@@ -47,7 +52,7 @@ public class GearsModAPI : IGearsModApi
             return;
         }
 
-        GearsGeneralSettings.Configure(generalCategory);
+        GearsGeneralSettings.ConfigureGeneralCategorySettings(generalCategory);
     }
 
     void IGearsModApi.OnWorldSettingsLoaded(IModWorldSettings worldSettings)

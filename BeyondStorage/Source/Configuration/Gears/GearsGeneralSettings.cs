@@ -6,7 +6,7 @@ namespace BeyondStorage.Source.Configuration.Gears;
 
 internal static class GearsGeneralSettings
 {
-    internal static void Configure(IGlobalModSettingsCategory generalCategory)
+    internal static void ConfigureGeneralCategorySettings(IGlobalModSettingsCategory generalCategory)
     {
         ConfigureRangeSetting(generalCategory);
         ConfigureAllowPushToAlliedVehiclesSetting(generalCategory);
@@ -15,12 +15,22 @@ internal static class GearsGeneralSettings
         ConfigureIsDebugSetting(generalCategory);
     }
 
-    internal static void ConfigureAllowPushToAlliedVehiclesSetting(IGlobalModSettingsCategory generalCategory)
+    private static bool TryGetGlobalValueSetting(IGlobalModSettingsCategory category, string key, out IGlobalValueSetting setting)
     {
-        var setting = (generalCategory.GetSetting("AllowPushToAlliedVehicles") as IGlobalValueSetting);
+        setting = (category.GetSetting(key) as IGlobalValueSetting);
         if (setting == null)
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting is null");
+            ModLogger.DebugLog($"Global settings loaded, but setting `{key}` is null");
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void ConfigureAllowPushToAlliedVehiclesSetting(IGlobalModSettingsCategory generalCategory)
+    {
+        if (!TryGetGlobalValueSetting(generalCategory, "AllowPushToAlliedVehicles", out IGlobalValueSetting setting))
+        {
             return;
         }
 
@@ -50,12 +60,10 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureRangeSetting(IGlobalModSettingsCategory generalCategory)
+    private static void ConfigureRangeSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("Range") as IGlobalValueSetting);
-        if (setting == null)
+        if (!TryGetGlobalValueSetting(generalCategory, "Range", out IGlobalValueSetting setting))
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
@@ -85,12 +93,10 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureIncludeDronesSetting(IGlobalModSettingsCategory generalCategory)
+    private static void ConfigureIncludeDronesSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("IncludeDrones") as IGlobalValueSetting);
-        if (setting == null)
+        if (!TryGetGlobalValueSetting(generalCategory, "IncludeDrones", out IGlobalValueSetting setting))
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
@@ -121,12 +127,10 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureIncludeVehiclesSetting(IGlobalModSettingsCategory generalCategory)
+    private static void ConfigureIncludeVehiclesSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("IncludeVehicles") as IGlobalValueSetting);
-        if (setting == null)
+        if (!TryGetGlobalValueSetting(generalCategory, "IncludeVehicles", out IGlobalValueSetting setting))
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
@@ -157,12 +161,10 @@ internal static class GearsGeneralSettings
         }
     }
 
-    internal static void ConfigureIsDebugSetting(IGlobalModSettingsCategory generalCategory)
+    private static void ConfigureIsDebugSetting(IGlobalModSettingsCategory generalCategory)
     {
-        var setting = (generalCategory.GetSetting("IsDebug") as IGlobalValueSetting);
-        if (setting == null)
+        if (!TryGetGlobalValueSetting(generalCategory, "IsDebug", out IGlobalValueSetting setting))
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting is null");
             return;
         }
 
