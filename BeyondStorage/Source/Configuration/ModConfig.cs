@@ -9,8 +9,8 @@ namespace BeyondStorage.Configuration;
 
 public static class ModConfig
 {
-    public const float RANGE_MAX_USER_LIMIT = 250.0f; // Largest user settable maximum range
-    public const float RANGE_UNLIMITED = 0.0f;  // Whatever the game holds in memory
+    public const float MAX_RANGE = 250.0f; // Largest user settable maximum range
+    public const float MIN_RANGE = 0.0f;  // Whatever the game holds in memory
 
     private const string ConfigFileName = "config.json";
     private const string ConfigBackupPrefix = "config.backup.";
@@ -431,17 +431,17 @@ public static class ModConfig
     /// <returns>True if the config was modified, false otherwise</returns>
     private static bool ValidateRangeOption()
     {
-        if (ClientConfig.range < RANGE_UNLIMITED)
+        if (ClientConfig.range < MIN_RANGE)
         {
             ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to unlimited range");
-            ClientConfig.range = RANGE_UNLIMITED;
+            ClientConfig.range = MIN_RANGE;
             return true; // Config was modified
         }
 
-        if (ClientConfig.range > RANGE_MAX_USER_LIMIT)
+        if (ClientConfig.range > MAX_RANGE)
         {
-            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to {RANGE_MAX_USER_LIMIT} (max user range limit).");
-            ClientConfig.range = RANGE_MAX_USER_LIMIT;
+            ModLogger.Warning($"Invalid range value {ClientConfig.range} in config, resetting to {MAX_RANGE} (max user range limit).");
+            ClientConfig.range = MAX_RANGE;
             return true; // Config was modified
         }
 

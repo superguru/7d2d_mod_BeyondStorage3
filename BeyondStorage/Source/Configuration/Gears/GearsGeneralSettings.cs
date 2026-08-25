@@ -65,7 +65,7 @@ internal static class GearsGeneralSettings
 
     private static void SetRange(IGlobalModSetting setting, string newValue)
     {
-        var value = GearsConversions.ToFloat(newValue, ModConfig.RANGE_UNLIMITED);
+        var value = GearsConversions.ToFloat(newValue, ModConfig.MIN_RANGE);
         var oldValue = ModConfig.ClientConfig.range;
 
         if (oldValue != value)
@@ -80,7 +80,7 @@ internal static class GearsGeneralSettings
 
         if (!GearsConversions.IsEqualValue(setting.CurrentValue, modConfigValue))
         {
-            setting.CurrentValue = GearsConversions.FromFloat(modConfigValue);
+            setting.CurrentValue = GearsConversions.FromFloat(modConfigValue, ModConfig.MIN_RANGE, ModConfig.MAX_RANGE);
             GearsModAPI.SaveGlobalSettings();
         }
     }

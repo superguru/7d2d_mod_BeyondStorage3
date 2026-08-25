@@ -1,5 +1,4 @@
 ﻿using System;
-using BeyondStorage.Configuration;
 using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Source.Configuration.Gears;
@@ -23,15 +22,15 @@ internal static class GearsConversions
         return value ? "On" : "Off";
     }
 
-    internal static string FromFloat(float value)
+    internal static string FromFloat(float value, float min, float max)
     {
-        if (value < ModConfig.RANGE_UNLIMITED)
+        if (value < min)
         {
-            value = ModConfig.RANGE_UNLIMITED;
+            value = min;
         }
-        else if (value > ModConfig.RANGE_MAX_USER_LIMIT)
+        else if (value > max)
         {
-            value = ModConfig.RANGE_MAX_USER_LIMIT;
+            value = max;
         }
 
         return value.ToString("F1");
