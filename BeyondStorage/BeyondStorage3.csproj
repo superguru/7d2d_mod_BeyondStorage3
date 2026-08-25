@@ -18,6 +18,7 @@
     <ModPackageDocReadMeDir>$(MSBuildProjectDirectory)\ModPackage\Docs</ModPackageDocReadMeDir>
     <GAZModDeployDir>D:\Projects\7 Days To Die\projects\GAZ Mod Deploy</GAZModDeployDir>
     <StructuredTextProjectDir>D:\Projects\DotNet\StructuredData\StructuredText</StructuredTextProjectDir>
+    <GearsDLLDir>D:\Projects\Libraries\GearsAPI_DLL</GearsDLLDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -258,7 +259,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="GearsAPI">
-      <HintPath>Uploads\GearsAPI_DLL\GearsAPI.dll</HintPath>
+      <HintPath>$(GearsDLLDir)\GearsAPI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Humanizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\packages\Humanizer.Core.3.0.10\lib\net48\Humanizer.dll</HintPath>
