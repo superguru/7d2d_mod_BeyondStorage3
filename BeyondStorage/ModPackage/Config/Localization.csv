@@ -7,7 +7,7 @@
 "btnBeyondSmartVehiclePullLoadout_ToolTip","","","","","","Pull in items to top up the vehicle's loadout (the locked slots) from nearby storages"
 "btnBeyondSmartVehiclePush_ToolTip","","","","","","Pushes items from unlocked slots in the drone/vehicle inventory to the nearest storages that already have that type of item"
 "btnBeyondSmartWorkstationOutputPush_ToolTip","","","","","","Pushes completed items from here to the nearest storages that already have that type of item\nShift+Click to also push any remaining items to any storage with free space"
-"loadingBeyondStorage","UI","Loading Screen","x","","","Please go to [4c5fd7]#beyond-storage3[-] on the [f46f30]Discord server[-] for mod support. See the README.md file or the mod web page for the details."
+"loadingBeyondStorage","UI","Loading Screen","x","","","Please go to [4c5fd7]#beyond-storage3[-] on the [f46f30]Discord server[-] for mod support. See Docs/README.md or the mod web page for details and the documentation."
 "loadingBeyondStorage_title","UI","Loading Screen","x","","","Beyond Storage mod support"
 "msgBeyondSmartPull_Multiple","","","","","","You carefully topped up {0} slots in the [A5FF7F]{1}[-]"
 "msgBeyondSmartPull_Single","","","","","","You carefully topped up the [A5FF7F]{0}[-] in the [A5FF7F]{1}[-]"
