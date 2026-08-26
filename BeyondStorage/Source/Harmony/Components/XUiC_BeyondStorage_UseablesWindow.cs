@@ -67,15 +67,17 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     }
 
     /// <summary>
-    /// Number keys 1-6 map straight to slots 1-6 (Heal row, then Food/Drink row). Plain digits are
-    /// safe here since the toolbelt hotkeys they'd otherwise trigger aren't active while this
-    /// window's visibility condition (backpack-only) holds.
+    /// Number keys 1-6 (top row) map straight to slots 1-6 (Heal row, then Food/Drink row). Plain
+    /// digits are safe here since the toolbelt hotkeys they'd otherwise trigger aren't active while
+    /// this window's visibility condition (backpack-only) holds.
     /// </summary>
     private void PollHotkeys()
     {
         for (int slotIndex = 0; slotIndex < SLOT_COUNT; slotIndex++)
         {
-            if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + slotIndex)))
+            var alphaKey = (KeyCode)((int)KeyCode.Alpha1 + slotIndex);
+
+            if (Input.GetKeyDown(alphaKey))
             {
                 useablesGrid?.TryUseSlot(slotIndex);
             }
@@ -83,14 +85,13 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     }
 
     /// <summary>
-    /// Handles clicks on a cell: every click shows the item info panel (the same read-only display
-    /// vanilla shows for a normal backpack/toolbelt click — XUiC_ItemStack.HandleItemInspect() only
-    /// sets IsSelected and populates the info window, it never touches ItemStack contents, so it's
-    /// safe to call directly), and a second click within the double-click window additionally
-    /// triggers TryUseSlot. Cells are locked (see XUiC_BeyondStorage_UseablesGrid.LockCells) so the
-    /// vanilla click pipeline that would normally do both of these never runs, but
-    /// XUiC_ItemStack.isOver is still updated on hover regardless of lock state, so hover+mouse-
-    /// button state read here independently is all that's needed.
+    /// Handles clicks on a cell: every click shows the item info panel (read-only — see
+    /// ShowReadOnlyItemInfo for why it's NOT XUiC_ItemStack.HandleItemInspect()), and a second
+    /// click within the double-click window additionally triggers TryUseSlot. Cells are locked
+    /// (see XUiC_BeyondStorage_UseablesGrid.LockCells) so the vanilla click pipeline that would
+    /// normally do both of these never runs, but XUiC_ItemStack.isOver is still updated on hover
+    /// regardless of lock state, so hover+mouse-button state read here independently is all that's
+    /// needed.
     /// </summary>
     private void PollClicks()
     {
@@ -112,7 +113,7 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
                 continue;
             }
 
-            controllers[i].HandleItemInspect();
+            ShowReadOnlyItemInfo(controllers[i]);
 
             float now = Time.time;
             bool isDoubleClick = (now - _lastClickTime[i]) <= DOUBLE_CLICK_WINDOW_SECONDS;
@@ -129,6 +130,38 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
 
             break; // only one cell can be hovered at a time
         }
+    }
+
+    /// <summary>
+    /// Shows the item info panel without exposing any default vanilla item actions (Drop, Use,
+    /// etc.). XUiC_ItemStack.HandleItemInspect() -> XUiC_ItemInfoWindow.SetItemStack() both go
+    /// through SetInfo(..., ItemActionListTypes.Item), which populates the panel's action list
+    /// with FULLY FUNCTIONAL buttons bound directly to the cell controller passed in — for our
+    /// synthetic cells that's a real duplication bug: e.g. the panel's "Drop" button (or its
+    /// keyboard shortcut) drops a real item stack on the ground while our storage-backed count is
+    /// never touched, and its "Use" button applies the item's effect and decrements only the
+    /// cell's own display count, bypassing TryUseSlot's storage removal entirely. Calling SetInfo
+    /// directly with ItemActionListTypes.None gets the same read-only display (name/stats/icon)
+    /// with an empty action list, so 1-6 / double-click (TryUseSlot) are the only way to act on
+    /// these cells.
+    /// </summary>
+    private static void ShowReadOnlyItemInfo(XUiC_ItemStack cellController)
+    {
+        var itemStack = cellController?.ItemStack;
+        if (itemStack == null || itemStack.IsEmpty())
+        {
+            return;
+        }
+
+        var infoWindow = cellController.InfoWindow;
+        if (infoWindow == null)
+        {
+            return;
+        }
+
+        infoWindow.ClearSelectedStacks();
+        infoWindow.makeVisible(true);
+        infoWindow.SetInfo(itemStack, cellController, XUiC_ItemActionList.ItemActionListTypes.None);
     }
 
     [PublicizedFrom(EAccessModifier.Protected)]

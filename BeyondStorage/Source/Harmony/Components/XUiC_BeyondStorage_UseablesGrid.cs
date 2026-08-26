@@ -148,7 +148,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         var itemValue = itemStack.itemValue;
         var consumeType = GetConsumeTypeForSlot(slotIndex, itemValue.type);
 
-        if (!CanUseNow(consumeType))
+        if (!CanUseNow(consumeType, itemValue))
         {
             return;
         }
@@ -271,7 +271,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     /// Mirrors ItemActionEntryUse.RefreshEnabled's gates, since we're bypassing the vanilla
     /// click/enable pipeline entirely (our cells are locked) and calling OnActivated directly.
     /// </summary>
-    private bool CanUseNow(ItemActionEntryUse.ConsumeType consumeType)
+    private bool CanUseNow(ItemActionEntryUse.ConsumeType consumeType, ItemValue itemValue)
     {
         var entityPlayer = xui.playerUI.entityPlayer;
         if (entityPlayer == null)
@@ -297,15 +297,31 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             return false;
         }
 
-        // GetWaterPercent returns a 0-100 scale (Stats.Water.ValuePercentUI * 100f), unlike
-        // GetFoodPercent below which is a genuine 0-1 fraction — vanilla's own RefreshEnabled
-        // compares this against 1f too, so it blocks drinking at any hydration above 1%, not just
-        // at full. That's a real vanilla bug, just one almost nobody hits since drinking normally
-        // happens via the toolbelt, not this right-click "Use" action entry.
-        if (consumeType == ItemActionEntryUse.ConsumeType.Drink && XUiM_Player.GetWaterPercent(entityPlayer) >= 100f)
+        // ItemActionEntryUse.OnActivated checks this internally (hardcoded to action index 0)
+        // AFTER we'd have already removed the item from storage — e.g. a First Aid Kit's own
+        // requirement (health must be below 100%) fails silently in there with zero effect
+        // applied. Checking it here, before removal, is what actually prevents losing the item.
+        if (!itemValue.ItemClass.CanExecuteAction(0, entityPlayer, itemValue))
         {
-            GameManager.ShowTooltip(entityPlayer, Localization.Get("notThirsty"));
+            GameManager.ShowTooltip(entityPlayer, Localization.Get("ttCannotUseAtThisTime"), string.Empty, "ui_denied");
             return false;
+        }
+
+        // Reading Stats.Water.ValuePercentUI directly instead of XUiM_Player.GetWaterPercent()
+        // (which multiplies this same value by 100 for UI display purposes) — comparing that
+        // scaled result against 1f was the earlier bug. ValuePercentUI is FastClamp01(Value / Max),
+        // so 1f unambiguously means "at or above max" regardless of any display-scale assumption.
+        if (consumeType == ItemActionEntryUse.ConsumeType.Drink)
+        {
+            var waterPercentUI = entityPlayer.Stats.Water.ValuePercentUI;
+#if DEBUG
+            ModLogger.DebugLog($"{nameof(CanUseNow)}: Drink check — Stats.Water.ValuePercentUI={waterPercentUI}, GetWaterPercent={XUiM_Player.GetWaterPercent(entityPlayer)}");
+#endif
+            if (waterPercentUI >= 1f)
+            {
+                GameManager.ShowTooltip(entityPlayer, Localization.Get("notThirsty"));
+                return false;
+            }
         }
 
         if (consumeType == ItemActionEntryUse.ConsumeType.Eat && XUiM_Player.GetFoodPercent(entityPlayer) >= 1f)
