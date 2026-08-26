@@ -35,13 +35,19 @@ Clone the [StructuredData](https://github.com/superguru/StructuredData) reposito
 
 It's recommended to use the Release build type for assembly references and for deployments.
 
+## Gears API
+
+Find the latest version of the Gears mod, which is an API used by many 7 Days to Die mods for configuration GUI.
+
+On place you can find [Gears](https://www.nexusmods.com/7daystodie/mods/4017) is on Nexus Mods.
+
 ### Reference paths
 
 Update these path properties in the .csproj itself:
 - `GameInstallDir`
-- `MDtoBBCodeDir`
 - `GAZModDeployDir`
 - `StructuredTextProjectDir`
+- `GearsDLLDir`
 
 ## License
 
