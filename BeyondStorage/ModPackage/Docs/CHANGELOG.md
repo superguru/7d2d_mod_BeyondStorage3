@@ -19,7 +19,7 @@
 __🚧 WIP v3.2.0 RC2__
 - Fixed that you can use backpack actions like Drop or Use for items in the Useables window
 - Fixed that items get decreased but not used when the check to see if you can use them fails, like for medkits when you are at full health
-
+- Fixed that the Useables window is visible when the Character window is open
 
 
 
