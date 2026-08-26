@@ -155,8 +155,13 @@ public static class UseableItemStore
                 continue;
             }
 
-            // Only items with a usable eat-style action are eligible for any row
-            if (ItemClassCache.LookupItemUseageType(itemType) == ItemActionEntryUse.ConsumeType.None)
+            // Only items with an eat-style action are eligible for any row. Tags alone aren't
+            // enough: a modded item tagged "food"/"drinks"/"medical" but with a Read/Quest/Open
+            // action would otherwise be classified here and then mishandled by TryUseSlot /
+            // ItemActionEntryUse.OnActivated, which for Eat/Drink/Heal picks the first non-null
+            // action regardless of its type. ConsumeType.Heal is what LookupItemUseageType returns
+            // for ItemActionEat, so this keeps exactly the eat items.
+            if (ItemClassCache.LookupItemUseageType(itemType) != ItemActionEntryUse.ConsumeType.Heal)
             {
                 continue;
             }
