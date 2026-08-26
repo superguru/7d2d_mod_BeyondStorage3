@@ -16,6 +16,14 @@
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
 
+__🚧 WIP v3.2.0 RC2__
+- Fixed that you can use backpack actions like Drop or Use for items in the Useables window
+- Fixed that items get decreased but not used when the check to see if you can use them fails, like for medkits when you are at full health
+
+
+
+
+
 ```text
 For game V3.1.x/3.2.x or later
 - Fixed that allied vehicles could sometimes not be found
