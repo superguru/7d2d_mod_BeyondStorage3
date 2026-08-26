@@ -67,6 +67,12 @@ public class XUiC_BeyondStorage_ItemGrid : XUiC_ItemStackGrid
         var stack = controller?.ItemStack;
         if (stack == null || stack.IsEmpty())
         {
+            // Empty cells must clear any icon left over from a previous refresh, since vanilla's
+            // updateLockTypeIcon() skips resetting lockSprite while IsLocked && lockType != None.
+            if (controller != null)
+            {
+                controller.lockSprite = "";
+            }
             return;
         }
 

@@ -35,6 +35,10 @@ public static class WindowStateManager
     private static readonly object s_useablesWindowLock = new();
     private static XUiC_BeyondStorage_UseablesWindow s_useablesWindow = null;
 
+    // Character Frame Window (character screen: equipment/appearance with character preview)
+    private static readonly object s_characterFrameWindowLock = new();
+    private static XUiC_CharacterFrameWindow s_characterFrameWindow = null;
+
     // Entities associated with the currently open bag storage window.
     // Always update via SetOpenWindowEntities().
     private static readonly object s_windowEntityLock = new();
@@ -424,7 +428,6 @@ public static class WindowStateManager
     public static bool IsOnlyPlayerStorageOpenInternal()
     {
         bool result =
-            //IsPlayerStorageOpen() &&
             !IsAnyLootWindowOpen() &&
             !IsVehicleWindowOpen() &&
             !IsBagStorageWindowOpen() &&
@@ -448,10 +451,11 @@ public static class WindowStateManager
         bool result =
             IsOnlyPlayerStorageOpenInternal() &&
             !IsWorkstationWindowOpen() &&
-            !IsCollectorWindowOpen();
+            !IsCollectorWindowOpen() &&
+            !IsCharacterFrameWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()}, Char={IsCharacterFrameWindowOpen()})");
 #endif
         return result;
     }
@@ -737,6 +741,71 @@ public static class WindowStateManager
             else if (s_collectorWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close collector window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    #endregion
+
+    #region Character Frame Window
+
+    /// <summary>
+    /// Gets whether the character frame window (character screen) is currently open
+    /// </summary>
+    /// <returns>True if the character frame window is open, false otherwise</returns>
+    public static bool IsCharacterFrameWindowOpen()
+    {
+        lock (s_characterFrameWindowLock)
+        {
+            return s_characterFrameWindow != null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the currently active character frame window instance
+    /// </summary>
+    /// <returns>The active character frame window, or null if none is open</returns>
+    public static XUiC_CharacterFrameWindow GetActiveCharacterFrameWindow()
+    {
+        lock (s_characterFrameWindowLock)
+        {
+            return s_characterFrameWindow;
+        }
+    }
+
+    /// <summary>
+    /// Called when a character frame window opens
+    /// </summary>
+    /// <param name="window">The character frame window that opened</param>
+    internal static void OnCharacterFrameWindowOpening(XUiC_CharacterFrameWindow window)
+    {
+        lock (s_characterFrameWindowLock)
+        {
+            if (s_characterFrameWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Character frame window opened while another was already tracked. Resetting state. Previous: {s_characterFrameWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_characterFrameWindow = null;
+            }
+
+            s_characterFrameWindow = window;
+        }
+    }
+
+    /// <summary>
+    /// Called when a character frame window closes
+    /// </summary>
+    /// <param name="window">The character frame window that closed</param>
+    internal static void OnCharacterFrameWindowClosing(XUiC_CharacterFrameWindow window)
+    {
+        lock (s_characterFrameWindowLock)
+        {
+            if (s_characterFrameWindow == window)
+            {
+                s_characterFrameWindow = null;
+            }
+            else if (s_characterFrameWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Attempted to close character frame window that doesn't match tracked instance.");
             }
         }
     }

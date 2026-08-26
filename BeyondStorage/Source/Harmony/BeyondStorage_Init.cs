@@ -109,6 +109,7 @@ public class BeyondStorageMod : IModApi
             // General cache related suppression
             nameof(StorageContextFactory.InvalidateContext),
             nameof(XUiC_BeyondStorage_UseablesGrid.RefreshGridItems),
+            nameof(XUiC_BeyondStorage_UseablesGrid.TryUseSlot),
 
             // Smart sorting functions
             nameof(SmartPullOperations.SmartPullToPlayerLoadout),

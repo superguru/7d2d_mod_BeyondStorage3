@@ -97,6 +97,7 @@
     <Compile Include="Source\Harmony\Extends\TEFeatureStorage_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\TileEntityWorkstation_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_BagStorageWindowGroup_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\XUiC_DewCollectorWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationOutputGrid_Ext.cs" />
     <Compile Include="Source\Game\Ranged\AnimatorCommon.cs" />
     <Compile Include="Source\Harmony\Servers\LockManager_Patches.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Source\Harmony\Patches\TEFeatureLockPickable_Patch.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ContainerStandardControls_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_CollectedItemList_Ext.cs" />
-    <Compile Include="Source\Harmony\Extends\XUiC_DewCollectorWindowGroup_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\XUiC_CharacterFrameWindow_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ItemStack_Find_PatchPoint.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ItemStack_Ext.cs" />

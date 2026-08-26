@@ -148,7 +148,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         var itemValue = itemStack.itemValue;
         var consumeType = GetConsumeTypeForSlot(slotIndex, itemValue.type);
 
-        if (!CanUseNow(consumeType, itemValue))
+        if (!CanUseNow(itemValue))
         {
             return;
         }
@@ -174,7 +174,12 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             return;
         }
 
-        cellController.ItemStack = new ItemStack(itemValue.Clone(), 1);
+        // Leave the cell showing its real (pre-use) count so vanilla's own decrement lands on the
+        // correct post-use count: OnActivated clones the cell stack as originalStack, then
+        // non-animated items decrement the cell in place via ExecuteInstantAction and animated
+        // items set it to originalStack.count - 1. Replacing it with a 1-count clone here made the
+        // animation coroutine wipe the cell to empty (a visible flash) because originalStack.count
+        // was 1 instead of the real count.
 
         // ItemActionEntryUse.OnActivated (and the coroutine it may schedule for animated eat/drink
         // actions) expects ParentActionList to be set — vanilla only ever constructs this via
@@ -270,8 +275,12 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     /// <summary>
     /// Mirrors ItemActionEntryUse.RefreshEnabled's gates, since we're bypassing the vanilla
     /// click/enable pipeline entirely (our cells are locked) and calling OnActivated directly.
+    /// Food and drink are intentionally allowed regardless of hunger/thirst, so there is no
+    /// fullness gate here — only the item's own ExecutionRequirements (e.g. a First Aid Kit
+    /// requiring health below 100%) block a use, and that is checked before removal so a failed
+    /// use never wastes the item.
     /// </summary>
-    private bool CanUseNow(ItemActionEntryUse.ConsumeType consumeType, ItemValue itemValue)
+    private bool CanUseNow(ItemValue itemValue)
     {
         var entityPlayer = xui.playerUI.entityPlayer;
         if (entityPlayer == null)
@@ -304,29 +313,6 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         if (!itemValue.ItemClass.CanExecuteAction(0, entityPlayer, itemValue))
         {
             GameManager.ShowTooltip(entityPlayer, Localization.Get("ttCannotUseAtThisTime"), string.Empty, "ui_denied");
-            return false;
-        }
-
-        // Reading Stats.Water.ValuePercentUI directly instead of XUiM_Player.GetWaterPercent()
-        // (which multiplies this same value by 100 for UI display purposes) — comparing that
-        // scaled result against 1f was the earlier bug. ValuePercentUI is FastClamp01(Value / Max),
-        // so 1f unambiguously means "at or above max" regardless of any display-scale assumption.
-        if (consumeType == ItemActionEntryUse.ConsumeType.Drink)
-        {
-            var waterPercentUI = entityPlayer.Stats.Water.ValuePercentUI;
-#if DEBUG
-            ModLogger.DebugLog($"{nameof(CanUseNow)}: Drink check — Stats.Water.ValuePercentUI={waterPercentUI}, GetWaterPercent={XUiM_Player.GetWaterPercent(entityPlayer)}");
-#endif
-            if (waterPercentUI >= 1f)
-            {
-                GameManager.ShowTooltip(entityPlayer, Localization.Get("notThirsty"));
-                return false;
-            }
-        }
-
-        if (consumeType == ItemActionEntryUse.ConsumeType.Eat && XUiM_Player.GetFoodPercent(entityPlayer) >= 1f)
-        {
-            GameManager.ShowTooltip(entityPlayer, Localization.Get("notHungry"));
             return false;
         }
 
