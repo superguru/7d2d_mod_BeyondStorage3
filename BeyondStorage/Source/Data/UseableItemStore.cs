@@ -29,6 +29,11 @@ public static class UseableItemStore
     // ComputeNutritionScore). Only populated for food/drink items.
     private static readonly Dictionary<int, float> s_nutritionScore = [];
 
+    // Debuff buff names each item cures, keyed by item type. Populated for any eat item — heal,
+    // food, or drink — that has a cure effect, so food/drink cures (e.g. foodHoney for infection)
+    // can be pulled into the heal row when the debuff is active.
+    private static readonly Dictionary<int, string[]> s_curesByItem = [];
+
     private static bool s_built;
 
     private static readonly FastTags<TagGroup.Global> s_medicalTag = FastTags<TagGroup.Global>.Parse("medical");
@@ -91,15 +96,74 @@ public static class UseableItemStore
     }
 
     /// <summary>
-    /// Score for ranking the Heal row: (heal amount, unused). Count is the natural tiebreaker
-    /// applied by StorageSourceItemDataStore.GetTopItemsByScore when heal amount ties (e.g. two
-    /// unscored items, or a genuine tie), matching "highest buff, then highest count".
+    /// Raw heal amount for an item, or 0 if it doesn't restore HP (or isn't classified).
     /// </summary>
-    public static (float Primary, float Secondary) GetHealScore(int itemType)
+    public static float GetHealAmount(int itemType)
     {
         EnsureBuilt();
-        var health = s_healthScore.TryGetValue(itemType, out var h) ? h : 0f;
-        return (health, 0f);
+        return s_healthScore.TryGetValue(itemType, out var h) ? h : 0f;
+    }
+
+    /// <summary>
+    /// Player-aware score for ranking the Heal slot: primary is how closely the item's heal amount
+    /// matches the player's current health deficit (a large heal wins when badly wounded and a small
+    /// heal wins when nearly full, instead of always preferring the biggest heal); secondary is the
+    /// raw heal amount so a bigger heal breaks a tie.
+    /// </summary>
+    public static (float Primary, float Secondary) GetContextualHealScore(int itemType, float healthDeficit)
+    {
+        EnsureBuilt();
+        var healAmount = GetHealAmount(itemType);
+
+        // Closer to the deficit is better; a perfect match scores 0, everything else is negative.
+        var fit = -Math.Abs(healAmount - healthDeficit);
+        return (fit, healAmount);
+    }
+
+    /// <summary>
+    /// True if the item cures at least one debuff the player currently has.
+    /// </summary>
+    public static bool CuresAnyActiveDebuff(int itemType, EntityPlayerLocal player)
+    {
+        EnsureBuilt();
+        if (player?.Buffs == null || !s_curesByItem.TryGetValue(itemType, out var cures))
+        {
+            return false;
+        }
+
+        foreach (var buff in cures)
+        {
+            if (player.Buffs.HasBuff(buff))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Score for ranking cure items: primary is how many currently-active debuffs the item cures,
+    /// secondary is its heal amount (a cure that also heals outranks a pure cure).
+    /// </summary>
+    public static (float Primary, float Secondary) GetCureScore(int itemType, EntityPlayerLocal player)
+    {
+        EnsureBuilt();
+        var healAmount = GetHealAmount(itemType);
+
+        int activeCures = 0;
+        if (player?.Buffs != null && s_curesByItem.TryGetValue(itemType, out var cures))
+        {
+            foreach (var buff in cures)
+            {
+                if (player.Buffs.HasBuff(buff))
+                {
+                    activeCures++;
+                }
+            }
+        }
+
+        return (activeCures, healAmount);
     }
 
     /// <summary>
@@ -166,6 +230,14 @@ public static class UseableItemStore
                 continue;
             }
 
+            // Record cures for any eat item — heal, food, or drink — so food/drink cure items (e.g.
+            // foodHoney for infection) can be pulled into the heal row when their debuff is active.
+            var curedBuffs = ComputeCuredDebuffs(itemClass);
+            if (curedBuffs.Length > 0)
+            {
+                s_curesByItem[itemType] = curedBuffs;
+            }
+
             bool isFood = itemClass.HasAnyTags(s_foodTag);
             bool isDrink = itemClass.HasAnyTags(s_drinksTag);
 
@@ -184,7 +256,7 @@ public static class UseableItemStore
             }
         }
 
-        ModLogger.Info($"{nameof(UseableItemStore)}: Classified {s_healItemTypes.Count} heal, {s_foodItemTypes.Count} food, {s_drinkItemTypes.Count} drink item types");
+        ModLogger.Info($"{nameof(UseableItemStore)}: Classified {s_healItemTypes.Count} heal, {s_foodItemTypes.Count} food, {s_drinkItemTypes.Count} drink item types; {s_curesByItem.Count} cure-capable");
     }
 
     /// <summary>
@@ -211,12 +283,13 @@ public static class UseableItemStore
     }
 
     /// <summary>
-    /// Net health change from using the item once. Prefers the "foodHealthAmount" display value —
-    /// the same designer-authored stat items.xml/ui_display.xml show in the tooltip for both food
-    /// and medical items (e.g. rotting flesh: -3, a first aid kit: +180) — falling back to summing
-    /// ModifyStats "Health" triggered effects for items with no such display value (e.g. some
-    /// medical items that cure a condition rather than restoring HP directly, which then score 0
-    /// here and fall back to being ranked by count via GetTopItemsByScore's tiebreak).
+    /// Net health change from using the item once, read from the same designer-authored display
+    /// values the vanilla tooltip shows. Recognises the full health vocabulary, not just
+    /// "foodHealthAmount": some items expose their heal as "dInstantHealth" (e.g. drugPainkillers,
+    /// +40 instant, applied via a buff) and some add a "dHealthLoss" penalty. The first effect group
+    /// carrying any health signal wins — this avoids summing tiered (quality-gated) food groups,
+    /// where only one tier applies per item. Falls back to summing direct ModifyStats "Health"
+    /// effects for items with no health display values.
     /// </summary>
     private static float ComputeHealthEffectValue(ItemClass itemClass)
     {
@@ -228,22 +301,48 @@ public static class UseableItemStore
 
         foreach (var group in effectGroups)
         {
-            if (group.EffectDisplayValues != null && group.EffectDisplayValues.TryGetValue("foodHealthAmount", out var displayValue))
+            if (group.EffectDisplayValues == null)
             {
-                return displayValue.GetValue(0);
+                continue;
+            }
+
+            float health = 0f;
+            bool found = false;
+
+            if (group.EffectDisplayValues.TryGetValue("foodHealthAmount", out var foodHealth))
+            {
+                health += foodHealth.GetValue(0);
+                found = true;
+            }
+
+            if (group.EffectDisplayValues.TryGetValue("dInstantHealth", out var instantHealth))
+            {
+                health += instantHealth.GetValue(0);
+                found = true;
+            }
+
+            if (group.EffectDisplayValues.TryGetValue("dHealthLoss", out var healthLoss))
+            {
+                health -= healthLoss.GetValue(0);
+                found = true;
+            }
+
+            if (found)
+            {
+                return health;
             }
         }
 
-        float health = 0f;
+        float directHealth = 0f;
         foreach (var action in GetPrimaryActionEndEffects(itemClass))
         {
             if (action is MinEventActionModifyStats { cvarRef: false, statName: "health" } modifyStats)
             {
-                health += GetStatDelta(modifyStats);
+                directHealth += GetStatDelta(modifyStats);
             }
         }
 
-        return health;
+        return directHealth;
     }
 
     private static IEnumerable<MinEventActionBase> GetPrimaryActionEndEffects(ItemClass itemClass)
@@ -259,6 +358,79 @@ public static class UseableItemStore
             foreach (var action in group.GetTriggeredEffects(MinEventTypes.onSelfPrimaryActionEnd))
             {
                 yield return action;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Buff names this item cures, derived from its onSelfPrimaryActionEnd effects: RemoveBuff and
+    /// AddOrRemoveBuff cure their own buffs, and AddBuff cures the buffs named by its HasBuff
+    /// requirements (the "treat X" pattern, e.g. aloe adding buffInjuryAbrasionTreated when
+    /// buffInjuryAbrasion is present). Infection-style cures applied via a "cure progress" buff
+    /// ($buffXxxAddCurePerc) aren't detected yet — that's Phase 3.
+    /// </summary>
+    private static string[] ComputeCuredDebuffs(ItemClass itemClass)
+    {
+        var cured = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var action in GetPrimaryActionEndEffects(itemClass))
+        {
+            if (action is MinEventActionRemoveBuff removeBuff)
+            {
+                AddBuffNames(removeBuff.buffNames, cured);
+            }
+            else if (action is MinEventActionAddOrRemoveBuff addOrRemoveBuff)
+            {
+                AddBuffNames(addOrRemoveBuff.buffNames, cured);
+            }
+            else if (action is MinEventActionAddBuff addBuff)
+            {
+                CollectHasBuffRequirements(addBuff.Requirements, cured);
+            }
+        }
+
+        return [.. cured];
+    }
+
+    private static void AddBuffNames(string[] buffNames, HashSet<string> cured)
+    {
+        if (buffNames == null)
+        {
+            return;
+        }
+
+        foreach (var name in buffNames)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                cured.Add(name);
+            }
+        }
+    }
+
+    private static void CollectHasBuffRequirements(RequirementGroup group, HashSet<string> cured)
+    {
+        if (group == null)
+        {
+            return;
+        }
+
+        if (group.reqs != null)
+        {
+            foreach (var req in group.reqs)
+            {
+                if (req is HasBuff hasBuff)
+                {
+                    AddBuffNames(hasBuff.buffNames, cured);
+                }
+            }
+        }
+
+        if (group.groups != null)
+        {
+            foreach (var subGroup in group.groups)
+            {
+                CollectHasBuffRequirements(subGroup, cured);
             }
         }
     }

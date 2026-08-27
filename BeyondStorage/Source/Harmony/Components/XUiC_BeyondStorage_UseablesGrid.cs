@@ -31,9 +31,10 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     }
 
     /// <summary>
-    /// Repopulates the grid: row 0 (slots 1-3) with the top heal items ranked by heal amount then
-    /// count; row 1 (slots 4-6) with 1 food + 2 drinks (falling back to whichever category has
-    /// items if the other is empty), each ranked by nutrition value then net health effect. Cells
+    /// Repopulates the grid: row 0 (slots 1-3) with a heal item chosen to fit the player's current
+    /// health deficit plus up to 2 items that cure debuffs the player currently has (see
+    /// ComposeHealRow); row 1 (slots 4-6) with 1 food + 2 drinks (falling back to whichever category
+    /// has items if the other is empty), each ranked by nutrition value then net health effect. Cells
     /// are display-only synthetic stacks, not live references to a storage slot — see
     /// StorageSourceItemDataStore.GetTopItemsByScore for how the ranking avoids re-walking storage.
     /// </summary>
@@ -48,13 +49,25 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         }
 
         // Top means the highest ranked, based on various conditions such as buffs, debuffs, item count
-        var healTop = context.GetTopUseableItemsByScore(UseableItemStore.IsHealItem, UseableItemStore.GetHealScore, ROW_SIZE);
+        var player = context.Player;
+        var healthDeficit = player != null ? Mathf.Max(0f, player.Stats.Health.ModifiedMax - player.Stats.Health.Value) : 0f;
+
+        var healRanked = context.GetTopUseableItemsByScore(
+            itemType => UseableItemStore.IsHealItem(itemType) && UseableItemStore.GetHealAmount(itemType) > 0f,
+            itemType => UseableItemStore.GetContextualHealScore(itemType, healthDeficit),
+            ROW_SIZE);
+        var cureRanked = context.GetTopUseableItemsByScore(
+            itemType => UseableItemStore.CuresAnyActiveDebuff(itemType, player),
+            itemType => UseableItemStore.GetCureScore(itemType, player),
+            ROW_SIZE);
+        var healRow = ComposeHealRow(healRanked, cureRanked, healthDeficit);
+
         var foodTop = context.GetTopUseableItemsByScore(UseableItemStore.IsFoodItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
         var drinkTop = context.GetTopUseableItemsByScore(UseableItemStore.IsDrinkItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
         var foodDrinkRow = ComposeFoodDrinkRow(foodTop, drinkTop);
 
         var stacks = BuildEmptySlots();
-        FillRow(stacks, rowStart: 0, topItems: healTop);
+        FillRow(stacks, rowStart: 0, topItems: healRow);
         FillRow(stacks, rowStart: ROW_SIZE, topItems: foodDrinkRow);
 
         SetStacks(stacks);
@@ -95,6 +108,65 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             {
                 result.Add(drinkTop[drinkIndex++]);
             }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Composes the heal row (slots 1-3) as 1 heal + 2 cure per the plan: heal-first with a
+    /// conditional heal slot. When wounded the best heal-fit item goes first and the remaining slots
+    /// fill with cures (backfilled with more heals if there aren't enough cures); at full HP cures
+    /// take the whole row; at full HP with no debuffs the smallest heal is shown so the row isn't
+    /// empty. The same item is never shown twice.
+    /// </summary>
+    private static List<(int ItemType, int Count)> ComposeHealRow(
+        IReadOnlyList<(int ItemType, int Count)> healRanked,
+        IReadOnlyList<(int ItemType, int Count)> cureRanked,
+        float healthDeficit)
+    {
+        var result = new List<(int ItemType, int Count)>(ROW_SIZE);
+        var used = new HashSet<int>();
+
+        bool needsHeal = healthDeficit > 0f;
+
+        if (needsHeal && healRanked.Count > 0)
+        {
+            result.Add(healRanked[0]);
+            used.Add(healRanked[0].ItemType);
+        }
+
+        foreach (var cure in cureRanked)
+        {
+            if (result.Count >= ROW_SIZE)
+            {
+                break;
+            }
+
+            if (used.Add(cure.ItemType))
+            {
+                result.Add(cure);
+            }
+        }
+
+        if (needsHeal)
+        {
+            foreach (var heal in healRanked)
+            {
+                if (result.Count >= ROW_SIZE)
+                {
+                    break;
+                }
+
+                if (used.Add(heal.ItemType))
+                {
+                    result.Add(heal);
+                }
+            }
+        }
+        else if (result.Count == 0 && healRanked.Count > 0)
+        {
+            result.Add(healRanked[0]);
         }
 
         return result;

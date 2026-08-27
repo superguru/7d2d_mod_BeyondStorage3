@@ -129,7 +129,7 @@ It only appears when your Backpack is open by itself - it's hidden while a vehic
 
 ![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
 
-- **Top row:** your 3 best healing items, ranked by how much they actually heal, then by how many you have.
+- **Top row:** your best healing item — chosen to fit how much health you're currently missing (a big heal when badly hurt, a small one when nearly full) — followed by up to 2 items that cure a condition you currently have, like bleeding, abrasion, or concussion. If you're hurt but have nothing to cure, the extra slots fill with more healing items. At full health, cures take the whole row; if you have no cures either, it shows your smallest healing item so the row isn't empty.
 - **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutritional value. If you don't have any drinks available, this fills in with more food instead (and the same the other way around), so you'll still see 3 useful items whenever you have any.
 
 An item with a health penalty (like Rotting Flesh) will always rank below a "clean" item of the same kind, even if you have a lot more of it.
