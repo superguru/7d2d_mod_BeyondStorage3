@@ -363,11 +363,13 @@ public static class UseableItemStore
     }
 
     /// <summary>
-    /// Buff names this item cures, derived from its onSelfPrimaryActionEnd effects: RemoveBuff and
-    /// AddOrRemoveBuff cure their own buffs, and AddBuff cures the buffs named by its HasBuff
-    /// requirements (the "treat X" pattern, e.g. aloe adding buffInjuryAbrasionTreated when
-    /// buffInjuryAbrasion is present). Infection-style cures applied via a "cure progress" buff
-    /// ($buffXxxAddCurePerc) aren't detected yet — that's Phase 3.
+    /// Buff names this item cures, derived from its onSelfPrimaryActionEnd effects:
+    /// - RemoveBuff and AddOrRemoveBuff cure their own buffs (e.g. sewing kit -> buffInjuryBleeding).
+    /// - AddBuff cures the buffs named by its HasBuff requirements (the "treat X" pattern, e.g. aloe
+    ///   adding buffInjuryAbrasionTreated when buffInjuryAbrasion is present).
+    /// - AddBuff of a "cure progress" buff cures the matching debuff: buffXAddCure maps to buffXMain
+    ///   (e.g. honey's buffInfectionAddCure -> buffInfectionMain, goldenrod tea's
+    ///   buffDysenteryAddCure -> buffDysenteryMain).
     /// </summary>
     private static string[] ComputeCuredDebuffs(ItemClass itemClass)
     {
@@ -386,10 +388,35 @@ public static class UseableItemStore
             else if (action is MinEventActionAddBuff addBuff)
             {
                 CollectHasBuffRequirements(addBuff.Requirements, cured);
+                CollectCureProgressBuffs(addBuff.buffNames, cured);
             }
         }
 
         return [.. cured];
+    }
+
+    /// <summary>
+    /// Adds the debuff cured by each "cure progress" buff (buffXAddCure): its buffXMain counterpart
+    /// that stays active while the condition is present — the convention infection and dysentery use
+    /// instead of removing the debuff directly.
+    /// </summary>
+    private static void CollectCureProgressBuffs(string[] buffNames, HashSet<string> cured)
+    {
+        if (buffNames == null)
+        {
+            return;
+        }
+
+        const string addCureSuffix = "AddCure";
+        foreach (var name in buffNames)
+        {
+            if (string.IsNullOrEmpty(name) || !name.EndsWith(addCureSuffix, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            cured.Add(name.Substring(0, name.Length - addCureSuffix.Length) + "Main");
+        }
     }
 
     private static void AddBuffNames(string[] buffNames, HashSet<string> cured)
