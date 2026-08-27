@@ -31,6 +31,11 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     // HEAL_REORDER_THRESHOLD.
     private float _healFitDeficit = -1f;
 
+    // Item types shown in the heal row last refresh (in order). Used to keep the ordering stable
+    // when the same items are still shown, so marginal score changes (e.g. two cures competing for
+    // the same debuff) don't make items swap between refreshes.
+    private readonly List<int> _previousHealRowTypes = new List<int>(ROW_SIZE);
+
     public override void OnOpen()
     {
         base.OnOpen();
@@ -80,6 +85,19 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             itemType => UseableItemStore.GetCureScore(itemType, player),
             ROW_SIZE);
         var healRow = ComposeHealRow(healRanked, cureRanked, healthDeficit);
+
+        // Keep the previous ordering when the same items are still shown, so marginal score changes
+        // (e.g. two cures competing for the same debuff) don't make items swap between refreshes.
+        if (_previousHealRowTypes.Count > 0 && SameItemTypeSet(healRow, _previousHealRowTypes))
+        {
+            healRow = ReorderToPrevious(healRow, _previousHealRowTypes);
+        }
+
+        _previousHealRowTypes.Clear();
+        foreach (var item in healRow)
+        {
+            _previousHealRowTypes.Add(item.ItemType);
+        }
 
         // Items already shown in the heal row (e.g. honey pulled up as a cure) must not repeat in
         // the food/drink row.
@@ -159,6 +177,46 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             }
         }
         return filtered;
+    }
+
+    private static bool SameItemTypeSet(List<(int ItemType, int Count)> row, List<int> previousTypes)
+    {
+        if (row.Count != previousTypes.Count)
+        {
+            return false;
+        }
+
+        foreach (var item in row)
+        {
+            if (!previousTypes.Contains(item.ItemType))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static List<(int ItemType, int Count)> ReorderToPrevious(List<(int ItemType, int Count)> row, List<int> previousTypes)
+    {
+        var reordered = new List<(int ItemType, int Count)>(row.Count);
+        var remaining = new List<(int ItemType, int Count)>(row);
+
+        foreach (var prevType in previousTypes)
+        {
+            for (int i = 0; i < remaining.Count; i++)
+            {
+                if (remaining[i].ItemType == prevType)
+                {
+                    reordered.Add(remaining[i]);
+                    remaining.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        reordered.AddRange(remaining);
+        return reordered;
     }
 
     /// <summary>
