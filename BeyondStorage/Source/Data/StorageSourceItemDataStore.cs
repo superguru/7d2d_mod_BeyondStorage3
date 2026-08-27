@@ -578,6 +578,8 @@ internal class StorageSourceItemDataStore
 
         // Candidate count is bounded by distinct item types actually in storage for this category —
         // small enough that a full sort is simpler than bounded insertion and not worth optimizing.
+        // ItemType is the final tiebreak so the order is fully deterministic even when scores and
+        // counts are identical (List.Sort is not stable).
         candidates.Sort(static (a, b) =>
         {
             int cmp = b.Primary.CompareTo(a.Primary);
@@ -587,7 +589,13 @@ internal class StorageSourceItemDataStore
             }
 
             cmp = b.Secondary.CompareTo(a.Secondary);
-            return cmp != 0 ? cmp : b.Count.CompareTo(a.Count);
+            if (cmp != 0)
+            {
+                return cmp;
+            }
+
+            cmp = b.Count.CompareTo(a.Count);
+            return cmp != 0 ? cmp : a.ItemType.CompareTo(b.ItemType);
         });
 
         var top = new List<(int ItemType, int Count)>(topN);

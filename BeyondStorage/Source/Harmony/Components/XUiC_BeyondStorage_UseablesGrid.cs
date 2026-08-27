@@ -19,6 +19,18 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     private const int FOOD_QUOTA = 1;
     private const int DRINK_QUOTA = 2;
 
+    // Health deficit below which the heal slot is suppressed (the player is effectively at full
+    // health). 0 means any missing HP shows a heal slot; raise it if tiny wounds shouldn't.
+    private const float HEAL_SLOT_MIN_DEFICIT = 0f;
+
+    // How far the health deficit must move before the heal row re-ranks (see _healFitDeficit).
+    private const float HEAL_REORDER_THRESHOLD = 10f;
+
+    // Deficit last used to rank the heal row. Hysteresis keeps the ordering stable while a healing
+    // buff slowly recovers HP; the row only re-ranks once the real deficit moves by more than
+    // HEAL_REORDER_THRESHOLD.
+    private float _healFitDeficit = -1f;
+
     public override void OnOpen()
     {
         base.OnOpen();
@@ -52,9 +64,16 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         var player = context.Player;
         var healthDeficit = player != null ? Mathf.Max(0f, player.Stats.Health.ModifiedMax - player.Stats.Health.Value) : 0f;
 
+        // Hysteresis: keep ranking against the last committed deficit so a healing buff slowly
+        // recovering HP doesn't make the top-row items swap every refresh.
+        if (_healFitDeficit < 0f || Mathf.Abs(healthDeficit - _healFitDeficit) > HEAL_REORDER_THRESHOLD)
+        {
+            _healFitDeficit = healthDeficit;
+        }
+
         var healRanked = context.GetTopUseableItemsByScore(
             itemType => UseableItemStore.IsHealItem(itemType) && UseableItemStore.GetHealAmount(itemType) > 0f,
-            itemType => UseableItemStore.GetContextualHealScore(itemType, healthDeficit),
+            itemType => UseableItemStore.GetContextualHealScore(itemType, _healFitDeficit),
             ROW_SIZE);
         var cureRanked = context.GetTopUseableItemsByScore(
             itemType => UseableItemStore.CuresAnyActiveDebuff(itemType, player),
@@ -62,9 +81,17 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             ROW_SIZE);
         var healRow = ComposeHealRow(healRanked, cureRanked, healthDeficit);
 
+        // Items already shown in the heal row (e.g. honey pulled up as a cure) must not repeat in
+        // the food/drink row.
+        var usedInHealRow = new HashSet<int>();
+        foreach (var item in healRow)
+        {
+            usedInHealRow.Add(item.ItemType);
+        }
+
         var foodTop = context.GetTopUseableItemsByScore(UseableItemStore.IsFoodItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
         var drinkTop = context.GetTopUseableItemsByScore(UseableItemStore.IsDrinkItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
-        var foodDrinkRow = ComposeFoodDrinkRow(foodTop, drinkTop);
+        var foodDrinkRow = ComposeFoodDrinkRow(foodTop, drinkTop, usedInHealRow);
 
         var stacks = BuildEmptySlots();
         FillRow(stacks, rowStart: 0, topItems: healRow);
@@ -78,39 +105,60 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     /// Fills the food/drink row: up to <see cref="FOOD_QUOTA"/> food + <see cref="DRINK_QUOTA"/>
     /// drinks, then backfills any remaining slots from whichever list still has items (food first).
     /// This naturally degrades to "just food" when there are no drinks, or "just drinks" when there
-    /// is no food, while otherwise preserving each list's own nutrition-based ranking.
+    /// is no food, while otherwise preserving each list's own nutrition-based ranking. Item types
+    /// already shown in the heal row are excluded so a food/drink cure item (e.g. honey) doesn't
+    /// appear in both rows.
     /// </summary>
     private static List<(int ItemType, int Count)> ComposeFoodDrinkRow(
         IReadOnlyList<(int ItemType, int Count)> foodTop,
-        IReadOnlyList<(int ItemType, int Count)> drinkTop)
+        IReadOnlyList<(int ItemType, int Count)> drinkTop,
+        ISet<int> excludedItemTypes)
     {
+        var food = FilterExcluded(foodTop, excludedItemTypes);
+        var drink = FilterExcluded(drinkTop, excludedItemTypes);
+
         var result = new List<(int ItemType, int Count)>(ROW_SIZE);
         int foodIndex = 0;
         int drinkIndex = 0;
 
-        for (int i = 0; i < FOOD_QUOTA && foodIndex < foodTop.Count; i++)
+        for (int i = 0; i < FOOD_QUOTA && foodIndex < food.Count; i++)
         {
-            result.Add(foodTop[foodIndex++]);
+            result.Add(food[foodIndex++]);
         }
 
-        for (int i = 0; i < DRINK_QUOTA && drinkIndex < drinkTop.Count; i++)
+        for (int i = 0; i < DRINK_QUOTA && drinkIndex < drink.Count; i++)
         {
-            result.Add(drinkTop[drinkIndex++]);
+            result.Add(drink[drinkIndex++]);
         }
 
-        while (result.Count < ROW_SIZE && (foodIndex < foodTop.Count || drinkIndex < drinkTop.Count))
+        while (result.Count < ROW_SIZE && (foodIndex < food.Count || drinkIndex < drink.Count))
         {
-            if (foodIndex < foodTop.Count)
+            if (foodIndex < food.Count)
             {
-                result.Add(foodTop[foodIndex++]);
+                result.Add(food[foodIndex++]);
             }
             else
             {
-                result.Add(drinkTop[drinkIndex++]);
+                result.Add(drink[drinkIndex++]);
             }
         }
 
         return result;
+    }
+
+    private static List<(int ItemType, int Count)> FilterExcluded(
+        IReadOnlyList<(int ItemType, int Count)> items,
+        ISet<int> excludedItemTypes)
+    {
+        var filtered = new List<(int ItemType, int Count)>(items.Count);
+        foreach (var item in items)
+        {
+            if (!excludedItemTypes.Contains(item.ItemType))
+            {
+                filtered.Add(item);
+            }
+        }
+        return filtered;
     }
 
     /// <summary>
@@ -128,7 +176,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         var result = new List<(int ItemType, int Count)>(ROW_SIZE);
         var used = new HashSet<int>();
 
-        bool needsHeal = healthDeficit > 0f;
+        bool needsHeal = healthDeficit > HEAL_SLOT_MIN_DEFICIT;
 
         if (needsHeal && healRanked.Count > 0)
         {
