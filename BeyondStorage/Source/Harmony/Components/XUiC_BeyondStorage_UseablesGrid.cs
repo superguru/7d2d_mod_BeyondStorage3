@@ -36,6 +36,9 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     // the same debuff) don't make items swap between refreshes.
     private readonly List<int> _previousHealRowTypes = new List<int>(ROW_SIZE);
 
+    // Item types shown in the food/drink row last refresh (in order) — same stability purpose.
+    private readonly List<int> _previousFoodDrinkRowTypes = new List<int>(ROW_SIZE);
+
     public override void OnOpen()
     {
         base.OnOpen();
@@ -67,13 +70,19 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
 
         // Top means the highest ranked, based on various conditions such as buffs, debuffs, item count
         var player = context.Player;
-        var healthDeficit = player != null ? Mathf.Max(0f, player.Stats.Health.ModifiedMax - player.Stats.Health.Value) : 0f;
-
-        // Hysteresis: keep ranking against the last committed deficit so a healing buff slowly
-        // recovering HP doesn't make the top-row items swap every refresh.
-        if (_healFitDeficit < 0f || Mathf.Abs(healthDeficit - _healFitDeficit) > HEAL_REORDER_THRESHOLD)
+        float healableDeficit = 0f;
+        float woundedDeficit = 0f;
+        if (player != null)
         {
-            _healFitDeficit = healthDeficit;
+            healableDeficit = Mathf.Max(0f, player.Stats.Health.ModifiedMax - player.Stats.Health.Value);
+            woundedDeficit = Mathf.Max(0f, player.Stats.Health.Max - player.Stats.Health.Value);
+        }
+
+        // Hysteresis on the healable deficit (which heal item to pick) so a healing buff slowly
+        // recovering HP doesn't make the top-row items swap every refresh.
+        if (_healFitDeficit < 0f || Mathf.Abs(healableDeficit - _healFitDeficit) > HEAL_REORDER_THRESHOLD)
+        {
+            _healFitDeficit = healableDeficit;
         }
 
         var healRanked = context.GetTopUseableItemsByScore(
@@ -84,20 +93,9 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             itemType => UseableItemStore.CuresAnyActiveDebuff(itemType, player),
             itemType => UseableItemStore.GetCureScore(itemType, player),
             ROW_SIZE);
-        var healRow = ComposeHealRow(healRanked, cureRanked, healthDeficit);
-
-        // Keep the previous ordering when the same items are still shown, so marginal score changes
-        // (e.g. two cures competing for the same debuff) don't make items swap between refreshes.
-        if (_previousHealRowTypes.Count > 0 && SameItemTypeSet(healRow, _previousHealRowTypes))
-        {
-            healRow = ReorderToPrevious(healRow, _previousHealRowTypes);
-        }
-
-        _previousHealRowTypes.Clear();
-        foreach (var item in healRow)
-        {
-            _previousHealRowTypes.Add(item.ItemType);
-        }
+        // needsHeal is decided against the base-max deficit so buffs that modify max health (e.g.
+        // infection) don't make the heal slot blink in and out.
+        var healRow = StabiliseOrder(ComposeHealRow(healRanked, cureRanked, woundedDeficit), _previousHealRowTypes);
 
         // Items already shown in the heal row (e.g. honey pulled up as a cure) must not repeat in
         // the food/drink row.
@@ -109,7 +107,7 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
 
         var foodTop = context.GetTopUseableItemsByScore(UseableItemStore.IsFoodItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
         var drinkTop = context.GetTopUseableItemsByScore(UseableItemStore.IsDrinkItem, UseableItemStore.GetNutritionScore, ROW_SIZE);
-        var foodDrinkRow = ComposeFoodDrinkRow(foodTop, drinkTop, usedInHealRow);
+        var foodDrinkRow = StabiliseOrder(ComposeFoodDrinkRow(foodTop, drinkTop, usedInHealRow), _previousFoodDrinkRowTypes);
 
         var stacks = BuildEmptySlots();
         FillRow(stacks, rowStart: 0, topItems: healRow);
@@ -217,6 +215,29 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
 
         reordered.AddRange(remaining);
         return reordered;
+    }
+
+    /// <summary>
+    /// Reuses the previous ordering when the same item types are still shown (irrespective of their
+    /// fresh order), then records the new order for next refresh. This keeps a row stable across
+    /// refreshes so marginal score changes don't make items swap.
+    /// </summary>
+    private static List<(int ItemType, int Count)> StabiliseOrder(
+        List<(int ItemType, int Count)> row,
+        List<int> previousTypes)
+    {
+        if (previousTypes.Count > 0 && SameItemTypeSet(row, previousTypes))
+        {
+            row = ReorderToPrevious(row, previousTypes);
+        }
+
+        previousTypes.Clear();
+        foreach (var item in row)
+        {
+            previousTypes.Add(item.ItemType);
+        }
+
+        return row;
     }
 
     /// <summary>

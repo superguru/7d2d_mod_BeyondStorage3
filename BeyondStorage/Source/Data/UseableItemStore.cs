@@ -34,6 +34,11 @@ public static class UseableItemStore
     // can be pulled into the heal row when the debuff is active.
     private static readonly Dictionary<int, string[]> s_curesByItem = [];
 
+    // Reverse map of "cure buff" -> debuffs that remove themselves while that buff is active, built
+    // once from the buff definitions. Maps an item's AddBuff effects to the debuffs they indirectly
+    // cure — e.g. drugVitamins adds buffDrugVitamins, which makes buffFatigued remove itself.
+    private static readonly Dictionary<string, List<string>> s_cureBuffToDebuffs = new(StringComparer.OrdinalIgnoreCase);
+
     private static bool s_built;
 
     private static readonly FastTags<TagGroup.Global> s_medicalTag = FastTags<TagGroup.Global>.Parse("medical");
@@ -211,6 +216,8 @@ public static class UseableItemStore
             return;
         }
 
+        BuildCureBuffMap();
+
         for (int itemType = 1; itemType < itemClasses.Length; itemType++)
         {
             var itemClass = itemClasses[itemType];
@@ -368,8 +375,9 @@ public static class UseableItemStore
     /// - AddBuff cures the buffs named by its HasBuff requirements (the "treat X" pattern, e.g. aloe
     ///   adding buffInjuryAbrasionTreated when buffInjuryAbrasion is present).
     /// - AddBuff of a "cure progress" buff cures the matching debuff: buffXAddCure maps to buffXMain
-    ///   (e.g. honey's buffInfectionAddCure -> buffInfectionMain, goldenrod tea's
-    ///   buffDysenteryAddCure -> buffDysenteryMain).
+    ///   (e.g. honey's buffInfectionAddCure -> buffInfectionMain).
+    /// - AddBuff of a "cure buff" cures any debuff that removes itself while that buff is active
+    ///   (e.g. vitamins' buffDrugVitamins -> buffFatigued).
     /// </summary>
     private static string[] ComputeCuredDebuffs(ItemClass itemClass)
     {
@@ -388,7 +396,7 @@ public static class UseableItemStore
             else if (action is MinEventActionAddBuff addBuff)
             {
                 CollectHasBuffRequirements(addBuff.Requirements, cured);
-                CollectCureProgressBuffs(addBuff.buffNames, cured);
+                CollectAddBuffCures(addBuff.buffNames, cured);
             }
         }
 
@@ -396,11 +404,11 @@ public static class UseableItemStore
     }
 
     /// <summary>
-    /// Adds the debuff cured by each "cure progress" buff (buffXAddCure): its buffXMain counterpart
-    /// that stays active while the condition is present — the convention infection and dysentery use
-    /// instead of removing the debuff directly.
+    /// Resolves the debuffs an AddBuff effect cures: a "buffXAddCure" progress buff maps to its
+    /// buffXMain debuff (infection/dysentery), and any buff named in the cure-buff map adds the
+    /// debuffs that remove themselves while it is active (e.g. buffDrugVitamins -> buffFatigued).
     /// </summary>
-    private static void CollectCureProgressBuffs(string[] buffNames, HashSet<string> cured)
+    private static void CollectAddBuffCures(string[] buffNames, HashSet<string> cured)
     {
         if (buffNames == null)
         {
@@ -410,13 +418,96 @@ public static class UseableItemStore
         const string addCureSuffix = "AddCure";
         foreach (var name in buffNames)
         {
-            if (string.IsNullOrEmpty(name) || !name.EndsWith(addCureSuffix, StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(name))
             {
                 continue;
             }
 
-            cured.Add(name.Substring(0, name.Length - addCureSuffix.Length) + "Main");
+            if (name.EndsWith(addCureSuffix, StringComparison.OrdinalIgnoreCase))
+            {
+                cured.Add(name.Substring(0, name.Length - addCureSuffix.Length) + "Main");
+            }
+
+            if (s_cureBuffToDebuffs.TryGetValue(name, out var debuffs))
+            {
+                foreach (var debuff in debuffs)
+                {
+                    cured.Add(debuff);
+                }
+            }
         }
+    }
+
+    /// <summary>
+    /// Scans every buff definition for a "remove myself while another buff is active" effect and
+    /// records that other buff as a cure for it — the pattern debuffs like buffFatigued use
+    /// (buffFatigued removes itself when buffDrugVitamins is active). Used by CollectAddBuffCures to
+    /// map an item's AddBuff effect to the debuff it indirectly cures.
+    /// </summary>
+    private static void BuildCureBuffMap()
+    {
+        if (BuffManager.Buffs == null)
+        {
+            return;
+        }
+
+        foreach (var buffClass in BuffManager.Buffs.Values)
+        {
+            var selfName = buffClass.Name;
+            var effectGroups = buffClass.Effects?.EffectGroups;
+            if (string.IsNullOrEmpty(selfName) || effectGroups == null)
+            {
+                continue;
+            }
+
+            foreach (var group in effectGroups)
+            {
+                if (group.TriggeredEffects == null)
+                {
+                    continue;
+                }
+
+                foreach (var effects in group.TriggeredEffects.Values)
+                {
+                    foreach (var action in effects)
+                    {
+                        if (action is not MinEventActionRemoveBuff { buffNames: not null } removeBuff || !ContainsName(removeBuff.buffNames, selfName))
+                        {
+                            continue;
+                        }
+
+                        var cureBuffs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                        CollectHasBuffRequirements(removeBuff.Requirements, cureBuffs);
+                        foreach (var cureBuffName in cureBuffs)
+                        {
+                            if (!s_cureBuffToDebuffs.TryGetValue(cureBuffName, out var debuffs))
+                            {
+                                debuffs = new List<string>();
+                                s_cureBuffToDebuffs[cureBuffName] = debuffs;
+                            }
+
+                            if (!debuffs.Contains(selfName))
+                            {
+                                debuffs.Add(selfName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static bool ContainsName(string[] names, string name)
+    {
+        foreach (var n in names)
+        {
+            if (string.Equals(n, name, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void AddBuffNames(string[] buffNames, HashSet<string> cured)
