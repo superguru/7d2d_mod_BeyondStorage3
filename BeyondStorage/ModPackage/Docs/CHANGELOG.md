@@ -1,10 +1,12 @@
 ﻿__🚧 WIP v3.2.0__
+- ✅ Added Useables window on the Inventory screen with contextual, needs-based medical and food items
 - ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
 - ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
 - ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
-- 🙋 Any bugs to report?
+- 🤐 Preview channel has had all these features, which you can also get access to if you like this update message...
 
-- 🤐 Secret feature which you can get access to if you like this update...
+
+- 🙋 Any bugs to report?
 
 📢 This mod version will only support game V3.1.0/3.2.0 and later
 📍 See the pinned message to find release sites for this update.
@@ -16,10 +18,8 @@
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
 
-__🚧 WIP v3.2.0 RC2__
-- Fixed that you can use backpack actions like Drop or Use for items in the Useables window
-- Fixed that items get decreased but not used when the check to see if you can use them fails, like for medkits when you are at full health
-- Fixed that the Useables window is visible when the Character window is open
+__🚧 WIP v3.2.0 RC5__
+- 
 
 
 
