@@ -3,6 +3,7 @@
 - ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
 - ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
 - ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
+- ♻ Fixed: Config logged at game start was not localised
 - 🤐 Preview channel has had all these features, which you can also get access to if you like this update message...
 
 
