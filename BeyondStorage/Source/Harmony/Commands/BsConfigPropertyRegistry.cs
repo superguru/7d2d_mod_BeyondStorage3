@@ -48,7 +48,7 @@ internal static class BsConfigPropertyRegistry
         const string d_MethodName = nameof(RegisterConfigurationProperties);
 
         // Register all available properties
-        RegisterProperty("range", "float", GameTools.GetLocalisedValue(d_MethodName, ConfigLocalisation.RANGE_SETTING_TOOLTIP_KEY),
+        RegisterProperty("range", "float", ConfigLocalisation.RANGE_SETTING_TOOLTIP_KEY,
             config => config.range.ToString("F1"),
             (config, value) => config.range = ParseFloat(value));
 
@@ -73,10 +73,10 @@ internal static class BsConfigPropertyRegistry
     /// Registers a single configuration property
     /// </summary>
     /// <param name="propertyName">The property name (case-sensitive for storage)</param>
-    /// <param name="type">The property type description</param>
-    /// <param name="description">The property description</param>
+    /// <param name="type">The property type descriptionKey</param>
+    /// <param name="descriptionKey">The property descriptionKey</param>
     /// <param name="setValue">Action to set the property value, null for DEBUG-only properties</param>
-    private static void RegisterProperty(string propertyName, string type, string description,
+    private static void RegisterProperty(string propertyName, string type, string descriptionKey,
         Func<BsConfig, string> getValue,
         Action<BsConfig, string> setValue)
     {
@@ -88,9 +88,7 @@ internal static class BsConfigPropertyRegistry
             return;
         }
 
-        description = GameTools.GetLocalisedValue(d_MethodName, description);
-
-        var propertyInfo = new ConfigPropertyInfo(propertyName, type, description, getValue, setValue);
+        var propertyInfo = new ConfigPropertyInfo(propertyName, type, descriptionKey, getValue, setValue);
         s_registeredProperties[propertyName] = propertyInfo;
 
         ModLogger.DebugLog($"Registered config property: {propertyName} ({type})");
@@ -269,9 +267,13 @@ internal static class BsConfigPropertyRegistry
         {
             get;
         }
+
         public string Description
         {
-            get;
+            get
+            {
+                return GameTools.GetLocalisedValue("get", field);
+            }
         }
         public Func<BsConfig, string> GetValue
         {
@@ -282,13 +284,13 @@ internal static class BsConfigPropertyRegistry
             get;
         }
 
-        public ConfigPropertyInfo(string propertyName, string type, string description,
+        public ConfigPropertyInfo(string propertyName, string type, string descriptionKey,
             Func<BsConfig, string> getValue,
             Action<BsConfig, string> setValue)
         {
             PropertyName = propertyName;
             Type = type;
-            Description = description;
+            Description = descriptionKey;
             GetValue = getValue;
             SetValue = setValue;
         }
