@@ -263,33 +263,11 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             used.Add(healRanked[0].ItemType);
         }
 
-        foreach (var cure in cureRanked)
-        {
-            if (result.Count >= ROW_SIZE)
-            {
-                break;
-            }
-
-            if (used.Add(cure.ItemType))
-            {
-                result.Add(cure);
-            }
-        }
+        FillWithUnique(result, used, cureRanked);
 
         if (needsHeal)
         {
-            foreach (var heal in healRanked)
-            {
-                if (result.Count >= ROW_SIZE)
-                {
-                    break;
-                }
-
-                if (used.Add(heal.ItemType))
-                {
-                    result.Add(heal);
-                }
-            }
+            FillWithUnique(result, used, healRanked);
         }
         else if (result.Count == 0 && healRanked.Count > 0)
         {
@@ -297,6 +275,29 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Appends items from <paramref name="items"/> until the row is full, skipping any item type
+    /// already present in <paramref name="result"/> so the same item never appears twice.
+    /// </summary>
+    private static void FillWithUnique(
+        List<(int ItemType, int Count)> result,
+        HashSet<int> used,
+        IReadOnlyList<(int ItemType, int Count)> items)
+    {
+        foreach (var item in items)
+        {
+            if (result.Count >= ROW_SIZE)
+            {
+                break;
+            }
+
+            if (used.Add(item.ItemType))
+            {
+                result.Add(item);
+            }
+        }
     }
 
     private static ItemStack[] BuildEmptySlots()

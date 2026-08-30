@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BeyondStorage.Infrastructure;
 
@@ -131,14 +131,16 @@ public static class UseableItemStore
     public static bool CuresAnyActiveDebuff(int itemType, EntityPlayerLocal player)
     {
         EnsureBuilt();
-        if (player?.Buffs == null || !s_curesByItem.TryGetValue(itemType, out var cures))
+
+        var playerBuffs = player?.Buffs;
+        if (playerBuffs == null || !s_curesByItem.TryGetValue(itemType, out var cures))
         {
             return false;
         }
 
         foreach (var buff in cures)
         {
-            if (player.Buffs.HasBuff(buff))
+            if (playerBuffs.HasBuff(buff))
             {
                 return true;
             }
@@ -156,15 +158,18 @@ public static class UseableItemStore
         EnsureBuilt();
         var healAmount = GetHealAmount(itemType);
 
-        int activeCures = 0;
-        if (player?.Buffs != null && s_curesByItem.TryGetValue(itemType, out var cures))
+        var playerBuffs = player?.Buffs;
+        if (playerBuffs == null || !s_curesByItem.TryGetValue(itemType, out var cures))
         {
-            foreach (var buff in cures)
+            return (0, healAmount);
+        }
+
+        int activeCures = 0;
+        foreach (var buff in cures)
+        {
+            if (playerBuffs.HasBuff(buff))
             {
-                if (player.Buffs.HasBuff(buff))
-                {
-                    activeCures++;
-                }
+                activeCures++;
             }
         }
 
@@ -220,50 +225,58 @@ public static class UseableItemStore
 
         for (int itemType = 1; itemType < itemClasses.Length; itemType++)
         {
-            var itemClass = itemClasses[itemType];
-            if (itemClass == null)
-            {
-                continue;
-            }
-
-            // Only items with an eat-style action are eligible for any row. Tags alone aren't
-            // enough: a modded item tagged "food"/"drinks"/"medical" but with a Read/Quest/Open
-            // action would otherwise be classified here and then mishandled by TryUseSlot /
-            // ItemActionEntryUse.OnActivated, which for Eat/Drink/Heal picks the first non-null
-            // action regardless of its type. ConsumeType.Heal is what LookupItemUseageType returns
-            // for ItemActionEat, so this keeps exactly the eat items.
-            if (ItemClassCache.LookupItemUseageType(itemType) != ItemActionEntryUse.ConsumeType.Heal)
-            {
-                continue;
-            }
-
-            // Record cures for any eat item — heal, food, or drink — so food/drink cure items (e.g.
-            // foodHoney for infection) can be pulled into the heal row when their debuff is active.
-            var curedBuffs = ComputeCuredDebuffs(itemClass);
-            if (curedBuffs.Length > 0)
-            {
-                s_curesByItem[itemType] = curedBuffs;
-            }
-
-            bool isFood = itemClass.HasAnyTags(s_foodTag);
-            bool isDrink = itemClass.HasAnyTags(s_drinksTag);
-
-            if (isFood || isDrink)
-            {
-                (isFood ? s_foodItemTypes : s_drinkItemTypes).Add(itemType);
-                s_nutritionScore[itemType] = ComputeNutritionScore(itemClass);
-                s_healthScore[itemType] = ComputeHealthEffectValue(itemClass);
-                continue;
-            }
-
-            if (itemClass.HasAnyTags(s_medicalTag))
-            {
-                s_healItemTypes.Add(itemType);
-                s_healthScore[itemType] = ComputeHealthEffectValue(itemClass);
-            }
+            ClassifyItem(itemType, itemClasses[itemType]);
         }
 
         ModLogger.Info($"{nameof(UseableItemStore)}: Classified {s_healItemTypes.Count} heal, {s_foodItemTypes.Count} food, {s_drinkItemTypes.Count} drink item types; {s_curesByItem.Count} cure-capable");
+    }
+
+    /// <summary>
+    /// Classifies one item type into the Heal / Food / Drink sets and records its nutrition, heal and
+    /// cure data. Non-eat items are skipped: ConsumeType.Heal is what LookupItemUseageType returns for
+    /// ItemActionEat, so requiring it keeps exactly the eat items.
+    /// </summary>
+    private static void ClassifyItem(int itemType, ItemClass itemClass)
+    {
+        if (itemClass == null)
+        {
+            return;
+        }
+
+        // Only items with an eat-style action are eligible for any row. Tags alone aren't
+        // enough: a modded item tagged "food"/"drinks"/"medical" but with a Read/Quest/Open
+        // action would otherwise be classified here and then mishandled by TryUseSlot /
+        // ItemActionEntryUse.OnActivated, which for Eat/Drink/Heal picks the first non-null
+        // action regardless of its type.
+        if (ItemClassCache.LookupItemUseageType(itemType) != ItemActionEntryUse.ConsumeType.Heal)
+        {
+            return;
+        }
+
+        // Record cures for any eat item — heal, food, or drink — so food/drink cure items (e.g.
+        // foodHoney for infection) can be pulled into the heal row when their debuff is active.
+        var curedBuffs = ComputeCuredDebuffs(itemClass);
+        if (curedBuffs.Length > 0)
+        {
+            s_curesByItem[itemType] = curedBuffs;
+        }
+
+        bool isFood = itemClass.HasAnyTags(s_foodTag);
+        bool isDrink = itemClass.HasAnyTags(s_drinksTag);
+
+        if (isFood || isDrink)
+        {
+            (isFood ? s_foodItemTypes : s_drinkItemTypes).Add(itemType);
+            s_nutritionScore[itemType] = ComputeNutritionScore(itemClass);
+            s_healthScore[itemType] = ComputeHealthEffectValue(itemClass);
+            return;
+        }
+
+        if (itemClass.HasAnyTags(s_medicalTag))
+        {
+            s_healItemTypes.Add(itemType);
+            s_healthScore[itemType] = ComputeHealthEffectValue(itemClass);
+        }
     }
 
     /// <summary>
@@ -453,47 +466,71 @@ public static class UseableItemStore
 
         foreach (var buffClass in BuffManager.Buffs.Values)
         {
-            var selfName = buffClass.Name;
-            var effectGroups = buffClass.Effects?.EffectGroups;
-            if (string.IsNullOrEmpty(selfName) || effectGroups == null)
+            RegisterSelfRemovalCures(buffClass);
+        }
+    }
+
+    private static void RegisterSelfRemovalCures(BuffClass buffClass)
+    {
+        var selfName = buffClass.Name;
+        var effectGroups = buffClass.Effects?.EffectGroups;
+        if (string.IsNullOrEmpty(selfName) || effectGroups == null)
+        {
+            return;
+        }
+
+        foreach (var group in effectGroups)
+        {
+            RegisterGroupSelfRemovalCures(group, selfName);
+        }
+    }
+
+    private static void RegisterGroupSelfRemovalCures(MinEffectGroup group, string selfName)
+    {
+        if (group.TriggeredEffects == null)
+        {
+            return;
+        }
+
+        foreach (var effects in group.TriggeredEffects.Values)
+        {
+            foreach (var action in effects)
             {
-                continue;
+                RegisterActionSelfRemovalCure(action, selfName);
             }
+        }
+    }
 
-            foreach (var group in effectGroups)
-            {
-                if (group.TriggeredEffects == null)
-                {
-                    continue;
-                }
+    /// <summary>
+    /// If <paramref name="action"/> removes the buff it belongs to (<paramref name="selfName"/>),
+    /// records each buff named in its HasBuff requirements as a cure for that buff.
+    /// </summary>
+    private static void RegisterActionSelfRemovalCure(MinEventActionBase action, string selfName)
+    {
+        if (action is not MinEventActionRemoveBuff { buffNames: not null } removeBuff || !ContainsName(removeBuff.buffNames, selfName))
+        {
+            return;
+        }
 
-                foreach (var effects in group.TriggeredEffects.Values)
-                {
-                    foreach (var action in effects)
-                    {
-                        if (action is not MinEventActionRemoveBuff { buffNames: not null } removeBuff || !ContainsName(removeBuff.buffNames, selfName))
-                        {
-                            continue;
-                        }
+        var cureBuffs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        CollectHasBuffRequirements(removeBuff.Requirements, cureBuffs);
+        foreach (var cureBuffName in cureBuffs)
+        {
+            AddCureBuffDebuff(cureBuffName, selfName);
+        }
+    }
 
-                        var cureBuffs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                        CollectHasBuffRequirements(removeBuff.Requirements, cureBuffs);
-                        foreach (var cureBuffName in cureBuffs)
-                        {
-                            if (!s_cureBuffToDebuffs.TryGetValue(cureBuffName, out var debuffs))
-                            {
-                                debuffs = new List<string>();
-                                s_cureBuffToDebuffs[cureBuffName] = debuffs;
-                            }
+    private static void AddCureBuffDebuff(string cureBuffName, string debuffName)
+    {
+        if (!s_cureBuffToDebuffs.TryGetValue(cureBuffName, out var debuffs))
+        {
+            debuffs = new List<string>();
+            s_cureBuffToDebuffs[cureBuffName] = debuffs;
+        }
 
-                            if (!debuffs.Contains(selfName))
-                            {
-                                debuffs.Add(selfName);
-                            }
-                        }
-                    }
-                }
-            }
+        if (!debuffs.Contains(debuffName))
+        {
+            debuffs.Add(debuffName);
         }
     }
 

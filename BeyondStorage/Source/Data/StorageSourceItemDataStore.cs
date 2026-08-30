@@ -557,6 +557,20 @@ internal class StorageSourceItemDataStore
             return [];
         }
 
+        var candidates = CollectScoreCandidates(isCandidate, scoreSelector);
+        candidates.Sort(CompareScoreCandidates);
+
+        var top = new List<(int ItemType, int Count)>(topN);
+        for (int i = 0; i < candidates.Count && i < topN; i++)
+        {
+            top.Add((candidates[i].ItemType, candidates[i].Count));
+        }
+
+        return top;
+    }
+
+    private List<(int ItemType, int Count, float Primary, float Secondary)> CollectScoreCandidates(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector)
+    {
         var candidates = new List<(int ItemType, int Count, float Primary, float Secondary)>();
 
         foreach (var itemType in GetKnownItemTypes())
@@ -576,34 +590,32 @@ internal class StorageSourceItemDataStore
             candidates.Add((itemType, count, primary, secondary));
         }
 
-        // Candidate count is bounded by distinct item types actually in storage for this category —
-        // small enough that a full sort is simpler than bounded insertion and not worth optimizing.
-        // ItemType is the final tiebreak so the order is fully deterministic even when scores and
-        // counts are identical (List.Sort is not stable).
-        candidates.Sort(static (a, b) =>
+        return candidates;
+    }
+
+    /// <summary>
+    /// Orders candidates by primary descending, then secondary descending, then count descending,
+    /// with item type as the final tiebreak so the order is fully deterministic even when scores and
+    /// counts are identical (List.Sort is not stable). Candidate count is bounded by distinct item
+    /// types actually in storage, so a full sort is simpler than bounded insertion.
+    /// </summary>
+    private static int CompareScoreCandidates(
+        (int ItemType, int Count, float Primary, float Secondary) a,
+        (int ItemType, int Count, float Primary, float Secondary) b)
+    {
+        int cmp = b.Primary.CompareTo(a.Primary);
+        if (cmp != 0)
         {
-            int cmp = b.Primary.CompareTo(a.Primary);
-            if (cmp != 0)
-            {
-                return cmp;
-            }
-
-            cmp = b.Secondary.CompareTo(a.Secondary);
-            if (cmp != 0)
-            {
-                return cmp;
-            }
-
-            cmp = b.Count.CompareTo(a.Count);
-            return cmp != 0 ? cmp : a.ItemType.CompareTo(b.ItemType);
-        });
-
-        var top = new List<(int ItemType, int Count)>(topN);
-        for (int i = 0; i < candidates.Count && i < topN; i++)
-        {
-            top.Add((candidates[i].ItemType, candidates[i].Count));
+            return cmp;
         }
 
-        return top;
+        cmp = b.Secondary.CompareTo(a.Secondary);
+        if (cmp != 0)
+        {
+            return cmp;
+        }
+
+        cmp = b.Count.CompareTo(a.Count);
+        return cmp != 0 ? cmp : a.ItemType.CompareTo(b.ItemType);
     }
 }

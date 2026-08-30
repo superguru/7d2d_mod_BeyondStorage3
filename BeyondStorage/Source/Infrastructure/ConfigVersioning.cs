@@ -285,50 +285,76 @@ public static class ConfigVersioning
                 return configJson;
             }
 
-            // Pre-2.6.3: rename pullFromDewCollectors -> pullFromCollectors
-            if (version < new Version("2.6.3") && jsonObject.ContainsKey("pullFromDewCollectors"))
-            {
-                jsonObject["pullFromCollectors"] = jsonObject["pullFromDewCollectors"];
-                jsonObject.Remove("pullFromDewCollectors");
-            }
-
-            // Pre-2.6.7: remove isDebugLogSettingsAccess
-            if (version < new Version("2.6.7") && jsonObject.ContainsKey("isDebugLogSettingsAccess"))
-            {
-                jsonObject.Remove("isDebugLogSettingsAccess");
-            }
-
-            // Pre-2.6.9: remove pullFromCollectors and pullFromWorkstationOutputs
-            if (version < new Version("2.6.9"))
-            {
-                jsonObject.Remove("pullFromCollectors");
-                jsonObject.Remove("pullFromWorkstationOutputs");
-            }
-
-            // Pre-3.1.1: remove serverSyncConfig
-            if (version < new Version("3.1.1"))
-            {
-                jsonObject.Remove("serverSyncConfig");
-            }
-
-            if (version < new Version("3.1.4"))
-            {
-                jsonObject["includeDrones"] = jsonObject["consumeFromDrones"];
-                jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
-            }
-
-            // Pre-3.1.8: rename incorrectly shipped includeFromVehicles -> includeVehicles
-            if (version < new Version("3.1.8") && jsonObject.ContainsKey("includeFromVehicles"))
-            {
-                jsonObject["includeVehicles"] = jsonObject["includeFromVehicles"];
-                jsonObject.Remove("includeFromVehicles");
-            }
+            RenamePullFromDewCollectors(jsonObject, version);
+            RemoveIsDebugLogSettingsAccess(jsonObject, version);
+            RemoveCollectorAndWorkstationFields(jsonObject, version);
+            RemoveServerSyncConfig(jsonObject, version);
+            RenameConsumeFieldsToInclude(jsonObject, version);
+            RenameIncludeFromVehicles(jsonObject, version);
 
             return jsonObject.ToString(Formatting.None);
         }
         catch (JsonException)
         {
             return configJson;
+        }
+    }
+
+    private static void RenamePullFromDewCollectors(JObject jsonObject, Version version)
+    {
+        // Pre-2.6.3: rename pullFromDewCollectors -> pullFromCollectors
+        if (version < new Version("2.6.3") && jsonObject.ContainsKey("pullFromDewCollectors"))
+        {
+            jsonObject["pullFromCollectors"] = jsonObject["pullFromDewCollectors"];
+            jsonObject.Remove("pullFromDewCollectors");
+        }
+    }
+
+    private static void RemoveIsDebugLogSettingsAccess(JObject jsonObject, Version version)
+    {
+        // Pre-2.6.7: remove isDebugLogSettingsAccess
+        if (version < new Version("2.6.7") && jsonObject.ContainsKey("isDebugLogSettingsAccess"))
+        {
+            jsonObject.Remove("isDebugLogSettingsAccess");
+        }
+    }
+
+    private static void RemoveCollectorAndWorkstationFields(JObject jsonObject, Version version)
+    {
+        // Pre-2.6.9: remove pullFromCollectors and pullFromWorkstationOutputs
+        if (version < new Version("2.6.9"))
+        {
+            jsonObject.Remove("pullFromCollectors");
+            jsonObject.Remove("pullFromWorkstationOutputs");
+        }
+    }
+
+    private static void RemoveServerSyncConfig(JObject jsonObject, Version version)
+    {
+        // Pre-3.1.1: remove serverSyncConfig
+        if (version < new Version("3.1.1"))
+        {
+            jsonObject.Remove("serverSyncConfig");
+        }
+    }
+
+    private static void RenameConsumeFieldsToInclude(JObject jsonObject, Version version)
+    {
+        // Pre-3.1.4: rename consumeFromDrones -> includeDrones, consumeFromVehicles -> includeVehicles
+        if (version < new Version("3.1.4"))
+        {
+            jsonObject["includeDrones"] = jsonObject["consumeFromDrones"];
+            jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
+        }
+    }
+
+    private static void RenameIncludeFromVehicles(JObject jsonObject, Version version)
+    {
+        // Pre-3.1.8: rename incorrectly shipped includeFromVehicles -> includeVehicles
+        if (version < new Version("3.1.8") && jsonObject.ContainsKey("includeFromVehicles"))
+        {
+            jsonObject["includeVehicles"] = jsonObject["includeFromVehicles"];
+            jsonObject.Remove("includeFromVehicles");
         }
     }
 

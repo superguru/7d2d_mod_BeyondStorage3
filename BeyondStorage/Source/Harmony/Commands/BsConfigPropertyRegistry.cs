@@ -45,8 +45,6 @@ internal static class BsConfigPropertyRegistry
     /// </summary>
     private static void RegisterConfigurationProperties()
     {
-        const string d_MethodName = nameof(RegisterConfigurationProperties);
-
         // Register all available properties
         RegisterProperty("range", "float", ConfigLocalisation.RANGE_SETTING_TOOLTIP_KEY,
             config => config.range.ToString("F1"),
@@ -80,8 +78,6 @@ internal static class BsConfigPropertyRegistry
         Func<BsConfig, string> getValue,
         Action<BsConfig, string> setValue)
     {
-        const string d_MethodName = nameof(RegisterProperty);
-
         if (string.IsNullOrWhiteSpace(propertyName))
         {
             ModLogger.Error("Cannot register config property with null or empty name");
