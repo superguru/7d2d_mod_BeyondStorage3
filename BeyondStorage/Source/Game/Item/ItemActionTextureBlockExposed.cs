@@ -9,9 +9,18 @@ namespace BeyondStorage.Game.Item;
 // Face data structure to store painting information
 public struct PaintFaceData
 {
-    public Vector3i BlockPos { get; set; }
-    public BlockFace BlockFace { get; set; }
-    public int Channel { get; set; }
+    public Vector3i BlockPos
+    {
+        get; set;
+    }
+    public BlockFace BlockFace
+    {
+        get; set;
+    }
+    public int Channel
+    {
+        get; set;
+    }
 
     public PaintFaceData(Vector3i blockPos, BlockFace blockFace, int channel)
     {
@@ -290,7 +299,7 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
             return true; // If method doesn't exist, assume it can be painted
         }
 
-        return (bool)s_checkBlockCanBePaintedMethod.Invoke(OriginalTextureBlock, new object[] { world, blockPos, blockValue, lpRelative });
+        return (bool)s_checkBlockCanBePaintedMethod.Invoke(OriginalTextureBlock, [world, blockPos, blockValue, lpRelative]);
     }
 
     private static bool ValidateBlockSelection(Vector3i blockPos)
@@ -398,7 +407,9 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
             if (actionData.bPaintAllSides)
             {
                 for (int faceIdx = 0; faceIdx < MAX_BLOCK_FACES; faceIdx++)
+                {
                     faceList.Add(new PaintFaceData(raycastData.BlockPos, (BlockFace)faceIdx, channel));
+                }
             }
             else
             {
@@ -409,7 +420,10 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
         int numFaces = actionData.bPaintAllSides ? MAX_BLOCK_FACES : 1;
         bool canExpand = false;
         for (int i = 0; i < numFaces; i++)
+        {
             canExpand = ItemTexture.CountPaintUsage(operationId);
+        }
+
         visitedPositions.Add(raycastData.BlockPos, canExpand);
 
         return new BlockProcessResult { ShouldExpand = canExpand };

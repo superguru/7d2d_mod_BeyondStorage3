@@ -588,7 +588,7 @@ public static class UseableItemStore
     {
         if (!s_cureBuffToDebuffs.TryGetValue(cureBuffName, out var debuffs))
         {
-            debuffs = new List<string>();
+            debuffs = [];
             s_cureBuffToDebuffs[cureBuffName] = debuffs;
         }
 
