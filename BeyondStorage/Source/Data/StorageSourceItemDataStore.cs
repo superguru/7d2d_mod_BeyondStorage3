@@ -538,19 +538,18 @@ internal class StorageSourceItemDataStore
 
     /// <summary>
     /// Ranks the currently-known item types accepted by <paramref name="isCandidate"/> by
-    /// <paramref name="scoreSelector"/> (primary descending, then secondary descending, then pooled
-    /// count descending as a final tiebreak), returning at most <paramref name="topN"/> entries.
-    /// Count is always used as an availability filter (items with 0 in storage are excluded) and
-    /// reported for display; it only acts as a rank key once primary/secondary are tied — e.g. the
-    /// Useables window ranks food by nutrition value (primary) then net health effect (secondary)
-    /// so a real meal outranks abundant-but-harmful junk like rotting flesh, or ranks medicine by
-    /// heal amount (primary) then count (the tie-break, since secondary is unused there).
+    /// <paramref name="scoreSelector"/> (primary descending, then secondary descending, then tertiary
+    /// descending, then pooled count descending as a final tiebreak), returning at most
+    /// <paramref name="topN"/> entries. Count is always used as an availability filter (items with 0
+    /// in storage are excluded) and reported for display; it only acts as a rank key once the score
+    /// keys are tied — e.g. the Useables window ranks food by nutrition value (primary) then net
+    /// health effect (secondary) then net buff/debuff count (tertiary).
     /// </summary>
     /// <param name="isCandidate">
     /// O(1) membership test for a category, e.g. <see cref="UseableItemStore.IsHealItem"/>. Passed as
     /// a predicate rather than a collection so this store never needs to know the concrete set type.
     /// </param>
-    internal IReadOnlyList<(int ItemType, int Count)> GetTopItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector, int topN)
+    internal IReadOnlyList<(int ItemType, int Count)> GetTopItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary, float Tertiary)> scoreSelector, int topN)
     {
         if (isCandidate == null || scoreSelector == null || topN <= 0)
         {
@@ -569,9 +568,9 @@ internal class StorageSourceItemDataStore
         return top;
     }
 
-    private List<(int ItemType, int Count, float Primary, float Secondary)> CollectScoreCandidates(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector)
+    private List<(int ItemType, int Count, float Primary, float Secondary, float Tertiary)> CollectScoreCandidates(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary, float Tertiary)> scoreSelector)
     {
-        var candidates = new List<(int ItemType, int Count, float Primary, float Secondary)>();
+        var candidates = new List<(int ItemType, int Count, float Primary, float Secondary, float Tertiary)>();
 
         foreach (var itemType in GetKnownItemTypes())
         {
@@ -586,22 +585,22 @@ internal class StorageSourceItemDataStore
                 continue;
             }
 
-            var (primary, secondary) = scoreSelector(itemType);
-            candidates.Add((itemType, count, primary, secondary));
+            var (primary, secondary, tertiary) = scoreSelector(itemType);
+            candidates.Add((itemType, count, primary, secondary, tertiary));
         }
 
         return candidates;
     }
 
     /// <summary>
-    /// Orders candidates by primary descending, then secondary descending, then count descending,
-    /// with item type as the final tiebreak so the order is fully deterministic even when scores and
-    /// counts are identical (List.Sort is not stable). Candidate count is bounded by distinct item
-    /// types actually in storage, so a full sort is simpler than bounded insertion.
+    /// Orders candidates by primary descending, then secondary descending, then tertiary descending,
+    /// then count descending, with item type as the final tiebreak so the order is fully deterministic
+    /// even when scores and counts are identical (List.Sort is not stable). Candidate count is bounded
+    /// by distinct item types actually in storage, so a full sort is simpler than bounded insertion.
     /// </summary>
     private static int CompareScoreCandidates(
-        (int ItemType, int Count, float Primary, float Secondary) a,
-        (int ItemType, int Count, float Primary, float Secondary) b)
+        (int ItemType, int Count, float Primary, float Secondary, float Tertiary) a,
+        (int ItemType, int Count, float Primary, float Secondary, float Tertiary) b)
     {
         int cmp = b.Primary.CompareTo(a.Primary);
         if (cmp != 0)
@@ -610,6 +609,12 @@ internal class StorageSourceItemDataStore
         }
 
         cmp = b.Secondary.CompareTo(a.Secondary);
+        if (cmp != 0)
+        {
+            return cmp;
+        }
+
+        cmp = b.Tertiary.CompareTo(a.Tertiary);
         if (cmp != 0)
         {
             return cmp;

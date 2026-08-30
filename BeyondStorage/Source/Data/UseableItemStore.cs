@@ -39,6 +39,11 @@ public static class UseableItemStore
     // cure — e.g. drugVitamins adds buffDrugVitamins, which makes buffFatigued remove itself.
     private static readonly Dictionary<string, List<string>> s_cureBuffToDebuffs = new(StringComparer.OrdinalIgnoreCase);
 
+    // Net buff/debuff score per item type: +1 per visible beneficial buff the item adds, -1 per
+    // visible harmful buff. Hidden/internal buffs are ignored. Used as a tie-break in the food/drink
+    // ranking. Health/food/water don't contribute because they aren't AddBuff effects.
+    private static readonly Dictionary<int, int> s_buffDebuffScore = [];
+
     private static bool s_built;
 
     private static readonly FastTags<TagGroup.Global> s_medicalTag = FastTags<TagGroup.Global>.Parse("medical");
@@ -115,14 +120,14 @@ public static class UseableItemStore
     /// heal wins when nearly full, instead of always preferring the biggest heal); secondary is the
     /// raw heal amount so a bigger heal breaks a tie.
     /// </summary>
-    public static (float Primary, float Secondary) GetContextualHealScore(int itemType, float healthDeficit)
+    public static (float Primary, float Secondary, float Tertiary) GetContextualHealScore(int itemType, float healthDeficit)
     {
         EnsureBuilt();
         var healAmount = GetHealAmount(itemType);
 
         // Closer to the deficit is better; a perfect match scores 0, everything else is negative.
         var fit = -Math.Abs(healAmount - healthDeficit);
-        return (fit, healAmount);
+        return (fit, healAmount, 0f);
     }
 
     /// <summary>
@@ -153,7 +158,7 @@ public static class UseableItemStore
     /// Score for ranking cure items: primary is how many currently-active debuffs the item cures,
     /// secondary is its heal amount (a cure that also heals outranks a pure cure).
     /// </summary>
-    public static (float Primary, float Secondary) GetCureScore(int itemType, EntityPlayerLocal player)
+    public static (float Primary, float Secondary, float Tertiary) GetCureScore(int itemType, EntityPlayerLocal player)
     {
         EnsureBuilt();
         var healAmount = GetHealAmount(itemType);
@@ -161,7 +166,7 @@ public static class UseableItemStore
         var playerBuffs = player?.Buffs;
         if (playerBuffs == null || !s_curesByItem.TryGetValue(itemType, out var cures))
         {
-            return (0, healAmount);
+            return (0, healAmount, 0f);
         }
 
         int activeCures = 0;
@@ -173,7 +178,7 @@ public static class UseableItemStore
             }
         }
 
-        return (activeCures, healAmount);
+        return (activeCures, healAmount, 0f);
     }
 
     /// <summary>
@@ -185,21 +190,24 @@ public static class UseableItemStore
     private const float HEALTH_DEBUFF_TIER_PENALTY = 100000f;
 
     /// <summary>
-    /// Score for ranking the Food/Drink row: (nutrition value, net health effect) — except a health
-    /// debuff (e.g. foodShamSandwich: +15 food, -5 health) demotes the item into a tier below every
-    /// non-debuffed food/drink outright, rather than only losing a tiebreak against similar-nutrition
-    /// items. Without this, a big enough nutrition value could still outrank "this hurts you".
-    /// Also means a real meal outranks something abundant but harmful like rotting flesh (+1 food,
-    /// -3 health) despite it often being the most plentiful item in storage.
+    /// Score for ranking the Food/Drink row: (nutrition value, net health effect, net buff/debuff
+    /// count) — except a health debuff (e.g. foodShamSandwich: +15 food, -5 health) demotes the item
+    /// into a tier below every non-debuffed food/drink outright, rather than only losing a tiebreak
+    /// against similar-nutrition items. Without this, a big enough nutrition value could still
+    /// outrank "this hurts you". Also means a real meal outranks something abundant but harmful like
+    /// rotting flesh (+1 food, -3 health) despite it often being the most plentiful item in storage.
+    /// The tertiary buff/debuff count then prefers items with more bonus buffs (stamina, well-fed)
+    /// and fewer harmful ones, before falling back to pooled count.
     /// </summary>
-    public static (float Primary, float Secondary) GetNutritionScore(int itemType)
+    public static (float Primary, float Secondary, float Tertiary) GetNutritionScore(int itemType)
     {
         EnsureBuilt();
         var nutrition = s_nutritionScore.TryGetValue(itemType, out var n) ? n : 0f;
         var health = s_healthScore.TryGetValue(itemType, out var h) ? h : 0f;
+        var buffDebuff = (float)(s_buffDebuffScore.TryGetValue(itemType, out var b) ? b : 0);
 
         var primary = health < 0f ? nutrition - HEALTH_DEBUFF_TIER_PENALTY : nutrition;
-        return (primary, health);
+        return (primary, health, buffDebuff);
     }
 
     /// <summary>
@@ -228,7 +236,21 @@ public static class UseableItemStore
             ClassifyItem(itemType, itemClasses[itemType]);
         }
 
-        ModLogger.Info($"{nameof(UseableItemStore)}: Classified {s_healItemTypes.Count} heal, {s_foodItemTypes.Count} food, {s_drinkItemTypes.Count} drink item types; {s_curesByItem.Count} cure-capable");
+        int buffCount = 0;
+        int debuffCount = 0;
+        foreach (var score in s_buffDebuffScore.Values)
+        {
+            if (score > 0)
+            {
+                buffCount += score;
+            }
+            else
+            {
+                debuffCount -= score;
+            }
+        }
+
+        ModLogger.Info($"{nameof(UseableItemStore)}: Classified {s_healItemTypes.Count} heal, {s_foodItemTypes.Count} food, {s_drinkItemTypes.Count} drink item types; {s_curesByItem.Count} cure-capable; {buffCount} buffs, {debuffCount} debuffs");
     }
 
     /// <summary>
@@ -259,6 +281,12 @@ public static class UseableItemStore
         if (curedBuffs.Length > 0)
         {
             s_curesByItem[itemType] = curedBuffs;
+        }
+
+        var buffDebuffScore = ComputeBuffDebuffScore(itemClass);
+        if (buffDebuffScore != 0)
+        {
+            s_buffDebuffScore[itemType] = buffDebuffScore;
         }
 
         bool isFood = itemClass.HasAnyTags(s_foodTag);
@@ -414,6 +442,42 @@ public static class UseableItemStore
         }
 
         return [.. cured];
+    }
+
+    /// <summary>
+    /// Net count of visible buffs (beneficial, +1) versus debuffs (harmful, -1) the item adds, from
+    /// its AddBuff effects. Hidden/internal buffs are ignored, and a buff's nature is read from its
+    /// DamageType (None = beneficial, anything else = harmful). Health, food and water don't
+    /// contribute because they aren't AddBuff effects.
+    /// </summary>
+    private static int ComputeBuffDebuffScore(ItemClass itemClass)
+    {
+        if (BuffManager.Buffs == null)
+        {
+            return 0;
+        }
+
+        int score = 0;
+        foreach (var action in GetPrimaryActionEndEffects(itemClass))
+        {
+            if (action is not MinEventActionAddBuff { buffNames: not null } addBuff)
+            {
+                continue;
+            }
+
+            foreach (var buffName in addBuff.buffNames)
+            {
+                var buffClass = BuffManager.GetBuff(buffName);
+                if (buffClass == null || buffClass.Hidden)
+                {
+                    continue;
+                }
+
+                score += buffClass.DamageType != EnumDamageTypes.None ? -1 : 1;
+            }
+        }
+
+        return score;
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using BeyondStorage.Game.Item;
-using BeyondStorage.Infrastructure;
 using HarmonyLib;
 
 namespace BeyondStorage.Harmony.Extends;
@@ -88,8 +87,6 @@ internal static class ItemActionRepair_Ext
 #endif
     private static bool ItemActionRepair_RemoveRequiredResource_Prefix(ItemActionRepair __instance, ItemInventoryData data, BlockValue blockValue, ref bool __result)
     {
-        ModLogger.DebugLog($"{nameof(ItemActionRepair_RemoveRequiredResource_Prefix)}");
-
         // Replicate original validation logic
         if (!__instance.CanRemoveRequiredResource(data, blockValue))
         {

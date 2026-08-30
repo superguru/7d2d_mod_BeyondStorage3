@@ -234,7 +234,7 @@ public sealed class StorageContext
     /// <paramref name="scoreSelector"/> rather than pooled count — see
     /// <see cref="StorageSourceItemDataStore.GetTopItemsByScore"/>.
     /// </summary>
-    public IReadOnlyList<(int ItemType, int Count)> GetTopUseableItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary)> scoreSelector, int topN)
+    public IReadOnlyList<(int ItemType, int Count)> GetTopUseableItemsByScore(Func<int, bool> isCandidate, Func<int, (float Primary, float Secondary, float Tertiary)> scoreSelector, int topN)
     {
         const string d_MethodName = nameof(GetTopUseableItemsByScore);
 
