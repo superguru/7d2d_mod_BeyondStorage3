@@ -306,6 +306,7 @@ I run these mods, among others, and so the development and testing of this mod m
 - ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
 - ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
 - ✅ [Remote Storage Access](https://www.nexusmods.com/7daystodie/mods/2197)
+- ✅ [TX Marketplace Terminal](https://www.nexusmods.com/7daystodie/mods/11760)
 - ✅ [Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
 
 #### Common Dependency Libraries that are compatible
