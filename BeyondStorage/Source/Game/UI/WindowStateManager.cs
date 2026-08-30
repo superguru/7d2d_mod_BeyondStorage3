@@ -39,6 +39,10 @@ public static class WindowStateManager
     private static readonly object s_characterFrameWindowLock = new();
     private static XUiC_CharacterFrameWindow s_characterFrameWindow = null;
 
+    // Trader Window (trader UI with buy/sell)
+    private static readonly object s_traderWindowLock = new();
+    private static XUiC_TraderWindowGroup s_traderWindow = null;
+
     // Entities associated with the currently open bag storage window.
     // Always update via SetOpenWindowEntities().
     private static readonly object s_windowEntityLock = new();
@@ -452,7 +456,8 @@ public static class WindowStateManager
             IsOnlyPlayerStorageOpenInternal() &&
             !IsWorkstationWindowOpen() &&
             !IsCollectorWindowOpen() &&
-            !IsCharacterFrameWindowOpen();
+            !IsCharacterFrameWindowOpen() &&
+            !IsTraderWindowOpen();
 
 #if DEBUG
         //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()}, Char={IsCharacterFrameWindowOpen()})");
@@ -806,6 +811,71 @@ public static class WindowStateManager
             else if (s_characterFrameWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close character frame window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    #endregion
+
+    #region Trader Window
+
+    /// <summary>
+    /// Gets whether the trader window is currently open
+    /// </summary>
+    /// <returns>True if the trader window is open, false otherwise</returns>
+    public static bool IsTraderWindowOpen()
+    {
+        lock (s_traderWindowLock)
+        {
+            return s_traderWindow != null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the currently active trader window instance
+    /// </summary>
+    /// <returns>The active trader window, or null if none is open</returns>
+    public static XUiC_TraderWindowGroup GetActiveTraderWindow()
+    {
+        lock (s_traderWindowLock)
+        {
+            return s_traderWindow;
+        }
+    }
+
+    /// <summary>
+    /// Called when a trader window opens
+    /// </summary>
+    /// <param name="window">The trader window that opened</param>
+    internal static void OnTraderWindowOpening(XUiC_TraderWindowGroup window)
+    {
+        lock (s_traderWindowLock)
+        {
+            if (s_traderWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Trader window opened while another was already tracked. Resetting state. Previous: {s_traderWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_traderWindow = null;
+            }
+
+            s_traderWindow = window;
+        }
+    }
+
+    /// <summary>
+    /// Called when a trader window closes
+    /// </summary>
+    /// <param name="window">The trader window that closed</param>
+    internal static void OnTraderWindowClosing(XUiC_TraderWindowGroup window)
+    {
+        lock (s_traderWindowLock)
+        {
+            if (s_traderWindow == window)
+            {
+                s_traderWindow = null;
+            }
+            else if (s_traderWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Attempted to close trader window that doesn't match tracked instance.");
             }
         }
     }
