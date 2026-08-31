@@ -122,15 +122,15 @@ Pulling in items will not overflow to empty slots, whether they're locked or not
 ![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 
-### 🩹 Use directly from your Extended Inventory (the Useables window)
+### 🩹 Useables: Use directly from your Extended Inventory
 Next to your Backpack, you'll see a small **Useables** window with 6 slots, showing the best healing, food, and drink items currently available in your **Extended Inventory** (nearby storage, vehicles, drones, etc.) — not your Backpack, since those items are already right there next to it.
 
 It only appears when your Backpack is open by itself — it's hidden while a vehicle, workstation, trader, drone, character screen, or other container window is also open, so it never gets in the way.
 
 ![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
 
-- **Top row:** your best healing item — chosen to fit how much health you're currently missing (a big heal when badly hurt, a small one when nearly full) — followed by up to 2 items that cure a condition you currently have, like bleeding, abrasion, concussion, infection, or dysentery. If you're hurt but have nothing to cure, the extra slots fill with more healing items. At full health, cures take the whole row; if you have no cures either, it shows your smallest healing item so the row isn't empty.
-- **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutritional value, then by how much health they restore, then by any bonus buffs they provide. If you don't have any drinks available, this fills in with more food instead (and the same the other way around), so you'll still see 3 useful items whenever you have any.
+- **Top row:** your best healing item — matched to how much health you're missing — plus up to 2 items that cure a condition you currently have (bleeding, infection, and so on). Leftover slots fill with more available healing items.
+- **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutrition, then health, then bonus buffs. If you have no drinks, the gap fills with more food instead (and the other way around).
 
 An item with a health penalty (like Rotting Flesh) will always rank below a "clean" item of the same kind, even if you have a lot more of it.
 
@@ -140,7 +140,7 @@ To use an item shown in the Useables window:
 
 A single click on a slot shows the same item info panel you'd see for a normal Backpack or Toolbelt item, without using it.
 
-### 🤼‍♀️ Multiplayer Explained
+### 🤼‍ Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
 
 So if you build a Crate and place it, then anyone of your Allies can access it. If you build a Wall Safe and place it, then the same rule applies.
