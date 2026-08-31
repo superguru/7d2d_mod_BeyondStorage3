@@ -1,13 +1,20 @@
 ﻿using System;
-using BeyondStorage.Infrastructure;
+using ZoneControl.Infrastructure;
 
-namespace BeyondStorage.Source.Configuration.Gears;
+namespace ZoneControl.Configuration.Gears;
 
 internal static class GearsConversions
 {
     public static bool IsEqualValue(string value, bool b)
     {
         var a = ToBool(value, !b);
+        return a == b;
+    }
+
+    public static bool IsEqualValue(string value, int b)
+    {
+        // ~b is a fallback that can never equal b, so a failed parse reads as "not equal"
+        var a = ToInt(value, ~b);
         return a == b;
     }
 
@@ -20,6 +27,20 @@ internal static class GearsConversions
     internal static string FromBool(bool value)
     {
         return value ? "On" : "Off";
+    }
+
+    internal static string FromInt(int value, int min, int max)
+    {
+        if (value < min)
+        {
+            value = min;
+        }
+        else if (value > max)
+        {
+            value = max;
+        }
+
+        return value.ToString();
     }
 
     internal static string FromFloat(float value, float min, float max)
@@ -52,6 +73,16 @@ internal static class GearsConversions
             return defaultValue;
         }
     }
+    internal static int ToInt(string value, int defaultValue)
+    {
+        if (!int.TryParse(value, out var convertedValue))
+        {
+            convertedValue = defaultValue;
+        }
+
+        return convertedValue;
+    }
+
     internal static float ToFloat(string value, float defaultValue)
     {
         if (!float.TryParse(value, out var convertedValue))
