@@ -1,7 +1,7 @@
 ﻿using BeyondStorage.Data;
 using BeyondStorage.Game.UI;
 using BeyondStorage.Infrastructure;
-using BeyondStorage.Source.Storage.TransferTargets;
+using BeyondStorage.Storage.TransferTargets;
 
 namespace BeyondStorage.Storage.SmartSorting;
 

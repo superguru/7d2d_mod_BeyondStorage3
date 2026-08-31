@@ -1,7 +1,7 @@
 ﻿using BeyondStorage.Game.UI;
 using HarmonyLib;
 
-namespace BeyondStorage.Source.Harmony.Extends;
+namespace BeyondStorage.Harmony.Extends;
 
 ///
 /// Introduced in v3.0.0 of 7 Days to Die, where it was only used for vehicles

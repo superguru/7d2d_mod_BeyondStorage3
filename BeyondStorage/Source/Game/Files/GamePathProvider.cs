@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace BeyondStorage.Source.Game.Files;
+namespace BeyondStorage.Game.Files;
 
 internal static class GamePathProvider
 {

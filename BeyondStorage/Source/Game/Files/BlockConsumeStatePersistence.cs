@@ -5,7 +5,7 @@ using StructuredText.StructuredText;
 using BeyondStorage.Infrastructure;
 #endif
 
-namespace BeyondStorage.Source.Game.Files;
+namespace BeyondStorage.Game.Files;
 
 internal static class BlockConsumeStatePersistence
 {
