@@ -1,9 +1,9 @@
 {
     "metaDescription": "RELEASE Configuration file for Beyond Storage mod package",
-    "version": "3.1.8",
+    "version": "3.2.0",
     "range": 0.0,
-    "allowPushToAlliedVehicles": true,
     "includeDrones": true,
     "includeVehicles": true,
+    "allowPushToAlliedVehicles": true,
     "isDebug": false
 }

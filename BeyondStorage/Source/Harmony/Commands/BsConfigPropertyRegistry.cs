@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using BeyondStorage.Configuration;
 using BeyondStorage.Infrastructure;
-using BeyondStorage.Source.Configuration;
 
 namespace BeyondStorage.Harmony.Commands;
 
@@ -75,8 +74,8 @@ internal static class BsConfigPropertyRegistry
     /// <param name="descriptionKey">The property descriptionKey</param>
     /// <param name="setValue">Action to set the property value, null for DEBUG-only properties</param>
     private static void RegisterProperty(string propertyName, string type, string descriptionKey,
-        Func<BsConfig, string> getValue,
-        Action<BsConfig, string> setValue)
+        Func<ModConfigData, string> getValue,
+        Action<ModConfigData, string> setValue)
     {
         if (string.IsNullOrWhiteSpace(propertyName))
         {
@@ -271,18 +270,18 @@ internal static class BsConfigPropertyRegistry
                 return GameTools.GetLocalisedValue("get", field);
             }
         }
-        public Func<BsConfig, string> GetValue
+        public Func<ModConfigData, string> GetValue
         {
             get;
         }
-        public Action<BsConfig, string> SetValue
+        public Action<ModConfigData, string> SetValue
         {
             get;
         }
 
         public ConfigPropertyInfo(string propertyName, string type, string descriptionKey,
-            Func<BsConfig, string> getValue,
-            Action<BsConfig, string> setValue)
+            Func<ModConfigData, string> getValue,
+            Action<ModConfigData, string> setValue)
         {
             PropertyName = propertyName;
             Type = type;

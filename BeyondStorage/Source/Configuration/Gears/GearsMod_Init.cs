@@ -3,7 +3,7 @@ using GearsAPI.Settings;
 using GearsAPI.Settings.Global;
 using GearsAPI.Settings.World;
 
-namespace BeyondStorage.Source.Configuration.Gears;
+namespace BeyondStorage.Configuration.Gears;
 
 public class GearsModAPI : IGearsModApi
 {
@@ -33,26 +33,27 @@ public class GearsModAPI : IGearsModApi
             return;
         }
 
-        ConfigureGeneralCategory();
-    }
-
-    private void ConfigureGeneralCategory()
-    {
-        var generalTab = GearsGlobalSettings.GetTab("General");
-        if (generalTab == null)
+        foreach (var (tabName, categoryName, settings) in GearsSettingsRegistry.Entries)
         {
-            ModLogger.DebugLog($"Global settings loaded, but generalTab is null");
-            return;
-        }
+            var tab = GearsGlobalSettings.GetTab(tabName);
+            if (tab == null)
+            {
+                ModLogger.DebugLog($"Global settings loaded, but `{tabName}` tab is null");
+                continue;
+            }
 
-        var generalCategory = generalTab.GetCategory("General");
-        if (generalCategory == null)
-        {
-            ModLogger.DebugLog($"Global settings loaded, but generalCategory is null");
-            return;
-        }
+            var category = tab.GetCategory(categoryName);
+            if (category == null)
+            {
+                ModLogger.DebugLog($"Global settings loaded, but `{categoryName}` category is null");
+                continue;
+            }
 
-        GearsGeneralSettings.ConfigureGeneralCategorySettings(generalCategory);
+            foreach (var setting in settings)
+            {
+                setting.Bind(category);
+            }
+        }
     }
 
     void IGearsModApi.OnWorldSettingsLoaded(IModWorldSettings worldSettings)

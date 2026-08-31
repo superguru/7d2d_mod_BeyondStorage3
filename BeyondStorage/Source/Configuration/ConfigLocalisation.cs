@@ -1,4 +1,4 @@
-﻿namespace BeyondStorage.Source.Configuration;
+﻿namespace BeyondStorage.Configuration;
 
 internal static class ConfigLocalisation
 {

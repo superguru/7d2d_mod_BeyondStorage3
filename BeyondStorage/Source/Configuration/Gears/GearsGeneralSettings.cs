@@ -1,8 +1,7 @@
-﻿using BeyondStorage.Configuration;
-using BeyondStorage.Infrastructure;
+﻿using BeyondStorage.Infrastructure;
 using GearsAPI.Settings.Global;
 
-namespace BeyondStorage.Source.Configuration.Gears;
+namespace BeyondStorage.Configuration.Gears;
 
 internal static class GearsGeneralSettings
 {

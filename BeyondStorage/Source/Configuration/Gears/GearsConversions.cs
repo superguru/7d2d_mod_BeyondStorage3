@@ -1,7 +1,7 @@
 ﻿using System;
-using ZoneControl.Infrastructure;
+using BeyondStorage.Infrastructure;
 
-namespace ZoneControl.Configuration.Gears;
+namespace BeyondStorage.Configuration.Gears;
 
 internal static class GearsConversions
 {

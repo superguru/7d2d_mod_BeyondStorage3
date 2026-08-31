@@ -72,6 +72,9 @@
     <Compile Include="Source\Configuration\Gears\GearsConversions.cs" />
     <Compile Include="Source\Configuration\Gears\GearsGeneralSettings.cs" />
     <Compile Include="Source\Configuration\Gears\GearsMod_Init.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsSetting.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsSettingFactory.cs" />
+    <Compile Include="Source\Configuration\Gears\GearsSettingsRegistry.cs" />
     <Compile Include="Source\Data\CollectionHelper.cs" />
     <Compile Include="Source\Data\SlotMaps.cs" />
     <Compile Include="Source\Data\SlotMutation.cs" />
@@ -161,7 +164,7 @@
     <Compile Include="Source\Harmony\Extends\EntityVehicle_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiM_Vehicle_Ext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Configuration\BsConfig.cs" />
+    <Compile Include="Source\Configuration\ModConfigData.cs" />
     <Compile Include="Source\Infrastructure\ConfigVersioning.cs" />
     <Compile Include="Source\Data\CurrencyCache.cs" />
     <Compile Include="Source\Data\DragDropAnalyzer.cs" />

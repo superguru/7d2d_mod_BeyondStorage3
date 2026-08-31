@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BeyondStorage.Storage.TransferTargets;
 
-namespace BeyondStorage.Source.Storage.TransferTargets;
+namespace BeyondStorage.Storage.TransferTargets;
 
 internal static class TransferAdapterServer
 {

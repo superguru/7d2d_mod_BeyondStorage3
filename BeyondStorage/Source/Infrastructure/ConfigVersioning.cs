@@ -52,8 +52,8 @@ public static class ConfigVersioning
     /// Migrates a legacy config (pre-2.3.0) to the current versioned format
     /// </summary>
     /// <param name="legacyConfigJson">Legacy config JSON string</param>
-    /// <returns>Migrated BsConfig object</returns>
-    public static BsConfig MigrateLegacyConfig(string legacyConfigJson)
+    /// <returns>Migrated ModConfigData object</returns>
+    public static ModConfigData MigrateLegacyConfig(string legacyConfigJson)
     {
         const string d_MethodName = nameof(MigrateLegacyConfig);
         ModLogger.Info($"{d_MethodName}: Migrating legacy config (pre-{FirstVersionedConfig}) to version {CurrentVersion}");
@@ -64,7 +64,7 @@ public static class ConfigVersioning
             var legacyConfig = JsonConvert.DeserializeObject<LegacyBsConfig>(legacyConfigJson);
 
             // Create new versioned config with migrated values
-            var migratedConfig = new BsConfig
+            var migratedConfig = new ModConfigData
             {
                 version = CurrentVersion,
                 range = legacyConfig.range,
@@ -92,7 +92,7 @@ public static class ConfigVersioning
     /// </summary>
     /// <param name="config">Config to potentially migrate</param>
     /// <returns>Migrated config (may be the same object if no migration needed)</returns>
-    public static BsConfig MigrateVersionedConfig(BsConfig config)
+    public static ModConfigData MigrateVersionedConfig(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateVersionedConfig);
 
@@ -176,7 +176,7 @@ public static class ConfigVersioning
     /// </summary>
     /// <param name="config">Config to migrate</param>
     /// <returns>Migrated config</returns>
-    private static BsConfig MigrateTo235(BsConfig config)
+    private static ModConfigData MigrateTo235(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo235);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 2.3.5");
@@ -205,7 +205,7 @@ public static class ConfigVersioning
     /// </summary>
     /// <param name="config">Config to migrate</param>
     /// <returns>Migrated config</returns>
-    private static BsConfig MigrateTo263(BsConfig config)
+    private static ModConfigData MigrateTo263(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo263);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 2.6.3");
@@ -219,7 +219,7 @@ public static class ConfigVersioning
     /// Changes: Removes the isDebugLogSettingsAccess setting — settings access logging
     /// is no longer configurable and will not be logged regardless of previous value.
     /// </summary>
-    private static BsConfig MigrateTo267(BsConfig config)
+    private static ModConfigData MigrateTo267(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo267);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 2.6.7");
@@ -231,7 +231,7 @@ public static class ConfigVersioning
     /// Migrates config to version 2.6.9
     /// Changes: Removes pullFromCollectors and pullFromWorkstationOutputs — both are now always enabled.
     /// </summary>
-    private static BsConfig MigrateTo269(BsConfig config)
+    private static ModConfigData MigrateTo269(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo269);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 2.6.9");
@@ -244,7 +244,7 @@ public static class ConfigVersioning
     /// Migrates config to version 3.1.1
     /// Changes: Removes the serverSyncConfig setting — server config sync is now always enabled.
     /// </summary>
-    private static BsConfig MigrateTo311(BsConfig config)
+    private static ModConfigData MigrateTo311(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo311);
         ModLogger.Info($"{d_MethodName}: Applying migration to version 3.1.1");
@@ -256,7 +256,7 @@ public static class ConfigVersioning
     /// Migrates config to version 3.1.4
     /// Changes: Add AllowPushToAlliedVehicles, which defaults to true
     /// </summary>
-    private static BsConfig MigrateTo314(BsConfig config)
+    private static ModConfigData MigrateTo314(ModConfigData config)
     {
         const string d_MethodName = nameof(MigrateTo314);
 
@@ -270,7 +270,7 @@ public static class ConfigVersioning
 
     /// <summary>
     /// Pre-processes raw config JSON to apply field renames before deserialization.
-    /// Must be called before deserializing into BsConfig to preserve renamed field values.
+    /// Must be called before deserializing into ModConfigData to preserve renamed field values.
     /// </summary>
     /// <param name="configJson">Raw JSON string from config file</param>
     /// <returns>JSON string with field names updated to the current schema</returns>

@@ -9,8 +9,9 @@ namespace BeyondStorage.Configuration;
 
 public static class ModConfig
 {
-    public const float MAX_RANGE = 250.0f; // Largest user settable maximum range
+    public const float DEFAULT_RANGE = MIN_RANGE;
     public const float MIN_RANGE = 0.0f;  // Whatever the game holds in memory
+    public const float MAX_RANGE = 250.0f; // Largest user settable maximum range
 
     private const string ConfigFileName = "config.json";
     private const string ConfigBackupPrefix = "config.backup.";
@@ -20,11 +21,11 @@ public static class ModConfig
     /// </summary>
     private const long MaxConfigFileSize = 1024;
 
-    public static BsConfig ClientConfig
+    public static ModConfigData ClientConfig
     {
         get; private set;
     }
-    public static BsConfig ServerConfig { get; } = new();
+    public static ModConfigData ServerConfig { get; } = new();
     private static bool IsConfigLoaded { get; set; } = false;
 
     /// <summary>
@@ -184,7 +185,7 @@ public static class ModConfig
     /// <param name="path">Path to the config file</param>
     /// <param name="configJson">Raw JSON content</param>
     /// <returns>Loaded and migrated config, or null if failed</returns>
-    private static BsConfig LoadAndMigrateConfig(string path, string configJson)
+    private static ModConfigData LoadAndMigrateConfig(string path, string configJson)
     {
         if (ConfigVersioning.IsLegacyConfig(configJson))
         {
@@ -200,7 +201,7 @@ public static class ModConfig
     /// <param name="path">Path to the config file</param>
     /// <param name="configJson">Raw JSON content</param>
     /// <returns>Migrated config</returns>
-    private static BsConfig LoadLegacyConfig(string path, string configJson)
+    private static ModConfigData LoadLegacyConfig(string path, string configJson)
     {
         ModLogger.Info("Detected legacy config file, migrating to versioned format");
         CreateConfigBackup(path, "legacy");
@@ -220,7 +221,7 @@ public static class ModConfig
     /// <param name="path">Path to the config file</param>
     /// <param name="configJson">Raw JSON content</param>
     /// <returns>Loaded and migrated config, or null if failed</returns>
-    private static BsConfig LoadVersionedConfig(string path, string configJson)
+    private static ModConfigData LoadVersionedConfig(string path, string configJson)
     {
         var loadedConfig = SafeDeserializeConfig(configJson);
         if (loadedConfig == null)
@@ -256,7 +257,7 @@ public static class ModConfig
     /// Finalizes config loading by setting ClientConfig and validating
     /// </summary>
     /// <param name="loadedConfig">The config to finalize</param>
-    private static void FinalizeConfigLoad(BsConfig loadedConfig)
+    private static void FinalizeConfigLoad(ModConfigData loadedConfig)
     {
         ClientConfig = loadedConfig;
         IsConfigLoaded = true;
@@ -269,7 +270,7 @@ public static class ModConfig
     /// </summary>
     private static void SetDefaultConfigAndMarkLoaded()
     {
-        ClientConfig = new BsConfig();
+        ClientConfig = new ModConfigData();
         IsConfigLoaded = true;
     }
 
@@ -388,7 +389,7 @@ public static class ModConfig
                 writer.IndentChar = ' ';
                 writer.Indentation = 4;
 
-                serializer.Serialize(writer, Config);
+                serializer.Serialize(writer, ClientConfig);
 
                 configJson = sw.ToString();
             }
@@ -403,9 +404,9 @@ public static class ModConfig
 
             File.WriteAllText(path, configJson);
 
-    #if DEBUG
+#if DEBUG
             ModLogger.DebugLog($"Config saved successfully ({configBytes} bytes)");
-    #endif
+#endif
         }
         catch (Exception e)
         {
@@ -519,8 +520,8 @@ public static class ModConfig
     /// Safely deserialize config JSON with additional error handling
     /// </summary>
     /// <param name="configJson">JSON string to deserialize</param>
-    /// <returns>Deserialized BsConfig or null if failed</returns>
-    private static BsConfig SafeDeserializeConfig(string configJson)
+    /// <returns>Deserialized ModConfigData or null if failed</returns>
+    private static ModConfigData SafeDeserializeConfig(string configJson)
     {
         try
         {
@@ -540,7 +541,7 @@ public static class ModConfig
                 }
             };
 
-            return JsonConvert.DeserializeObject<BsConfig>(configJson, settings);
+            return JsonConvert.DeserializeObject<ModConfigData>(configJson, settings);
         }
         catch (JsonException e)
         {
@@ -632,7 +633,7 @@ public static class ModConfig
     /// </summary>
     /// <param name="legacyConfigFile">Path to legacy config file</param>
     /// <returns>Loaded config or null if failed</returns>
-    private static BsConfig LoadLegacyConfigForMigration(string legacyConfigFile)
+    private static ModConfigData LoadLegacyConfigForMigration(string legacyConfigFile)
     {
         try
         {
@@ -669,7 +670,7 @@ public static class ModConfig
     /// </summary>
     /// <param name="newConfigFile">Path to new config file</param>
     /// <returns>Loaded config or null if doesn't exist or failed</returns>
-    private static BsConfig LoadExistingNewConfig(string newConfigFile)
+    private static ModConfigData LoadExistingNewConfig(string newConfigFile)
     {
         if (!File.Exists(newConfigFile))
         {
@@ -704,7 +705,7 @@ public static class ModConfig
     /// </summary>
     /// <param name="mergedConfig">Config to save</param>
     /// <param name="newConfigFile">Path to save the config</param>
-    private static void SaveMergedConfig(BsConfig mergedConfig, string newConfigFile)
+    private static void SaveMergedConfig(ModConfigData mergedConfig, string newConfigFile)
     {
         // Temporarily set ClientConfig so SaveConfig can serialize it
         ClientConfig = mergedConfig;
@@ -730,9 +731,9 @@ public static class ModConfig
     /// <param name="legacyConfig">Config from legacy location</param>
     /// <param name="newConfig">Config from new location (can be null)</param>
     /// <returns>Merged configuration</returns>
-    private static BsConfig MergeConfigs(BsConfig legacyConfig, BsConfig newConfig)
+    private static ModConfigData MergeConfigs(ModConfigData legacyConfig, ModConfigData newConfig)
     {
-        var mergedConfig = new BsConfig
+        var mergedConfig = new ModConfigData
         {
             version = ConfigVersioning.CurrentVersion,
             range = legacyConfig.range,
