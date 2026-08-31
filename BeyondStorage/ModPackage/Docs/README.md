@@ -9,11 +9,11 @@ Also see [Docs\README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/b
 
 You should also look at the Media Gallery on the mod distribution site where you downloaded this mod from.
 
-## 💾What to download
+## 💾 What to download
 
 - V3: Use the main download for the latest version of 7 Days to Die v3.x (all builds)
 - V2: For older versions of the game, like 7 Days v2.x, see Old Files section
- 
+
 ## What can this do?
 There are four main functions:
 
@@ -39,7 +39,7 @@ Items that exist in any of these places are now added to your Backpack and Toolb
 4. Containers like crates, and player crafted things like refrigerators, wall safes, lockers, etc. that you crafted and placed. If your ally in a multi-player game crafted it, it's also player crafted storage.
 5. Vehicles like Bicycle, 4x4, Minibike, Motorcycle, Gyrocopter, and so on. All modded vehicles also work.
 
-This is the order in which items are Consumed from too, so Backpack and Toolbelt items are used first, just like in the base game, and after that Drones, then Collectors, etc.
+This is the order in which items are Consumed from, too, so Backpack and Toolbelt items are used first, just like in the base game, and after that Drones, then Collectors, etc.
 
 ![Player Crafted Wall Safe Consume Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
 An example of a player crafted storage, in this case a Wall Safe.
@@ -57,7 +57,7 @@ As long as there are items left to move, the destination slots with the most ite
 Then empty slots will be used, until there is no more space anywhere.
 ![Smart Push from Campfire](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/smart_push_from_campfire.jpg)
 If you use the Smart Push function from this Campfire, then the 6 Bacon and Eggs will be bulk moved to the Wooden Crate that already has other Bacon and Eggs stored in it.
-The 16 Water will also by moved to any crates or other player storage if there is already Water in them.
+The 16 Water will also be moved to any crates or other player storage if there is already Water in them.
 This works from anywhere and anything where you see the Smart Push button.
 Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Everything is included.
 
@@ -67,25 +67,25 @@ Yes, Vehicles and Drones too. Also Apiaries and Dew Collectors. Even crates! Eve
 
 This should help with keeping your bullets, lock picks, repair kits, and bandages you keep in vehicle or drone **Load Out slots (locked slots)** stocked up without too much other intervention.
 
-2\) After this any stationary container (that can't move) is tried, and items are sorted into the surrounding Crates, and player created storage per item type they already contain.
+2\) After this, any stationary container (that can't move) is tried, and items are sorted into the surrounding Crates, and player created storage per item type they already contain.
 
 Nothing is bulk moved to workstation or collector outputs, because that makes no sense.
 
 3\) Lastly, if there's still something to move, then any mobile storages are tried, also looking for places that already contain the item types that need to be moved, thereby sorting them. Mobile storages are things like vehicles, and drones.
 
 > 👆 Shift Push Mode: There is a stage 4 if you use Shift Push (click the button while holding Shift):
-> 4\) After the stages above, any remaining items (that there's room for somewhere) will be moved to any storages that have empty slots, whether already have items of that type or not.
-> You can Shift Push TO any storages in range
-> You can Shift Push FROM all stationary storages, including workstations.
+> 4\) After the stages above, any remaining items (that there's room for somewhere) will be moved to any storages that have empty slots, whether or not they already have items of that type.
+> - You can Shift Push TO any storages in range
+> - You can Shift Push FROM all stationary storages, including workstations.
 
-This helps a lot when you are clearing a POI and you - and perhaps others that you're playing with - placed some dump chests. You can auto-sort items by bulk transferring them using Smart Push, which will fill up those chest, and then also any of your own vehicles and drones nearby that already have any of the remaining items that need to be moved.
+This helps a lot when you are clearing a POI and you - and perhaps others that you're playing with - placed some dump chests. You can auto-sort items by bulk transferring them using Smart Push, which will fill up those chests, and then also any of your own vehicles and drones nearby that already have any of the remaining items that need to be moved.
 
 ### Pushing and Locked Slots
 Locking a slot means that you are turning Off any bulk transfers from that slot, just like in the base game. Slot locking prevents items from being bulk moved **OUT**, not in.
 So if you always want to keep Wood in your Backpack, lock the slot it's in, and Smart Push will leave it alone.
 ![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
 This is my Backpack top row from a current game. None of these items will be bulk moved out of the Backpack, whether using the game *Move All* or *Move and Fill* buttons, or using Smart Push.
-The 62 Polymers is not locked, so they can be moved.
+The 62 Polymers are not locked, so they can be moved.
 
 ## Overflow from Smart Push
 **Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate now has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
@@ -97,7 +97,7 @@ The 62 Polymers is not locked, so they can be moved.
 - Crate B has 3 Water, 1 empty slot.
 
 After the smart push:
-- Crate A has 10 Water, 5 Water <- 8 Water came in, filling the 2 Water slot, Then 5 was left to put in the empty slot
+- Crate A has 10 Water, 5 Water <- 8 Water came in, filling the 2 Water slot, then 5 was left to put in the empty slot
 - Crate B has 10 Water, 1 empty slot <- 7 Water came in, and filled up the existing 3 Water slot
 
 📢**Note:** These examples are for the default max stack size of 10 Water in Vanilla default settings. You can change the stack size in the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
@@ -122,15 +122,15 @@ Pulling in items will not overflow to empty slots, whether they're locked or not
 ![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 
-### 🩹Use directly from your Extended Inventory (the Useables window)
+### 🩹 Use directly from your Extended Inventory (the Useables window)
 Next to your Backpack, you'll see a small **Useables** window with 6 slots, showing the best healing, food, and drink items currently available in your **Extended Inventory** (nearby storage, vehicles, drones, etc.) — not your Backpack, since those items are already right there next to it.
 
-It only appears when your Backpack is open by itself - it's hidden while a vehicle, workstation, trader, drone, or other container window is also open, so it never gets in the way.
+It only appears when your Backpack is open by itself — it's hidden while a vehicle, workstation, trader, drone, character screen, or other container window is also open, so it never gets in the way.
 
 ![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
 
 - **Top row:** your best healing item — chosen to fit how much health you're currently missing (a big heal when badly hurt, a small one when nearly full) — followed by up to 2 items that cure a condition you currently have, like bleeding, abrasion, concussion, infection, or dysentery. If you're hurt but have nothing to cure, the extra slots fill with more healing items. At full health, cures take the whole row; if you have no cures either, it shows your smallest healing item so the row isn't empty.
-- **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutritional value. If you don't have any drinks available, this fills in with more food instead (and the same the other way around), so you'll still see 3 useful items whenever you have any.
+- **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutritional value, then by how much health they restore, then by any bonus buffs they provide. If you don't have any drinks available, this fills in with more food instead (and the same the other way around), so you'll still see 3 useful items whenever you have any.
 
 An item with a health penalty (like Rotting Flesh) will always rank below a "clean" item of the same kind, even if you have a lot more of it.
 
@@ -140,7 +140,7 @@ To use an item shown in the Useables window:
 
 A single click on a slot shows the same item info panel you'd see for a normal Backpack or Toolbelt item, without using it.
 
-### 🤼‍♀️Multiplayer Explained
+### 🤼‍♀️ Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
 
 So if you build a Crate and place it, then anyone of your Allies can access it. If you build a Wall Safe and place it, then the same rule applies.
@@ -154,12 +154,12 @@ When you read this documentation you will see it mentions "Player crafted storag
 
 You can run over to your friend's base, or to a crate that they built and placed, and just open it and take what's inside, or perhaps put some items into the crate.
 
-All of these storages are all part of you and anyone of your Allies' extended inventory, providing it's in **range**.
+All of these storages are part of your, and any of your Allies', extended inventory, providing it's in **range**.
 
 #### What about land claims?
 Placing a Land Claim Block does not mean you claim **ownership** over anything.
 
-This is just how the game works. 
+This is just how the game works.
 
 Zombies don't spawn in range of a Land Claim Block, unless it's a Blood Moon.
 
@@ -184,7 +184,7 @@ A Player can only own a Vehicle or a Drone.
 
 ## Console and Config
 
-### ⌨️Console Commands (when you press F1)
+### ⌨️ Console Commands (when you press F1)
 
 ```text
 +----------------+--------------------------------------------------------------+
@@ -203,7 +203,7 @@ A Player can only own a Vehicle or a Drone.
 +----------------+--------------------------------------------------------------+
 ```
 
-### ❄️Config file
+### ❄️ Config file
 The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 
 ```text
@@ -233,17 +233,17 @@ The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 All settings can be modified using the Gears interface.
 This is available at the game loading screen, and also in-game when you press \<ESC\> and click the \[MODS\] button.
 
-`Mods/BeyondStorage3/config.json` is the master source for config values, and changes to this file will override the settings saved in Gears. However Gears setting will always be synced when you access the Gears settings editing screen.
+`Mods/BeyondStorage3/config.json` is the master source for config values, and changes to this file will override the settings saved in Gears. However Gears settings will always be synced when you access the Gears settings editing screen.
 
 *Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.*
 *The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.*
 
-#### 📝Notes:
+#### 📝 Notes:
 1. In the config file, true means On and false means Off
 2. Previous versions of the mod had other config options. Their usage was self-explanatory from their names.
 3. Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
 
-## ⚙️Installation
+## ⚙️ Installation
 - Use a Mod Manager to install the mod, or 
 - Unzip the contents of this mod into your 7 Days to Die Mods folder
 
@@ -257,10 +257,10 @@ Please go to [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storag
 
 The people on Discord are quite helpful too.
 
-## 🌐Translations
+## 🌐 Translations
 - 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
 
-## 🧩Troubleshooting
+## 🧩 Troubleshooting
 Things don't seem to work? Try these steps first.
 
 Check your mod list. Don't install other **"craft from container"** type mods at the same time as this one, as these types of mods are generally not compatible with each other.
@@ -271,12 +271,12 @@ Fix many errors by [verifying the integrity of your game installation](https://h
 
 Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
 
-## 📚Articles that might help
+## 📚 Articles that might help
 - [How To Disable Easy Anti Cheat - 7 Days To Die](https://help.sparkedhost.com/en/article/how-to-disable-easy-anti-cheat-7-days-to-die-11jgs21)
 - [How to add Mods to your 7D2D game](https://www.nexusmods.com/7daystodie/articles/889)
 - [Basic troubleshooting for mods](https://www.nexusmods.com/7daystodie/articles/787)
 
-## 🏆Credits
+## 🏆 Credits
 - [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake for inspiring us all
 - [aedenthorn](https://github.com/aedenthorn) for the original mod
 - [unv-annihilator](https://github.com/unv-annihilator) for the 7 Days to Die v1 fork
@@ -285,7 +285,7 @@ Install the same version on **CLIENT AND SERVER** if you are hosting or particip
 - For v2.5.x mod series: Compatibility code copied (with permission) from Jakmeister999's Enhanced HUD (V2.3) mod
 - The 7 Days to Die community for their support and contributions
 
-## 🤝Mod compatibility list
+## 🤝 Mod compatibility list
 
 ### ✅ Considered compatible (V3):
 
@@ -351,19 +351,19 @@ That will make the Smart Push and Pull buttons from Beyond Storage invisible, so
 
 ## License
 
-This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/LICENSE.txt) for details.
+This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/LICENSE.txt) for details.
 
-## ⌛History
+## ⌛ History
 
 [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake was almost certainly the first mod to introduce the "remote broadcasting" of items for crafting, as if you had a gigantic inventory that included your storage crates.
 
 [Craft From Containers](https://www.nexusmods.com/7daystodie/mods/2196?tab=description) by aedenthorn implemented this for later versions of the game, as Undead Legacy was not available for post A21 at the time. The source code is on [GitHub](https://github.com/aedenthorn/7D2DMods)
 
-[1.0 Beyond Storage](https://www.nexusmods.com/7daystodie/mods/5087) was refactored and updated for 7 Days to Die v1 by unv-annihilator and extended this idea, based on the code from aedenthorn. This brought the addition of vehicles to pull items from. The code quality and stability of this mod high. See [https://github.com/unv-annihilator/7D2D_Mods/tree/main](https://github.com/unv-annihilator/7D2D_Mods/tree/main) for that fork.
+[1.0 Beyond Storage](https://www.nexusmods.com/7daystodie/mods/5087) was refactored and updated for 7 Days to Die v1 by unv-annihilator and extended this idea, based on the code from aedenthorn. This brought the addition of vehicles to pull items from. The code quality and stability of this mod is high. See [https://github.com/unv-annihilator/7D2D_Mods/tree/main](https://github.com/unv-annihilator/7D2D_Mods/tree/main) for that fork.
 
 [Beyond Storage 2](https://github.com/superguru/7d2d_mod_BeyondStorage2) added pulling from all conceivable sources, like drones, workstation outputs, dew collectors. Also added all inventory operations like paying for items at a trader, painting, lock picking. The mod also fixes many notification bugs from the original game, and all operations are seamless. Pushing items from any place you can pull from, in order to auto-sort items, was also added.
 
-## 🚅Why use this mod?
+## 🚅 Why use this mod?
 
 I would recommend Beyond Storage 3 over other "craft from container" type mods, due to speed, stability, functionality, and code quality.
 
