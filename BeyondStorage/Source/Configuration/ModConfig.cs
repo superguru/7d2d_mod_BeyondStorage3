@@ -377,7 +377,21 @@ public static class ModConfig
     {
         try
         {
-            var configJson = JsonConvert.SerializeObject(ClientConfig, Formatting.Indented);
+            string configJson;
+
+            var serializer = JsonSerializer.CreateDefault();
+
+            using (var sw = new StringWriter())
+            using (var writer = new JsonTextWriter(sw))
+            {
+                writer.Formatting = Formatting.Indented;
+                writer.IndentChar = ' ';
+                writer.Indentation = 4;
+
+                serializer.Serialize(writer, Config);
+
+                configJson = sw.ToString();
+            }
 
             // Validate serialized config size before writing
             var configBytes = System.Text.Encoding.UTF8.GetByteCount(configJson);
@@ -388,9 +402,10 @@ public static class ModConfig
             }
 
             File.WriteAllText(path, configJson);
-#if DEBUG
+
+    #if DEBUG
             ModLogger.DebugLog($"Config saved successfully ({configBytes} bytes)");
-#endif
+    #endif
         }
         catch (Exception e)
         {
