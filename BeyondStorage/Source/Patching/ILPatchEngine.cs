@@ -131,12 +131,12 @@ public static class ILPatchEngine
 #if DEBUG
             ModLogger.DebugLog($"Found patch point at {FormatILPosition(matchIndex)} in {request.TargetMethodName}");
 #endif
-            var patchResult = TryApplyPatch(request, response, matchIndex);
-            if (patchResult.success)
+            var (success, replacementPosition, nextSearchIndex) = TryApplyPatch(request, response, matchIndex);
+            if (success)
             {
-                searchIndex = patchResult.nextSearchIndex;
+                searchIndex = nextSearchIndex;
 #if DEBUG
-                ModLogger.DebugLog($"Applied {request.TargetMethodName} patch #{response.Count} at {FormatILPosition(patchResult.replacementPosition)} (original match at {FormatILPosition(matchIndex)})");
+                ModLogger.DebugLog($"Applied {request.TargetMethodName} patch #{response.Count} at {FormatILPosition(replacementPosition)} (original match at {FormatILPosition(matchIndex)})");
 #endif
             }
             else
@@ -166,10 +166,10 @@ public static class ILPatchEngine
         int replacementPosition = matchIndex + request.ReplacementOffset;
         int replacementCount = request.ReplacementInstructions.Count;
 
-        var validation = ValidatePatchPosition(request, replacementPosition);
-        if (!validation.isValid)
+        var (isValid, reason) = ValidatePatchPosition(request, replacementPosition);
+        if (!isValid)
         {
-            LogValidationFailure(request, replacementPosition, validation.reason);
+            LogValidationFailure(request, replacementPosition, reason);
             return (false, replacementPosition, matchIndex + 1); // ✅ Advance past failed match
         }
 
@@ -288,10 +288,7 @@ public static class ILPatchEngine
         {
             get
             {
-                if (field == null)
-                {
-                    field = OriginalInstructions?.ToList() ?? [];
-                }
+                field ??= OriginalInstructions?.ToList() ?? [];
                 return field;
             }
             set;

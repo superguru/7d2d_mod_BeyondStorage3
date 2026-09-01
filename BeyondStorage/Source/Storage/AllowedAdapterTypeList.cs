@@ -20,7 +20,7 @@ internal sealed class AllowedAdapterTypeList
             throw new ArgumentNullException(nameof(allowedSourceTypes));
         }
 
-        _allowSourceTypes = allowedSourceTypes.ToList();
+        _allowSourceTypes = [.. allowedSourceTypes];
     }
 
     public bool IsAllowedSource(Type sourceType)
