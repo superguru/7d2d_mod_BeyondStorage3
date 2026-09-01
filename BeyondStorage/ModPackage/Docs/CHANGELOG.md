@@ -4,6 +4,7 @@
 - ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
 - ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
 - ♻ Fixed: Config logged at game start was not localised
+- ✨ Changed: renamed config.json to modconfig.json
 - 🤐 Preview channel has had all these features, which you can also get access to if you like this update message...
 
 
@@ -39,7 +40,7 @@ __🚧 WIP v__
 __🚀 Released v__
 
 - ✅ Added 
--  Changed
+- ✨ Changed
 - ♻ Fixed 
 - ❌ Removed 
 - 👉🏼 WIP: 
