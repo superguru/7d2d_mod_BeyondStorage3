@@ -13,7 +13,9 @@ public static class ModConfig
     public const float MIN_RANGE = 0.0f;  // Whatever the game holds in memory
     public const float MAX_RANGE = 250.0f; // Largest user settable maximum range
 
-    private const string ConfigFileName = "config.json";
+    private const string ConfigFileName = "modconfig.json";
+    private const string LegacyConfigFileName = "config.json";
+    private const string ReplacedByConfigFileName = "config_json_replaced-by_modconfig_json.txt";
     private const string ConfigBackupPrefix = "config.backup.";
 
     /// <summary>
@@ -31,7 +33,7 @@ public static class ModConfig
     /// <summary>
     /// Gets the full path to the configuration file
     /// </summary>
-    /// <returns>Full path to the config.json file</returns>
+    /// <returns>Full path to the modconfig.json file</returns>
     private static string GetConfigFilePath()
     {
         return Path.Combine(ModPathManager.GetConfigPath(true), ConfigFileName);
@@ -43,7 +45,7 @@ public static class ModConfig
     /// <returns>Full path to the legacy config.json file</returns>
     private static string GetLegacyConfigFilePath()
     {
-        return Path.Combine(ModPathManager.GetLegacyConfigPath(), ConfigFileName);
+        return Path.Combine(ModPathManager.GetLegacyConfigPath(), LegacyConfigFileName);
     }
 
     public static void LoadConfig()
@@ -52,6 +54,7 @@ public static class ModConfig
         IsConfigLoaded = false;
 
         MigrateConfigLocation();
+        MigrateConfigFileName();
 
         var path = GetConfigFilePath();
         ModLogger.Info($"Loading config from {path}");
@@ -589,6 +592,44 @@ public static class ModConfig
         catch (Exception ex)
         {
             ModLogger.Warning($"Failed to migrate config files from legacy location: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Renames a pre-v3.2.0 "config.json" to the current "modconfig.json" filename (v3.2.0+). If both
+    /// files already exist, the old one is renamed aside so its values aren't lost.
+    /// </summary>
+    private static void MigrateConfigFileName()
+    {
+        try
+        {
+            var configDir = ModPathManager.GetConfigPath();
+            var oldFile = Path.Combine(configDir, LegacyConfigFileName);
+            var newFile = Path.Combine(configDir, ConfigFileName);
+
+            if (!File.Exists(oldFile))
+            {
+                return;
+            }
+
+            if (!File.Exists(newFile))
+            {
+                File.Move(oldFile, newFile);
+                ModLogger.Info($"Renamed config file from {LegacyConfigFileName} to {ConfigFileName}");
+                return;
+            }
+
+            var replacedByFile = Path.Combine(configDir, ReplacedByConfigFileName);
+            if (File.Exists(replacedByFile))
+            {
+                File.Delete(replacedByFile);
+            }
+            File.Move(oldFile, replacedByFile);
+            ModLogger.Info($"Both {LegacyConfigFileName} and {ConfigFileName} existed. Renamed {LegacyConfigFileName} to {ReplacedByConfigFileName}.");
+        }
+        catch (Exception ex)
+        {
+            ModLogger.Warning($"Failed to rename config file from {LegacyConfigFileName}: {ex.Message}");
         }
     }
 

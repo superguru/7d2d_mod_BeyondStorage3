@@ -194,7 +194,7 @@ A Player can only own a Vehicle or a Drone.
 +----------------+--------------------------------------------------------------+
 | bsclearcache   | Invalidates cache and reloads items from storages            |
 +----------------+--------------------------------------------------------------+
-| bsreloadconfig | Reload the config as per the current config.json file        |
+| bsreloadconfig | Reload the config as per the current modconfig.json file     |
 |                | (maybe you modified it in a text editor)                     |
 +----------------+--------------------------------------------------------------+
 | bssetconfig    | Change the value of a config property                        |
@@ -204,7 +204,7 @@ A Player can only own a Vehicle or a Drone.
 ```
 
 ### ❄️ Config file
-The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
+The mod can also be configured by editing `Mods/BeyondStorage3/modconfig.json`
 
 ```text
 +---------------------------+---------+------------------------------------------------------------+
@@ -226,14 +226,14 @@ The mod can also be configured by editing `Mods/BeyondStorage3/config.json`
 |                           |         | 0.0 is everything in memory, max is 250m.                  |
 |                           |         | The game usually holds up to 200m radius.                  |
 +---------------------------+---------+------------------------------------------------------------+
-*Off=false, On=True in config.json file.
+*Off=false, On=True in modconfig.json file.
 ```
 
 **⚙︎⚙︎⚙︎ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ⚙︎⚙︎⚙︎** (Optional)
 All settings can be modified using the Gears interface.
 This is available at the game loading screen, and also in-game when you press \<ESC\> and click the \[MODS\] button.
 
-`Mods/BeyondStorage3/config.json` is the master source for config values, and changes to this file will override the settings saved in Gears. However Gears settings will always be synced when you access the Gears settings editing screen.
+`Mods/BeyondStorage3/modconfig.json` is the master source for config values, and changes to this file will override the settings saved in Gears. However Gears settings will always be synced when you access the Gears settings editing screen.
 
 *Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.*
 *The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.*

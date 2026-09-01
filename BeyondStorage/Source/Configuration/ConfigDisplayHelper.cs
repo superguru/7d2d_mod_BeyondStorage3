@@ -26,7 +26,7 @@ public static class ConfigDisplayHelper
             output.AppendLine($"  '{prop.PropertyName}': {prop.Type} = {prop.GetValue(config)}; // {prop.Description}");
         }
         output.AppendLine("}");
-        output.AppendLine("Do not copy and paste this into the config.json file. The values above are formatted for reading in the console.");
+        output.AppendLine("Do not copy and paste this into the modconfig.json file. The values above are formatted for reading in the console.");
 
         ModLogger.Info(output.ToString());
     }

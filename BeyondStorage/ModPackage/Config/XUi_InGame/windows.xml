@@ -100,13 +100,13 @@
              is shifted 2px further down than the background sprite so the glyph looks vertically
              centered in the badge (text otherwise renders top-aligned within its box). -->
         <sprite depth="19" pos="7,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
-        <label depth="20" pos="7,-64" width="14" height="12" text="[DECEA3]1" font_size="12" color="" justify="center"/>
+        <label depth="20" pos="7,-64" width="14" height="12" text="[DECEA3]1[-]" font_size="12" color="" justify="center"/>
 
         <sprite depth="19" pos="82,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
-        <label depth="20" pos="82,-64" width="14" height="12" text="[DECEA3]2" font_size="12" color="" justify="center"/>
+        <label depth="20" pos="82,-64" width="14" height="12" text="[DECEA3]2[-]" font_size="12" color="" justify="center"/>
 
         <sprite depth="19" pos="157,-62" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
-        <label depth="20" pos="157,-64" width="14" height="12" text="[DECEA3]3" font_size="12" color="" justify="center"/>
+        <label depth="20" pos="157,-64" width="14" height="12" text="[DECEA3]3[-]" font_size="12" color="" justify="center"/>
 
         <sprite depth="19" pos="7,-137" height="13" width="14" color="0,0,0,250" foregroundlayer="true"/>
         <label depth="20" pos="7,-139" width="14" height="12" text="[DECEA3]4" font_size="12" color="" justify="center"/>

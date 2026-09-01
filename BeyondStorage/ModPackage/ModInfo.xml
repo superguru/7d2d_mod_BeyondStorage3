@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <xml>
   <Name value="BeyondStorage3"/>
   <DisplayName value="Beyond Storage 3"/>
-  <Icon value="Docs/BS3_Icon_225x225.jpg"/>
-  <Banner value="Docs/BS3_Banner_Top_1280x357.jpg"/>
-  <Version value="3.1.7"/>
+  <Version value="3.2.0"/>
   <Description value="Everything Is Your Inventory. Consume, Push, and Pull items from everywhere that has a storage."/>
   <Author value="superguru, gazorper"/>
+  <Icon value="Docs/BS3_Icon_225x225.jpg"/>
+  <Banner value="Docs/BS3_Banner_Top_1280x357.jpg"/>
   <Website value="https://github.com/superguru/7d2d_mod_BeyondStorage3"/>
   <MainReleaseSite value="https://www.nexusmods.com/7daystodie/mods/7809" />
-  <AltSite_7DaysToDieMods value="https://7daystodiemods.com/mods/beyond-storage-3"/>
-  <AltSite_TFPMods_Resource value="https://community.thefunpimps.com/resources/beyond-storage-3-everything-is-your-inventory.203/" />
+  <AltReleaseSite_7DaysToDieMods value="https://7daystodiemods.com/mods/beyond-storage-3"/>
+  <AltReleaseSite_TFPMods_Resource value="https://community.thefunpimps.com/resources/beyond-storage-3-everything-is-your-inventory.203/" />
   <License value="Apache-2.0" />
 </xml>

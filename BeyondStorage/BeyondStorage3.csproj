@@ -313,6 +313,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" Aliases="global,DotNetSystem" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>$(GameInstallDir)\7DaysToDie_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
@@ -332,7 +333,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ModPackage\config.json" />
+    <None Include="ModPackage\modconfig.json" />
     <None Include="ModPackage\Docs\CHANGELOG.md" />
     <None Include="ModPackage\Docs\README.md" />
     <None Include="packages.config" />
