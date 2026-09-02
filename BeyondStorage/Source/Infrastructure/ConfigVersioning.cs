@@ -340,11 +340,20 @@ public static class ConfigVersioning
 
     private static void RenameConsumeFieldsToInclude(JObject jsonObject, Version version)
     {
-        // Pre-3.1.4: rename consumeFromDrones -> includeDrones, consumeFromVehicles -> includeVehicles
+        // Pre-3.1.4: rename consumeFromDrones -> includeDrones, consumeFromVehicles -> includeVehicles.
+        // Guard with ContainsKey so a pre-3.1.4 config that's missing the source keys (or has them
+        // as null) doesn't write null into the new keys — leaving the keys absent lets the
+        // deserializer fall back to the C# field default without logging a JSON warning.
         if (version < new Version("3.1.4"))
         {
-            jsonObject["includeDrones"] = jsonObject["consumeFromDrones"];
-            jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
+            if (jsonObject.ContainsKey("consumeFromDrones"))
+            {
+                jsonObject["includeDrones"] = jsonObject["consumeFromDrones"];
+            }
+            if (jsonObject.ContainsKey("consumeFromVehicles"))
+            {
+                jsonObject["includeVehicles"] = jsonObject["consumeFromVehicles"];
+            }
         }
     }
 
