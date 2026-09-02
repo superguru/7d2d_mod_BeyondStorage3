@@ -40,8 +40,9 @@ internal static class ItemActionRanged_Ext
             return false;
         }
 
+        var hasLocalPlayer = entityPlayerLocal != null;
         // Fallback: infinite ammo or storage. Storage check is player-only — NPCs must not pull from player storage.
-        __result = __instance.HasInfiniteAmmo(_actionData) || (entityPlayerLocal != null && ItemCommon.HasItemInStorage(ammoItemValue));
+        __result = __instance.HasInfiniteAmmo(_actionData) || (hasLocalPlayer && ItemCommon.HasItemInStorage(ammoItemValue));
         return false;
     }
 
