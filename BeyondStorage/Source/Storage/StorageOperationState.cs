@@ -119,36 +119,33 @@ internal class StorageOperationState
 
     private bool ShouldRegisterStack(int initialStackSize, int currentStackSize, int maxStackSize)
     {
-        switch (Operation)
+        return Operation switch
         {
-            case SmartTransferOperation.Push:
-                /* | Stack Before | Stack After | */
+            /* | Stack Before | Stack After | */
 
-                // | Full         | Partial     |
-                var fromFullToPartial = ((initialStackSize == maxStackSize) && (currentStackSize < maxStackSize));
+            // | Full         | Partial     |  — stack now has room to receive more
+            // | Full         | Empty       |  — stack fully drained
+            // | Partial      | Empty       |  — stack ran out
+            SmartTransferOperation.Push => IsNotablePushState(initialStackSize, currentStackSize, maxStackSize),
 
-                // | Full         | Empty       |
-                var fromFullToEmpty = ((initialStackSize == maxStackSize) && (currentStackSize == 0));
+            /* | Stack Before | Stack After | */
 
-                // | Partial      | Empty       |
-                var fromPartialToEmpty = ((initialStackSize < maxStackSize) && (currentStackSize == 0));
+            // | Partial      | Full        |  — stack filled up
+            // | Partial      | Partial     |  — stack grew but isn't full yet
+            SmartTransferOperation.TopUp => IsNotableTopUpState(initialStackSize, currentStackSize),
 
-                return fromFullToPartial || fromFullToEmpty || fromPartialToEmpty;
-
-            case SmartTransferOperation.TopUp:
-                /* | Stack Before | Stack After | */
-
-                // | Partial | Full |
-                var fromPartialToFull = ((initialStackSize < maxStackSize) && (currentStackSize == maxStackSize));
-
-                // | Partial | Partial |
-                var fromPartialToPartial = ((initialStackSize < currentStackSize) && (currentStackSize < maxStackSize) && (initialStackSize > 0));
-
-                return fromPartialToFull || fromPartialToPartial;
-        }
-
-        return false;
+            _ => false,
+        };
     }
+
+    // Push: stack transitioned to a notable "emptier" state — either it now has room, or it ran out.
+    private static bool IsNotablePushState(int initial, int current, int max)
+        => (initial == max && current < max)   // Full -> not full
+        || (initial > 0 && current == 0);      // Non-empty -> empty
+
+    // TopUp: a non-empty stack grew.
+    private static bool IsNotableTopUpState(int initial, int current)
+        => initial > 0 && current > initial;
 
     /// <summary>
     /// Records that items were affected by the operation
