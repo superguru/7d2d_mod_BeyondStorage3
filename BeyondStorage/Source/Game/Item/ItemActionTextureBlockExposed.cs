@@ -374,59 +374,81 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
 
     private BlockProcessResult ProcessFloodFillBlock(ChunkCluster cc, FloodFillRaycastData raycastData, Dictionary<Vector3i, bool> visitedPositions, Vector3 expectedNormal, int sourcePaint, int channel, ItemActionTextureBlockData actionData, Guid operationId)
     {
-        // Check if block was already visited and marked as non-expandable
-        if (visitedPositions.TryGetValue(raycastData.BlockPos, out var wasVisited) && !wasVisited)
+        // If we've already evaluated this block, return the cached decision
+        if (TryGetCachedCanExpand(visitedPositions, raycastData.BlockPos, out var canExpand))
         {
-            return new BlockProcessResult { ShouldExpand = false };
+            return new BlockProcessResult { ShouldExpand = canExpand };
         }
 
-        // Skip if we already processed this block
-        if (wasVisited)
+        // Reject blocks that don't match the source paint's face normal and texture
+        if (!IsValidPaintTarget(raycastData, expectedNormal, sourcePaint, channel, cc))
         {
-            return new BlockProcessResult { ShouldExpand = true };
+            return MarkVisitedNonExpandable(visitedPositions, raycastData.BlockPos);
         }
 
-        // Validate face normal matches expected (from original game logic)
-        if ((raycastData.HitFaceNormal - expectedNormal).sqrMagnitude > FACE_NORMAL_TOLERANCE)
+        // Record faces to paint and check whether we still have paint available
+        RecordFacesForBlock(raycastData, actionData, channel, operationId);
+        canExpand = DetermineCanExpand(actionData, operationId);
+
+        visitedPositions.Add(raycastData.BlockPos, canExpand);
+        return new BlockProcessResult { ShouldExpand = canExpand };
+    }
+
+    // Cached decision lookup: returns true and the stored canExpand flag if the block was already processed.
+    private static bool TryGetCachedCanExpand(Dictionary<Vector3i, bool> visitedPositions, Vector3i blockPos, out bool canExpand)
+        => visitedPositions.TryGetValue(blockPos, out canExpand);
+
+    // A block is paintable when its face normal matches the source AND its current paint matches.
+    private bool IsValidPaintTarget(FloodFillRaycastData raycastData, Vector3 expectedNormal, int sourcePaint, int channel, ChunkCluster cc)
+    {
+        var normalDelta = (raycastData.HitFaceNormal - expectedNormal).sqrMagnitude;
+        if (normalDelta > FACE_NORMAL_TOLERANCE)
         {
-            visitedPositions.Add(raycastData.BlockPos, false);
-            return new BlockProcessResult { ShouldExpand = false };
+            return false;
         }
 
-        // Check if paint matches source paint
         int currentPaintIdx = GetCurrentPaintIdx(cc, raycastData.BlockPos, raycastData.BlockFace, raycastData.BlockValue, channel);
-        if (currentPaintIdx != sourcePaint)
+        return currentPaintIdx == sourcePaint;
+    }
+
+    // Marks a block as evaluated-but-not-expandable and returns the corresponding result.
+    private static BlockProcessResult MarkVisitedNonExpandable(Dictionary<Vector3i, bool> visitedPositions, Vector3i blockPos)
+    {
+        visitedPositions.Add(blockPos, false);
+        return new BlockProcessResult { ShouldExpand = false };
+    }
+
+    // Appends the face(s) of this block to the paint queue for the current operation.
+    private void RecordFacesForBlock(FloodFillRaycastData raycastData, ItemActionTextureBlockData actionData, int channel, Guid operationId)
+    {
+        if (!_facesToPaint.TryGetValue(operationId, out var faceList))
         {
-            visitedPositions.Add(raycastData.BlockPos, false);
-            return new BlockProcessResult { ShouldExpand = false };
+            return;
         }
 
-        // Store face(s) for painting and count paint usage
-        if (_facesToPaint.TryGetValue(operationId, out var faceList))
+        if (actionData.bPaintAllSides)
         {
-            if (actionData.bPaintAllSides)
+            for (int faceIdx = 0; faceIdx < MAX_BLOCK_FACES; faceIdx++)
             {
-                for (int faceIdx = 0; faceIdx < MAX_BLOCK_FACES; faceIdx++)
-                {
-                    faceList.Add(new PaintFaceData(raycastData.BlockPos, (BlockFace)faceIdx, channel));
-                }
-            }
-            else
-            {
-                faceList.Add(new PaintFaceData(raycastData.BlockPos, raycastData.BlockFace, channel));
+                faceList.Add(new PaintFaceData(raycastData.BlockPos, (BlockFace)faceIdx, channel));
             }
         }
+        else
+        {
+            faceList.Add(new PaintFaceData(raycastData.BlockPos, raycastData.BlockFace, channel));
+        }
+    }
 
+    // Charges paint usage once per face and returns whether paint remained after the last charge.
+    private static bool DetermineCanExpand(ItemActionTextureBlockData actionData, Guid operationId)
+    {
         int numFaces = actionData.bPaintAllSides ? MAX_BLOCK_FACES : 1;
         bool canExpand = false;
         for (int i = 0; i < numFaces; i++)
         {
             canExpand = ItemTexture.CountPaintUsage(operationId);
         }
-
-        visitedPositions.Add(raycastData.BlockPos, canExpand);
-
-        return new BlockProcessResult { ShouldExpand = canExpand };
+        return canExpand;
     }
 
     private static void AddAdjacentPositions(DotNetSystem::System.Collections.Generic.Stack<Vector2i> positionsToCheck, Vector2i currentPosition)
