@@ -34,10 +34,10 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
     // Item types shown in the heal row last refresh (in order). Used to keep the ordering stable
     // when the same items are still shown, so marginal score changes (e.g. two cures competing for
     // the same debuff) don't make items swap between refreshes.
-    private readonly List<int> _previousHealRowTypes = new List<int>(ROW_SIZE);
+    private readonly List<int> _previousHealRowTypes = new(ROW_SIZE);
 
     // Item types shown in the food/drink row last refresh (in order) — same stability purpose.
-    private readonly List<int> _previousFoodDrinkRowTypes = new List<int>(ROW_SIZE);
+    private readonly List<int> _previousFoodDrinkRowTypes = new(ROW_SIZE);
 
     public override void OnOpen()
     {
