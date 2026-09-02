@@ -1,13 +1,5 @@
 # Beyond Storage 3 - Everything Is Your Inventory
 
-Consume/Use: If you can do it using items in your backpack, then you can now also do it by including items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
-
-Organise: In addition, you can easily Push and Pull to and from any of those sources to nearby crates, for excellent inventory management.
-
-This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
-
-**Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
-
 I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper), as **hundreds of hours** go into making a mod like this, keeping it up to date with newer game versions, not to mention supporting it.
 
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/superguru/refs/heads/master/images/superguru-kofi-orange.png)](https://ko-fi.com/gazorper)
@@ -18,7 +10,16 @@ Also see [Docs\README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/b
 
 You should also look at the Media Gallery on the mod distribution site where you downloaded this mod from.
 
+## Consume/Use
+If you can do it using items in your backpack, then you can now also do it by including items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
+
+## Organise
+In addition, you can easily Push and Pull to and from any of those sources to nearby crates, for excellent inventory management.
+
+**Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
+
 ## 💾 What to download
+This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
 
 - V3: Use the main download for the latest version of 7 Days to Die v3.x (all builds)
 - V2: For older versions of the game, like 7 Days v2.x, see Old Files section
