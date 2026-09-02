@@ -7,27 +7,20 @@ using static ItemActionTextureBlock;
 namespace BeyondStorage.Game.Item;
 
 // Face data structure to store painting information
-public struct PaintFaceData
+public struct PaintFaceData(Vector3i blockPos, BlockFace blockFace, int channel)
 {
     public Vector3i BlockPos
     {
         get; set;
-    }
+    } = blockPos;
     public BlockFace BlockFace
     {
         get; set;
-    }
+    } = blockFace;
     public int Channel
     {
         get; set;
-    }
-
-    public PaintFaceData(Vector3i blockPos, BlockFace blockFace, int channel)
-    {
-        BlockPos = blockPos;
-        BlockFace = blockFace;
-        Channel = channel;
-    }
+    } = channel;
 }
 
 /// <summary>
@@ -489,6 +482,7 @@ public class ItemActionTextureBlockExposed(ItemActionTextureBlock originalTextur
         };
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
     private void CountPaintFaceForArea(ChunkCluster cc, AreaRaycastData raycastData, ItemActionTextureBlockData actionData, PersistentPlayerData lpRelative, Guid operationId)
     {
         // Direct face counting for area paint to avoid recursion
