@@ -1,4 +1,13 @@
 # Beyond Storage 3 - Everything Is Your Inventory
+
+If you can do it using items in your inventory, you can now also do it by PULLING from items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
+
+In addition, you can easily PUSH from any of those sources to nearby crates, for excellent inventory management.
+
+This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
+
+**Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
+
 I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper), as **hundreds of hours** go into making a mod like this, keeping it up to date with newer game versions, not to mention supporting it.
 
 [![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/superguru/refs/heads/master/images/superguru-kofi-orange.png)](https://ko-fi.com/gazorper)
@@ -17,19 +26,32 @@ You should also look at the Media Gallery on the mod distribution site where you
 ## What can this do?
 There are four main functions:
 
-![1](https://img.shields.io/badge/1-56a2f4) <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload.
-
-![2](https://img.shields.io/badge/2-56a2f4) <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
+1. <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload.
+2. <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
     - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
     - 👆 Shift Push Mode: Hold Shift and click the Smart Push button to move items to storages that have open slots, even if they **don't already have** the item being moved
-
-![3](https://img.shields.io/badge/3-56a2f4) <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
+3. <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
     - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
-
-![4](https://img.shields.io/badge/4-56a2f4) <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
+4. <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
     - use your best healing, food, and drink items directly from the storage network, via the Useables window, using hotkeys or a double-click
 
+*Consume happens automatically whenever you do anything that uses items (crafting, repairing, refueling, etc.) — it pulls from your extended inventory without any extra action from you. Use is the explicit Useables window for one-click healing, food, and drink items.*
+
 This is explained more fully below.
+
+## ⚙️ Installation
+- Use a Mod Manager to install the mod, or 
+- Unzip the contents of this mod into your 7 Days to Die Mods folder
+
+This is a Harmony mod, so you need to [disable EAC on your computer](https://help.sparkedhost.com/en/article/how-to-disable-easy-anti-cheat-7-days-to-die-11jgs21/)
+
+If applicable to your game, also [Disable EAC on your server](https://shockbyte.com/help/knowledgebase/articles/how-to-turn-off-easy-anti-cheat-eac-on-your-7-days-to-die-server)
+
+Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
+
+Please go to [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) for mod support.
+
+The people on Discord are quite helpful too.
 
 ### Extended Inventory - Everything Is Your Inventory (aka inventory network)
 Items that exist in any of these places are now added to your Backpack and Toolbelt, and become part of your **extended inventory**:
@@ -140,7 +162,9 @@ To use an item shown in the Useables window:
 
 A single click on a slot shows the same item info panel you'd see for a normal Backpack or Toolbelt item, without using it.
 
-### 🤼‍ Multiplayer Explained
+The Useables window refreshes automatically whenever any inventory in the game changes (items added, removed, or moved between slots) and when the mod's internal storage cache expires, so the row always reflects what is currently available.
+
+### 👥 Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
 
 So if you build a Crate and place it, then anyone of your Allies can access it. If you build a Wall Safe and place it, then the same rule applies.
@@ -241,24 +265,26 @@ This is available at the game loading screen, and also in-game when you press \<
 #### 📝 Notes:
 1. In the config file, true means On and false means Off
 2. Previous versions of the mod had other config options. Their usage was self-explanatory from their names.
-3. Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
-
-## ⚙️ Installation
-- Use a Mod Manager to install the mod, or 
-- Unzip the contents of this mod into your 7 Days to Die Mods folder
-
-This is a Harmony mod, so you need to [disable EAC on your computer](https://help.sparkedhost.com/en/article/how-to-disable-easy-anti-cheat-7-days-to-die-11jgs21/)
-
-If applicable to your game, also [Disable EAC on your server](https://shockbyte.com/help/knowledgebase/articles/how-to-turn-off-easy-anti-cheat-eac-on-your-7-days-to-die-server)
-
-Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
-
-Please go to [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) for mod support.
-
-The people on Discord are quite helpful too.
 
 ## 🌐 Translations
 - 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
+
+## ❓ FAQ
+
+**Does this work in single-player?**
+Yes. Beyond Storage 3 is a Harmony mod and works in both single-player and multiplayer.
+
+**Can I disable the mod temporarily without uninstalling?**
+Yes. In your mod manager, disable Beyond Storage 3 and reload the game. Re-enable and reload to bring it back. No save game changes are required either way.
+
+**Does this affect save game performance or load times?**
+The mod caches nearby storage items in memory and refreshes the cache when storage changes. It does not modify your save file, and initial world load is unaffected.
+
+**Will my existing saves be broken if I add or remove this mod?**
+No. The mod does not modify save game data, so you can add or remove it at any time without affecting existing saves.
+
+**What happens if some players in multiplayer have the mod and others don't?**
+Players without the mod play vanilla, with no access to the extended inventory features. Players with the mod see the extended inventory for items their client knows about. All players running the mod must use the same version — the mod enforces this on connect.
 
 ## 🧩 Troubleshooting
 Things don't seem to work? Try these steps first.
@@ -268,8 +294,6 @@ Check your mod list. Don't install other **"craft from container"** type mods at
 Did you delete something you shouldn't have? [Stop deleting the Harmony Folder](https://7daystodiemods.com/stop-deleting-the-harmony-folder), aka **0_TFP_Harmony**
 
 Fix many errors by [verifying the integrity of your game installation](https://help.steampowered.com/en/faqs/view/0C48-FCBD-DA71-93EB)
-
-Install the same version on **CLIENT AND SERVER** if you are hosting or participating in a multi-player game.
 
 ## 📚 Articles that might help
 - [How To Disable Easy Anti Cheat - 7 Days To Die](https://help.sparkedhost.com/en/article/how-to-disable-easy-anti-cheat-7-days-to-die-11jgs21)
