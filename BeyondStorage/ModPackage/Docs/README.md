@@ -1,8 +1,8 @@
 # Beyond Storage 3 - Everything Is Your Inventory
 
-If you can do it using items in your inventory, you can now also do it by PULLING from items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
+Consume/Use: If you can do it using items in your backpack, then you can now also do it by including items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
 
-In addition, you can easily PUSH from any of those sources to nearby crates, for excellent inventory management.
+Organise: In addition, you can easily Push and Pull to and from any of those sources to nearby crates, for excellent inventory management.
 
 This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
 
@@ -141,7 +141,7 @@ I also do a Smart Push from the Workbench to sort any produced ammo to storages 
 Items are only pulled from stationary storages like crates and other user created and placed containers. Never from vehicles or drones.
 So <span style="color:#ff2222;">**you can't pull in**</span> ammo from your Bicycle into your Drone, for instance.
 Pulling in items will not overflow to empty slots, whether they're locked or not. All it does is fill up a slot with an existing item until the maximum stack size for that item is reached.
-![Img](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
+![Player Crafted Office Desk Example](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 
 ### 🩹 Useables: Use directly from your Extended Inventory
