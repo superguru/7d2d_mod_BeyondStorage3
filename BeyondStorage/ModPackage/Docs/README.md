@@ -14,7 +14,7 @@ You should also look at the Media Gallery on the mod distribution site where you
 If you can do it using items in your backpack, then you can now also do it by including items in nearby storage crates, vehicles, drones, workstations, collectors, etc.
 
 ## Organise
-In addition, you can easily Push and Pull to and from any of those sources to nearby crates, for excellent inventory management.
+You can easily Push and Pull to and from any of those sources to nearby crates, for excellent inventory management.
 
 **Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
 
@@ -388,7 +388,7 @@ This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licen
 
 [Beyond Storage 2](https://github.com/superguru/7d2d_mod_BeyondStorage2) added pulling from all conceivable sources, like drones, workstation outputs, dew collectors. Also added all inventory operations like paying for items at a trader, painting, lock picking. The mod also fixes many notification bugs from the original game, and all operations are seamless. Pushing items from any place you can pull from, in order to auto-sort items, was also added.
 
-## 🚅 Why use this mod?
+## 🚅 Why choose this mod?
 
 I would recommend Beyond Storage 3 over other "craft from container" type mods, due to speed, stability, functionality, and code quality.
 
