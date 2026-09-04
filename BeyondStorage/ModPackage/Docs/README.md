@@ -392,6 +392,6 @@ This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licen
 
 I would recommend Beyond Storage 3 over other "craft from container" type mods, due to speed, stability, functionality, and code quality.
 
-The UI and game functionality integration is exceptional, and the mod is very stable and ⚡⚡⚡lightning⚡⚡⚡ fast.
+The UI and game functionality integration is exceptional, and the mod is very stable and lightning fast.
 
 *** PACKAGED aka MOD DOCUMENTATION PAGE README.md EOF ***

@@ -16,7 +16,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
         BsCommandRegistry.RegisterCommand("bssetconfig", "Sets a configuration option and saves it to config file");
 
         // Initialize the config property registry
-        BsConfigPropertyRegistry.InitializeProperties();
+        ModConfigPropertyRegistry.InitializeProperties();
     }
 
     public override void Execute(List<string> _params, CommandSenderInfo _senderInfo)
@@ -93,9 +93,9 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     /// </summary>
     /// <param name="propertyName">Name of the property to find</param>
     /// <returns>Property info if found and valid, null otherwise</returns>
-    private BsConfigPropertyRegistry.ConfigPropertyInfo FindAndValidateProperty(string propertyName)
+    private ModConfigPropertyRegistry.ConfigPropertyInfo FindAndValidateProperty(string propertyName)
     {
-        var propertyInfo = BsConfigPropertyRegistry.FindProperty(propertyName);
+        var propertyInfo = ModConfigPropertyRegistry.FindProperty(propertyName);
         if (propertyInfo == null)
         {
             ModLogger.Info($"Error: Unknown property '{propertyName}'.");
@@ -119,7 +119,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     /// </summary>
     /// <param name="propertyInfo">Property to change</param>
     /// <param name="propertyValue">New value to set</param>
-    private void ApplyPropertyChange(BsConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
+    private void ApplyPropertyChange(ModConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
     {
         try
         {
@@ -149,7 +149,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     /// </summary>
     /// <param name="propertyInfo">Property to set</param>
     /// <param name="propertyValue">Value to set</param>
-    private static void SetPropertyValue(BsConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
+    private static void SetPropertyValue(ModConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
     {
         propertyInfo.SetValue(ModConfig.ClientConfig, propertyValue);
     }
@@ -160,9 +160,9 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     /// <param name="propertyInfo">Property that was changed</param>
     /// <param name="propertyValue">Value that was set</param>
     /// <returns>True if validation passed</returns>
-    private bool ValidatePropertyChange(BsConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
+    private bool ValidatePropertyChange(ModConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
     {
-        if (!BsConfigPropertyRegistry.ValidatePropertyChange(propertyInfo.PropertyName, propertyValue))
+        if (!ModConfigPropertyRegistry.ValidatePropertyChange(propertyInfo.PropertyName, propertyValue))
         {
             ConfigReloadHelper.ReloadConfig();
             return false;
@@ -175,7 +175,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     /// </summary>
     /// <param name="propertyInfo">Property that was changed</param>
     /// <param name="propertyValue">Value that was set</param>
-    private void SaveConfigAndConfirm(BsConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
+    private void SaveConfigAndConfirm(ModConfigPropertyRegistry.ConfigPropertyInfo propertyInfo, string propertyValue)
     {
         try
         {
@@ -225,7 +225,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
 
     private void ShowAvailableProperties()
     {
-        var allProperties = BsConfigPropertyRegistry.GetAllProperties();
+        var allProperties = ModConfigPropertyRegistry.GetAllProperties();
 
         if (allProperties.Count == 0)
         {
@@ -267,9 +267,9 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
         ModLogger.Info(sb.ToString().TrimEnd());
     }
 
-    private void ShowCurrentValue(BsConfigPropertyRegistry.ConfigPropertyInfo propertyInfo)
+    private void ShowCurrentValue(ModConfigPropertyRegistry.ConfigPropertyInfo propertyInfo)
     {
-        var currentValue = BsConfigPropertyRegistry.GetCurrentPropertyValue(propertyInfo.PropertyName);
+        var currentValue = ModConfigPropertyRegistry.GetCurrentPropertyValue(propertyInfo.PropertyName);
         ModLogger.Info($"Current value of '{propertyInfo.PropertyName}': {currentValue}");
     }
 

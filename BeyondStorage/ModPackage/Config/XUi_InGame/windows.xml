@@ -79,7 +79,7 @@
 
     <!-- 273 -->
     <window name="windowUseables" width="228" height="214" anchor="Top" panel="Right" cursor_area="true"
-            visible="{bs_is_player_backpack_only}" 
+            visible="{# bs_is_player_backpack_only and bs_show_useables}" 
             controller="BeyondStorage.Harmony.Components.BeyondStorage_UseablesWindow, BeyondStorage3" >
       <rect style="header.panel">
         <headerbg />

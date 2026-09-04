@@ -1,5 +1,6 @@
 ﻿using BeyondStorage.Harmony.Components;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Storage;
 
 namespace BeyondStorage.Game.UI;
 
@@ -611,7 +612,7 @@ public static class WindowStateManager
 
     #endregion
 
-    #region Useables Window
+    #region Useables
 
     public static XUiC_BeyondStorage_UseablesWindow GetActiveUseablesWindow()
     {
@@ -667,6 +668,33 @@ public static class WindowStateManager
                 s_useablesWindow.RefreshBindings();
             }
         }
+    }
+
+
+    internal static bool ShowUseablesWindowInternal()
+    {
+        const string d_MethodName = nameof(ShowUseablesWindowInternal);
+
+        if (!WorldPlayerContext.IsOkQuickCheck())
+        {
+            //TODO: Add proper game start and end events which we can then use to query global game state
+            return false;
+        }
+
+        if (!ValidationHelper.ValidateStorageContext(d_MethodName, out StorageContext context))
+        {
+            ModLogger.DebugLog($"{d_MethodName}: Validation failed, returning");
+            return false;
+        }
+
+        var result = context.Config.ShowUseables;
+        return result;
+    }
+
+    internal static string ShowUseablesWindow()
+    {
+        var result = ShowUseablesWindowInternal();
+        return result.ToString();
     }
 
     #endregion

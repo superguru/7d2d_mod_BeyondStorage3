@@ -101,6 +101,11 @@ public sealed class WorldPlayerContext
         return s_cache.GetCacheStats();
     }
 
+    public static bool IsOkQuickCheck()
+    {
+        return (GameManager.Instance?.World != null);
+    }
+
     private static WorldPlayerContext CreateFresh(string methodName)
     {
         var world = GameManager.Instance?.World;

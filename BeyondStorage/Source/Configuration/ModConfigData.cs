@@ -43,16 +43,17 @@ public class ModConfigData
     [JsonProperty(nameof(allowPushToAlliedVehicles))]
     public bool allowPushToAlliedVehicles = true;
 
+    // ========== Useables =========
+    /// <summary>
+    /// If set false, the Useables window (heal/eat/drink) is hidden.
+    /// </summary>
+    [JsonProperty(nameof(showUseables))]
+    public bool showUseables = true;
+
     // ========== Housekeeping =========
     /// <summary>
     /// If set true additional logging will be printed to logs/console
     /// </summary>
     [JsonProperty(nameof(isDebug))]
     public bool isDebug = false;
-
-    /// <summary>
-    /// If set false, the Useables window (heal/eat/drink) is hidden.
-    /// </summary>
-    [JsonProperty(nameof(showUseables))]
-    public bool showUseables = true;
 }

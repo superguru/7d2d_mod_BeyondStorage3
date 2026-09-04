@@ -7,7 +7,7 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Harmony.Commands;
 
-internal static class BsConfigPropertyRegistry
+internal static class ModConfigPropertyRegistry
 {
     private static bool s_isInitialized = false;
     private static readonly object s_lockObject = new();
@@ -61,13 +61,13 @@ internal static class BsConfigPropertyRegistry
             config => config.includeVehicles.ToString(),
             (config, value) => config.includeVehicles = ParseBool(value));
 
-        RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
-            config => config.isDebug.ToString(),
-            (config, value) => config.isDebug = ParseBool(value));
-
         RegisterProperty("showUseables", "bool", ConfigLocalisation.SHOW_USEABLES_SETTING_TOOLTIP_KEY,
             config => config.showUseables.ToString(),
             (config, value) => config.showUseables = ParseBool(value));
+
+        RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
+            config => config.isDebug.ToString(),
+            (config, value) => config.isDebug = ParseBool(value));
     }
 
     /// <summary>

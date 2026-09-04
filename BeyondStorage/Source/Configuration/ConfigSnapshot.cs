@@ -46,9 +46,11 @@ public sealed class ConfigSnapshot
         IncludeDrones = ModConfig.IncludeDrones();
         IncludeVehicles = ModConfig.IncludeVehicles();
 
+        // ========== Useables =========
+        ShowUseables = ModConfig.ShowUseables();
+
         // ========== Housekeeping =========
         IsDebug = ModConfig.IsDebug();
-        ShowUseables = ModConfig.ShowUseables();
     }
 
     public static ConfigSnapshot Current => new();

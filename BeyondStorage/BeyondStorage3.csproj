@@ -119,7 +119,7 @@
     <Compile Include="Source\Game\UI\UIControlHelpers.cs" />
     <Compile Include="Source\Game\UI\WindowStateManager.cs" />
     <Compile Include="Source\Harmony\Commands\BsCommandRegistry.cs" />
-    <Compile Include="Source\Harmony\Commands\BsConfigPropertyRegistry.cs" />
+    <Compile Include="Source\Harmony\Commands\ModConfigPropertyRegistry.cs" />
     <Compile Include="Source\Harmony\Commands\ConsoleCmdBsHelp.cs" />
     <Compile Include="Source\Harmony\Commands\ConsoleCmdBsClearCache.cs" />
     <Compile Include="Source\Harmony\Commands\ConsoleCmdBsReloadConfig.cs" />

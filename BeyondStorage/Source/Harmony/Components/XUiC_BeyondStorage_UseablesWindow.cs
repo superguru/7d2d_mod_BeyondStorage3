@@ -179,6 +179,14 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
 #endif
                 return true;  // We've handled it
 
+            case "bs_show_useables":
+                value = WindowStateManager.ShowUseablesWindow();
+
+#if DEBUG
+                //ModLogger.DebugLog($"{d_MethodName}: bindingName={bindingName}, value={value}");
+#endif
+                return true;  // We've handled it
+
             default:
                 return base.GetBindingValueInternal(ref value, bindingName);
         }

@@ -68,6 +68,12 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             return;
         }
 
+        if (!context.Config.ShowUseables)
+        {
+            SetStacks(BuildEmptySlots());
+            return;
+        }
+
         // Top means the highest ranked, based on various conditions such as buffs, debuffs, item count
         var player = context.Player;
         float healableDeficit = 0f;

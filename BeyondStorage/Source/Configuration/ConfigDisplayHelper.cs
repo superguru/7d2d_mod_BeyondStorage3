@@ -16,7 +16,7 @@ public static class ConfigDisplayHelper
     public static void ShowConfig()
     {
         var config = ModConfig.ClientConfig;
-        var props = BsConfigPropertyRegistry.RegisteredProperties;
+        var props = ModConfigPropertyRegistry.RegisteredProperties;
 
         var output = new StringBuilder();
         output.AppendLine("Current config snapshot:");

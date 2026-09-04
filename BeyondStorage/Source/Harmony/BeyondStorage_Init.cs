@@ -6,6 +6,7 @@ using BeyondStorage.Game.Functions;
 using BeyondStorage.Game.Item;
 using BeyondStorage.Game.Ranged;
 using BeyondStorage.Game.Recipe;
+using BeyondStorage.Game.UI;
 using BeyondStorage.Harmony.Components;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Multiplayer;
@@ -106,10 +107,10 @@ public class BeyondStorageMod : IModApi
             $"{nameof(WorkstationRecipe.BackgroundWorkstation_CraftCompleted)}.{nameof(WorkstationRecipe.Update_OpenWorkstations)}",
             $"{nameof(WorkstationRecipe.ForegroundWorkstation_CraftCompleted)}.{nameof(WorkstationRecipe.Update_OpenWorkstations)}",
 
-            // General cache related suppression
-            nameof(StorageContextFactory.InvalidateContext),
+            // Useables
             nameof(XUiC_BeyondStorage_UseablesGrid.RefreshGridItems),
             nameof(XUiC_BeyondStorage_UseablesGrid.TryUseSlot),
+            nameof(WindowStateManager.ShowUseablesWindowInternal),
 
             // Smart sorting functions
             nameof(SmartPullOperations.SmartPullToPlayerLoadout),
@@ -120,6 +121,9 @@ public class BeyondStorageMod : IModApi
             nameof(SmartPushOperations.SmartPushFromPlayerBackpack),
             nameof(SmartPushOperations.SmartPushFromVehicleOrDrone),
             nameof(SmartPushOperations.SmartPushFromWorkstation),
-        ]);
+
+            // General cache related suppression
+            nameof(StorageContextFactory.InvalidateContext),
+       ]);
     }
 }
