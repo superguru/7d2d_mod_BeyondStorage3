@@ -121,31 +121,25 @@ internal class StorageOperationState
     {
         return Operation switch
         {
-            /* | Stack Before | Stack After | */
-
-            // | Full         | Partial     |  — stack now has room to receive more
-            // | Full         | Empty       |  — stack fully drained
-            // | Partial      | Empty       |  — stack ran out
-            SmartTransferOperation.Push => IsNotablePushState(initialStackSize, currentStackSize, maxStackSize),
-
-            /* | Stack Before | Stack After | */
-
-            // | Partial      | Full        |  — stack filled up
-            // | Partial      | Partial     |  — stack grew but isn't full yet
-            SmartTransferOperation.TopUp => IsNotableTopUpState(initialStackSize, currentStackSize),
-
+            SmartTransferOperation.Push => IsNotablePushTransition(initialStackSize, currentStackSize, maxStackSize),
+            SmartTransferOperation.TopUp => IsNotableTopUpTransition(initialStackSize, currentStackSize),
             _ => false,
         };
     }
 
-    // Push: stack transitioned to a notable "emptier" state — either it now has room, or it ran out.
-    private static bool IsNotablePushState(int initial, int current, int max)
-        => (initial == max && current < max)   // Full -> not full
-        || (initial > 0 && current == 0);      // Non-empty -> empty
+    // A pushed stack is notable when it either frees up space in a full stack, or runs dry.
+    private static bool IsNotablePushTransition(int initial, int current, int max)
+    {
+        bool freedUpSpace = initial == max && current < max;   // Full -> not full
+        bool ranDry = initial > 0 && current == 0;             // Non-empty -> empty
+        return freedUpSpace || ranDry;
+    }
 
-    // TopUp: a non-empty stack grew.
-    private static bool IsNotableTopUpState(int initial, int current)
-        => initial > 0 && current > initial;
+    // A topped-up stack is notable when an existing stack grows.
+    private static bool IsNotableTopUpTransition(int initial, int current)
+    {
+        return initial > 0 && current > initial;               // Non-empty -> larger
+    }
 
     /// <summary>
     /// Records that items were affected by the operation
