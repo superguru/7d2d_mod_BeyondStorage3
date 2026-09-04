@@ -1,14 +1,7 @@
-﻿__🚧 WIP v3.2.0__
-- ✅ Added Useables window on the Inventory screen with contextual, needs-based medical and food items
-- ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
-- ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
-- ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
-- ♻ Fixed: Config logged at game start was not localised
-- ✨ Changed: renamed config.json to modconfig.json
-- 🤐 Preview channel has had all these features, which you can also get access to if you like this update message...
+﻿__🚧 WIP v3.2.2__
+- 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 
-- 🙋 Any bugs to report?
 
 📢 This mod version will only support game V3.1.0/3.2.0 and later
 📍 See the pinned message to find release sites for this update.
@@ -19,17 +12,8 @@
 - 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
-
-__🚧 WIP v3.2.0 RC5__
-- 
-
-
-
-
 ```text
 For game V3.1.x/3.2.x or later
-- Fixed that allied vehicles could sometimes not be found
-- Read the Changelog for more
 
 Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
 ```
@@ -49,6 +33,16 @@ __🚀 Released v__
 
 - 🤐 Secret feature which you can get access to if you like this update...
 ```
+
+__🚀 Released v3.2.1__
+- ✅ Added Useables window on the Inventory screen with contextual, needs-based medical and food items
+- ✅ Add ShowUseables config setting
+- ✅ Added more descriptive messages for smart push and smart pull depending on what actually happened
+- ♻ Fixed: The default property name in the config for incuding vehicles in the network was misspelled, thereby defaulting to true unless changed via Gears or manually fixed
+- ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
+- ♻ Fixed: Config logged at game start was not localised
+- ✨ Changed: renamed config.json to modconfig.json
+- 🙋 Any bugs to report?
 
 __🚀 Released v3.1.7__
 - ✅ Added Shift+Push information to the relevant button tooltips
