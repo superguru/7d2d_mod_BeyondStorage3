@@ -9,6 +9,8 @@
 📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
 
 
+- 📜 TODO: 
+- 📜 TODO: Ship a differently named modconfig.json so user custom settings aren't clobbered when installing a new version.
 - 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
