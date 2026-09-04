@@ -118,7 +118,7 @@
     <Compile Include="Source\Game\UI\SmartSortingCommon.cs" />
     <Compile Include="Source\Game\UI\UIControlHelpers.cs" />
     <Compile Include="Source\Game\UI\WindowStateManager.cs" />
-    <Compile Include="Source\Harmony\Commands\BsCommandRegistry.cs" />
+    <Compile Include="Source\Harmony\Commands\ModCommandRegistry.cs" />
     <Compile Include="Source\Harmony\Commands\ModConfigPropertyRegistry.cs" />
     <Compile Include="Source\Harmony\Commands\ConsoleCmdBsHelp.cs" />
     <Compile Include="Source\Harmony\Commands\ConsoleCmdBsClearCache.cs" />

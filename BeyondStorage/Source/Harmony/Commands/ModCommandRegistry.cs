@@ -4,7 +4,7 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Harmony.Commands;
 
-internal class BsCommandRegistry
+internal class ModCommandRegistry
 {
     private static readonly Dictionary<string, CommandInfo> _registeredCommands = new();
 

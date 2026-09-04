@@ -10,7 +10,7 @@ public class ConsoleCmdBsHelp : ConsoleCmdAbstract
     static ConsoleCmdBsHelp()
     {
         // Register this command when the class is first loaded
-        BsCommandRegistry.RegisterCommand("bshelp", "Lists all available BeyondStorageMod commands and their descriptions");
+        ModCommandRegistry.RegisterCommand("bshelp", "Lists all available BeyondStorageMod commands and their descriptions");
     }
 
     public override void Execute(List<string> _params, CommandSenderInfo _senderInfo)
@@ -30,7 +30,7 @@ public class ConsoleCmdBsHelp : ConsoleCmdAbstract
 
     private void ShowHelp()
     {
-        var allCommands = BsCommandRegistry.GetAllCommands();
+        var allCommands = ModCommandRegistry.GetAllCommands();
 
         if (allCommands.Count == 0)
         {
@@ -56,10 +56,10 @@ public class ConsoleCmdBsHelp : ConsoleCmdAbstract
 
     public override string[] getCommands()
     {
-        return new[]
-        {
+        return
+        [
             "bshelp"
-        };
+        ];
     }
 
     public override string getDescription()

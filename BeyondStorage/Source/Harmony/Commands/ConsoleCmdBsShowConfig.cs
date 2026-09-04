@@ -10,7 +10,7 @@ public class ConsoleCmdBsShowConfig : ConsoleCmdAbstract
     static ConsoleCmdBsShowConfig()
     {
         // Register this command when the class is first loaded
-        BsCommandRegistry.RegisterCommand("bsshowconfig", "Displays the current active config settings");
+        ModCommandRegistry.RegisterCommand("bsshowconfig", "Displays the current active config settings");
     }
 
     public override void Execute(List<string> _params, CommandSenderInfo _senderInfo)
@@ -31,10 +31,10 @@ public class ConsoleCmdBsShowConfig : ConsoleCmdAbstract
 
     public override string[] getCommands()
     {
-        return new[]
-        {
+        return
+        [
             "bsshowconfig"
-        };
+        ];
     }
 
     public override string getDescription()

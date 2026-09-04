@@ -11,7 +11,7 @@ public class ConsoleCmdBsReloadConfig : ConsoleCmdAbstract
     static ConsoleCmdBsReloadConfig()
     {
         // Register this command when the class is first loaded
-        BsCommandRegistry.RegisterCommand("bsreloadconfig", "Reloads configuration from disk and invalidates all caches");
+        ModCommandRegistry.RegisterCommand("bsreloadconfig", "Reloads configuration from disk and invalidates all caches");
     }
 
     public override void Execute(List<string> _params, CommandSenderInfo _senderInfo)
@@ -73,10 +73,10 @@ public class ConsoleCmdBsReloadConfig : ConsoleCmdAbstract
 
     public override string[] getCommands()
     {
-        return new[]
-        {
+        return
+        [
             "bsreloadconfig"
-        };
+        ];
     }
 
     public override string getDescription()

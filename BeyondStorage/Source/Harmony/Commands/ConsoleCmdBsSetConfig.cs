@@ -13,7 +13,7 @@ public class ConsoleCmdBsSetConfig : ConsoleCmdAbstract
     static ConsoleCmdBsSetConfig()
     {
         // Register this command when the class is first loaded
-        BsCommandRegistry.RegisterCommand("bssetconfig", "Sets a configuration option and saves it to config file");
+        ModCommandRegistry.RegisterCommand("bssetconfig", "Sets a configuration option and saves it to config file");
 
         // Initialize the config property registry
         ModConfigPropertyRegistry.InitializeProperties();
