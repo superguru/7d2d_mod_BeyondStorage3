@@ -54,7 +54,7 @@ Please go to [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storag
 
 The people on Discord are quite helpful too.
 
-### Extended Inventory - Everything Is Your Inventory (aka inventory network)
+## Extended Inventory - Everything Is Your Inventory (aka inventory network)
 Items that exist in any of these places are now added to your Backpack and Toolbelt, and become part of your **extended inventory**:
 1. Drones
 2. Collectors, such as Apiaries, Dew Collectors, Chicken Coops, modded collectors
@@ -67,14 +67,14 @@ This is the order in which items are Consumed from, too, so Backpack and Toolbel
 ![Player Crafted Wall Safe Consume Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
 An example of a player crafted storage, in this case a Wall Safe.
 
-### Consume from the extended inventory
+## Consume from the extended inventory
 Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks, pay traders and vending machines, and of course craft things. 
 ![Consume from Useful Drone](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_from_useful_drone.jpg)
 Items from the source slots with the least items are used first.
 You can turn off Consume for specific blocks, like for a Wooden Crate or a Locker using the radial menu.
 ![Consume On/Off radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
 
-### Smart Push to surrounding storage
+## Smart Push to surrounding storage
 You can bulk move all items from any storage to the surrounding storage, providing there is already an item of that type present in that storage.
 As long as there are items left to move, the destination slots with the most items will be filled first until all slots across all target storages are filled up to maximum stack size for each item.
 Then empty slots will be used, until there is no more space anywhere.
@@ -110,7 +110,7 @@ So if you always want to keep Wood in your Backpack, lock the slot it's in, and 
 This is my Backpack top row from a current game. None of these items will be bulk moved out of the Backpack, whether using the game *Move All* or *Move and Fill* buttons, or using Smart Push.
 The 62 Polymers are not locked, so they can be moved.
 
-## Overflow from Smart Push
+### Overflow from Smart Push
 **Example 1:** You have 10 Water to push, and there is a Crate that has 9 Water and also an empty slot, then the result after bulk transferring the Water is that the Crate now has a slot with 10 Water and another slot with 9 Water. The extra water overflowed to that Crate's empty slot because it had room.
 
 **Example 2:** You have 10 Water to push, and there are two crates with 2 Water and 3 Water respectively. After the smart push, the two crates will have 10 Water and 5 Water respectively.
@@ -125,7 +125,7 @@ After the smart push:
 
 📢**Note:** These examples are for the default max stack size of 10 Water in Vanilla default settings. You can change the stack size in the Sandbox Options, which will have the same logic, just with different max stack sizes for items.
 
-### Smart Pull, aka Topping up your Load Out
+## Smart Pull, aka Topping up your Load Out
 If you lock some slots in your Backpack (Player Inventory), or in Drones, vehicles like Motorcycle, Gyrocopter, and so on, then you can use those as your **Load Out** slots.
 Using the Smart Pull button will top up any items in those slots with any available items.
 ![Smart Pull Loadout to Bicycle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/smart_pull_bicycle_loadout.jpg)
@@ -145,7 +145,7 @@ Pulling in items will not overflow to empty slots, whether they're locked or not
 ![Player Crafted Office Desk Example](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/player_crafted_office_desk_example.jpg)
 This is my office desk that I **crafted and placed myself**. It is also part of the extended inventory network. The same Wall Safe from the earlier example is just above it.
 
-### 🩹 Useables: Use directly from your Extended Inventory
+## 🩹 Useables: Use directly from your Extended Inventory
 Next to your Backpack, you'll see a small **Useables** window with 6 slots, showing the best healing, food, and drink items currently available in your **Extended Inventory** (nearby storage, vehicles, drones, etc.) — not your Backpack, since those items are already right there next to it.
 
 It only appears when your Backpack is open by itself — it's hidden while a vehicle, workstation, trader, drone, character screen, or other container window is also open, so it never gets in the way.
@@ -165,7 +165,7 @@ A single click on a slot shows the same item info panel you'd see for a normal B
 
 The Useables window refreshes automatically whenever any inventory in the game changes (items added, removed, or moved between slots) and when the mod's internal storage cache expires, so the row always reflects what is currently available.
 
-### 👥 Multiplayer Explained
+## 👥 Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
 
 So if you build a Crate and place it, then anyone of your Allies can access it. If you build a Wall Safe and place it, then the same rule applies.
@@ -181,7 +181,7 @@ You can run over to your friend's base, or to a crate that they built and placed
 
 All of these storages are part of your, and any of your Allies', extended inventory, providing it's in **range**.
 
-#### What about land claims?
+### What about land claims?
 Placing a Land Claim Block does not mean you claim **ownership** over anything.
 
 This is just how the game works.
@@ -192,17 +192,17 @@ Enemies - players who are not Allies - don't spawn there at any time.
 
 Also, Land Claim Blocks prevent enemy damage to your Ally group's blocks.
 
-#### So what can you do to prevent your friend from using items in "your" storage?
+### So what can you do to prevent your friend from using items in "your" storage?
 1. Do not ally with that player. Allies **share everything** except Vehicles and Drones.
 2. Move the storage out of range of your Ally. But if your friend runs over to your storage, they would come in range of it, and then be able to use the items inside. This is just a sort of general suggestion.
 3. You can turn Consume Off or On for a storage. This will mean anyone in your Ally group can still Smart Push or Pull to and from it, but no-one, including yourself, can Consume from it.
 
-#### Locking your storage
+### Locking your storage
 You can lock your storage **with a PIN**. Then only someone with the PIN can open the storage physically, and the same goes for their extended inventory.
 
 So lock it **with a PIN**, don't share the PIN, and then only you can Consume from it, and only you can Smart Push and Pull to and from it.
 
-#### Short Summary about Multiplayer storage
+### Short Summary about Multiplayer storage
 In this game, there is no concept whatsoever of a particular Player owning a Crate or any other storage.
 
 A Player can only own a Vehicle or a Drone.
