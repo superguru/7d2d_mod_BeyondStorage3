@@ -27,13 +27,13 @@ This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Sto
 ## What can this do?
 There are four main functions:
 
-1. <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload.
-2. <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
+1\) <span style="text-decoration: underline;">**Consume**</span> - pay, paint, refuel, craft, upgrade, repair, reload.
+2\) <span style="text-decoration: underline;">**Smart Push**</span> (smart sorting)
     - ✔️ Normal Mode: move items to surrounding containers that **already have** the item being moved - works for everything
     - 👆 Shift Push Mode: Hold Shift and click the Smart Push button to move items to storages that have open slots, even if they **don't already have** the item being moved
-3. <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
+3\) <span style="text-decoration: underline;">**Smart Pull**</span> (smart sorting)
     - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
-4. <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
+4\) <span style="text-decoration: underline;">**Use**</span> (heal, eat, drink)
     - use your best healing, food, and drink items directly from the storage network, via the Useables window, using hotkeys or a double-click
 
 *Consume happens automatically whenever you do anything that uses items (crafting, repairing, refueling, etc.) — it pulls from your extended inventory without any extra action from you. Use is the explicit Useables window for one-click healing, food, and drink items.*
@@ -152,7 +152,7 @@ It only appears when your Backpack is open by itself — it's hidden while a veh
 
 ![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
 
-- **Top row:** your best healing item — matched to how much health you're missing — plus up to 2 items that cure a condition you currently have (bleeding, infection, and so on). Leftover slots fill with more available healing items.
+- **Top row:** your best healing item — matched to how much health you're missing — plus up to 2 items that cure a condition you currently have (bleeding, infection, and so on). Leftover slots fill with more available healing items, if you need healing.
 - **Bottom row:** up to 1 best food item and 2 best drinks, ranked by nutrition, then health, then bonus buffs. If you have no drinks, the gap fills with more food instead (and the other way around).
 
 An item with a health penalty (like Rotting Flesh) will always rank below a "clean" item of the same kind, even if you have a lot more of it.
