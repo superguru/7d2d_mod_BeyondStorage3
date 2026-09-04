@@ -70,7 +70,6 @@
     <Compile Include="Source\Configuration\ConfigDisplayHelper.cs" />
     <Compile Include="Source\Configuration\ConfigReloadHelper.cs" />
     <Compile Include="Source\Configuration\Gears\GearsConversions.cs" />
-    <Compile Include="Source\Configuration\Gears\GearsGeneralSettings.cs" />
     <Compile Include="Source\Configuration\Gears\GearsMod_Init.cs" />
     <Compile Include="Source\Configuration\Gears\GearsSetting.cs" />
     <Compile Include="Source\Configuration\Gears\GearsSettingFactory.cs" />

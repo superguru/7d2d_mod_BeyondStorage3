@@ -64,6 +64,10 @@ internal static class BsConfigPropertyRegistry
         RegisterProperty("isDebug", "bool", ConfigLocalisation.IS_DEBUG_LOGGING_SETTING_TOOLTIP_KEY,
             config => config.isDebug.ToString(),
             (config, value) => config.isDebug = ParseBool(value));
+
+        RegisterProperty("showUseables", "bool", ConfigLocalisation.SHOW_USEABLES_SETTING_TOOLTIP_KEY,
+            config => config.showUseables.ToString(),
+            (config, value) => config.showUseables = ParseBool(value));
     }
 
     /// <summary>
@@ -140,6 +144,7 @@ internal static class BsConfigPropertyRegistry
             "includeDrones" => config.includeDrones.ToString(),
             "includeVehicles" => config.includeVehicles.ToString(),
             "isDebug" => config.isDebug.ToString(),
+            "showUseables" => config.showUseables.ToString(),
             _ => "Unknown"
         };
     }

@@ -26,6 +26,12 @@ public sealed class ConfigSnapshot
         get;
     }
 
+    // ========== Useables =========
+    public bool ShowUseables
+    {
+        get;
+    }
+
     // ========== Housekeeping =========
     public bool IsDebug
     {
@@ -42,6 +48,7 @@ public sealed class ConfigSnapshot
 
         // ========== Housekeeping =========
         IsDebug = ModConfig.IsDebug();
+        ShowUseables = ModConfig.ShowUseables();
     }
 
     public static ConfigSnapshot Current => new();

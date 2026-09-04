@@ -29,5 +29,7 @@
 "bsSettingIncludeVehiclesInNetworkToolTip","UI","Menu","x","","","Whether to include nearby Vehicles in storage network"
 "bsSettingIsDebug","UI","Menu","x","","","Debug Logging"
 "bsSettingIsDebugTooltip","UI","Menu","x","","","Enable additional logging"
+"bsSettingShowUseables","UI","Menu","x","","","Show Useables"
+"bsSettingShowUseablesTooltip","UI","Menu","x","","","Show the Useables window (heal/eat/drink) next to your Backpack"
 "xuiBeyondUseables","UI","XUI","","","","Useables"
 "xuiBeyondUseablesHint","UI","XUI","","","","[DECEA3]Double-click or press 1-6 to use[-]"

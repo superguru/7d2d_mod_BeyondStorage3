@@ -30,6 +30,10 @@ internal static class GearsSettingsRegistry
                 c => c.allowPushToAlliedVehicles,
                 (c, v) => c.allowPushToAlliedVehicles = v),
             GearsSettingFactory.Bool(
+                nameof(ModConfig.ShowUseables),
+                c => c.showUseables,
+                (c, v) => c.showUseables = v),
+            GearsSettingFactory.Bool(
                 nameof(ModConfig.IsDebug),
                 c => c.isDebug,
                 (c, v) => c.isDebug = v),

@@ -49,4 +49,10 @@ public class ModConfigData
     /// </summary>
     [JsonProperty(nameof(isDebug))]
     public bool isDebug = false;
+
+    /// <summary>
+    /// If set false, the Useables window (heal/eat/drink) is hidden.
+    /// </summary>
+    [JsonProperty(nameof(showUseables))]
+    public bool showUseables = true;
 }

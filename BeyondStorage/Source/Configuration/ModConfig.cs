@@ -519,6 +519,11 @@ public static class ModConfig
         return IsConfigLoaded && ClientConfig.isDebug;
     }
 
+    public static bool ShowUseables()
+    {
+        return IsConfigLoaded && ClientConfig.showUseables;
+    }
+
     /// <summary>
     /// Safely deserialize config JSON with additional error handling
     /// </summary>
