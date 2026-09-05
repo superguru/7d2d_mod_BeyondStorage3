@@ -44,6 +44,10 @@ public static class WindowStateManager
     private static readonly object s_traderWindowLock = new();
     private static XUiC_TraderWindowGroup s_traderWindow = null;
 
+    // Quest Turn-In Window (quest reward turn-in UI)
+    private static readonly object s_questTurnInWindowLock = new();
+    private static XUiC_QuestTurnInWindowGroup s_questTurnInWindow = null;
+
     // Entities associated with the currently open bag storage window.
     // Always update via SetOpenWindowEntities().
     private static readonly object s_windowEntityLock = new();
@@ -458,10 +462,11 @@ public static class WindowStateManager
             !IsWorkstationWindowOpen() &&
             !IsCollectorWindowOpen() &&
             !IsCharacterFrameWindowOpen() &&
-            !IsTraderWindowOpen();
+            !IsTraderWindowOpen() &&
+            !IsQuestTurnInWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()}, Char={IsCharacterFrameWindowOpen()})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()}, Char={IsCharacterFrameWindowOpen()}, Q={IsQuestTurnInWindowOpen()})");
 #endif
         return result;
     }
@@ -904,6 +909,71 @@ public static class WindowStateManager
             else if (s_traderWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close trader window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    #endregion
+
+    #region Quest Turn-In Window
+
+    /// <summary>
+    /// Gets whether the quest turn-in window is currently open
+    /// </summary>
+    /// <returns>True if the quest turn-in window is open, false otherwise</returns>
+    public static bool IsQuestTurnInWindowOpen()
+    {
+        lock (s_questTurnInWindowLock)
+        {
+            return s_questTurnInWindow != null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the currently active quest turn-in window instance
+    /// </summary>
+    /// <returns>The active quest turn-in window, or null if none is open</returns>
+    public static XUiC_QuestTurnInWindowGroup GetActiveQuestTurnInWindow()
+    {
+        lock (s_questTurnInWindowLock)
+        {
+            return s_questTurnInWindow;
+        }
+    }
+
+    /// <summary>
+    /// Called when a quest turn-in window opens
+    /// </summary>
+    /// <param name="window">The quest turn-in window that opened</param>
+    internal static void OnQuestTurnInWindowOpening(XUiC_QuestTurnInWindowGroup window)
+    {
+        lock (s_questTurnInWindowLock)
+        {
+            if (s_questTurnInWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Quest turn-in window opened while another was already tracked. Resetting state. Previous: {s_questTurnInWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_questTurnInWindow = null;
+            }
+
+            s_questTurnInWindow = window;
+        }
+    }
+
+    /// <summary>
+    /// Called when a quest turn-in window closes
+    /// </summary>
+    /// <param name="window">The quest turn-in window that closed</param>
+    internal static void OnQuestTurnInWindowClosing(XUiC_QuestTurnInWindowGroup window)
+    {
+        lock (s_questTurnInWindowLock)
+        {
+            if (s_questTurnInWindow == window)
+            {
+                s_questTurnInWindow = null;
+            }
+            else if (s_questTurnInWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Attempted to close quest turn-in window that doesn't match tracked instance.");
             }
         }
     }

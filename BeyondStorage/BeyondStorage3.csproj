@@ -136,6 +136,7 @@
     <Compile Include="Source\Harmony\Extends\XUiC_CollectedItemList_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_CharacterFrameWindow_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_TraderWindowGroup_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\XUiC_QuestTurnInWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ItemStack_Find_PatchPoint.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ItemStack_Ext.cs" />

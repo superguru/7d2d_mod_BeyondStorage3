@@ -1,40 +1,10 @@
-﻿__🚧 WIP v3.2.2__
-- 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
+﻿# Changelog for Beyond Storage 3
 
+## History
 
-
-📢 This mod version will only support game V3.1.0/3.2.0 and later
-📍 See the pinned message to find release sites for this update.
-
-📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
-
-
-- 📜 TODO: 
-- 📜 TODO: Ship a differently named modconfig.json so user custom settings aren't clobbered when installing a new version.
-- 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
-- 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
-
-```text
-For game V3.1.x/3.2.x or later
-
-Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
-```
-
-```text
-__🔬 Experimental v__
-__🚧 WIP v__
-__🚀 Released v__
-
-- ✅ Added 
-- ✨ Changed
-- ♻ Fixed 
-- ❌ Removed 
-- 👉🏼 WIP: 
-- 📜 TODO: 
-- 💭 Considering: 
-
-- 🤐 Secret feature which you can get access to if you like this update...
-```
+__🚀 Released v3.2.2 (Discord only)__
+- ♻ Fixed: Useables window no longer appears when turning in quests
+- ✨ Changed: updated documentation with some better formatting and clearer information
 
 __🚀 Released v3.2.1__
 - ✅ Added Useables window on the Inventory screen with contextual, needs-based medical and food items
@@ -44,7 +14,6 @@ __🚀 Released v3.2.1__
 - ♻ Fixed: Do not use land claim blocks as Shift Push targets for storage
 - ♻ Fixed: Config logged at game start was not localised
 - ✨ Changed: renamed config.json to modconfig.json
-- 🙋 Any bugs to report?
 
 __🚀 Released v3.1.7__
 - ✅ Added Shift+Push information to the relevant button tooltips
@@ -84,5 +53,49 @@ __🚀 Released v3.1.1__
 - ♻ Implemented Smart Push button on Dropped Loot containers
 - ❌ Remove **serverSyncConfig** config option. There is no reason to ever set it to False.
 - ♻ Small bug fixes that no-one even noticed :)
+
+## Templates and Snippets section
+
+📢 This mod version will only support game V3.1.0/3.2.0 and later
+📍 See the pinned message to find release sites for this update.
+
+📍 See the pinned message in [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) to find release sites for this update.
+
+
+- 📜 TODO: 
+- 📜 TODO: Ship a differently named modconfig.json so user custom settings aren't clobbered when installing a new version.
+- 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
+- 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
+
+```text
+For game V3.1.x/3.2.x or later
+
+Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
+```
+
+```text
+__🔬 Experimental v__
+__🚧 WIP v__
+__🚀 Released v__
+
+- ✅ Added 
+- ✨ Changed
+- ♻ Fixed 
+- ❌ Removed 
+- 👉🏼 WIP: 
+- 📜 TODO: 
+- 💭 Considering: 
+
+- 🤐 Secret feature which you can get access to if you like this update...
+
+- 🙋 Any bugs to report?
+```
+
+## Work In Progress
+
+__🚧 WIP v3.2.x__
+- ♻ Fixed: Useables window no longer appears when turning in quests
+- ✨ Changed: updated documentation with some better formatting and clearer information
+- 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
