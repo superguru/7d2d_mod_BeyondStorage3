@@ -68,9 +68,9 @@ __🚀 Released v3.1.1__
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
 ```text
-For game V3.1.x/3.2.x or later
+For V3.1.x/3.2.x: Added Useables window that has contextual, needs-based medical and food items. Read CHANGELOG.md for more.
 
-Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file or the mod web page
+Minor updates released on Discord. Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file.
 ```
 
 ```text
