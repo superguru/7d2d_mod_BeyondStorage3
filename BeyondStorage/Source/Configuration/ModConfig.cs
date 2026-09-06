@@ -17,6 +17,7 @@ public static class ModConfig
     private const string DefaultsFileName = "modconfig.defaults.json";
     private const string LegacyConfigFileName = "config.json";
     private const string ReplacedByConfigFileName = "config_json_replaced-by_modconfig_json.txt";
+    private const string UserMetaDescription = "USER Configuration file for Beyond Storage mod package";
 
     /// <summary>
     /// Maximum allowed config file size in bytes (1KB) to prevent abuse
@@ -101,6 +102,7 @@ public static class ModConfig
         }
 
         merged.version = ConfigVersioning.CurrentVersion;
+        SetUserMetaDescription(merged, defaultsJson);
 
         ClientConfig = merged;
         SaveConfig(configPath);
@@ -237,14 +239,14 @@ public static class ModConfig
     /// </summary>
     private static bool NeedsMerge(string userJson, string defaultsJson)
     {
-        var defaultsVersion = GetVersion(defaultsJson);
+        var defaultsVersion = GetJsonProperty(defaultsJson, "version");
         if (defaultsVersion == null)
         {
             // Defaults has no parseable version; merge to be safe.
             return true;
         }
 
-        var userVersion = GetVersion(userJson);
+        var userVersion = GetJsonProperty(userJson, "version");
         if (userVersion == null)
         {
             // User config has no parseable version; treat as older and merge.
@@ -255,18 +257,32 @@ public static class ModConfig
     }
 
     /// <summary>
-    /// Extracts the "version" string value from a config JSON document.
+    /// Extracts a string property value from a config JSON document.
     /// </summary>
-    private static string GetVersion(string json)
+    private static string GetJsonProperty(string json, string propertyName)
     {
         try
         {
             var jsonObject = JObject.Parse(json);
-            return jsonObject["version"]?.Value<string>();
+            return jsonObject[propertyName]?.Value<string>();
         }
         catch (JsonException)
         {
             return null;
+        }
+    }
+
+    /// <summary>
+    /// Marks the config's metaDescription as the user's config, unless the user has a custom value.
+    /// </summary>
+    private static void SetUserMetaDescription(ModConfigData config, string defaultsJson)
+    {
+        var defaultsMetaDescription = GetJsonProperty(defaultsJson, "metaDescription");
+
+        if (string.IsNullOrEmpty(config.metaDescription) ||
+            string.Equals(config.metaDescription, defaultsMetaDescription, StringComparison.Ordinal))
+        {
+            config.metaDescription = UserMetaDescription;
         }
     }
 
