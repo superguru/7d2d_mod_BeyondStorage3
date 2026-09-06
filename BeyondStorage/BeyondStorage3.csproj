@@ -138,6 +138,7 @@
     <Compile Include="Source\Harmony\Extends\XUiC_ContainerStandardControls_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_CollectedItemList_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_CharacterFrameWindow_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\XUiC_CombineWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_TraderWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_QuestTurnInWindowGroup_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_WorkstationWindowGroup_Ext.cs" />

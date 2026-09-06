@@ -48,6 +48,10 @@ public static class WindowStateManager
     private static readonly object s_questTurnInWindowLock = new();
     private static XUiC_QuestTurnInWindowGroup s_questTurnInWindow = null;
 
+    // Combine Window (item combining/merging UI)
+    private static readonly object s_combineWindowLock = new();
+    private static XUiC_CombineWindowGroup s_combineWindow = null;
+
     // Entities associated with the currently open bag storage window.
     // Always update via SetOpenWindowEntities().
     private static readonly object s_windowEntityLock = new();
@@ -463,10 +467,11 @@ public static class WindowStateManager
             !IsCollectorWindowOpen() &&
             !IsCharacterFrameWindowOpen() &&
             !IsTraderWindowOpen() &&
-            !IsQuestTurnInWindowOpen();
+            !IsQuestTurnInWindowOpen() &&
+            !IsCombineWindowOpen();
 
 #if DEBUG
-        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, C={IsCollectorWindowOpen()}, Char={IsCharacterFrameWindowOpen()}, Q={IsQuestTurnInWindowOpen()})");
+        //ModLogger.DebugLog($"IsPlayerBackpackOpenOnlyInternal: {result} (P={IsOnlyPlayerStorageOpenInternal()}, W={IsWorkstationWindowOpen()}, COL={IsCollectorWindowOpen()}, CHA={IsCharacterFrameWindowOpen()}, Q={IsQuestTurnInWindowOpen()}, CMB={IsCombineWindowOpen()})");
 #endif
         return result;
     }
@@ -974,6 +979,71 @@ public static class WindowStateManager
             else if (s_questTurnInWindow != null)
             {
                 ModLogger.Warning($"[WindowStateManager] Attempted to close quest turn-in window that doesn't match tracked instance.");
+            }
+        }
+    }
+
+    #endregion
+
+    #region Combine Window
+
+    /// <summary>
+    /// Gets whether the combine window is currently open
+    /// </summary>
+    /// <returns>True if the combine window is open, false otherwise</returns>
+    public static bool IsCombineWindowOpen()
+    {
+        lock (s_combineWindowLock)
+        {
+            return s_combineWindow != null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the currently active combine window instance
+    /// </summary>
+    /// <returns>The active combine window, or null if none is open</returns>
+    public static XUiC_CombineWindowGroup GetActiveCombineWindow()
+    {
+        lock (s_combineWindowLock)
+        {
+            return s_combineWindow;
+        }
+    }
+
+    /// <summary>
+    /// Called when a combine window opens
+    /// </summary>
+    /// <param name="window">The combine window that opened</param>
+    internal static void OnCombineWindowOpening(XUiC_CombineWindowGroup window)
+    {
+        lock (s_combineWindowLock)
+        {
+            if (s_combineWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Combine window opened while another was already tracked. Resetting state. Previous: {s_combineWindow?.GetType().Name}, New: {window?.GetType().Name}");
+                s_combineWindow = null;
+            }
+
+            s_combineWindow = window;
+        }
+    }
+
+    /// <summary>
+    /// Called when a combine window closes
+    /// </summary>
+    /// <param name="window">The combine window that closed</param>
+    internal static void OnCombineWindowClosing(XUiC_CombineWindowGroup window)
+    {
+        lock (s_combineWindowLock)
+        {
+            if (s_combineWindow == window)
+            {
+                s_combineWindow = null;
+            }
+            else if (s_combineWindow != null)
+            {
+                ModLogger.Warning($"[WindowStateManager] Attempted to close combine window that doesn't match tracked instance.");
             }
         }
     }
