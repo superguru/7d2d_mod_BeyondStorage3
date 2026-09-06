@@ -2,6 +2,10 @@
 
 ## History
 
+__🚀 Released v3.2.3 (Discord only)__
+- ♻ Fixed: Useables window no longer appears on Combine Station screen
+- ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
+
 __🚀 Released v3.2.2 (Discord only)__
 - ♻ Fixed: Useables window no longer appears when turning in quests
 - ✨ Changed: updated documentation with some better formatting and clearer information
@@ -95,6 +99,7 @@ __🚀 Released v__
 
 __🚧 WIP v3.2.x__
 - ♻ Fixed: Useables window no longer appears when turning in quests
+- ♻ Fixed: Useables window no longer appears on Combine Station screen
 - ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
 - ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
