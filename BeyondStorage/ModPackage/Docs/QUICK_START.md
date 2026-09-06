@@ -77,10 +77,10 @@ You can also check the Mod Compatibility information in the [README.md](https://
 - [How to add Mods to your 7D2D game](https://www.nexusmods.com/7daystodie/articles/889)
 - [Basic troubleshooting for mods](https://www.nexusmods.com/7daystodie/articles/787)
 
-## 🌐 Translations
+## Translations
 - 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
 
-## ❓ FAQ
+## FAQ
 
 **Does this work in single-player?**
 Yes. Beyond Storage 3 is a Harmony mod and works in both single-player and multiplayer.
