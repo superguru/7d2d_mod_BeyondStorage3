@@ -4,6 +4,7 @@
 
 __🚀 Released v3.2.3 (Discord only)__
 - ♻ Fixed: Useables window no longer appears on Combine Station screen
+- ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
 - ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
 
 __🚀 Released v3.2.2 (Discord only)__
