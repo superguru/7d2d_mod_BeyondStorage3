@@ -1,4 +1,9 @@
 # Beyond Storage 3 - Everything Is Your Inventory
+I would appreciate it if you could [support me on Ko-fi](https://ko-fi.com/gazorper), as **hundreds of hours** go into making a mod like this, keeping it up to date with newer game versions, not to mention supporting it.
+
+[![Support me on Ko-fi](https://raw.githubusercontent.com/superguru/superguru/refs/heads/master/images/superguru-kofi-orange.png)](https://ko-fi.com/gazorper)
+
+Please go to [![#beyond-storage3](https://img.shields.io/badge/%23beyond--storage3-4c5fd7)](https://discord.gg/hAF5T4P9pE) on [![Discord](https://img.shields.io/badge/%23Discord-f46f30)](https://discord.gg/hAF5T4P9pE) for mod support.
 
 For a quick overview, installation instructions, and troubleshooting, see [QUICK_START.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/QUICK_START.md).
 
