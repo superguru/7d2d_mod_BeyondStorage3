@@ -336,7 +336,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ModPackage\modconfig.json" />
+    <None Include="ModPackage\modconfig.defaults.json" />
     <None Include="ModPackage\Docs\CHANGELOG.md" />
     <None Include="ModPackage\Docs\QUICK_START.md" />
     <None Include="ModPackage\Docs\README.md" />

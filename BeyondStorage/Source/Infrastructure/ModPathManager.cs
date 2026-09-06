@@ -27,15 +27,6 @@ internal static class ModPathManager
         return result;
     }
 
-    /// <summary>
-    /// Gets the legacy config path (Config subdirectory) for migration purposes
-    /// </summary>
-    /// <returns>Path to legacy config directory</returns>
-    internal static string GetLegacyConfigPath()
-    {
-        return Path.Combine(BeyondStorageMod.GetModAssemblyPath(), "Config");
-    }
-
     private static string GetAssemblyLocation()
     {
         if (string.IsNullOrEmpty(s_assemblyLocation))

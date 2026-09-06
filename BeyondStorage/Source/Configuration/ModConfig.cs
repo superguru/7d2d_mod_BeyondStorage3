@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Multiplayer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BeyondStorage.Configuration;
 
@@ -14,9 +14,9 @@ public static class ModConfig
     public const float MAX_RANGE = 250.0f; // Largest user settable maximum range
 
     private const string ConfigFileName = "modconfig.json";
+    private const string DefaultsFileName = "modconfig.defaults.json";
     private const string LegacyConfigFileName = "config.json";
     private const string ReplacedByConfigFileName = "config_json_replaced-by_modconfig_json.txt";
-    private const string ConfigBackupPrefix = "config.backup.";
 
     /// <summary>
     /// Maximum allowed config file size in bytes (1KB) to prevent abuse
@@ -31,7 +31,7 @@ public static class ModConfig
     private static bool IsConfigLoaded { get; set; } = false;
 
     /// <summary>
-    /// Gets the full path to the configuration file
+    /// Gets the full path to the user configuration file
     /// </summary>
     /// <returns>Full path to the modconfig.json file</returns>
     private static string GetConfigFilePath()
@@ -40,12 +40,12 @@ public static class ModConfig
     }
 
     /// <summary>
-    /// Gets the full path to the legacy configuration file location
+    /// Gets the full path to the shipped defaults configuration file
     /// </summary>
-    /// <returns>Full path to the legacy config.json file</returns>
-    private static string GetLegacyConfigFilePath()
+    /// <returns>Full path to the modconfig.defaults.json file</returns>
+    private static string GetDefaultsFilePath()
     {
-        return Path.Combine(ModPathManager.GetLegacyConfigPath(), LegacyConfigFileName);
+        return Path.Combine(ModPathManager.GetConfigPath(true), DefaultsFileName);
     }
 
     public static void LoadConfig()
@@ -53,26 +53,80 @@ public static class ModConfig
         // Reset loaded state so reload calls correctly track state
         IsConfigLoaded = false;
 
-        MigrateConfigLocation();
+        // Rename a pre-v3.2.0 "config.json" to "modconfig.json" so older users' values are preserved
         MigrateConfigFileName();
 
-        var path = GetConfigFilePath();
-        ModLogger.Info($"Loading config from {path}");
+        var configPath = GetConfigFilePath();
+        var defaultsPath = GetDefaultsFilePath();
 
-        if (File.Exists(path))
+        ModLogger.Info($"Loading config from {configPath}");
+
+        if (!File.Exists(defaultsPath))
         {
-            LoadExistingConfig(path);
+            LoadWithoutDefaults(configPath);
+            return;
+        }
+
+        var defaultsJson = ReadConfigFile(defaultsPath);
+        if (defaultsJson == null)
+        {
+            ModLogger.Error($"Failed to read defaults config file {defaultsPath}. Falling back to built-in defaults.");
+            LoadWithoutDefaults(configPath);
+            return;
+        }
+
+        var userJson = File.Exists(configPath) ? ReadConfigFile(configPath) : null;
+
+        if (userJson != null && !NeedsMerge(userJson, defaultsJson))
+        {
+            // User config is already at (or newer than) the shipped defaults; load it as-is.
+            var loaded = SafeDeserializeConfig(userJson);
+            if (loaded == null)
+            {
+                SetDefaultConfigAndMarkLoaded();
+            }
+            else
+            {
+                FinalizeConfigLoad(loaded);
+            }
+            return;
+        }
+
+        // Merge: fill missing attributes from the shipped defaults, keep the user's existing values.
+        var merged = MergeConfigs(defaultsJson, userJson);
+        if (merged == null)
+        {
+            SetDefaultConfigAndMarkLoaded();
+            return;
+        }
+
+        merged.version = ConfigVersioning.CurrentVersion;
+
+        ClientConfig = merged;
+        SaveConfig(configPath);
+        ModLogger.Info($"Config merged and saved to version {ConfigVersioning.CurrentVersion}");
+
+        FinalizeConfigLoad(merged);
+    }
+
+    /// <summary>
+    /// Fallback path used when no shipped defaults file is present.
+    /// </summary>
+    private static void LoadWithoutDefaults(string configPath)
+    {
+        if (File.Exists(configPath))
+        {
+            LoadExistingConfig(configPath);
         }
         else
         {
-            LoadDefaultConfig(path);
+            LoadDefaultConfig(configPath);
         }
     }
 
     /// <summary>
-    /// Loads configuration from an existing config file
+    /// Loads an existing user config file without any defaults merging.
     /// </summary>
-    /// <param name="path">Path to the config file</param>
     private static void LoadExistingConfig(string path)
     {
         try
@@ -90,7 +144,7 @@ public static class ModConfig
                 return;
             }
 
-            var loadedConfig = LoadAndMigrateConfig(path, configJson);
+            var loadedConfig = SafeDeserializeConfig(configJson);
             if (loadedConfig == null)
             {
                 SetDefaultConfigAndMarkLoaded();
@@ -98,21 +152,6 @@ public static class ModConfig
             }
 
             FinalizeConfigLoad(loadedConfig);
-        }
-        catch (JsonException e)
-        {
-            ModLogger.Error($"Failed to parse config from {path}: {e.Message}. Using default config.", e);
-            SetDefaultConfigAndMarkLoaded();
-        }
-        catch (IOException e)
-        {
-            ModLogger.Error($"Failed to read config file from {path}: {e.Message}. Using default config.", e);
-            SetDefaultConfigAndMarkLoaded();
-        }
-        catch (UnauthorizedAccessException e)
-        {
-            ModLogger.Error($"Access denied reading config file from {path}: {e.Message}. Using default config.", e);
-            SetDefaultConfigAndMarkLoaded();
         }
         catch (Exception e)
         {
@@ -124,7 +163,6 @@ public static class ModConfig
     /// <summary>
     /// Loads default configuration when no config file exists
     /// </summary>
-    /// <param name="path">Path where to create the config file</param>
     private static void LoadDefaultConfig(string path)
     {
         ModLogger.Warning($"Config file {path} not found, using default config.");
@@ -133,10 +171,24 @@ public static class ModConfig
     }
 
     /// <summary>
+    /// Creates and saves a default config file to the specified path
+    /// </summary>
+    private static void CreateDefaultConfigFile(string configPath)
+    {
+        try
+        {
+            SaveConfig(configPath);
+            ModLogger.Info($"Created default config file at {configPath}");
+        }
+        catch (Exception ex)
+        {
+            ModLogger.Warning($"Failed to create default config file at {configPath}: {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// Validates that the config file size is within acceptable limits
     /// </summary>
-    /// <param name="path">Path to the config file</param>
-    /// <returns>True if file size is valid, false otherwise</returns>
     private static bool ValidateConfigFileSize(string path)
     {
         var fileInfo = new FileInfo(path);
@@ -153,8 +205,6 @@ public static class ModConfig
     /// <summary>
     /// Reads and validates config file content
     /// </summary>
-    /// <param name="path">Path to the config file</param>
-    /// <returns>Config JSON string, or null if invalid</returns>
     private static string ReadConfigFile(string path)
     {
         string configJson;
@@ -183,83 +233,122 @@ public static class ModConfig
     }
 
     /// <summary>
-    /// Loads config from JSON and applies migrations if necessary
+    /// Determines whether the user config needs to be merged with the shipped defaults.
     /// </summary>
-    /// <param name="path">Path to the config file</param>
-    /// <param name="configJson">Raw JSON content</param>
-    /// <returns>Loaded and migrated config, or null if failed</returns>
-    private static ModConfigData LoadAndMigrateConfig(string path, string configJson)
+    private static bool NeedsMerge(string userJson, string defaultsJson)
     {
-        if (ConfigVersioning.IsLegacyConfig(configJson))
+        var defaultsVersion = GetVersion(defaultsJson);
+        if (defaultsVersion == null)
         {
-            return LoadLegacyConfig(path, configJson);
+            // Defaults has no parseable version; merge to be safe.
+            return true;
         }
 
-        return LoadVersionedConfig(path, configJson);
-    }
-
-    /// <summary>
-    /// Loads and migrates a legacy config (pre-2.3.0)
-    /// </summary>
-    /// <param name="path">Path to the config file</param>
-    /// <param name="configJson">Raw JSON content</param>
-    /// <returns>Migrated config</returns>
-    private static ModConfigData LoadLegacyConfig(string path, string configJson)
-    {
-        ModLogger.Info("Detected legacy config file, migrating to versioned format");
-        CreateConfigBackup(path, "legacy");
-
-        var loadedConfig = ConfigVersioning.MigrateLegacyConfig(configJson);
-
-        // Set ClientConfig before saving so SaveConfig has something to serialize
-        ClientConfig = loadedConfig;
-        SaveConfigAfterMigration(path);
-
-        return loadedConfig;
-    }
-
-    /// <summary>
-    /// Loads a versioned config and migrates if version doesn't match current
-    /// </summary>
-    /// <param name="path">Path to the config file</param>
-    /// <param name="configJson">Raw JSON content</param>
-    /// <returns>Loaded and migrated config, or null if failed</returns>
-    private static ModConfigData LoadVersionedConfig(string path, string configJson)
-    {
-        var loadedConfig = SafeDeserializeConfig(configJson);
-        if (loadedConfig == null)
+        var userVersion = GetVersion(userJson);
+        if (userVersion == null)
         {
-            ModLogger.Error("Failed to deserialize config JSON. Using default config.");
+            // User config has no parseable version; treat as older and merge.
+            return true;
+        }
+
+        return ConfigVersioning.IsOlderThan(userVersion, defaultsVersion);
+    }
+
+    /// <summary>
+    /// Extracts the "version" string value from a config JSON document.
+    /// </summary>
+    private static string GetVersion(string json)
+    {
+        try
+        {
+            var jsonObject = JObject.Parse(json);
+            return jsonObject["version"]?.Value<string>();
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Merges the shipped defaults and the user's existing config, with user values taking precedence.
+    /// Missing values are ultimately filled from the ModConfigData field defaults.
+    /// </summary>
+    private static ModConfigData MergeConfigs(string defaultsJson, string userJson)
+    {
+        var settings = CreateJsonSerializerSettings();
+
+        var config = new ModConfigData();
+
+        try
+        {
+            JsonConvert.PopulateObject(defaultsJson, config, settings);
+        }
+        catch (Exception e)
+        {
+            ModLogger.Error($"Failed to apply defaults config: {e.Message}", e);
             return null;
         }
 
-        if (loadedConfig.version != ConfigVersioning.CurrentVersion)
+        if (!string.IsNullOrEmpty(userJson))
         {
-            CreateConfigBackup(path, loadedConfig.version);
-            loadedConfig = ConfigVersioning.MigrateVersionedConfig(loadedConfig);
-
-            // Set ClientConfig before saving so SaveConfig has something to serialize
-            ClientConfig = loadedConfig;
-            SaveConfigAfterMigration(path);
+            try
+            {
+                JsonConvert.PopulateObject(userJson, config, settings);
+            }
+            catch (Exception e)
+            {
+                ModLogger.Error($"Failed to apply user config: {e.Message}", e);
+                return null;
+            }
         }
 
-        return loadedConfig;
+        return config;
     }
 
     /// <summary>
-    /// Saves config after migration and logs success
+    /// Creates the shared JSON serializer settings used for reading config files.
     /// </summary>
-    /// <param name="path">Path to save the config file</param>
-    private static void SaveConfigAfterMigration(string path)
+    private static JsonSerializerSettings CreateJsonSerializerSettings()
     {
-        SaveConfig(path);
-        ModLogger.Info($"Config migrated and saved to version {ConfigVersioning.CurrentVersion}");
+        return new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.None,
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            Error = (sender, args) =>
+            {
+                ModLogger.Warning($"JSON deserialization warning: {args.ErrorContext.Error.Message}");
+                args.ErrorContext.Handled = true;
+            }
+        };
+    }
+
+    /// <summary>
+    /// Safely deserialize config JSON with additional error handling
+    /// </summary>
+    private static ModConfigData SafeDeserializeConfig(string configJson)
+    {
+        try
+        {
+            var settings = CreateJsonSerializerSettings();
+            return JsonConvert.DeserializeObject<ModConfigData>(configJson, settings);
+        }
+        catch (JsonException e)
+        {
+            ModLogger.Error($"JSON deserialization failed: {e.Message}", e);
+            return null;
+        }
+        catch (Exception e)
+        {
+            ModLogger.Error($"Unexpected error during config deserialization: {e.Message}", e);
+            return null;
+        }
     }
 
     /// <summary>
     /// Finalizes config loading by setting ClientConfig and validating
     /// </summary>
-    /// <param name="loadedConfig">The config to finalize</param>
     private static void FinalizeConfigLoad(ModConfigData loadedConfig)
     {
         ClientConfig = loadedConfig;
@@ -275,95 +364,6 @@ public static class ModConfig
     {
         ClientConfig = new ModConfigData();
         IsConfigLoaded = true;
-    }
-
-    /// <summary>
-    /// Creates and saves a default config file to the specified path
-    /// </summary>
-    /// <param name="configPath">Path where to create the config file</param>
-    private static void CreateDefaultConfigFile(string configPath)
-    {
-        try
-        {
-            SaveConfig(configPath);
-            ModLogger.Info($"Created default config file at {configPath}");
-        }
-        catch (Exception ex)
-        {
-            ModLogger.Warning($"Failed to create default config file at {configPath}: {ex.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Migrates config backup files from legacy directory to new directory
-    /// </summary>
-    /// <param name="legacyDir">Legacy config directory path</param>
-    /// <param name="newDir">New config directory path</param>
-    private static void MigrateBackupFiles(string legacyDir, string newDir)
-    {
-        try
-        {
-            var backupFiles = Directory.GetFiles(legacyDir, $"{ConfigBackupPrefix}*.json");
-            int migratedCount = 0;
-
-            foreach (var legacyBackupFile in backupFiles)
-            {
-                var fileName = Path.GetFileName(legacyBackupFile);
-                var newBackupFile = Path.Combine(newDir, fileName);
-
-                // Only migrate if destination doesn't exist
-                if (!File.Exists(newBackupFile))
-                {
-                    File.Move(legacyBackupFile, newBackupFile);
-                    migratedCount++;
-                    ModLogger.DebugLog($"Migrated backup file: {fileName}");
-                }
-                else
-                {
-                    // Remove duplicate from legacy location
-                    File.Delete(legacyBackupFile);
-                    ModLogger.DebugLog($"Removed duplicate backup file from legacy location: {fileName}");
-                }
-            }
-
-            if (migratedCount > 0)
-            {
-                ModLogger.Info($"Migrated {migratedCount} config backup files to new location");
-            }
-        }
-        catch (Exception ex)
-        {
-            ModLogger.Warning($"Failed to migrate backup files: {ex.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Creates a backup of the current config file before migration
-    /// </summary>
-    private static void CreateConfigBackup(string configPath, string fromVersion)
-    {
-        try
-        {
-            // Also check backup file size to prevent abuse
-            var sourceInfo = new FileInfo(configPath);
-            if (sourceInfo.Length > MaxConfigFileSize)
-            {
-                ModLogger.Warning($"Skipping backup creation - source file too large ({sourceInfo.Length} bytes)");
-                return;
-            }
-
-            var backupPath = Path.Combine(
-                Path.GetDirectoryName(configPath),
-                $"{ConfigBackupPrefix}{fromVersion}.json"
-            );
-
-            File.Copy(configPath, backupPath, overwrite: true);
-            ModLogger.Info($"Created config backup: {Path.GetFileName(backupPath)}");
-        }
-        catch (Exception e)
-        {
-            ModLogger.Warning($"Failed to create config backup: {e.Message}");
-        }
     }
 
     /// <summary>
@@ -426,7 +426,6 @@ public static class ModConfig
 
         // Track if any validation methods make changes
         configChanged |= ValidateRangeOption();
-        configChanged |= ValidateVersion();
 
         // Save config if any changes were made during validation
         if (configChanged || saveAlways)
@@ -464,21 +463,6 @@ public static class ModConfig
             return true; // Config was modified
         }
 
-        return false; // No changes made
-    }
-
-    /// <summary>
-    /// Validates and corrects the version field.
-    /// </summary>
-    /// <returns>True if the config was modified, false otherwise</returns>
-    private static bool ValidateVersion()
-    {
-        if (string.IsNullOrEmpty(ClientConfig.version))
-        {
-            ModLogger.Warning("Config missing version field, setting to current version");
-            ClientConfig.version = ConfigVersioning.CurrentVersion;
-            return true; // Config was modified
-        }
         return false; // No changes made
     }
 
@@ -525,82 +509,6 @@ public static class ModConfig
     }
 
     /// <summary>
-    /// Safely deserialize config JSON with additional error handling
-    /// </summary>
-    /// <param name="configJson">JSON string to deserialize</param>
-    /// <returns>Deserialized ModConfigData or null if failed</returns>
-    private static ModConfigData SafeDeserializeConfig(string configJson)
-    {
-        try
-        {
-            // Rename fields for configs created before field renames were introduced
-            configJson = ConfigVersioning.PreprocessConfigJson(configJson);
-
-            // Use JsonConvert with strict settings for security
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.None,
-                MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                Error = (sender, args) =>
-                {
-                    ModLogger.Warning($"JSON deserialization warning: {args.ErrorContext.Error.Message}");
-                    args.ErrorContext.Handled = true;
-                }
-            };
-
-            return JsonConvert.DeserializeObject<ModConfigData>(configJson, settings);
-        }
-        catch (JsonException e)
-        {
-            ModLogger.Error($"JSON deserialization failed: {e.Message}", e);
-            return null;
-        }
-        catch (Exception e)
-        {
-            ModLogger.Error($"Unexpected error during config deserialization: {e.Message}", e);
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// Migrates config files from the legacy Config subdirectory to the mod assembly directory (v2.4.0+)
-    /// </summary>
-    private static void MigrateConfigLocation()
-    {
-        var legacyConfigDir = ModPathManager.GetLegacyConfigPath();
-        var newConfigDir = ModPathManager.GetConfigPath();
-
-        // If legacy config directory doesn't exist, no migration needed
-        if (!Directory.Exists(legacyConfigDir))
-        {
-            return;
-        }
-
-        var legacyConfigFile = GetLegacyConfigFilePath();
-        var newConfigFile = GetConfigFilePath();
-
-        try
-        {
-            // Check if we have a legacy config file to migrate from
-            if (File.Exists(legacyConfigFile))
-            {
-                MigrateLegacyConfigFile(legacyConfigFile, newConfigFile);
-            }
-
-            // Migrate all backup files
-            MigrateBackupFiles(legacyConfigDir, newConfigDir);
-
-            // Clean up empty legacy config directory
-            CleanupLegacyDirectory(legacyConfigDir);
-        }
-        catch (Exception ex)
-        {
-            ModLogger.Warning($"Failed to migrate config files from legacy location: {ex.Message}");
-        }
-    }
-
-    /// <summary>
     /// Renames a pre-v3.2.0 "config.json" to the current "modconfig.json" filename (v3.2.0+). If both
     /// files already exist, the old one is renamed aside so its values aren't lost.
     /// </summary>
@@ -636,158 +544,5 @@ public static class ModConfig
         {
             ModLogger.Warning($"Failed to rename config file from {LegacyConfigFileName}: {ex.Message}");
         }
-    }
-
-    /// <summary>
-    /// Migrates a single legacy config file to the new location
-    /// </summary>
-    /// <param name="legacyConfigFile">Path to legacy config file</param>
-    /// <param name="newConfigFile">Path to new config file location</param>
-    private static void MigrateLegacyConfigFile(string legacyConfigFile, string newConfigFile)
-    {
-        ModLogger.Info("Migrating config values from legacy Config subdirectory");
-
-        var legacyConfig = LoadLegacyConfigForMigration(legacyConfigFile);
-        if (legacyConfig == null)
-        {
-            // Simple file move if config can't be parsed
-            if (!File.Exists(newConfigFile))
-            {
-                File.Move(legacyConfigFile, newConfigFile);
-                ModLogger.Info($"Moved legacy config file to {newConfigFile}");
-            }
-            return;
-        }
-
-        var newConfig = LoadExistingNewConfig(newConfigFile);
-        var mergedConfig = MergeConfigs(legacyConfig, newConfig);
-
-        // Create backup of legacy config before deletion
-        CreateConfigBackup(legacyConfigFile, "legacy-migration");
-
-        // Save merged config to new location
-        SaveMergedConfig(mergedConfig, newConfigFile);
-
-        // Remove legacy config file after successful migration
-        File.Delete(legacyConfigFile);
-
-        ModLogger.Info($"Successfully migrated config values from legacy location to {newConfigFile}");
-    }
-
-    /// <summary>
-    /// Loads legacy config for migration purposes
-    /// </summary>
-    /// <param name="legacyConfigFile">Path to legacy config file</param>
-    /// <returns>Loaded config or null if failed</returns>
-    private static ModConfigData LoadLegacyConfigForMigration(string legacyConfigFile)
-    {
-        try
-        {
-            if (!ValidateConfigFileSize(legacyConfigFile))
-            {
-                ModLogger.Warning("Legacy config file is too large to migrate safely, using simple file move.");
-                return null;
-            }
-
-            var legacyConfigJson = ReadConfigFile(legacyConfigFile);
-            if (legacyConfigJson == null)
-            {
-                ModLogger.Warning("Failed to load legacy config for migration, using simple file move");
-                return null;
-            }
-
-            var legacyConfig = SafeDeserializeConfig(legacyConfigJson);
-            if (legacyConfig == null)
-            {
-                ModLogger.Warning("Failed to load legacy config for migration, using simple file move");
-            }
-
-            return legacyConfig;
-        }
-        catch (Exception ex)
-        {
-            ModLogger.Warning($"Error reading legacy config for migration: {ex.Message}");
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// Loads existing config from new location if it exists
-    /// </summary>
-    /// <param name="newConfigFile">Path to new config file</param>
-    /// <returns>Loaded config or null if doesn't exist or failed</returns>
-    private static ModConfigData LoadExistingNewConfig(string newConfigFile)
-    {
-        if (!File.Exists(newConfigFile))
-        {
-            return null;
-        }
-
-        try
-        {
-            if (!ValidateConfigFileSize(newConfigFile))
-            {
-                ModLogger.Warning("Existing config at new location is too large to read safely during migration.");
-                return null;
-            }
-
-            var newConfigJson = ReadConfigFile(newConfigFile);
-            if (newConfigJson == null)
-            {
-                return null;
-            }
-
-            return SafeDeserializeConfig(newConfigJson);
-        }
-        catch (Exception ex)
-        {
-            ModLogger.Warning($"Error reading existing config during migration: {ex.Message}");
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// Saves merged config to the new location with size validation
-    /// </summary>
-    /// <param name="mergedConfig">Config to save</param>
-    /// <param name="newConfigFile">Path to save the config</param>
-    private static void SaveMergedConfig(ModConfigData mergedConfig, string newConfigFile)
-    {
-        // Temporarily set ClientConfig so SaveConfig can serialize it
-        ClientConfig = mergedConfig;
-        SaveConfig(newConfigFile);
-    }
-
-    /// <summary>
-    /// Cleans up empty legacy config directory
-    /// </summary>
-    /// <param name="legacyConfigDir">Path to legacy config directory</param>
-    private static void CleanupLegacyDirectory(string legacyConfigDir)
-    {
-        if (Directory.Exists(legacyConfigDir) && !Directory.EnumerateFileSystemEntries(legacyConfigDir).Any())
-        {
-            Directory.Delete(legacyConfigDir);
-            ModLogger.Info("Removed empty legacy Config directory");
-        }
-    }
-
-    /// <summary>
-    /// Merges legacy config with new config, prioritizing legacy values unless special overrides apply
-    /// </summary>
-    /// <param name="legacyConfig">Config from legacy location</param>
-    /// <param name="newConfig">Config from new location (can be null)</param>
-    /// <returns>Merged configuration</returns>
-    private static ModConfigData MergeConfigs(ModConfigData legacyConfig, ModConfigData newConfig)
-    {
-        var mergedConfig = new ModConfigData
-        {
-            version = ConfigVersioning.CurrentVersion,
-            range = legacyConfig.range,
-            allowPushToAlliedVehicles = newConfig.allowPushToAlliedVehicles,
-            isDebug = legacyConfig.isDebug,
-            metaDescription = legacyConfig.metaDescription
-        };
-
-        return mergedConfig;
     }
 }

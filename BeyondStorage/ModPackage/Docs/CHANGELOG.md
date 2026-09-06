@@ -63,7 +63,7 @@ __🚀 Released v3.1.1__
 
 
 - 📜 TODO: 
-- 📜 TODO: Ship a differently named modconfig.json so user custom settings aren't clobbered when installing a new version.
+- 📜 TODO: 
 - 📜 TODO: Fix iterating through same sources. There must be a pruning condition.
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
@@ -96,6 +96,7 @@ __🚀 Released v__
 __🚧 WIP v3.2.x__
 - ♻ Fixed: Useables window no longer appears when turning in quests
 - ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
+- ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
