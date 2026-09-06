@@ -17,6 +17,8 @@ If you can do it using items in your backpack, then you can now also do it by in
 
 *Consume happens automatically whenever you do anything that needs items (crafting, repairing, refuelling, etc.) — it consumes from your extended inventory without any extra action from you.*
 
+![Consume On/Off radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
+
 ### Organise
 You can easily Push to and Pull from any sources to nearby crates, for excellent inventory management.
 
@@ -27,6 +29,8 @@ You can easily Push to and Pull from any sources to nearby crates, for excellent
 2\) <span style="text-decoration: underline;">**Smart Pull**</span>
 - top up your **Load Out slots (locked slots)** - works with backpack, vehicles, drones
 
+![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
+
 ### Use
 <span style="text-decoration: underline;">**Heal, Eat, Drink**</span>
 - use your best healing, food, and drink items directly from the storage network, via the Useables window, using hotkeys or a double-click
@@ -34,6 +38,8 @@ You can easily Push to and Pull from any sources to nearby crates, for excellent
 *Use is explicitly from the Useables window for one-click healing, food, and drink items.*
 
 **Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
+
+![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
 
 All these functions explained in detail in the [full documentation](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md).
 
@@ -109,4 +115,4 @@ Players without the mod play vanilla, with no access to the extended inventory f
 ## License
 This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/LICENSE.txt) for details.
 
-*** MOD DISTRO SITE FRONT PAGE aka MOD QUICK START QUICK_START.md EOF ***
+*** MOD DISTRO SITE FRONT PAGE aka MOD QUICK_START.md EOF ***
