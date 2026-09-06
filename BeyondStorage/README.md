@@ -2,7 +2,7 @@
 
 The full documentation is directly maintained as part of the mod package source files.
 
-➡️ [View full documentation](ModPackage/README.md)
+➡️ [View full documentation](ModPackage/Docs/README.md)
 
 ---
 

@@ -57,6 +57,9 @@
     <Exec Command="python $(MDtoBBCodeDir)\md_to_bbcode.py -i &quot;$(ModPackageDocReadMeDir)\README.md&quot; -o &quot;$(ModPackageDocReadMeDir)\README.bbcode.txt&quot;" ContinueOnError="false" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
       <Output TaskParameter="ExitCode" PropertyName="ConvertMDtoBBCodeChecksExitCode" />
     </Exec>
+    <Exec Command="python $(MDtoBBCodeDir)\md_to_bbcode.py -i &quot;$(ModPackageDocReadMeDir)\QUICK_START.md&quot; -o &quot;$(ModPackageDocReadMeDir)\QUICK_START.bbcode.txt&quot;" ContinueOnError="false" WorkingDirectory="$(ProjectDir)" StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
+      <Output TaskParameter="ExitCode" PropertyName="ConvertMDtoBBCodeChecksExitCode" />
+    </Exec>
   </Target>
   <Target Name="DeployMod" AfterTargets="Build" DependsOnTargets="ConvertMDtoBBCode">
     <Message Text="Executing mod deployment task" Importance="High" />
@@ -335,6 +338,7 @@
     <None Include="app.config" />
     <None Include="ModPackage\modconfig.json" />
     <None Include="ModPackage\Docs\CHANGELOG.md" />
+    <None Include="ModPackage\Docs\QUICK_START.md" />
     <None Include="ModPackage\Docs\README.md" />
     <None Include="packages.config" />
     <None Include="README.md" />

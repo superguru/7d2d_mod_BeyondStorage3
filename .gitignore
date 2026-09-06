@@ -10,7 +10,7 @@ Troubleshooting/
 ModPackage.WIP/
 
 # Generated files
-README.bbcode.txt
+*.bbcode.txt
 
 # Code quality check files left from the code quality check Python scripts
 code_check_results*.txt

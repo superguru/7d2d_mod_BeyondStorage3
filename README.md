@@ -40,7 +40,7 @@ The compiled and packaged mod is available from:
 
 The mod can be configured by editing the `modconfig.json` file in the `Mods/BeyondStorage3` folder.
 
-Please refer to the mod [README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/README.md) file for details of the configuration options.
+Please refer to the mod [README.md](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md) file for details of the configuration options.
 
 ## License
 

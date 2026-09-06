@@ -95,7 +95,7 @@ __🚀 Released v__
 
 __🚧 WIP v3.2.x__
 - ♻ Fixed: Useables window no longer appears when turning in quests
-- ✨ Changed: updated documentation with some better formatting and clearer information
+- ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
