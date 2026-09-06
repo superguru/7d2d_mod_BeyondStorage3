@@ -39,7 +39,7 @@ You can easily Push to and Pull from any sources to nearby crates, for excellent
 
 **Quick start:** Install, open your Backpack by itself, and look for the **Useables** window next to it — it shows your best healing, food, and drink items, pulled from your extended inventory.
 
-![Locked Backpack Slots](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/locked_slots_backpack.jpg)
+![Useables window](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/useables_window.jpg)
 
 All these functions explained in detail in the [full documentation](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md).
 
