@@ -37,6 +37,11 @@ You can easily Push to and Pull from any sources to nearby crates, for excellent
 
 All these functions explained in detail in the [full documentation](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/BeyondStorage/ModPackage/Docs/README.md).
 
+## Why choose this mod?
+I would recommend Beyond Storage 3 over other **"remote crafting"** type mods, due to speed, stability, functionality, and code quality.
+
+The UI and game functionality integration is exceptional, and the mod is very stable and lightning fast.
+
 ## What to download
 This version is for 7 Days to Die v3, which is why the mod is called 'Beyond Storage 3'.
 
@@ -72,10 +77,25 @@ You can also check the Mod Compatibility information in the [README.md](https://
 - [How to add Mods to your 7D2D game](https://www.nexusmods.com/7daystodie/articles/889)
 - [Basic troubleshooting for mods](https://www.nexusmods.com/7daystodie/articles/787)
 
-## Why choose this mod?
-I would recommend Beyond Storage 3 over other "craft from container" type mods, due to speed, stability, functionality, and code quality.
+## 🌐 Translations
+- 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
 
-The UI and game functionality integration is exceptional, and the mod is very stable and lightning fast.
+## ❓ FAQ
+
+**Does this work in single-player?**
+Yes. Beyond Storage 3 is a Harmony mod and works in both single-player and multiplayer.
+
+**Can I disable the mod temporarily without uninstalling?**
+Yes. In your mod manager, disable Beyond Storage 3 and reload the game. Re-enable and reload to bring it back. No save game changes are required either way.
+
+**Does this affect save game performance or load times?**
+The mod caches nearby storage items in memory and refreshes the cache when storage changes. It does not modify your save file, and initial world load is unaffected.
+
+**Will my existing saves be broken if I add or remove this mod?**
+No. The mod does not modify save game data, so you can add or remove it at any time without affecting existing saves.
+
+**What happens if some players in multiplayer have the mod and others don't?**
+Players without the mod play vanilla, with no access to the extended inventory features. Players with the mod see the extended inventory for items their client knows about. All players running the mod must use the same version — the mod enforces this on connect.
 
 ## Credits
 - [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake for inspiring us all

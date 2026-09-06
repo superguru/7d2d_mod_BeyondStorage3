@@ -215,26 +215,6 @@ This is available at the game loading screen, and also in-game when you press \<
 1. In the config file, true means On and false means Off
 2. Previous versions of the mod had other config options. Their usage was self-explanatory from their names.
 
-## 🌐 Translations
-- 🇷🇺 Russian: [Beyond Storage 3_rus](https://www.nexusmods.com/7daystodie/mods/11244)
-
-## ❓ FAQ
-
-**Does this work in single-player?**
-Yes. Beyond Storage 3 is a Harmony mod and works in both single-player and multiplayer.
-
-**Can I disable the mod temporarily without uninstalling?**
-Yes. In your mod manager, disable Beyond Storage 3 and reload the game. Re-enable and reload to bring it back. No save game changes are required either way.
-
-**Does this affect save game performance or load times?**
-The mod caches nearby storage items in memory and refreshes the cache when storage changes. It does not modify your save file, and initial world load is unaffected.
-
-**Will my existing saves be broken if I add or remove this mod?**
-No. The mod does not modify save game data, so you can add or remove it at any time without affecting existing saves.
-
-**What happens if some players in multiplayer have the mod and others don't?**
-Players without the mod play vanilla, with no access to the extended inventory features. Players with the mod see the extended inventory for items their client knows about. All players running the mod must use the same version — the mod enforces this on connect.
-
 ## 🤝 Mod compatibility list
 
 ### ✅ Considered compatible (V3):
