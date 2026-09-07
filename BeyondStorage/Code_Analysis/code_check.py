@@ -19,9 +19,6 @@ import os
 import sys
 from typing import List, Dict, Tuple
 
-# Configure UTF-8 output
-sys.stdout.reconfigure(encoding='utf-8')
-
 # Import our modular components
 from models import Issue, CheckResult
 from utils import clean_file_path, find_cs_files
@@ -374,4 +371,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # Enforce UTF-8 on stdout/stderr
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
     main()
