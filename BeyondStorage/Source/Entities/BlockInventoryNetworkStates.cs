@@ -17,7 +17,7 @@ internal static class BlockInventoryNetworkStates
     public static void Init()
     {
         s_methodStats.Clear();
-        BlockConsumeStatePersistence.LoadDisabledBlocks(DisabledBlocks);
+        BlockInventoryNetworkStatePersistence.LoadDisabledBlocks(DisabledBlocks);
     }
 
     public static void Cleanup()
@@ -44,7 +44,7 @@ internal static class BlockInventoryNetworkStates
         }
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Block {block} consume turned off");
+        ModLogger.DebugLog($"{d_MethodName}: Block {block} inventory network turned off");
 #endif
 
         if (IsMultiplayerClient())
@@ -71,7 +71,7 @@ internal static class BlockInventoryNetworkStates
         }
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Block {block} consume turned on");
+        ModLogger.DebugLog($"{d_MethodName}: Block {block} inventory network turned on");
 #endif
 
         if (IsMultiplayerClient())
@@ -96,13 +96,13 @@ internal static class BlockInventoryNetworkStates
     }
 
     // Called on server when it receives a change request from a client
-    internal static void ApplyServerSideChange(Vector3i position, bool isConsumeOff)
+    internal static void ApplyServerSideChange(Vector3i position, bool isDisabledForInventoryNetwork)
     {
 #if DEBUG
         const string d_MethodName = nameof(ApplyServerSideChange);
-        ModLogger.DebugLog($"{d_MethodName}: pos {position}, isConsumeOff {isConsumeOff}");
+        ModLogger.DebugLog($"{d_MethodName}: pos {position}, isDisabledForInventoryNetwork {isDisabledForInventoryNetwork}");
 #endif
-        if (isConsumeOff)
+        if (isDisabledForInventoryNetwork)
         {
             DisabledBlocks.TryAdd(position, 0);
         }
@@ -128,7 +128,7 @@ internal static class BlockInventoryNetworkStates
 
     private static void OnBlockInventoryNetworkStateChanged()
     {
-        BlockConsumeStatePersistence.SaveDisabledBlocks(DisabledBlocks);
+        BlockInventoryNetworkStatePersistence.SaveDisabledBlocks(DisabledBlocks);
         BroadcastInventoryNetworkStatesToClients();
         InvalidateLocalState();
     }

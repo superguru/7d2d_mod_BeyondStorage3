@@ -2,6 +2,9 @@
 
 ## History
 
+__🚀 Released v3.2.4 (Discord only)__
+- ✨ Changed: Disabling a container/block will now remove it from the inventory network, so Pull/Pull/Consume/Use will not see it
+
 __🚀 Released v3.2.3 (Discord only)__
 - ♻ Fixed: Useables window no longer appears on Combine Station screen
 - ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
@@ -101,6 +104,7 @@ __🚀 Released v__
 __🚧 WIP v3.2.x__
 - ♻ Fixed: Useables window no longer appears when turning in quests
 - ♻ Fixed: Useables window no longer appears on Combine Station screen
+- ✨ Changed: Disabling a container/block will now remove it from the inventory network, so Pull/Pull/Consume/Use will not see it
 - ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
 - ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...

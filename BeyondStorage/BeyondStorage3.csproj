@@ -90,7 +90,7 @@
     <Compile Include="Source\Diagnostics\DebugTools.cs" />
     <Compile Include="Source\Entities\BlockInventoryNetworkStates.cs" />
     <Compile Include="Source\Entities\EntityHandler.cs" />
-    <Compile Include="Source\Game\Files\BlockConsumeStatePersistence.cs" />
+    <Compile Include="Source\Game\Files\BlockInventoryNetworkStatePersistence.cs" />
     <Compile Include="Source\Game\Files\GamePathProvider.cs" />
     <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesWindow.cs" />
     <Compile Include="Source\Harmony\Components\XUiC_BeyondStorage_UseablesGrid.cs" />

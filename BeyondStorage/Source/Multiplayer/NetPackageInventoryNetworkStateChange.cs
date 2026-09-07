@@ -10,14 +10,14 @@ namespace BeyondStorage.Multiplayer;
 public class NetPackageInventoryNetworkStateChange : NetPackage
 {
     private Vector3i _position;
-    private bool _isConsumeOff;
+    private bool _isDisabledForInventoryNetwork;
 
     public override NetPackageDirection PackageDirection => NetPackageDirection.ToServer;
 
-    public NetPackageInventoryNetworkStateChange Setup(Vector3i position, bool isConsumeOff)
+    public NetPackageInventoryNetworkStateChange Setup(Vector3i position, bool isDisabledForInventoryNetwork)
     {
         _position = position;
-        _isConsumeOff = isConsumeOff;
+        _isDisabledForInventoryNetwork = isDisabledForInventoryNetwork;
         return this;
     }
 
@@ -26,18 +26,18 @@ public class NetPackageInventoryNetworkStateChange : NetPackage
         base.write(_writer);
         var writer = (BinaryWriter)_writer;
         StreamUtils.Write(writer, _position);
-        writer.Write(_isConsumeOff);
+        writer.Write(_isDisabledForInventoryNetwork);
 #if DEBUG
-        ModLogger.DebugLog($"NetPackageConsumeStateChange write: pos {_position}, isConsumeOff {_isConsumeOff}");
+        ModLogger.DebugLog($"NetPackageInventoryNetworkStateChange write: pos {_position}, isDisabledForInventoryNetwork {_isDisabledForInventoryNetwork}");
 #endif
     }
 
     public override void read(PooledBinaryReader reader)
     {
         _position = StreamUtils.ReadVector3i(reader);
-        _isConsumeOff = reader.ReadBoolean();
+        _isDisabledForInventoryNetwork = reader.ReadBoolean();
 #if DEBUG
-        ModLogger.DebugLog($"NetPackageConsumeStateChange read: pos {_position}, isConsumeOff {_isConsumeOff}");
+        ModLogger.DebugLog($"NetPackageInventoryNetworkStateChange read: pos {_position}, isDisabledForInventoryNetwork {_isDisabledForInventoryNetwork}");
 #endif
     }
 
@@ -47,7 +47,7 @@ public class NetPackageInventoryNetworkStateChange : NetPackage
         {
             return;
         }
-        BlockInventoryNetworkStates.ApplyServerSideChange(_position, _isConsumeOff);
+        BlockInventoryNetworkStates.ApplyServerSideChange(_position, _isDisabledForInventoryNetwork);
     }
 
     public override int GetLength()

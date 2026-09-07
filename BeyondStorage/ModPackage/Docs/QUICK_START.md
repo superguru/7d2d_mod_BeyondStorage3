@@ -17,7 +17,7 @@ If you can do it using items in your backpack, then you can now also do it by in
 
 *Consume happens automatically whenever you do anything that needs items (crafting, repairing, refuelling, etc.) — it consumes from your extended inventory without any extra action from you.*
 
-![Consume On/Off radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
+![Enable/Disable Inventory Network radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
 
 ### Organise
 You can easily Push to and Pull from any sources to nearby crates, for excellent inventory management.

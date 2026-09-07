@@ -187,19 +187,10 @@ internal static class TileEntityItemDiscovery
 
         if (BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(workstation.ToWorldPos()))
         {
-            ProcessWorkstationPushTargetOnly(workstation, distance, state);
             return;
         }
 
         ProcessWorkstationItems(workstation, distance, state);
-    }
-
-    private static void ProcessWorkstationPushTargetOnly(TileEntityWorkstation workstation, float distance, TileEntityProcessingState state)
-    {
-        var context = state.Context;
-        var sourceAdapter = StorageSourceAdapterFactory.CreateWorkstationStorageSourceAdapter(context, workstation);
-        context.Sources.DataStore.RegisterPushTargetOnly(sourceAdapter, distance);
-        state.ValidWorkstationsFound++;
     }
 
     private static bool ShouldProcessWorkstation(TileEntityWorkstation workstation)
@@ -246,22 +237,10 @@ internal static class TileEntityItemDiscovery
 
         if (BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(tileEntity.ToWorldPos()))
         {
-            ProcessLootablePushTargetOnly(lootable, tileEntity, distance, state);
             return;
         }
 
         ProcessLootableItems(lootable, tileEntity, distance, state);
-    }
-
-    private static void ProcessLootablePushTargetOnly(ITileEntityLootable lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
-    {
-        var context = state.Context;
-        var sourceAdapter = StorageSourceAdapterFactory.CreateLootableStorageSourceAdapter(context, lootable);
-
-        context.Sources.DataStore.RegisterPushTargetOnly(sourceAdapter, distance);
-
-        state.ValidLootablesFound++;
-        state.ValidContainersFound++;
     }
 
     private static bool ShouldProcessLootable(ITileEntityLootable lootable)

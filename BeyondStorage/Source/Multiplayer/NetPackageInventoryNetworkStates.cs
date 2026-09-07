@@ -30,7 +30,7 @@ public class NetPackageInventoryNetworkStates : NetPackage
             StreamUtils.Write(writer, pos);
         }
 #if DEBUG
-        ModLogger.DebugLog($"NetPackageConsumeStates write: {_disabledBlocks.Count} disabled blocks");
+        ModLogger.DebugLog($"NetPackageInventoryNetworkStates write: {_disabledBlocks.Count} disabled blocks");
 #endif
     }
 
@@ -43,7 +43,7 @@ public class NetPackageInventoryNetworkStates : NetPackage
             _disabledBlocks.Add(StreamUtils.ReadVector3i(reader));
         }
 #if DEBUG
-        ModLogger.DebugLog($"NetPackageConsumeStates read: {count} disabled blocks");
+        ModLogger.DebugLog($"NetPackageInventoryNetworkStates read: {count} disabled blocks");
 #endif
     }
 

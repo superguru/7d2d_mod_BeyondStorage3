@@ -17,7 +17,7 @@ Items that exist in any of these places are now added to your Backpack and Toolb
 
 This is the order in which items are Consumed from, too, so Backpack and Toolbelt items are used first, just like in the base game, and after that Drones, then Collectors, etc.
 
-![Player Crafted Wall Safe Consume Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
+![Player Crafted Wall Safe Inventory Network Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
 An example of a player crafted storage, in this case a Wall Safe.
 
 ## Consume from the extended inventory
@@ -25,7 +25,7 @@ Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks,
 ![Consume from Useful Drone](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_from_useful_drone.jpg)
 Items from the source slots with the least items are used first.
 You can turn off Consume for specific blocks, like for a Wooden Crate or a Locker using the radial menu.
-![Consume On/Off radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
+![Enable/Disable Inventory Network radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
 
 ## Smart Push to surrounding storage
 You can bulk move all items from any storage to the surrounding storage, providing there is already an item of that type present in that storage.
@@ -148,7 +148,7 @@ Also, Land Claim Blocks prevent enemy damage to your Ally group's blocks.
 ### So what can you do to prevent your friend from using items in "your" storage?
 1. Do not ally with that player. Allies **share everything** except Vehicles and Drones.
 2. Move the storage out of range of your Ally. But if your friend runs over to your storage, they would come in range of it, and then be able to use the items inside. This is just a sort of general suggestion.
-3. You can turn Consume Off or On for a storage. This will mean anyone in your Ally group can still Smart Push or Pull to and from it, but no-one, including yourself, can Consume from it.
+3. You can Disable a storage from the Inventory Network. This removes it from the extended inventory entirely, so no-one — including yourself — can Consume from it, or Smart Push or Pull to and from it.
 
 ### Locking your storage
 You can lock your storage **with a PIN**. Then only someone with the PIN can open the storage physically, and the same goes for their extended inventory.

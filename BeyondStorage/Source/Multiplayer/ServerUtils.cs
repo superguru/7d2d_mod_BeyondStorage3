@@ -20,7 +20,7 @@ public static class ServerUtils
         ModLogger.DebugLog($"client {data.ClientInfo}; isLocalPlayer {data.IsLocalPlayer}; entityId {data.EntityId}; respawn type {data.RespawnType}; pos {data.Position}");
 
         SendCurrentLockedDict(data.ClientInfo);
-        SendCurrentConsumeStates(data.ClientInfo);
+        SendCurrentInventoryNetworkStates(data.ClientInfo);
 
         // Server config sync is always on as of 3.1.1 — the serverSyncConfig toggle was removed.
         data.ClientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageBeyondStorageConfig>());
@@ -41,7 +41,7 @@ public static class ServerUtils
                data.ClientInfo != null;
     }
 
-    private static void SendCurrentConsumeStates(ClientInfo client)
+    private static void SendCurrentInventoryNetworkStates(ClientInfo client)
     {
         if (!IsValidDestination(client.entityId))
         {

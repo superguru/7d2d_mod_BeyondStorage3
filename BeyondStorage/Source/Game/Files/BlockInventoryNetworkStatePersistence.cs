@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using StructuredText.StructuredText;
 
 #if DEBUG
@@ -7,18 +7,18 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Game.Files;
 
-internal static class BlockConsumeStatePersistence
+internal static class BlockInventoryNetworkStatePersistence
 {
     private static readonly object s_lock = new();
 
     private const int FileVersion = 0x0304;
-    private const string BlockConsumeOffFile = "bs_disabled_blocks.dat";
+    private const string BlockDisabledBlocksFile = "bs_disabled_blocks.dat";
     private const string BlockRecordTag = "v";
     private const string BlockFieldName = "pos";
 
-    internal static string GetBlockConsumeStateFilePath()
+    internal static string GetBlockInventoryNetworkStateFilePath()
     {
-        return GamePathProvider.GetFullSaveGamePathName(BlockConsumeOffFile);
+        return GamePathProvider.GetFullSaveGamePathName(BlockDisabledBlocksFile);
     }
 
     internal static void LoadDisabledBlocks(ConcurrentDictionary<Vector3i, byte> disabledBlocks)
@@ -31,7 +31,7 @@ internal static class BlockConsumeStatePersistence
             disabledBlocks.Clear();
 
             var blockFile = new StructuredFile();
-            string fileName = GetBlockConsumeStateFilePath();
+            string fileName = GetBlockInventoryNetworkStateFilePath();
 
             blockFile.ReadFile(fileName);
             foreach (var record in blockFile.GetRecordsByTag(BlockRecordTag))
@@ -72,7 +72,7 @@ internal static class BlockConsumeStatePersistence
 #endif
         lock (s_lock)
         {
-            string fileName = GetBlockConsumeStateFilePath();
+            string fileName = GetBlockInventoryNetworkStateFilePath();
             if (fileName == null)
             {
 #if DEBUG

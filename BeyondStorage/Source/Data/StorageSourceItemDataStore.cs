@@ -12,8 +12,7 @@ internal class StorageSourceItemDataStore
     private readonly Dictionary<IStorageSource, List<ItemStack>> _itemStacksBySource = [];
     private readonly Dictionary<ItemStack, IStorageSource> _sourcesByItemStack = new(ItemStackReferenceComparer.Instance);
 
-    // Consume-eligible sources only. Sources registered via RegisterPushTargetOnly are intentionally
-    // absent — they must not appear in item count or HasItem checks used by consume operations.
+    // Consume-eligible sources only.
     private readonly Dictionary<Type, List<IStorageSource>> _sourcesByType = [];
     private readonly FilterStacksStore _collectionStore = new();
     private readonly TargetDistanceStore _distanceStore = new();
@@ -119,57 +118,12 @@ internal class StorageSourceItemDataStore
     }
 
     /// <summary>
-    /// Registers a storage source as a push/pull target only, without registering its items for
-    /// consume operations. Use this for blocks with consume turned off — their items must not
-    /// appear in item counts or HasItem checks, but they should still be reachable as destinations
-    /// for Smart Push and sources for Smart Pull.
-    /// </summary>
-    /// <remarks>
-    /// Intentionally does NOT populate <c>_sourcesByType</c>, <c>_itemStacksBySource</c>,
-    /// <c>_sourcesByItemStack</c>, or <c>_collectionStore</c>. Only <c>_distanceStore</c> and
-    /// <c>_registeredSources</c> are updated. This means sources registered here will not be
-    /// returned by <see cref="GetSourcesByType"/> or any item count / HasItem query.
-    /// </remarks>
-    internal void RegisterPushTargetOnly(IStorageSource source, float distance)
-    {
-#if DEBUG
-        const string d_MethodName = nameof(RegisterPushTargetOnly);
-#endif
-        if (!ValidateSource(source))
-        {
-            return;
-        }
-
-        if (source is not IStorageTarget target)
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Source '{TypeNames.GetName(source.GetSourceType())}' is not an IStorageTarget, skipping");
-#endif
-            return;
-        }
-
-        if (!_registeredSources.Add(source))
-        {
-#if DEBUG
-            ModLogger.DebugLog($"{d_MethodName}: Source '{TypeNames.GetName(source.GetSourceType())}' already registered, skipping");
-#endif
-            return;
-        }
-
-#if DEBUG
-        //ModLogger.DebugLog($"{d_MethodName}: Registering '{TypeNames.GetName(source.GetSourceType())}' as push target only");
-#endif
-        var slotData = target.GetSlotData();
-        RegisterTargetableSource(source, target, distance, slotData, registerConsumableStacks: false);
-    }
-
-    /// <summary>
     /// Registers a source that is also a push target in a single pass through <see cref="SourceSlotData.AllSlots"/>.
     /// Consumable stack classification, all-items slot map, and pushable slot map are all built
     /// from the same iteration — no array is visited more than once.
     /// Slot maps are cloned per operation at query time, so classification only happens once at registration.
     /// </summary>
-    private void RegisterTargetableSource(IStorageSource source, IStorageTarget target, float distance, SourceSlotData slotData, bool registerConsumableStacks = true)
+    private void RegisterTargetableSource(IStorageSource source, IStorageTarget target, float distance, SourceSlotData slotData)
     {
         var items = slotData.AllSlots;
         var lockedSlots = slotData.LockedSlots;
@@ -190,7 +144,7 @@ internal class StorageSourceItemDataStore
             bool isPopulated = ItemX.IsPopulated(stack);
 
             // 1. Classify consumable (non-empty) and register for consume operations
-            if (registerConsumableStacks && isPopulated)
+            if (isPopulated)
             {
                 RegisterConsumableStack(source, stack);
             }
@@ -321,9 +275,6 @@ internal class StorageSourceItemDataStore
 
     /// <summary>
     /// Returns all consume-eligible sources of type <typeparamref name="T"/>.
-    /// Sources registered via <see cref="RegisterPushTargetOnly"/> (consume-off blocks) are
-    /// intentionally excluded — use <see cref="GetClosestStorageSources"/> to enumerate all
-    /// push/pull targets including consume-off blocks.
     /// </summary>
     public IReadOnlyList<IStorageSource> GetSourcesByType<T>() where T : class, IStorageSource
     {
