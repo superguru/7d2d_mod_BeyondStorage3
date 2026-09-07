@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using BeyondStorage.Entities;
 
 #if DEBUG
@@ -7,14 +7,14 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Multiplayer;
 
-public class NetPackageConsumeStateChange : NetPackage
+public class NetPackageInventoryNetworkStateChange : NetPackage
 {
     private Vector3i _position;
     private bool _isConsumeOff;
 
     public override NetPackageDirection PackageDirection => NetPackageDirection.ToServer;
 
-    public NetPackageConsumeStateChange Setup(Vector3i position, bool isConsumeOff)
+    public NetPackageInventoryNetworkStateChange Setup(Vector3i position, bool isConsumeOff)
     {
         _position = position;
         _isConsumeOff = isConsumeOff;
@@ -47,7 +47,7 @@ public class NetPackageConsumeStateChange : NetPackage
         {
             return;
         }
-        BlockConsumeStates.ApplyServerSideChange(_position, _isConsumeOff);
+        BlockInventoryNetworkStates.ApplyServerSideChange(_position, _isConsumeOff);
     }
 
     public override int GetLength()

@@ -88,7 +88,7 @@
     <Compile Include="Source\Data\StorageSourceAdapterFactory.cs" />
     <Compile Include="Source\Data\StorageTargetAdapter.cs" />
     <Compile Include="Source\Diagnostics\DebugTools.cs" />
-    <Compile Include="Source\Entities\BlockConsumeStates.cs" />
+    <Compile Include="Source\Entities\BlockInventoryNetworkStates.cs" />
     <Compile Include="Source\Entities\EntityHandler.cs" />
     <Compile Include="Source\Game\Files\BlockConsumeStatePersistence.cs" />
     <Compile Include="Source\Game\Files\GamePathProvider.cs" />
@@ -229,8 +229,8 @@
     <Compile Include="Source\Entities\WorkstationHandler.cs" />
     <Compile Include="Source\Game\WorldPlayerContext.cs" />
     <Compile Include="Source\Multiplayer\NetPackageBeyondStorageConfig.cs" />
-    <Compile Include="Source\Multiplayer\NetPackageConsumeStateChange.cs" />
-    <Compile Include="Source\Multiplayer\NetPackageConsumeStates.cs" />
+    <Compile Include="Source\Multiplayer\NetPackageInventoryNetworkStateChange.cs" />
+    <Compile Include="Source\Multiplayer\NetPackageInventoryNetworkStates.cs" />
     <Compile Include="Source\Multiplayer\NetPackageLockedTEs.cs" />
     <Compile Include="Source\Multiplayer\ServerUtils.cs" />
     <Compile Include="Source\Diagnostics\StackTraceProvider.cs" />

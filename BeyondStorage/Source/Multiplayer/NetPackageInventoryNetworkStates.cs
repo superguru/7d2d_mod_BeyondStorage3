@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using BeyondStorage.Entities;
 
@@ -8,13 +8,13 @@ using BeyondStorage.Infrastructure;
 
 namespace BeyondStorage.Multiplayer;
 
-public class NetPackageConsumeStates : NetPackage
+public class NetPackageInventoryNetworkStates : NetPackage
 {
     private List<Vector3i> _disabledBlocks = [];
 
     public override NetPackageDirection PackageDirection => NetPackageDirection.ToClient;
 
-    public NetPackageConsumeStates Setup(List<Vector3i> disabledBlocks)
+    public NetPackageInventoryNetworkStates Setup(List<Vector3i> disabledBlocks)
     {
         _disabledBlocks = disabledBlocks;
         return this;
@@ -53,7 +53,7 @@ public class NetPackageConsumeStates : NetPackage
         {
             return;
         }
-        BlockConsumeStates.ApplyFromServer(_disabledBlocks);
+        BlockInventoryNetworkStates.ApplyFromServer(_disabledBlocks);
     }
 
     public override int GetLength()

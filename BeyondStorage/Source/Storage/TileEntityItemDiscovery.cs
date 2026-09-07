@@ -135,7 +135,7 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
-        if (BlockConsumeStates.IsConsumeOff(collector.ToWorldPos()))
+        if (BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(collector.ToWorldPos()))
         {
             return;
         }
@@ -185,7 +185,7 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
-        if (BlockConsumeStates.IsConsumeOff(workstation.ToWorldPos()))
+        if (BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(workstation.ToWorldPos()))
         {
             ProcessWorkstationPushTargetOnly(workstation, distance, state);
             return;
@@ -244,7 +244,7 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
-        if (BlockConsumeStates.IsConsumeOff(tileEntity.ToWorldPos()))
+        if (BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(tileEntity.ToWorldPos()))
         {
             ProcessLootablePushTargetOnly(lootable, tileEntity, distance, state);
             return;

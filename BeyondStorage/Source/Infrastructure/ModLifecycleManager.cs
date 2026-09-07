@@ -18,7 +18,7 @@ public static class ModLifecycleManager
 
         TileEntityLocks.Init();
 
-        BlockConsumeStates.Init();
+        BlockInventoryNetworkStates.Init();
 
         InitSinglePlayer();
     }
@@ -43,7 +43,7 @@ public static class ModLifecycleManager
         ModLogger.DebugLog("Game Shutdown: Cleaning up...");
 
         TileEntityLocks.Cleanup();
-        BlockConsumeStates.Cleanup();
+        BlockInventoryNetworkStates.Cleanup();
         GamePathProvider.Cleanup();
     }
 }

@@ -25,14 +25,14 @@ internal static class TEFeatureAbs_Ext
 
         var isPlayerStorage = storage.bPlayerStorage;
 
-        if (__instance.CommandIs(_commandName, "Consume_Off"))
+        if (__instance.CommandIs(_commandName, "DisableForInventoryNetwork"))
         {
-            __result = isPlayerStorage && BlockConsumeStates.IsConsumeOn(_blockPos);
+            __result = isPlayerStorage && BlockInventoryNetworkStates.IsEnabledForInventoryNetwork(_blockPos);
 
         }
-        else if (__instance.CommandIs(_commandName, "Consume_On"))
+        else if (__instance.CommandIs(_commandName, "EnableForInventoryNetwork"))
         {
-            __result = isPlayerStorage && BlockConsumeStates.IsConsumeOff(_blockPos);
+            __result = isPlayerStorage && BlockInventoryNetworkStates.IsDisabledForInventoryNetwork(_blockPos);
         }
     }
 }

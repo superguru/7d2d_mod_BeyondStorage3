@@ -47,7 +47,7 @@ public static class ServerUtils
         {
             return;
         }
-        BlockConsumeStates.SendConsumeStatesToClient(client);
+        BlockInventoryNetworkStates.SendBlockInventoryNetworkStatesToClient(client);
     }
 
     private static void SendCurrentLockedDict(ClientInfo client)

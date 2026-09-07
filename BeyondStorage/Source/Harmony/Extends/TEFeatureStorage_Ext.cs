@@ -41,8 +41,8 @@ internal static class TEFeatureStorage_Ext
     private static void TEFeatureStorage_InitBlockActivationCommands_Postfix(TEFeatureStorage __instance, Action<BlockActivationCommand, TileEntityComposite.EBlockCommandOrder, TileEntityFeatureData> _addCallback)
     {
         // Icons seem swapped below, but it shows a nice green tick if the block is currently ✅On, and a red cross if it's currently ❌Off
-        _addCallback(new BlockActivationCommand(_text: "Consume_Off", _icon: "consume_on", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
-        _addCallback(new BlockActivationCommand(_text: "Consume_On", _icon: "consume_off", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
+        _addCallback(new BlockActivationCommand(_text: "DisableForInventoryNetwork", _icon: "enabled_for_inventory_network", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
+        _addCallback(new BlockActivationCommand(_text: "EnableForInventoryNetwork", _icon: "disabled_for_inventory_network", _enabled: false), TileEntityComposite.EBlockCommandOrder.Normal, __instance.FeatureData);
         // See TEFeatureAbs patch methods for the AllowBlockActivationCommand extension
     }
 
@@ -62,9 +62,9 @@ internal static class TEFeatureStorage_Ext
             return; // original handled the command
         }
 
-        bool isCmdTurnConsumeOff = __instance.CommandIs(_commandName, "Consume_Off");
-        bool isCmdTurnConsumeOn = !isCmdTurnConsumeOff && __instance.CommandIs(_commandName, "Consume_On");
-        if (!(isCmdTurnConsumeOff || isCmdTurnConsumeOn))
+        bool isCmdTurnOff = __instance.CommandIs(_commandName, "DisableForInventoryNetwork");
+        bool isCmdTurnOn = !isCmdTurnOff && __instance.CommandIs(_commandName, "EnableForInventoryNetwork");
+        if (!(isCmdTurnOff || isCmdTurnOn))
         {
 #if DEBUG
             ModLogger.DebugLog($"{d_MethodName}: Cannot handle this command");
@@ -73,15 +73,15 @@ internal static class TEFeatureStorage_Ext
         }
 
 #if DEBUG
-        ModLogger.DebugLog($"{d_MethodName}: Going to handle command isTurnConsumeOff={isCmdTurnConsumeOff}, isTurnConsumeOn={isCmdTurnConsumeOn}");
+        ModLogger.DebugLog($"{d_MethodName}: Going to handle command isTurnOff={isCmdTurnOff}, isTurnOn={isCmdTurnOn}");
 #endif
-        if (isCmdTurnConsumeOff)
+        if (isCmdTurnOff)
         {
-            BlockConsumeStates.TurnConsumeOff(_blockPos);
+            BlockInventoryNetworkStates.TurnOffForInventoryNetwork(_blockPos);
         }
         else
         {
-            BlockConsumeStates.TurnConsumeOn(_blockPos);
+            BlockInventoryNetworkStates.TurnOnForInventoryNetwork(_blockPos);
         }
 
         __result = true; // we did handle this command
