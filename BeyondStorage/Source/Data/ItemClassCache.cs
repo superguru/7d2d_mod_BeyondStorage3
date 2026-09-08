@@ -6,12 +6,9 @@ namespace BeyondStorage.Data;
 public static class ItemClassCache
 {
     private static readonly Dictionary<int, string> s_itemTypeNames = [];
-    private static readonly Dictionary<int, int> s_itemMaxStackSizes = [];
     private static readonly Dictionary<int, ItemActionEntryUse.ConsumeType> s_itemUseageTypes = [];
     private static readonly Dictionary<ItemActionEntryUse.ConsumeType, HashSet<int>> s_useageTypeIndex = [];
     private static bool s_useageIndexBuilt;
-
-    private static int s_totalMaxStackSize = 0;
 
     public static string LookupItemName(int itemType)
     {
@@ -237,33 +234,20 @@ public static class ItemClassCache
         if (itemType < UniqueItemTypes.WILDCARD)
         {
             ModLogger.DebugLog($"{d_MethodName}({itemType}) | Invalid item type, returning 0");
-            return 0;  // Don't cache constants
+            return 0;
         }
 
         if (itemType == UniqueItemTypes.WILDCARD)
         {
-            return 0;  // Don't cache constants
+            return 0;
         }
 
         if (itemType == UniqueItemTypes.EMPTY)
         {
-            return 0;  // Don't cache constants
+            return 0;
         }
 
-        if (s_itemMaxStackSizes.TryGetValue(itemType, out var maxStackSize))
-        {
-            return maxStackSize;
-        }
-
-        maxStackSize = ResolveMaxStackSize(itemType);
-        s_itemMaxStackSizes[itemType] = maxStackSize;
-
-        if (maxStackSize > 0)
-        {
-            s_totalMaxStackSize = maxStackSize;
-        }
-
-        return maxStackSize;
+        return ResolveMaxStackSize(itemType);
     }
 
     /// <summary>
