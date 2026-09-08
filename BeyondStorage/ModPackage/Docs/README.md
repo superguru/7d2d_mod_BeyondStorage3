@@ -22,7 +22,9 @@ An example of a player crafted storage, in this case a Wall Safe.
 
 ## Consume from the extended inventory
 Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks, pay traders and vending machines, and of course craft things. 
+
 ![Consume from Useful Drone](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_from_useful_drone.jpg)
+
 Items from the source slots with the least items are used first.
 You can turn off Consume for specific blocks, like for a Wooden Crate or a Locker using the radial menu.
 ![Enable/Disable Inventory Network radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
@@ -31,7 +33,9 @@ You can turn off Consume for specific blocks, like for a Wooden Crate or a Locke
 You can bulk move all items from any storage to the surrounding storage, providing there is already an item of that type present in that storage.
 As long as there are items left to move, the destination slots with the most items will be filled first until all slots across all target storages are filled up to maximum stack size for each item.
 Then empty slots will be used, until there is no more space anywhere.
+
 ![Smart Push from Campfire](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/smart_push_from_campfire.jpg)
+
 If you use the Smart Push function from this Campfire, then the 6 Bacon and Eggs will be bulk moved to the Wooden Crate that already has other Bacon and Eggs stored in it.
 The 16 Water will also be moved to any crates or other player storage if there is already Water in them.
 This works from anywhere and anything where you see the Smart Push button.
@@ -118,7 +122,7 @@ A single click on a slot shows the same item info panel you'd see for a normal B
 
 The Useables window refreshes automatically whenever any inventory in the game changes (items added, removed, or moved between slots) and when the mod's internal storage cache expires, so the row always reflects what is currently available.
 
-## 👥 Multiplayer Explained
+## Multiplayer Explained
 Firstly, it's important to understand that no one player owns anything **except** Vehicles or Drones in the game.
 
 So if you build a Crate and place it, then anyone of your Allies can access it. If you build a Wall Safe and place it, then the same rule applies.
@@ -162,7 +166,7 @@ A Player can only own a Vehicle or a Drone.
 
 ## Console and Config
 
-### ⌨️ Console Commands (when you press F1)
+### Console Commands (when you press F1)
 
 ```text
 +----------------+--------------------------------------------------------------+
@@ -181,7 +185,7 @@ A Player can only own a Vehicle or a Drone.
 +----------------+--------------------------------------------------------------+
 ```
 
-### ❄️ Config file
+### Config file
 The mod can also be configured by editing `Mods/BeyondStorage3/modconfig.json`
 
 ```text
@@ -195,6 +199,8 @@ The mod can also be configured by editing `Mods/BeyondStorage3/modconfig.json`
 | allowPushToAlliedVehicles | On      | Allow smart push to send items to nearby Vehicles          |
 |                           |         | belonging to allies                                        |
 |                           |         | Only works if includeVehicles is On                        |
++---------------------------+---------+------------------------------------------------------------+
+| showUseables              | On      | Enables the Useables window if Backpack is open on its own |
 +---------------------------+---------+------------------------------------------------------------+
 | isDebug                   | Off     | Logs additional information that might be useful for       |
 |                           |         | troubleshooting problems. You can generally leave this     |
@@ -216,78 +222,15 @@ This is available at the game loading screen, and also in-game when you press \<
 *Any setting not listed here is either old, or otherwise is for mod development purposes. It's best to leave them alone.*
 *The mod will automatically convert older properties and values, removing invalid ones as needed, when it loads.*
 
-#### 📝 Notes:
+#### Notes:
 1. In the config file, true means On and false means Off
 2. Previous versions of the mod had other config options. Their usage was self-explanatory from their names.
-
-## 🤝 Mod compatibility list
-
-### ✅ Considered compatible (V3):
-
-I run these mods, among others, and so the development and testing of this mod means it works perfectly with the mods listed below:
-- ✅ [AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
-- ✅ [AGF - V3 - HUD PLUS](https://www.nexusmods.com/7daystodie/mods/870)
-- ✅ [Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
-- ✅ [CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
-- ✅ [Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
-- ✅ [IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
-- ✅ IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
-- ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
-- ✅ [(V3) Oakraven Fish Farm](https://www.nexusmods.com/7daystodie/mods/5189)
-- ✅ [PGz XL Backpack V3](https://www.nexusmods.com/7daystodie/mods/10721)
-- ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
-- ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
-- ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
-- ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
-- ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
-- ✅ [Remote Storage Access](https://www.nexusmods.com/7daystodie/mods/2197)
-- ✅ [TX Marketplace Terminal](https://www.nexusmods.com/7daystodie/mods/11760)
-- ✅ [Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
-
-#### Common Dependency Libraries that are compatible
-- ✅ [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
-- ✅ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) <- Beyond Storage supports settings changes using Gears
-
-##### SCore (needs config changes)
-For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
-- Remote Crafting
-- Remote Repair/Upgrade
-
-###### Examples of mods that turn these on:
-- [(V3) Preppocalypse](https://www.nexusmods.com/7daystodie/mods/5295)
-
-You will need to manually edit the Config/blocks.xml file to turn this off.
-
-```xml
-<set xpath="/blocks/block[@name='ConfigFeatureBlock']/property[@class='AdvancedRecipes']/property[@name='ReadFromContainers']/@value">false</set>
-```
-
-### ❌ Not considered compatible:
-
-#### General
-
-Don't use any **"remote crafting"** type of mods at the same time. 
-
-They are generally not compatible with each other. 
-
-Just pick one you like and use that.
-
-### Overhaul Mods
-
-Most overhaul mods will replace your Backpack, Workstations, and other windows in the game.
-
-That will make the Smart Push and Pull buttons from Beyond Storage invisible, so a lot of the functionality will then be inaccessible.
-
-#### Others (not compatible)
-
-- ❌ [Advanced UI](https://www.nexusmods.com/7daystodie/mods/8289)
-- ❌ [CATUI (for 7DTD 3.1)](https://www.nexusmods.com/7daystodie/mods/5248)
 
 ## License
 
 This mod is licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). See the [LICENSE.txt](https://github.com/superguru/7d2d_mod_BeyondStorage3/blob/master/LICENSE.txt) for details.
 
-## ⌛ History
+## History
 
 [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake was almost certainly the first mod to introduce the "remote broadcasting" of items for crafting, as if you had a gigantic inventory that included your storage crates.
 

@@ -103,6 +103,69 @@ No. The mod does not modify save game data, so you can add or remove it at any t
 **What happens if some players in multiplayer have the mod and others don't?**
 Players without the mod play vanilla, with no access to the extended inventory features. Players with the mod see the extended inventory for items their client knows about. All players running the mod must use the same version — the mod enforces this on connect.
 
+## Mod compatibility list
+
+### Considered compatible (V3):
+
+- ✅ [AGF V3 Larger Backpacks 60-72-84-119](https://www.nexusmods.com/7daystodie/mods/1684)
+- ✅ [AGF - V3 - HUD PLUS](https://www.nexusmods.com/7daystodie/mods/870)
+- ✅ [Bdub's Vehicles (3.0)](https://www.nexusmods.com/7daystodie/mods/342)
+- ✅ [CraftLink](https://www.nexusmods.com/7daystodie/mods/10970)
+- ✅ [Endless Harvest](https://www.nexusmods.com/7daystodie/mods/7554)
+- ✅ [IZY Classic for 7 Days To Die 3.0](https://www.nexusmods.com/7daystodie/mods/11059)
+- ✅ IZY [Flatlander's Combat Sandbox for IZY Classic](https://www.nexusmods.com/7daystodie/mods/9980)
+- ✅ [Modivination](https://www.nexusmods.com/7daystodie/mods/10952)
+- ✅ [NHX Backpacks and Bags](https://www.nexusmods.com/7daystodie/mods/10251)
+- ✅ [(V3) Oakraven Fish Farm](https://www.nexusmods.com/7daystodie/mods/5189)
+- ✅ [PGz XL Backpack V3](https://www.nexusmods.com/7daystodie/mods/10721)
+- ✅ [PROJECT Z FULL VERSION](https://www.nexusmods.com/7daystodie/mods/7786)
+- ✅ [RAM - Random Affixes Mod (3.0)](https://www.nexusmods.com/7daystodie/mods/9567)
+- ✅ [Ramos Crafted In](https://www.nexusmods.com/7daystodie/mods/8629)
+- ✅ [Ramos Recipe Tracker](https://www.nexusmods.com/7daystodie/mods/8634)
+- ✅ [Reclaim Storage Crates](https://www.nexusmods.com/7daystodie/mods/5418)
+- ✅ [Remote Storage Access](https://www.nexusmods.com/7daystodie/mods/2197)
+- ✅ [TX Marketplace Terminal](https://www.nexusmods.com/7daystodie/mods/11760)
+- ✅ [Vehicle Madness](https://7daystodiemods.com/mods/vehicle-madness-802517)
+
+#### Common Dependency Libraries that are compatible
+- ✅ [0-Quartz](https://www.nexusmods.com/7daystodie/mods/2409)
+- ✅ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) <- Beyond Storage supports settings changes using Gears
+
+##### SCore (needs config changes)
+For mods that use [0-SCore](https://www.nexusmods.com/7daystodie/mods/6176), you need to disable these Features:
+- Remote Crafting
+- Remote Repair/Upgrade
+
+###### Examples of mods that turn these on:
+- [(V3) Preppocalypse](https://www.nexusmods.com/7daystodie/mods/5295)
+
+You will need to manually edit the Config/blocks.xml file to turn this off.
+
+```xml
+<set xpath="/blocks/block[@name='ConfigFeatureBlock']/property[@class='AdvancedRecipes']/property[@name='ReadFromContainers']/@value">false</set>
+```
+
+### ❌ Not considered compatible:
+
+#### General
+
+Don't use any **"remote crafting"** type of mods at the same time. 
+
+They are generally not compatible with each other. 
+
+Just pick one you like and use that.
+
+### Overhaul Mods
+
+Most overhaul mods will replace your Backpack, Workstations, and other windows in the game.
+
+That will make the Smart Push and Pull buttons from Beyond Storage invisible, so a lot of the functionality will then be inaccessible.
+
+#### Others (not compatible)
+
+- ❌ [Advanced UI](https://www.nexusmods.com/7daystodie/mods/8289)
+- ❌ [CATUI (for 7DTD 3.1)](https://www.nexusmods.com/7daystodie/mods/5248)
+
 ## Credits
 - [Undead Legacy](https://www.snowbeegaming.com/undead-legacy) by Subquake for inspiring us all
 - [aedenthorn](https://github.com/aedenthorn) for the original mod
