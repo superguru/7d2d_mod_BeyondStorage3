@@ -17,7 +17,7 @@ Items that exist in any of these places are now added to your Backpack and Toolb
 
 This is the order in which items are Consumed from, too, so Backpack and Toolbelt items are used first, just like in the base game, and after that Drones, then Collectors, etc.
 
-![Player Crafted Wall Safe Inventory Network Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_toggle_on_player_wall_safe.jpg)
+![Player Crafted Wall Safe Inventory Network Toggle](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/network_enable_on_player_wall_safe.jpg)
 An example of a player crafted storage, in this case a Wall Safe.
 
 ## Consume from the extended inventory
@@ -27,7 +27,7 @@ Paint, pick locks, upgrade blocks, refuel equipment and vehicles, repair blocks,
 
 Items from the source slots with the least items are used first.
 You can turn off Consume for specific blocks, like for a Wooden Crate or a Locker using the radial menu.
-![Enable/Disable Inventory Network radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/consume_radial_on_off_side_by_side.jpg)
+![Enable/Disable Inventory Network radial](https://raw.githubusercontent.com/superguru/7d2d_mod_BeyondStorage3/refs/heads/master/BeyondStorage/Media/network_enable_radial_on_off_side_by_side.jpg)
 
 ## Smart Push to surrounding storage
 You can bulk move all items from any storage to the surrounding storage, providing there is already an item of that type present in that storage.
