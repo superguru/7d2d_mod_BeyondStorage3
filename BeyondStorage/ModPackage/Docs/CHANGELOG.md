@@ -2,6 +2,9 @@
 
 ## History
 
+__🚀 Released v3.2.6__
+- ♻ Fixed: Editing the craft count from backpack no longer triggers Useables using an item for keys 1-6
+
 __🚀 Released v3.2.5__
 - ♻ Fixed: Useables window no longer appears when turning in quests
 - ♻ Fixed: Useables window no longer appears on Combine Station screen
