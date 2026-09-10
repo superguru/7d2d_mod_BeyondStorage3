@@ -69,10 +69,16 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     /// <summary>
     /// Number keys 1-6 (top row) map straight to slots 1-6 (Heal row, then Food/Drink row). Plain
     /// digits are safe here since the toolbelt hotkeys they'd otherwise trigger aren't active while
-    /// this window's visibility condition (backpack-only) holds.
+    /// this window's visibility condition (backpack-only) holds. We still bail out while any text
+    /// input is being edited (e.g. the craft-count field) so a typed digit isn't stolen by a slot.
     /// </summary>
     private void PollHotkeys()
     {
+        if (xui.playerUI.windowManager.IsInputActive())
+        {
+            return;
+        }
+
         for (int slotIndex = 0; slotIndex < SLOT_COUNT; slotIndex++)
         {
             var alphaKey = (KeyCode)((int)KeyCode.Alpha1 + slotIndex);
