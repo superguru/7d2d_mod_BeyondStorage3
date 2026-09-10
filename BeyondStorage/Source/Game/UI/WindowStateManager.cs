@@ -687,7 +687,6 @@ public static class WindowStateManager
 
         if (!WorldPlayerContext.IsOkQuickCheck())
         {
-            //TODO: Add proper game start and end events which we can then use to query global game state
             return false;
         }
 
