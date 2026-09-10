@@ -2,6 +2,14 @@
 
 ## History
 
+__🚀 Released v3.2.5__
+- ♻ Fixed: Useables window no longer appears when turning in quests
+- ♻ Fixed: Useables window no longer appears on Combine Station screen
+- ♻ Fixed: Multiplayer games sometimes uses the default max stack size instead of the server sandbox stack size multiplier size
+- ✨ Changed: Disabling a container/block will now remove it from the inventory network, so Pull/Pull/Consume/Use will not see it
+- ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
+- ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
+
 __🚀 Released v3.2.4 (Discord only)__
 - ✨ Changed: Disabling a container/block will now remove it from the inventory network, so Pull/Pull/Consume/Use will not see it
 - ♻ Fixed: Multiplayer games sometimes uses the default max stack size instead of the server sandbox stack size multiplier size
@@ -103,12 +111,7 @@ __🚀 Released v__
 ## Work In Progress
 
 __🚧 WIP v3.2.x__
-- ♻ Fixed: Useables window no longer appears when turning in quests
-- ♻ Fixed: Useables window no longer appears on Combine Station screen
-- ♻ Fixed: Multiplayer games sometimes uses the default max stack size instead of the server sandbox stack size multiplier size
-- ✨ Changed: Disabling a container/block will now remove it from the inventory network, so Pull/Pull/Consume/Use will not see it
-- ✨ Changed: Split documentation into QUICK_START.md (intro, mod page front matter) and README.md (full documentation)
-- ✨ Changed: Ship modconfig.defaults.json (and no modconfig.json) so user custom settings aren't clobbered when installing a new version
+-
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***

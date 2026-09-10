@@ -213,7 +213,7 @@ The mod can also be configured by editing `Mods/BeyondStorage3/modconfig.json`
 *Off=false, On=True in modconfig.json file.
 ```
 
-**⚙︎⚙︎⚙︎ [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ⚙︎⚙︎⚙︎** (Optional)
+** [Gears](https://www.nexusmods.com/7daystodie/mods/4017) settings support ** (Optional)
 All settings can be modified using the Gears interface.
 This is available at the game loading screen, and also in-game when you press \<ESC\> and click the \[MODS\] button.
 
