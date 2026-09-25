@@ -2,6 +2,9 @@
 
 ## History
 
+__🚀 Released v3.3.0__
+- ✨ Update mod to work with game V3.3.0_b13/b14 EXP
+
 __🚀 Released v3.2.6__
 - ♻ Fixed: Editing the craft count from backpack no longer triggers Useables using an item for keys 1-6
 
@@ -113,7 +116,7 @@ __🚀 Released v__
 
 ## Work In Progress
 
-__🚧 WIP v3.2.x__
+__🚧 WIP v3.3.x__
 -
 - 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
