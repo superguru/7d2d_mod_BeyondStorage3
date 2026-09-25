@@ -131,7 +131,7 @@ internal static class XUiC_LootWindow_Ext
             // Check for TEFeatureStorage using comprehensive feature detection
             if (tileEntity.TryGetSelfOrFeature(out TEFeatureStorage storage) && storage != null)
             {
-                isPlayerStorage = storage.bPlayerStorage;
+                isPlayerStorage = storage.ItemGrid.PlayerOwned;
 #if DEBUG
                 //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for TEFeatureStorage. storage/isPlayerStorage: {storage}/{isPlayerStorage}");
 #endif
@@ -140,7 +140,7 @@ internal static class XUiC_LootWindow_Ext
             // Check for player owned/created storage, for example player crafted desk safes, refrigerators, lockers, etc.
             if (!isPlayerStorage)
             {
-                isPlayerStorage = tileEntity.bPlayerStorage;
+                isPlayerStorage = tileEntity.ItemGrid.PlayerOwned;
 #if DEBUG
                 //ModLogger.DebugLog($"{d_MethodName}: LootWindow opened for Player owned/created. storage/isPlayerStorage: {isPlayerStorage}");
 #endif

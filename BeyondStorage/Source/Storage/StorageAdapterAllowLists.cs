@@ -22,7 +22,7 @@ internal static class StorageAdapterAllowLists
     {
         var types = new List<Type>
         {
-            typeof(ITileEntityLootable),
+            typeof(TEFeatureStorage),
         };
 
         return new AllowedAdapterTypeList(types);
@@ -44,7 +44,7 @@ internal static class StorageAdapterAllowLists
         var types = new List<Type>
         {
             typeof(TileEntityWorkstation),
-            typeof(ITileEntityLootable),
+            typeof(TEFeatureStorage),
         };
 
         return new AllowedAdapterTypeList(types);

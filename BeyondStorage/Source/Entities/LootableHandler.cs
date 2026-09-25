@@ -14,14 +14,19 @@ public static class LootableHandler
     /// </summary>
     /// <param name="lootable">The lootable tile entity to get items from</param>
     /// <returns>Array of all ItemStack objects in the lootable, or an empty array if the lootable is null or has no items</returns>
-    public static ItemStack[] GetAllSlotItems(ITileEntityLootable lootable)
+    public static ItemStack[] GetAllSlotItems(TEFeatureStorage lootable)
     {
-        var items = lootable?.items;
-        if (items == null || items.Length == 0)
+        var itemGrid = lootable?.ItemGrid;
+        if (itemGrid == null || itemGrid.Length == 0)
         {
             return [];
         }
 
+        var items = new ItemStack[itemGrid.Length];
+        for (var i = 0; i < itemGrid.Length; i++)
+        {
+            items[i] = itemGrid[i];
+        }
         return items;
     }
 
@@ -33,7 +38,7 @@ public static class LootableHandler
     /// <remarks>
     /// Names are cached to improve performance. Checks in order: custom sign text, localized block name, default fallback.
     /// </remarks>
-    public static string GetLootableName(ITileEntityLootable lootable)
+    public static string GetLootableName(TEFeatureStorage lootable)
     {
         string name = "Unnamed Lootable";
 
@@ -76,7 +81,7 @@ public static class LootableHandler
     /// Marks a lootable tile entity as modified to trigger save and network synchronization.
     /// </summary>
     /// <param name="lootable">The lootable tile entity to mark as modified</param>
-    public static void MarkLootableModified(ITileEntityLootable lootable)
+    public static void MarkLootableModified(TEFeatureStorage lootable)
     {
         const string d_MethodName = nameof(MarkLootableModified);
 
@@ -96,13 +101,13 @@ public static class LootableHandler
     /// </summary>
     /// <param name="lootable">The lootable tile entity to get lock state from</param>
     /// <returns>Packed lock state, or null if slot locking is not supported or lootable is null</returns>
-    public static PackedBoolArray GetLootableLockedSlots(ITileEntityLootable lootable)
+    public static PackedBoolArray GetLootableLockedSlots(TEFeatureStorage lootable)
     {
-        if (lootable == null || !lootable.HasSlotLocksSupport)
+        if (lootable == null || lootable.ItemGrid?.SlotLocks == null)
         {
             return null;
         }
 
-        return lootable.SlotLocks;
+        return lootable.ItemGrid.SlotLocks;
     }
 }

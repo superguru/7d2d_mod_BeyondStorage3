@@ -140,9 +140,9 @@ public static class ServerUtils
             return false;
         }
 
-        if (tileEntity.TryGetSelfOrFeature(out ITileEntityLootable lootable))
+        if (tileEntity.TryGetSelfOrFeature(out TEFeatureStorage lootable))
         {
-            if (!lootable.bPlayerStorage)
+            if (!lootable.ItemGrid.PlayerOwned)
             {
                 return false;
             }

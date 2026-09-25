@@ -118,7 +118,7 @@ internal static class TileEntityItemDiscovery
             return;
         }
 
-        if (tileEntity.TryGetSelfOrFeature(out ITileEntityLootable lootable))
+        if (tileEntity.TryGetSelfOrFeature(out TEFeatureStorage lootable))
         {
             ProcessLootableEntity(lootable, tileEntity, distance, state);
         }
@@ -226,7 +226,7 @@ internal static class TileEntityItemDiscovery
 
     #region Lootable Processing
 
-    private static void ProcessLootableEntity(ITileEntityLootable lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
+    private static void ProcessLootableEntity(TEFeatureStorage lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
     {
         state.LootablesProcessed++;
 
@@ -243,12 +243,12 @@ internal static class TileEntityItemDiscovery
         ProcessLootableItems(lootable, tileEntity, distance, state);
     }
 
-    private static bool ShouldProcessLootable(ITileEntityLootable lootable)
+    private static bool ShouldProcessLootable(TEFeatureStorage lootable)
     {
-        return lootable.bPlayerStorage;
+        return lootable.ItemGrid.PlayerOwned;
     }
 
-    private static void ProcessLootableItems(ITileEntityLootable lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
+    private static void ProcessLootableItems(TEFeatureStorage lootable, TileEntity tileEntity, float distance, TileEntityProcessingState state)
     {
 #if DEBUG
         //const string d_MethodName = nameof(ProcessLootableItems);

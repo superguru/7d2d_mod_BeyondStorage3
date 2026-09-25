@@ -33,10 +33,10 @@ internal static class StorageSourceAdapterFactory
         );
     }
 
-    internal static StorageSourceAdapter<ITileEntityLootable> CreateLootableStorageSourceAdapter(StorageContext context, ITileEntityLootable lootable)
+    internal static StorageSourceAdapter<TEFeatureStorage> CreateLootableStorageSourceAdapter(StorageContext context, TEFeatureStorage lootable)
     {
         var sources = context.Sources;
-        return new StorageSourceAdapter<ITileEntityLootable>(
+        return new StorageSourceAdapter<TEFeatureStorage>(
             lootable,
             sources.EqualsLootableFunc,
             sources.GetLootableAllItemsFunc,

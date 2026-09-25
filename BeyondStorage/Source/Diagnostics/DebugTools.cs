@@ -14,7 +14,7 @@ public static class DebugTools
     /// </summary>
     /// <param name="methodName">Calling method name, prepended to the log line</param>
     /// <param name="lootable">The lootable tile entity to inspect</param>
-    public static void LogLootContainerContents(string methodName, ITileEntityLootable lootable)
+    public static void LogLootContainerContents(string methodName, TEFeatureStorage lootable)
     {
         ModLogger.DebugLog($"{methodName}: Lootable contents:\n{GetLootContainerContents(lootable)}");
     }
@@ -34,23 +34,30 @@ public static class DebugTools
     }
 
     /// <summary>
-    /// Builds a CSV matrix representation of an <see cref="ITileEntityLootable"/>'s contents.
+    /// Builds a CSV matrix representation of an <see cref="TEFeatureStorage"/>'s contents.
     /// The top-left cell contains the total slot count. The header row contains 1-based column
     /// numbers and the left column contains 1-based row numbers.
     /// Each data cell uses <see cref="ItemX.Info(ItemStack)"/> formatting.
     /// </summary>
     /// <param name="lootable">The lootable tile entity to inspect</param>
     /// <returns>A CSV-formatted string matrix of the container contents</returns>
-    public static string GetLootContainerContents(ITileEntityLootable lootable)
+    public static string GetLootContainerContents(TEFeatureStorage lootable)
     {
         if (lootable == null)
         {
             return "null lootable";
         }
 
-        var containerSize = lootable.GetContainerSize();
+        var itemGrid = lootable.ItemGrid;
+        var containerSize = itemGrid.ContainerSize;
 
-        return GetItemsMatrix(lootable.items, containerSize.x, containerSize.y);
+        var items = new ItemStack[itemGrid.Length];
+        for (var i = 0; i < itemGrid.Length; i++)
+        {
+            items[i] = itemGrid[i];
+        }
+
+        return GetItemsMatrix(items, containerSize.x, containerSize.y);
     }
 
     private static void GuessMatrixDimensions(int count, out int width, out int height)

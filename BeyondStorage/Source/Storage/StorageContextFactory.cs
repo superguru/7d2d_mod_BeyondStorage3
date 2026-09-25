@@ -212,7 +212,7 @@ public static class StorageContextFactory
         types.Add(typeof(TileEntityWorkstation));
 
         // Lootables: Always allowed
-        types.Add(typeof(ITileEntityLootable));
+        types.Add(typeof(TEFeatureStorage));
 
         if (config.IncludeVehicles)
         {

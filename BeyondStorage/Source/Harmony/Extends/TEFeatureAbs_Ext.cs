@@ -23,7 +23,7 @@ internal static class TEFeatureAbs_Ext
             return;
         }
 
-        var isPlayerStorage = storage.bPlayerStorage;
+        var isPlayerStorage = storage.ItemGrid.PlayerOwned;
 
         if (__instance.CommandIs(_commandName, "DisableForInventoryNetwork"))
         {

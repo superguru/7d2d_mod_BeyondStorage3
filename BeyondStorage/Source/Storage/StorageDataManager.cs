@@ -40,11 +40,11 @@ public class StorageDataManager
     public readonly Func<EntityLootContainer, string> GetLootContainerNameFunc = container => EntityHandler.GetEntityName(container);
 
     // ── Lootable ─────────────────────────────────────────────────────────────
-    public readonly Func<ITileEntityLootable, ITileEntityLootable, bool> EqualsLootableFunc = (a, b) => ReferenceEquals(a, b);
-    public readonly Func<ITileEntityLootable, ItemStack[]> GetLootableAllItemsFunc = lootable => LootableHandler.GetAllSlotItems(lootable);
-    public readonly Func<ITileEntityLootable, PackedBoolArray> GetLootableLockedSlotsFunc = lootable => LootableHandler.GetLootableLockedSlots(lootable);
-    public Action<ITileEntityLootable> MarkLootableModifiedFunc = lootable => LootableHandler.MarkLootableModified(lootable);
-    public readonly Func<ITileEntityLootable, string> GetLootableNameFunc = lootable => LootableHandler.GetLootableName(lootable);
+    public readonly Func<TEFeatureStorage, TEFeatureStorage, bool> EqualsLootableFunc = (a, b) => ReferenceEquals(a, b);
+    public readonly Func<TEFeatureStorage, ItemStack[]> GetLootableAllItemsFunc = lootable => LootableHandler.GetAllSlotItems(lootable);
+    public readonly Func<TEFeatureStorage, PackedBoolArray> GetLootableLockedSlotsFunc = lootable => LootableHandler.GetLootableLockedSlots(lootable);
+    public Action<TEFeatureStorage> MarkLootableModifiedFunc = lootable => LootableHandler.MarkLootableModified(lootable);
+    public readonly Func<TEFeatureStorage, string> GetLootableNameFunc = lootable => LootableHandler.GetLootableName(lootable);
 
     // ── Player ───────────────────────────────────────────────────────────────
     public readonly Func<EntityPlayerLocal, EntityPlayerLocal, bool> EqualsPlayerLootableFunc = (a, b) => ReferenceEquals(a, b);

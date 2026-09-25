@@ -282,7 +282,7 @@ public static class WindowStateManager
     /// Gets the lootable tile entity associated with the currently open storage container window
     /// </summary>
     /// <returns>The active lootable tile entity, or null if no storage container window is open</returns>
-    internal static ITileEntityLootable GetOpenWindowLootable()
+    internal static TEFeatureStorage GetOpenWindowLootable()
     {
         var lootWindow = GetActiveStorageContainerWindow();
         return lootWindow?.te;

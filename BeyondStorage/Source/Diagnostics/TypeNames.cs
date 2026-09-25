@@ -38,7 +38,7 @@ internal static class TypeNames
             { typeof(EntityLootContainer), new TypeNameInfo("DL", "Dropped Loot") },
             { typeof(TileEntityCollector), new TypeNameInfo("CO", "Collector") },
             { typeof(TileEntityWorkstation), new TypeNameInfo("WS", "Workstation") },
-            { typeof(ITileEntityLootable), new TypeNameInfo("LC", "Lootable Container") },
+            { typeof(TEFeatureStorage), new TypeNameInfo("LC", "Lootable Container") },
             { typeof(EntityVehicle), new TypeNameInfo("VH", "Vehicle") },
             { typeof(EntityPlayerLocal), new TypeNameInfo("PL", "Local Player") },
         };
