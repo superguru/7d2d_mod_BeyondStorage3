@@ -10,7 +10,6 @@ namespace BeyondStorage.Multiplayer;
 public class NetPackageLockedTEs : NetPackage
 {
     public int EntryCount;
-    public int Length = 5;
     public Dictionary<Vector3i, int> LockedTileEntities;
 
     public override NetPackageDirection PackageDirection => NetPackageDirection.ToClient;
@@ -19,7 +18,6 @@ public class NetPackageLockedTEs : NetPackage
     {
         LockedTileEntities = new Dictionary<Vector3i, int>(lockedTEs);
         EntryCount = LockedTileEntities.Count;
-        UpdateLength();
         return this;
     }
 
@@ -40,18 +38,6 @@ public class NetPackageLockedTEs : NetPackage
         }
     }
 
-    public void UpdateLength()
-    {
-        // x, y, z
-        const int posIntCount = 3;
-        // int size
-        const int intSize = 4;
-        // base length
-        Length = 1 + intSize;
-        // add the additional size per entry: ((x,y,z) + entityId) * EntryCount
-        Length += (posIntCount * intSize + intSize) * EntryCount;
-    }
-
     public override void read(PooledBinaryReader binaryReader)
     {
         EntryCount = binaryReader.ReadInt32();
@@ -65,14 +51,6 @@ public class NetPackageLockedTEs : NetPackage
 #endif
             LockedTileEntities.Add(pos, lockingEntityId);
         }
-#if DEBUG
-        var tempLength = Length;
-#endif
-
-        UpdateLength();
-#if DEBUG
-        ModLogger.DebugLog($"count: {EntryCount}; LTE_Dict count {LockedTileEntities.Count}; length {Length}; oldLength {tempLength}");
-#endif
     }
 
     public override void ProcessPackage(World world, GameManager callbacks)
@@ -84,13 +62,5 @@ public class NetPackageLockedTEs : NetPackage
         }
 
         TileEntityLocks.UpdateLockedTEs(LockedTileEntities);
-#if DEBUG
-        ModLogger.DebugLog($"NetPackageLockedTEs: size {Length}; count {EntryCount}");
-#endif
-    }
-
-    public override int GetLength()
-    {
-        return Length;
     }
 }

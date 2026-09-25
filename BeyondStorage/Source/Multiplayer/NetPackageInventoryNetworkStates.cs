@@ -55,11 +55,4 @@ public class NetPackageInventoryNetworkStates : NetPackage
         }
         BlockInventoryNetworkStates.ApplyFromServer(_disabledBlocks);
     }
-
-    public override int GetLength()
-    {
-        const int intSize = 4;
-        const int posSize = 3 * intSize;
-        return 1 + intSize + posSize * _disabledBlocks.Count;
-    }
 }

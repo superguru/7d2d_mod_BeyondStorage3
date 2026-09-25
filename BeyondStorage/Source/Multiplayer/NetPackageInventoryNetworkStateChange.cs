@@ -49,11 +49,4 @@ public class NetPackageInventoryNetworkStateChange : NetPackage
         }
         BlockInventoryNetworkStates.ApplyServerSideChange(_position, _isDisabledForInventoryNetwork);
     }
-
-    public override int GetLength()
-    {
-        const int intSize = 4;
-        const int posSize = 3 * intSize;
-        return 1 + posSize + sizeof(bool);
-    }
 }

@@ -156,17 +156,4 @@ public class NetPackageBeyondStorageConfig : NetPackage
     {
         ModLogger.DebugLog("Updated client config to use server settings with version compatibility.");
     }
-
-    public override int GetLength()
-    {
-        // save room for 6 more bytes (future boolean options)
-        const int futureReservedSpace = 6;
-
-        // Calculate length for string-based version (v2.3.0+)
-        // String length + string bytes + BoolCount + Range + (Bool * Count)
-        var versionStringBytes = System.Text.Encoding.UTF8.GetByteCount(CurrentNetConfigVersion);
-        var stringLengthPrefix = sizeof(int); // .NET string serialization includes length prefix
-
-        return futureReservedSpace + stringLengthPrefix + versionStringBytes + sizeof(ushort) + sizeof(float) + sizeof(bool) * BoolCount;
-    }
 }
