@@ -80,7 +80,7 @@ internal static class ItemActionEntrySell_Patch
         {
             new CodeInstruction(OpCodes.Ldloc_S, 19),   // Load itemStack, which is set to the item being sold by the Player
             new CodeInstruction(OpCodes.Ldloc_S, 14),   // count
-            new CodeInstruction(OpCodes.Stfld, AccessTools.Field(typeof(ItemStack), nameof(ItemStack.count))),
+            new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertySetter(typeof(ItemStack), nameof(ItemStack.count))),
 
             new CodeInstruction(OpCodes.Ldloc_S, 21),    // playerInventory
             new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(XUiM_PlayerInventory), nameof(XUiM_PlayerInventory.xui))),
