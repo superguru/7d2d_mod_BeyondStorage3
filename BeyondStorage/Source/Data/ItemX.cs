@@ -347,6 +347,41 @@ public static class ItemX
 
     #endregion
 
+    #region ItemStackGrid Helpers
+
+    /// <summary>
+    /// Builds an ItemStack[] referencing the actual ItemStack objects inside the given ItemStackGrid,
+    /// preserving the original Bag/Inventory GetSlots() semantics (shared references, not clones).
+    /// </summary>
+    /// <param name="itemGrid">The ItemStackGrid to extract slots from (Bag, Inventory, TEFeatureStorage, etc.)</param>
+    /// <returns>
+    /// An array whose elements are the same ItemStack instances held inside the grid,
+    /// or an empty array if the grid is null or empty.
+    /// </returns>
+    /// <remarks>
+    /// ItemStack is a reference type and the underlying ItemStackGrid stores its items internally as
+    /// a single array. The old Bag.GetSlots()/Inventory.GetSlots() methods returned arrays containing
+    /// those same references so callers could observe in-place mutations through them. Calling
+    /// ItemStackGrid.CloneItems() would instead return deep copies, which breaks callers that rely on
+    /// shared-reference semantics.
+    /// </remarks>
+    public static ItemStack[] GetSlotsFromGrid(ItemStackGrid itemGrid)
+    {
+        if (itemGrid == null || itemGrid.Length == 0)
+        {
+            return [];
+        }
+
+        var slots = new ItemStack[itemGrid.Length];
+        for (var i = 0; i < itemGrid.Length; i++)
+        {
+            slots[i] = itemGrid[i];
+        }
+        return slots;
+    }
+
+    #endregion
+
     #region Item Filtering
 
     /// <summary>

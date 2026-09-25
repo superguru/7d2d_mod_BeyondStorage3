@@ -170,9 +170,9 @@ public class PurchasingCommon
     {
         int itemType = removedStack.itemValue.type;
 
-        ItemStack[] backpackSlots = inventory.Backpack.GetSlots();
-        ItemStack[] toolbeltSlots = inventory.Toolbelt.GetSlots();
-        int publicSlots = inventory.Toolbelt.PUBLIC_SLOTS;
+        ItemStack[] backpackSlots = ItemX.GetSlotsFromGrid(inventory.Backpack.ItemGrid);
+        ItemStack[] toolbeltSlots = ItemX.GetSlotsFromGrid(inventory.Toolbelt.ItemGrid);
+        int publicSlots = inventory.Toolbelt.Length;
 
         int count = 0;
         count += CountRemovableInSlots(backpackSlots, backpackSlots.Length, slotNumber, 0, itemType);
@@ -196,7 +196,7 @@ public class PurchasingCommon
         int availableSpace = 0;
 
         // Check backpack slots
-        ItemStack[] backpackSlots = inventory.Backpack.GetSlots();
+        ItemStack[] backpackSlots = ItemX.GetSlotsFromGrid(inventory.Backpack.ItemGrid);
         foreach (var slot in backpackSlots)
         {
             if (slot.IsEmpty())
@@ -210,8 +210,8 @@ public class PurchasingCommon
         }
 
         // Check toolbelt slots (only public slots)
-        ItemStack[] toolbeltSlots = inventory.Toolbelt.GetSlots();
-        int publicSlots = inventory.Toolbelt.PUBLIC_SLOTS;
+        ItemStack[] toolbeltSlots = ItemX.GetSlotsFromGrid(inventory.Toolbelt.ItemGrid);
+        int publicSlots = inventory.Toolbelt.Length;
         for (int i = 0; i < publicSlots && i < toolbeltSlots.Length; i++)
         {
             if (toolbeltSlots[i].IsEmpty())
@@ -248,7 +248,7 @@ public class PurchasingCommon
         int spaceFreed = 0;
 
         // Backpack
-        ItemStack[] backpackSlots = inventory.Backpack.GetSlots();
+        ItemStack[] backpackSlots = ItemX.GetSlotsFromGrid(inventory.Backpack.ItemGrid);
         spaceFreed += CalcSpaceFreedInSlots(
             backpackSlots,
             backpackSlots?.Length ?? 0,
@@ -260,8 +260,8 @@ public class PurchasingCommon
         );
 
         // Toolbelt (public slots only)
-        ItemStack[] toolbeltSlots = inventory.Toolbelt.GetSlots();
-        int publicSlots = inventory.Toolbelt.PUBLIC_SLOTS;
+        ItemStack[] toolbeltSlots = ItemX.GetSlotsFromGrid(inventory.Toolbelt.ItemGrid);
+        int publicSlots = inventory.Toolbelt.Length;
         int toolbeltEligible = Math.Min(publicSlots, toolbeltSlots?.Length ?? 0);
 
         if (remainingToRemove > 0 && toolbeltEligible > 0)

@@ -70,19 +70,34 @@ public static class EntityHandler
     /// <returns>Array of all ItemStack objects in the entity's bag, or an empty array if the bag is null or empty</returns>
     public static ItemStack[] GetAllSlotItems(Entity entity)
     {
-        var items = entity?.bag?.items;
-        if (items == null || items.Length == 0)
+        var itemGrid = entity?.bag?.ItemGrid;
+        if (itemGrid == null || itemGrid.Length == 0)
         {
             return [];
         }
 
+        var items = new ItemStack[itemGrid.Length];
+        for (var i = 0; i < itemGrid.Length; i++)
+        {
+            items[i] = itemGrid[i];
+        }
         return items;
     }
 
     public static ItemStack[] GetPlayerToolbeltAllSlotItems(EntityPlayerLocal player)
     {
-        ItemStack[] result = player.inventory?.slots?.Select(slot => slot?.itemStack).ToArray() ?? [];
-        return result;
+        var itemGrid = player.inventory?.ItemGrid;
+        if (itemGrid == null || itemGrid.Length == 0)
+        {
+            return [];
+        }
+
+        var items = new ItemStack[itemGrid.Length];
+        for (var i = 0; i < itemGrid.Length; i++)
+        {
+            items[i] = itemGrid[i];
+        }
+        return items;
     }
 
     /// <summary>

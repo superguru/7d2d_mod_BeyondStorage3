@@ -77,11 +77,19 @@ internal static class XUiC_LootWindow_Ext
 
             ItemStack itemStack = null;
 
-            var slots = __instance?.lootContainer?.GetSlots();
-            if (slots != null)
+            var itemGrid = __instance?.te?.ItemGrid;
+            if (itemGrid != null)
             {
                 // Check if any of the slots contain currency items
-                bool containsCurrency = slots.Any(slot => CurrencyCache.IsCurrencyItem(slot));
+                bool containsCurrency = false;
+                for (int i = 0; i < itemGrid.Length; i++)
+                {
+                    if (CurrencyCache.IsCurrencyItem(itemGrid[i]))
+                    {
+                        containsCurrency = true;
+                        break;
+                    }
+                }
                 if (containsCurrency)
                 {
                     // Trigger a currency refresh after slot lock changes when currency is present

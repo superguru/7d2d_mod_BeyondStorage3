@@ -181,10 +181,19 @@ internal static class XUiC_BagContainer_Ext
 
             // For vehicle containers, we need to check the vehicle's bag items for currency
             var vehicleBag = __instance?.Bag ?? null;
-            if (vehicleBag?.items != null)
+            if (vehicleBag?.ItemGrid != null)
             {
                 // Check if any of the vehicle bag items contain currency
-                bool containsCurrency = vehicleBag.items.Any(item => CurrencyCache.IsCurrencyItem(item));
+                bool containsCurrency = false;
+                var itemGrid = vehicleBag.ItemGrid;
+                for (int i = 0; i < itemGrid.Length; i++)
+                {
+                    if (CurrencyCache.IsCurrencyItem(itemGrid[i]))
+                    {
+                        containsCurrency = true;
+                        break;
+                    }
+                }
                 if (containsCurrency)
                 {
                     // Trigger a currency refresh after slot lock changes when currency is present
