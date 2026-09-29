@@ -48,7 +48,7 @@
     <Copy SourceFiles="@(CodeAnalysisFiles)" DestinationFolder="$(CodeAnalysisScriptFullDir)" SkipUnchangedFiles="true" />
   </Target>
   <Target Name="CodeQualityChecks" BeforeTargets="Build">
-    <Exec Command="python $(CodeAnalysisScriptDir)\code_check.py" ContinueOnError="false" WorkingDirectory="$(ProjectDir)">
+    <Exec Command="python $(CodeAnalysisScriptDir)\code_check.py" ContinueOnError="false" WorkingDirectory="$(ProjectDir)"  StdOutEncoding="UTF-8" StdErrEncoding="UTF-8">
       <Output TaskParameter="ExitCode" PropertyName="CodeQualityChecksExitCode" />
     </Exec>
     <Error Condition="'$(CodeQualityChecksExitCode)' != '0'" Text="Code quality checks failed with exit code $(CodeQualityChecksExitCode). Build halted due to errors." />

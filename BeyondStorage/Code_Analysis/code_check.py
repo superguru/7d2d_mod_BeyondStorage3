@@ -316,10 +316,10 @@ class CodeQualityChecker:
         
         # Show Roslyn status
         if is_roslyn_available():
-            print("✓ Roslyn AST parsing: ENABLED")
+            print("[OK] Roslyn AST parsing: ENABLED")
             print("  Enhanced accuracy for: HarmonyPatch classes, HarmonyPatch methods, empty catch blocks, magic numbers, cyclomatic complexity, excessive nesting")
         else:
-            print("⚠ Roslyn AST parsing: DISABLED - using string-based parsing")
+            print("[!] Roslyn AST parsing: DISABLED - using string-based parsing")
             print("  To enable: pip install pythonnet and ensure Roslyn assemblies are available")
         print()
         
