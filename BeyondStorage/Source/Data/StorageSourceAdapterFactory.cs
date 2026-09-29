@@ -16,7 +16,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetCollectorAllItemsFunc,
             sources.GetCollectorLockedSlotsFunc,
             sources.MarkCollectorModifiedFunc,
-            sources.GetCollectorNameFunc
+            sources.GetCollectorNameFunc,
+            sources.BulkChangeFinaliserFunc
         );
     }
 
@@ -29,7 +30,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetDroneEntityAllItemsFunc,
             sources.GetDroneEntityLockedSlotsFunc,
             sources.MarkDroneEntityModifiedFunc,
-            sources.GetDroneEntityNameFunc
+            sources.GetDroneEntityNameFunc,
+            sources.BulkChangeFinaliserDroneEntityFunc
         );
     }
 
@@ -42,7 +44,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetLootableAllItemsFunc,
             sources.GetLootableLockedSlotsFunc,
             sources.MarkLootableModifiedFunc,
-            sources.GetLootableNameFunc
+            sources.GetLootableNameFunc,
+            sources.BulkChangeFinaliserLootableFunc
         );
     }
 
@@ -55,7 +58,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetLootContainerAllItemsFunc,
             sources.GetLootContainerLockedSlotsFunc,
             sources.MarkLootContainerModifiedFunc,
-            sources.GetLootContainerNameFunc
+            sources.GetLootContainerNameFunc,
+            sources.BulkChangeFinaliserDroppedLootFunc
         );
     }
 
@@ -68,7 +72,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetPlayerBackpackAllItemsFunc,
             sources.GetPlayerBackpackLockedSlotsFunc,
             sources.MarkPlayerInventoryModifiedFunc,
-            sources.GetPlayerNameFunc
+            sources.GetPlayerNameFunc,
+            sources.BulkChangeFinaliserPlayerFunc
         );
     }
 
@@ -81,7 +86,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetVehicleAllItemsFunc,
             sources.GetVehicleLockedSlotsFunc,
             sources.MarkVehicleModifiedFunc,
-            sources.GetVehicleNameFunc
+            sources.GetVehicleNameFunc,
+            sources.BulkChangeFinaliserVehicleFunc
         );
     }
 
@@ -94,7 +100,8 @@ internal static class StorageSourceAdapterFactory
             sources.GetWorkstationAllItemsFunc,
             sources.GetWorkstationLockedSlotsFunc,
             sources.MarkWorkstationModifiedFunc,
-            sources.GetWorkstationNameFunc
+            sources.GetWorkstationNameFunc,
+            sources.BulkChangeFinaliserWorkstationFunc
         );
     }
 }

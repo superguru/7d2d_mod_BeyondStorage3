@@ -24,6 +24,7 @@ public class StorageDataManager
     public readonly Func<TileEntityCollector, PackedBoolArray> GetCollectorLockedSlotsFunc = _ => null; // Collectors have no slot lock support
     public readonly Action<TileEntityCollector> MarkCollectorModifiedFunc = col => CollectorHandler.MarkCollectorStorageModified(col);
     public readonly Func<TileEntityCollector, string> GetCollectorNameFunc = col => CollectorHandler.GetCollectorName(col);
+    public readonly Action<TileEntityCollector> BulkChangeFinaliserFunc = col => { }; // NOP
 
     // ── Drone ────────────────────────────────────────────────────────────────
     public readonly Func<EntityDrone, EntityDrone, bool> EqualsDroneEntityFunc = (a, b) => ReferenceEquals(a, b);
@@ -31,6 +32,7 @@ public class StorageDataManager
     public readonly Func<EntityDrone, PackedBoolArray> GetDroneEntityLockedSlotsFunc = (drone) => drone.bag?.LockedSlots;
     public readonly Action<EntityDrone> MarkDroneEntityModifiedFunc = drone => EntityHandler.MarkDroneStorageModified(drone);
     public readonly Func<EntityDrone, string> GetDroneEntityNameFunc = drone => EntityHandler.GetEntityName(drone);
+    public readonly Action<EntityDrone> BulkChangeFinaliserDroneEntityFunc = _ => { }; // NOP
 
     // ── Dropped Loot ─────────────────────────────────────────────────────────
     public readonly Func<EntityLootContainer, EntityLootContainer, bool> EqualsLootContainerFunc = (a, b) => ReferenceEquals(a, b);
@@ -38,6 +40,7 @@ public class StorageDataManager
     public readonly Func<EntityLootContainer, PackedBoolArray> GetLootContainerLockedSlotsFunc = container => null;  // Dropped Loot containers have no locked slots
     public Action<EntityLootContainer> MarkLootContainerModifiedFunc = container => EntityHandler.MarkDroppedLootModified(container);
     public readonly Func<EntityLootContainer, string> GetLootContainerNameFunc = container => EntityHandler.GetEntityName(container);
+    public readonly Action<EntityLootContainer> BulkChangeFinaliserDroppedLootFunc = _ => { }; // NOP
 
     // ── Lootable ─────────────────────────────────────────────────────────────
     public readonly Func<TEFeatureStorage, TEFeatureStorage, bool> EqualsLootableFunc = (a, b) => ReferenceEquals(a, b);
@@ -45,6 +48,7 @@ public class StorageDataManager
     public readonly Func<TEFeatureStorage, PackedBoolArray> GetLootableLockedSlotsFunc = lootable => LootableHandler.GetLootableLockedSlots(lootable);
     public Action<TEFeatureStorage> MarkLootableModifiedFunc = lootable => LootableHandler.MarkLootableModified(lootable);
     public readonly Func<TEFeatureStorage, string> GetLootableNameFunc = lootable => LootableHandler.GetLootableName(lootable);
+    public readonly Action<TEFeatureStorage> BulkChangeFinaliserLootableFunc = _ => { }; // NOP
 
     // ── Player ───────────────────────────────────────────────────────────────
     public readonly Func<EntityPlayerLocal, EntityPlayerLocal, bool> EqualsPlayerLootableFunc = (a, b) => ReferenceEquals(a, b);
@@ -57,6 +61,7 @@ public class StorageDataManager
 
     public Action<EntityPlayerLocal> MarkPlayerInventoryModifiedFunc = player => EntityHandler.MarkPlayerInventoryModified(player);
     public readonly Func<EntityPlayerLocal, string> GetPlayerNameFunc = player => EntityHandler.GetPlayerBackpackName();
+    public readonly Action<EntityPlayerLocal> BulkChangeFinaliserPlayerFunc = _ => { }; // NOP
 
     // ── Vehicle ──────────────────────────────────────────────────────────────
     public readonly Func<EntityVehicle, EntityVehicle, bool> EqualsVehicleFunc = (a, b) => ReferenceEquals(a, b);
@@ -64,6 +69,7 @@ public class StorageDataManager
     public readonly Func<EntityVehicle, PackedBoolArray> GetVehicleLockedSlotsFunc = vehicle => vehicle.bag?.LockedSlots;
     public Action<EntityVehicle> MarkVehicleModifiedFunc = vehicle => EntityHandler.MarkVehicleStorageModified(vehicle);
     public readonly Func<EntityVehicle, string> GetVehicleNameFunc = vehicle => EntityHandler.GetEntityName(vehicle);
+    public readonly Action<EntityVehicle> BulkChangeFinaliserVehicleFunc = _ => { }; // NOP
 
     // ── Workstation ──────────────────────────────────────────────────────────
     public readonly Func<TileEntityWorkstation, TileEntityWorkstation, bool> EqualsWorkstationFunc = (a, b) => ReferenceEquals(a, b);
@@ -71,6 +77,7 @@ public class StorageDataManager
     public readonly Func<TileEntityWorkstation, PackedBoolArray> GetWorkstationLockedSlotsFunc = _ => null; // Workstations have no slot lock support
     public Action<TileEntityWorkstation> MarkWorkstationModifiedFunc = workstation => WorkstationHandler.MarkWorkstationStorageModified(workstation);
     public readonly Func<TileEntityWorkstation, string> GetWorkstationNameFunc = workstation => WorkstationHandler.GetWorkstationName(workstation);
+    public readonly Action<TileEntityWorkstation> BulkChangeFinaliserWorkstationFunc = _ => { }; // NOP
 
     internal StorageDataManager(StorageSourceItemDataStore dataStore)
     {

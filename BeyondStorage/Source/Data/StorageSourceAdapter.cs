@@ -19,6 +19,7 @@ internal class StorageSourceAdapter<T> : IStorageSource, IStorageTarget where T 
     private readonly Func<T, PackedBoolArray> _getLockedSlotsFunc;
     private readonly Action<T> _markModifiedAction;
     private readonly Func<T, string> _getNameFunc;
+    private readonly Action<T> _bulkChangeFinaliserAction;
 
     public StorageSourceAdapter(
         T storageSource,
@@ -26,7 +27,8 @@ internal class StorageSourceAdapter<T> : IStorageSource, IStorageTarget where T 
         Func<T, ItemStack[]> getAllItemsFunc,
         Func<T, PackedBoolArray> getLockedSlotsFunc,
         Action<T> markModifiedAction,
-        Func<T, string> getNameFunc)
+        Func<T, string> getNameFunc,
+        Action<T> bulkChangeFinaliserFunc)
     {
         const string d_MethodName = nameof(StorageSourceAdapter<>);
 
@@ -72,6 +74,13 @@ internal class StorageSourceAdapter<T> : IStorageSource, IStorageTarget where T 
             throw new ArgumentNullException(nameof(getNameFunc), error);
         }
 
+        if (bulkChangeFinaliserFunc == null)
+        {
+            var error = $"{d_MethodName}: {nameof(bulkChangeFinaliserFunc)} cannot be null";
+            ModLogger.DebugLog(error);
+            throw new ArgumentNullException(nameof(bulkChangeFinaliserFunc), error);
+        }
+
         StorageSource = storageSource;
         _storageSourceType = storageSource.GetType();
         _equalsFunc = equalsFunc;
@@ -79,6 +88,7 @@ internal class StorageSourceAdapter<T> : IStorageSource, IStorageTarget where T 
         _getLockedSlotsFunc = getLockedSlotsFunc;
         _markModifiedAction = markModifiedAction;
         _getNameFunc = getNameFunc;
+        _bulkChangeFinaliserAction = bulkChangeFinaliserFunc;
     }
 
     public override bool Equals(object obj)
@@ -235,6 +245,27 @@ internal class StorageSourceAdapter<T> : IStorageSource, IStorageTarget where T 
         catch (Exception ex)
         {
             ModLogger.DebugLog($"{d_MethodName}({sourceTypeAbbrev}) | Error marking source as modified: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Invokes the bulk change finaliser for this source. Called once at the end of a
+    /// multi-target push/pull so the source can perform any cross-cutting work (e.g. the
+    /// vehicle-specific broadcast to peers on a dedicated server) that must happen after
+    /// the batch is committed but before the storage context is invalidated.
+    /// </summary>
+    public void FinaliseBulkChange()
+    {
+        const string d_MethodName = nameof(FinaliseBulkChange);
+        var sourceTypeAbbrev = TypeNames.GetAbbrev(_storageSourceType);
+
+        try
+        {
+            _bulkChangeFinaliserAction(StorageSource);
+        }
+        catch (Exception ex)
+        {
+            ModLogger.DebugLog($"{d_MethodName}({sourceTypeAbbrev}) | Error finalising bulk change: {ex.Message}", ex);
         }
     }
 
