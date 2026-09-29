@@ -69,7 +69,7 @@ public class StorageDataManager
     public readonly Func<EntityVehicle, PackedBoolArray> GetVehicleLockedSlotsFunc = vehicle => vehicle.bag?.LockedSlots;
     public Action<EntityVehicle> MarkVehicleModifiedFunc = vehicle => EntityHandler.MarkVehicleStorageModified(vehicle);
     public readonly Func<EntityVehicle, string> GetVehicleNameFunc = vehicle => EntityHandler.GetEntityName(vehicle);
-    public readonly Action<EntityVehicle> BulkChangeFinaliserVehicleFunc = _ => { }; // NOP
+    public readonly Action<EntityVehicle> BulkChangeFinaliserVehicleFunc = vehicle => EntityHandler.FinaliseVehicleBulkChange(vehicle);
 
     // ── Workstation ──────────────────────────────────────────────────────────
     public readonly Func<TileEntityWorkstation, TileEntityWorkstation, bool> EqualsWorkstationFunc = (a, b) => ReferenceEquals(a, b);

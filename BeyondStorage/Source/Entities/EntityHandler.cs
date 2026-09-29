@@ -159,4 +159,23 @@ public static class EntityHandler
         vehicle.SetBagModified();
         WindowStateManager.SetOpenWindowEntitiesModified();
     }
+
+    /// <summary>
+    /// Finalises a bulk item change on a vehicle's bag. Called once at the end of a
+    /// multi-target smart push/pull so the vehicle can perform any cross-cutting work
+    /// (e.g. the dedicated-server broadcast that prevents the stale-peer item
+    /// duplication described in the bug report).
+    /// </summary>
+    public static void FinaliseVehicleBulkChange(EntityVehicle vehicle)
+    {
+        const string d_MethodName = nameof(FinaliseVehicleBulkChange);
+
+        if (vehicle == null || vehicle.bag == null)
+        {
+            ModLogger.DebugLog($"{d_MethodName}: entity or bag is null");
+            return;
+        }
+
+        // NOP — vehicle broadcast logic will be implemented in a later step.
+    }
 }
