@@ -133,6 +133,63 @@ public static class EntityHandler
         WindowStateManager.SetOpenWindowEntitiesModified();
     }
 
+    /// <summary>
+    /// Finalises a bulk item change on a drone's bag. Called once at the end of a
+    /// multi-target smart push/pull so the drone can perform any cross-cutting work
+    /// (e.g. the dedicated-server broadcast that prevents the stale-peer item
+    /// duplication described in the bug report). Mirrors the vehicle fix.
+    /// </summary>
+    public static void FinaliseDroneBulkChange(EntityDrone drone)
+    {
+        const string d_MethodName = nameof(FinaliseDroneBulkChange);
+
+        if (drone == null || drone.bag == null)
+        {
+            ModLogger.DebugLog($"{d_MethodName}: entity or bag is null");
+            return;
+        }
+
+        var connectionManager = SingletonMonoBehaviour<ConnectionManager>.Instance;
+        if (connectionManager == null)
+        {
+            return;
+        }
+
+        // Single player: the local bag IS the only bag, no peers to inform.
+        if (WorldTools.IsSinglePlayer())
+        {
+            return;
+        }
+
+        int senderId = GameManager.Instance.World.GetPrimaryPlayerId();
+
+        var package = NetPackageManager.GetPackage<NetPackageBeyondStorageDroneBagUpdate>()
+                                       .Setup(drone, senderId);
+
+        if (connectionManager.IsServer)
+        {
+            if (connectionManager.Clients == null || connectionManager.Clients.List.Count == 0)
+            {
+#if DEBUG
+                ModLogger.DebugLog($"{d_MethodName}: Server with no connected clients, skipping broadcast for drone {drone.entityId}");
+#endif
+                return;
+            }
+
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Broadcasting drone {drone.entityId} bag ({package.BagDataSizeBytes}B) from senderId {senderId} to {connectionManager.Clients.List.Count} client(s)");
+#endif
+            connectionManager.SendPackage(package, _onlyClientsAttachedToAnEntity: false);
+        }
+        else
+        {
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Sending drone {drone.entityId} bag ({package.BagDataSizeBytes}B) from senderId {senderId} to server");
+#endif
+            connectionManager.SendToServer(package);
+        }
+    }
+
     public static void MarkDroppedLootModified(EntityLootContainer container)
     {
         const string d_MethodName = nameof(MarkVehicleStorageModified);

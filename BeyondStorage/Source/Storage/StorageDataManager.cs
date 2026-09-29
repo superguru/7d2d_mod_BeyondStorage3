@@ -30,9 +30,15 @@ public class StorageDataManager
     public readonly Func<EntityDrone, EntityDrone, bool> EqualsDroneEntityFunc = (a, b) => ReferenceEquals(a, b);
     public readonly Func<EntityDrone, ItemStack[]> GetDroneEntityAllItemsFunc = drone => EntityHandler.GetAllSlotItems(drone);
     public readonly Func<EntityDrone, PackedBoolArray> GetDroneEntityLockedSlotsFunc = (drone) => drone.bag?.LockedSlots;
-    public readonly Action<EntityDrone> MarkDroneEntityModifiedFunc = drone => EntityHandler.MarkDroneStorageModified(drone);
+    // Drone bag sync is now handled by EntityHandler.FinaliseDroneBulkChange via the
+    // custom NetPackageBeyondStorageDroneBagUpdate broadcast, which carries the final
+    // bag state to every peer at the end of the batch. The per-target MarkDroneModified
+    // call from ItemTransferEngine.PushToTarget would otherwise send N redundant
+    // NetPackageBag packets per push (one per successful push to a target) — all
+    // overwritten by the broadcast anyway. Lambda is intentionally a NOP.
+    public readonly Action<EntityDrone> MarkDroneEntityModifiedFunc = _ => { };
     public readonly Func<EntityDrone, string> GetDroneEntityNameFunc = drone => EntityHandler.GetEntityName(drone);
-    public readonly Action<EntityDrone> BulkChangeFinaliserDroneEntityFunc = _ => { }; // NOP
+    public readonly Action<EntityDrone> BulkChangeFinaliserDroneEntityFunc = drone => EntityHandler.FinaliseDroneBulkChange(drone);
 
     // ── Dropped Loot ─────────────────────────────────────────────────────────
     public readonly Func<EntityLootContainer, EntityLootContainer, bool> EqualsLootContainerFunc = (a, b) => ReferenceEquals(a, b);

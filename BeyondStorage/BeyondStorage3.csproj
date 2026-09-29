@@ -233,6 +233,7 @@
     <Compile Include="Source\Multiplayer\NetPackageInventoryNetworkStates.cs" />
     <Compile Include="Source\Multiplayer\NetPackageLockedTEs.cs" />
     <Compile Include="Source\Multiplayer\NetPackageBeyondStorageVehicleBagUpdate.cs" />
+    <Compile Include="Source\Multiplayer\NetPackageBeyondStorageDroneBagUpdate.cs" />
     <Compile Include="Source\Multiplayer\ServerUtils.cs" />
     <Compile Include="Source\Diagnostics\StackTraceProvider.cs" />
     <Compile Include="Source\Infrastructure\ModPathManager.cs" />
