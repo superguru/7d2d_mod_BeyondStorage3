@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using BeyondStorage.Game.UI;
 using BeyondStorage.Infrastructure;
+using BeyondStorage.Multiplayer;
 
 namespace BeyondStorage.Entities;
 
@@ -176,6 +177,57 @@ public static class EntityHandler
             return;
         }
 
-        // NOP — vehicle broadcast logic will be implemented in a later step.
+        var connectionManager = SingletonMonoBehaviour<ConnectionManager>.Instance;
+        if (connectionManager == null)
+        {
+            // Shutting down or not yet initialised — nothing to broadcast.
+            return;
+        }
+
+        // Single player: the local bag IS the only bag, no peers to inform.
+        if (WorldTools.IsSinglePlayer())
+        {
+            return;
+        }
+
+        // Pick the sender id from the local primary player (the player whose
+        // smart push/pull just ran). On a listen-server host this is the host's
+        // player; on a dedicated-server client this is the local player.
+        int senderId = GameManager.Instance.World.GetPrimaryPlayerId();
+
+        var package = NetPackageManager.GetPackage<NetPackageBeyondStorageVehicleBagUpdate>()
+                                       .Setup(vehicle, senderId);
+
+        if (connectionManager.IsServer)
+        {
+            // Listen-server host: the host already mutated vehicle.bag in place,
+            // so its own state is correct. We only need to inform the connected
+            // remote clients. Skip the broadcast entirely if there are none
+            // (e.g. during the brief window after world load before any player
+            // has connected).
+            if (connectionManager.Clients == null || connectionManager.Clients.List.Count == 0)
+            {
+#if DEBUG
+                ModLogger.DebugLog($"{d_MethodName}: Server with no connected clients, skipping broadcast for vehicle {vehicle.entityId}");
+#endif
+                return;
+            }
+
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Broadcasting vehicle {vehicle.entityId} bag ({package.BagDataSizeBytes}B) from senderId {senderId} to {connectionManager.Clients.List.Count} client(s)");
+#endif
+            connectionManager.SendPackage(package, _onlyClientsAttachedToAnEntity: false);
+        }
+        else
+        {
+            // Dedicated-server client: the local bag was mutated but the server
+            // (and therefore every other client) is still on the stale snapshot.
+            // Hand the new snapshot to the server; its ProcessPackage will apply
+            // it and rebroadcast to peers.
+#if DEBUG
+            ModLogger.DebugLog($"{d_MethodName}: Sending vehicle {vehicle.entityId} bag ({package.BagDataSizeBytes}B) from senderId {senderId} to server");
+#endif
+            connectionManager.SendToServer(package);
+        }
     }
 }
