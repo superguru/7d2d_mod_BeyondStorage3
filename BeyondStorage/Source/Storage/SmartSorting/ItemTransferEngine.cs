@@ -148,7 +148,7 @@ internal static class ItemTransferEngine
 
             ModLogger.DebugLog($"{methodName}: {state}");
 
-            var anyPulled = OnSmartPullCompleted(methodName, context, state);
+            var anyPulled = OnSmartPullCompleted(methodName, context, state, loadout);
             return anyPulled;
         }
     }
@@ -173,13 +173,19 @@ internal static class ItemTransferEngine
         return localisationKey;
     }
 
-    private static bool OnSmartPullCompleted(string methodName, StorageContext context, StorageOperationState state)
+    private static bool OnSmartPullCompleted(string methodName, StorageContext context, StorageOperationState state, IStorageSource loadout)
     {
         int stackCount = state.StackCount;
         if (stackCount <= 0)
         {
             return false;
         }
+
+        // Give the loadout a chance to do any cross-cutting post-batch work (e.g. the
+        // dedicated-server vehicle bag broadcast) after the batch is committed but
+        // before we tear down the storage context. The loadout is the destination
+        // for a pull, so its bag is the one that just changed.
+        loadout?.FinaliseBulkChange();
 
         string localisationKey = GetSmartPullResultLocalisationKey(stackCount);
 
