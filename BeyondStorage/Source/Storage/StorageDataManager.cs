@@ -67,7 +67,17 @@ public class StorageDataManager
     public readonly Func<EntityVehicle, EntityVehicle, bool> EqualsVehicleFunc = (a, b) => ReferenceEquals(a, b);
     public readonly Func<EntityVehicle, ItemStack[]> GetVehicleAllItemsFunc = vehicle => EntityHandler.GetAllSlotItems(vehicle);
     public readonly Func<EntityVehicle, PackedBoolArray> GetVehicleLockedSlotsFunc = vehicle => vehicle.bag?.LockedSlots;
-    public Action<EntityVehicle> MarkVehicleModifiedFunc = vehicle => EntityHandler.MarkVehicleStorageModified(vehicle);
+
+    /* Vehicle bag sync is now handled by EntityHandler.FinaliseVehicleBulkChange via the
+     * custom NetPackageBeyondStorageVehicleBagUpdate broadcast, which carries the final
+     * bag state to every peer at the end of the batch. The per-target MarkVehicleModified
+     * call from ItemTransferEngine.PushToTarget would otherwise send N redundant
+     * NetPackageVehicleDataSync(flag8) packets per push (one per successful push to a
+     * target) — all overwritten by the broadcast anyway. Kept as an Action<T> for type
+     * uniformity with the other Mark*Func fields, but the lambda is intentionally a NOP.
+     */
+    public readonly Action<EntityVehicle> MarkVehicleModifiedFunc = _ => { };
+
     public readonly Func<EntityVehicle, string> GetVehicleNameFunc = vehicle => EntityHandler.GetEntityName(vehicle);
     public readonly Action<EntityVehicle> BulkChangeFinaliserVehicleFunc = vehicle => EntityHandler.FinaliseVehicleBulkChange(vehicle);
 
