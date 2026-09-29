@@ -227,14 +227,14 @@ internal static class ItemTransferEngine
 #endif
             var state = new StorageOperationState(source.GetName(), SmartTransferOperation.Push);
 
-            PushSourceItemsToTarget(methodName, state, source, targets, allowPushToEmpty: false);
-            PushSourceItemsToTarget(methodName, state, source, targets, allowPushToEmpty: true);
+PushSourceItemsToTarget(methodName, state, source, targets, allowPushToEmpty: false);
+        PushSourceItemsToTarget(methodName, state, source, targets, allowPushToEmpty: true);
 
-            ModLogger.DebugLog($"{methodName}: {state}");
+        ModLogger.DebugLog($"{methodName}: {state}");
 
-            var anyPushed = OnSmartPushCompleted(methodName, context, state);
-            return anyPushed;
-        }
+        var anyPushed = OnSmartPushCompleted(methodName, context, state, source);
+        return anyPushed;
+    }
     }
 
     private static string GetSmartPushResultLocalisationKey(int stackCount, int storageCount)
@@ -268,7 +268,7 @@ internal static class ItemTransferEngine
         return localisationKey;
     }
 
-    private static bool OnSmartPushCompleted(string methodName, StorageContext context, StorageOperationState state)
+    private static bool OnSmartPushCompleted(string methodName, StorageContext context, StorageOperationState state, IStorageSource source)
     {
         int stackCount = state.StackCount;
         int storageCount = state.StorageCount;
@@ -277,6 +277,11 @@ internal static class ItemTransferEngine
         {
             return false;
         }
+
+        // Give the source a chance to do any cross-cutting post-batch work (e.g. the
+        // dedicated-server vehicle bag broadcast) after the batch is committed but
+        // before we tear down the storage context.
+        source?.FinaliseBulkChange();
 
         string localisationKey = GetSmartPushResultLocalisationKey(stackCount, storageCount);
 
