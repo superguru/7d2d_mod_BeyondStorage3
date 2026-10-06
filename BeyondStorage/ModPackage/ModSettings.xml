@@ -23,11 +23,11 @@
           <Buttons left="Off" right="On"/>
         </Switch>
         <Switch name="ShowUseables" displayKey="bsSettingShowUseables" type="string" defaultValue="On">
-          <Description key="bsSettingShowUseablesTooltip"/>
+          <Description key="bsSettingShowUseablesToolTip"/>
           <Buttons left="Off" right="On"/>
         </Switch>
         <Switch name="IsDebug" displayKey="bsSettingIsDebug" type="string" defaultValue="Off">
-          <Description key="bsSettingIsDebugTooltip"/>
+          <Description key="bsSettingIsDebugToolTip"/>
           <Buttons left="Off" right="On"/>
         </Switch>
       </Category>
