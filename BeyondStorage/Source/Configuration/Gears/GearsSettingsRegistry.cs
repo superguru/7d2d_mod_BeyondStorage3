@@ -15,8 +15,7 @@ internal static class GearsSettingsRegistry
             GearsSettingFactory.Float(
                 nameof(ModConfig.Range),
                 c => c.range,
-                (c, v) => c.range = v,
-                ModConfig.MIN_RANGE, ModConfig.MAX_RANGE, ModConfig.DEFAULT_RANGE),
+                (c, v) => c.range = v),
             GearsSettingFactory.Bool(
                 nameof(ModConfig.IncludeDrones),
                 c => c.includeDrones,

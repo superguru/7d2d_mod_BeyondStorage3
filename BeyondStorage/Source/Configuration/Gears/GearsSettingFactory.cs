@@ -4,9 +4,10 @@ namespace BeyondStorage.Configuration.Gears;
 
 internal static class GearsSettingFactory
 {
-    internal static GearsSetting<bool> Bool(string key, Func<ModConfigData, bool> getConfig, Action<ModConfigData, bool> setConfig)
+    // The switches are declared as type="string" in ModSettings.xml so the menu can label them Off/On.
+    internal static GearsSetting<bool, string> Bool(string key, Func<ModConfigData, bool> getConfig, Action<ModConfigData, bool> setConfig)
     {
-        return new GearsSetting<bool>(
+        return new GearsSetting<bool, string>(
             key,
             getConfig,
             setConfig,
@@ -14,23 +15,23 @@ internal static class GearsSettingFactory
             GearsConversions.FromBool);
     }
 
-    internal static GearsSetting<int> Int(string key, Func<ModConfigData, int> getConfig, Action<ModConfigData, int> setConfig, int min, int max, int defaultValue)
+    internal static GearsSetting<int, int> Int(string key, Func<ModConfigData, int> getConfig, Action<ModConfigData, int> setConfig)
     {
-        return new GearsSetting<int>(
+        return new GearsSetting<int, int>(
             key,
             getConfig,
             setConfig,
-            value => GearsConversions.ToInt(value, defaultValue),
-            value => GearsConversions.FromInt(value, min, max));
+            value => value,
+            value => value);
     }
 
-    internal static GearsSetting<float> Float(string key, Func<ModConfigData, float> getConfig, Action<ModConfigData, float> setConfig, float min, float max, float defaultValue)
+    internal static GearsSetting<float, float> Float(string key, Func<ModConfigData, float> getConfig, Action<ModConfigData, float> setConfig)
     {
-        return new GearsSetting<float>(
+        return new GearsSetting<float, float>(
             key,
             getConfig,
             setConfig,
-            value => GearsConversions.ToFloat(value, defaultValue),
-            value => GearsConversions.FromFloat(value, min, max));
+            value => value,
+            value => value);
     }
 }

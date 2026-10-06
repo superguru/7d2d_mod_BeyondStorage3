@@ -10,36 +10,41 @@ internal interface IGearsSetting
     void Bind(IGlobalModSettingsCategory category);
 }
 
-internal sealed class GearsSetting<T> : IGearsSetting
+/// <summary>
+/// Bridges a GearsAPI global setting (<typeparamref name="TGears"/>, the type the setting stores) to a
+/// <see cref="ModConfigData"/> field (<typeparamref name="TConfig"/>). The two differ only for the On/Off
+/// switches, which Gears holds as strings so the menu can label the buttons.
+/// </summary>
+internal sealed class GearsSetting<TConfig, TGears> : IGearsSetting
 {
     private readonly string _key;
-    private readonly Func<ModConfigData, T> _getConfig;
-    private readonly Action<ModConfigData, T> _setConfig;
-    private readonly Func<string, T> _parse;
-    private readonly Func<T, string> _format;
+    private readonly Func<ModConfigData, TConfig> _getConfig;
+    private readonly Action<ModConfigData, TConfig> _setConfig;
+    private readonly Func<TGears, TConfig> _fromGears;
+    private readonly Func<TConfig, TGears> _toGears;
 
-    public GearsSetting(string key, Func<ModConfigData, T> getConfig, Action<ModConfigData, T> setConfig, Func<string, T> parse, Func<T, string> format)
+    public GearsSetting(string key, Func<ModConfigData, TConfig> getConfig, Action<ModConfigData, TConfig> setConfig, Func<TGears, TConfig> fromGears, Func<TConfig, TGears> toGears)
     {
         _key = key;
         _getConfig = getConfig;
         _setConfig = setConfig;
-        _parse = parse;
-        _format = format;
+        _fromGears = fromGears;
+        _toGears = toGears;
     }
 
     public void Bind(IGlobalModSettingsCategory category)
     {
-        if (category.GetSetting(_key) is not IGlobalValueSetting setting)
+        if (category.GetSetting<IGlobalValueSetting<TGears>>(_key) is not { } setting)
         {
-            ModLogger.DebugLog($"Global settings loaded, but setting `{_key}` is null");
+            ModLogger.DebugLog($"Global settings loaded, but setting `{_key}` is not a `{typeof(TGears).Name}` value setting");
             return;
         }
 
-        setting.OnSettingChanged += (_, newValue) =>
+        setting.OnValueChanged += (_, newValue) =>
         {
-            var value = _parse(newValue);
+            var value = _fromGears(newValue);
 
-            if (!EqualityComparer<T>.Default.Equals(_getConfig(ModConfig.ClientConfig), value))
+            if (!EqualityComparer<TConfig>.Default.Equals(_getConfig(ModConfig.ClientConfig), value))
             {
                 _setConfig(ModConfig.ClientConfig, value);
                 ModConfig.SaveConfig();
@@ -49,14 +54,19 @@ internal sealed class GearsSetting<T> : IGearsSetting
         Sync(setting);
     }
 
-    private void Sync(IGlobalValueSetting setting)
+    // Gears restores the player's saved values silently, so OnValueChanged does not fire for them.
+    private void Sync(IGlobalValueSetting<TGears> setting)
     {
-        var configValue = _getConfig(ModConfig.ClientConfig);
+        var gearsValue = _toGears(_getConfig(ModConfig.ClientConfig));
 
-        if (!EqualityComparer<T>.Default.Equals(_parse(setting.CurrentValue), configValue))
+        if (EqualityComparer<TGears>.Default.Equals(setting.SettingValue, gearsValue))
         {
-            setting.CurrentValue = _format(configValue);
-            GearsModAPI.SaveGlobalSettings();
+            return;
         }
+
+        setting.SettingValue = gearsValue;
+        setting.SelectedValue = gearsValue;
+        setting.RefreshUI();
+        GearsModAPI.SaveGlobalSettings();
     }
 }

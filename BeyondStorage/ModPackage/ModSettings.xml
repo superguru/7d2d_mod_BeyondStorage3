@@ -1,18 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<ModSettings>
+<ModSettings version="2">
   <Global>
     <Tab name="General">
-      <Category name="General" displayKey="bsSettingGeneral" tooltipKey="bsSettingGeneralToolTip">
-        <Slider name="Range" displayKey="bsSettingRange" tooltipKey="bsSettingRangeToolTip" value="0.0" defaultValue="0.0">
-          <Property type="incrementalValuesFloat" increment="5.0" minValue="0.0" maxValue="250.0"/>
-          <Property type="formatter" formatString="F1" />
+      <Category name="General" displayKey="bsSettingGeneral">
+        <Description key="bsSettingGeneralToolTip"/>
+        <Slider name="Range" displayKey="bsSettingRange" type="float" defaultValue="0.0">
+          <Description key="bsSettingRangeToolTip"/>
+          <Incremental increment="5.0" minValue="0.0" maxValue="250.0"/>
+          <Formatter ui="F1"/>
         </Slider>
-        <Switch name="IncludeDrones" displayKey="bsSettingIncludeDronesInNetwork" tooltipKey="bsSettingIncludeDronesInNetworkToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="IncludeVehicles" displayKey="bsSettingIncludeVehiclesInNetwork" tooltipKey="bsSettingIncludeVehiclesInNetworkToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="AllowPushToAlliedVehicles" displayKey="bsSettingAllowPushToAlliedVehicles" tooltipKey="bsSettingAllowPushToAlliedVehiclesToolTip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="ShowUseables" displayKey="bsSettingShowUseables" tooltipKey="bsSettingShowUseablesTooltip" value="On" defaultValue="On" leftValue="Off" rightValue="On"/>
-        <Switch name="IsDebug" displayKey="bsSettingIsDebug" tooltipKey="bsSettingIsDebugTooltip" value="Off" defaultValue="Off" leftValue="Off" rightValue="On"/>
+        <Switch name="IncludeDrones" displayKey="bsSettingIncludeDronesInNetwork" type="string" defaultValue="On">
+          <Description key="bsSettingIncludeDronesInNetworkToolTip"/>
+          <Buttons left="Off" right="On"/>
+        </Switch>
+        <Switch name="IncludeVehicles" displayKey="bsSettingIncludeVehiclesInNetwork" type="string" defaultValue="On">
+          <Description key="bsSettingIncludeVehiclesInNetworkToolTip"/>
+          <Buttons left="Off" right="On"/>
+        </Switch>
+        <Switch name="AllowPushToAlliedVehicles" displayKey="bsSettingAllowPushToAlliedVehicles" type="string" defaultValue="On">
+          <Description key="bsSettingAllowPushToAlliedVehiclesToolTip"/>
+          <Buttons left="Off" right="On"/>
+        </Switch>
+        <Switch name="ShowUseables" displayKey="bsSettingShowUseables" type="string" defaultValue="On">
+          <Description key="bsSettingShowUseablesTooltip"/>
+          <Buttons left="Off" right="On"/>
+        </Switch>
+        <Switch name="IsDebug" displayKey="bsSettingIsDebug" type="string" defaultValue="Off">
+          <Description key="bsSettingIsDebugTooltip"/>
+          <Buttons left="Off" right="On"/>
+        </Switch>
       </Category>
     </Tab>
   </Global>
