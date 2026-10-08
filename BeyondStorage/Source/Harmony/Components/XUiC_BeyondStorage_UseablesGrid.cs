@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BeyondStorage.Data;
+using BeyondStorage.Harmony.Extends;
 using BeyondStorage.Infrastructure;
 using BeyondStorage.Storage;
 using UnityEngine;
@@ -38,6 +39,12 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
 
     // Item types shown in the food/drink row last refresh (in order) — same stability purpose.
     private readonly List<int> _previousFoodDrinkRowTypes = new(ROW_SIZE);
+
+    // Backing ItemStackGrid whose only job is to answer "where does the single unit we are about
+    // to use live" for vanilla's 3.3 SimulateActionExecution(actionIdx, ItemStackGrid, int). These
+    // cells are synthetic display stacks, not real slots, so vanilla can't be left to guess — see
+    // Inventory_Ext for the full story. Created lazily on first use.
+    private ItemStackGrid _useSourceGrid;
 
     public override void OnOpen()
     {
@@ -401,6 +408,16 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             ParentActionList = new XUiC_ItemActionList()
         };
 
+        // Park a single unit of the item we're about to use in our own grid and point vanilla's
+        // SimulateActionExecution at it (see Inventory_Ext). Without this, 3.3 resolves
+        // StackLocation = Backpack to the player's real backpack grid and reads
+        // it with our Useables slot number — normally an empty slot, so Hand.SimulateActionExecution
+        // bailed out before applying anything, leaving the unit already removed from storage with no
+        // eat/drink/heal applied. Armed here rather than inside OnActivated because
+        // UseItemWithAnimationCoroutine reaches SimulateActionExecution synchronously (StartCoroutine
+        // runs up to the first yield), so the redirect is consumed before this method returns.
+        ArmUseSource(slotIndex, itemValue);
+
         try
         {
             entry.OnActivated();
@@ -414,10 +431,46 @@ public class XUiC_BeyondStorage_UseablesGrid : XUiC_BeyondStorage_ItemGrid
             xui.IsUsingItemActionEntryUse = false;
             cellController.HiddenLock = false;
         }
+        finally
+        {
+            // No-op when the redirect was already consumed by the prefix; matters when OnActivated
+            // took a path that never reaches SimulateActionExecution (e.g. a prompt, or an instant
+            // action), so a stale redirect can't leak into an unrelated later call.
+            Inventory_Ext.DisarmSyntheticUseSource();
+        }
 
         MarkUsePending();
         StorageContextFactory.InvalidateContext();
         RefreshGridItems();
+    }
+
+    /// <summary>
+    /// Puts a single unit of <paramref name="itemValue"/> into this grid's private backing
+    /// <see cref="ItemStackGrid"/> and arms <c>Inventory_Ext</c> so the use action vanilla
+    /// runs next reads that stack instead of a same-numbered slot in the player's
+    /// real backpack.
+    ///
+    /// The stack is a fresh 1-count clone rather than the cell's own display stack: vanilla's
+    /// OnActivated treats the cell stack as <c>originalStack</c> and rewrites it (animated actions
+    /// write back <c>count - 1</c>), and <c>Hand.SimulateActionExecution</c> holds onto this stack
+    /// for the whole eat/drink animation, decrementing it as the action consumes it. Keeping the two
+    /// separate means neither can corrupt the other's count.
+    /// </summary>
+    private void ArmUseSource(int slotIndex, ItemValue itemValue)
+    {
+        if (_useSourceGrid == null)
+        {
+            _useSourceGrid = ItemStackGrid.Create(
+                new Vector2i(TOTAL_SLOTS, 1),
+                StackLocation,
+                _hasLocks: false,
+                _hasPreferences: false,
+                _holder: null);
+        }
+
+        // SetItem clones the ItemValue for us, so the grid owns an independent copy.
+        _useSourceGrid.SetItem(slotIndex, new ItemStack(itemValue, 1));
+        Inventory_Ext.ArmSyntheticUseSource(_useSourceGrid, slotIndex);
     }
 
     // Generous relative to any real eat/drink animation (a few seconds) — this only exists to catch

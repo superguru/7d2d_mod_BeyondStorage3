@@ -155,6 +155,7 @@
     <Compile Include="Source\Harmony\Patches\ItemActionEntryCraft_Patch.cs" />
     <Compile Include="Source\Harmony\Patches\ItemActionEntryRepair_Patch.cs" />
     <Compile Include="Source\Harmony\Extends\XUiC_ItemActionList_Ext.cs" />
+    <Compile Include="Source\Harmony\Extends\Inventory_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\ItemActionTextureBlock_Ext.cs" />
     <Compile Include="Source\Harmony\Extends\XUiM_PlayerInventory_Ext.cs" />
     <Compile Include="Source\Harmony\Patches\XUiC_PowerSourceStats_Patch.cs" />
