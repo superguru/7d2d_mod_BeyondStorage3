@@ -33,3 +33,4 @@
 "bsSettingShowUseablesToolTip","UI","Menu","x","","","Show the Useables window (heal/eat/drink) next to your Backpack"
 "xuiBeyondUseables","UI","XUI","","","","Useables"
 "xuiBeyondUseablesHint","UI","XUI","","","","[DECEA3]Double-click or press 1-6 to use[-]"
+"xuiBeyondUseablesActionUnavailable","UI","XUI","","","","This action can't be used on items that are stored in storages"

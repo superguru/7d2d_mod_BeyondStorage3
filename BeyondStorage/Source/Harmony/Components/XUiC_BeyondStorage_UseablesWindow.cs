@@ -91,9 +91,9 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     }
 
     /// <summary>
-    /// Handles clicks on a cell: every click shows the item info panel (read-only — see
-    /// ShowReadOnlyItemInfo for why it's NOT XUiC_ItemStack.HandleItemInspect()), and a second
-    /// click within the double-click window additionally triggers TryUseSlot. Cells are locked
+    /// Handles clicks on a cell: every click shows the item info panel (see ShowItemInfo for how the
+    /// action list is kept honest), and a second click within the double-click window additionally
+    /// triggers TryUseSlot. Cells are locked
     /// (see XUiC_BeyondStorage_UseablesGrid.LockCells) so the vanilla click pipeline that would
     /// normally do both of these never runs, but XUiC_ItemStack.isOver is still updated on hover
     /// regardless of lock state, so hover+mouse-button state read here independently is all that's
@@ -119,7 +119,7 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
                 continue;
             }
 
-            ShowReadOnlyItemInfo(controllers[i]);
+            ShowItemInfo(controllers[i]);
 
             float now = Time.time;
             bool isDoubleClick = (now - _lastClickTime[i]) <= DOUBLE_CLICK_WINDOW_SECONDS;
@@ -139,19 +139,24 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
     }
 
     /// <summary>
-    /// Shows the item info panel without exposing any default vanilla item actions (Drop, Use,
-    /// etc.). XUiC_ItemStack.HandleItemInspect() -> XUiC_ItemInfoWindow.SetItemStack() both go
-    /// through SetInfo(..., ItemActionListTypes.Item), which populates the panel's action list
-    /// with FULLY FUNCTIONAL buttons bound directly to the cell controller passed in — for our
-    /// synthetic cells that's a real duplication bug: e.g. the panel's "Drop" button (or its
-    /// keyboard shortcut) drops a real item stack on the ground while our storage-backed count is
-    /// never touched, and its "Use" button applies the item's effect and decrements only the
-    /// cell's own display count, bypassing TryUseSlot's storage removal entirely. Calling SetInfo
-    /// directly with ItemActionListTypes.None gets the same read-only display (name/stats/icon)
-    /// with an empty action list, so 1-6 / double-click (TryUseSlot) are the only way to act on
-    /// these cells.
+    /// Shows the item info panel for a Useables cell, populated with the same action list a real
+    /// backpack slot would get (<see cref="XUiC_ItemActionList.ItemActionListTypes.Item"/>), so
+    /// clicking a cell lists that item's actions exactly like clicking the item in your backpack.
+    ///
+    /// This goes through <c>SetItemStack</c> (what <c>XUiC_ItemStack.updateItemInfoWindow</c> calls
+    /// for a real backpack cell) rather than <c>SetInfo</c> directly, so the panel keeps a
+    /// <c>selectedItemStack</c> to re-render itself from. The Stats/Description buttons only flip
+    /// <c>showStats</c> and set <c>IsDirty</c>; the actual page refresh happens in
+    /// <c>XUiC_ItemInfoWindow.Update</c>, which re-runs <c>SetItemStack(selectedItemStack)</c>.
+    /// With <c>selectedItemStack</c> null every one of those branches is skipped, so the button
+    /// highlights while the panel keeps showing the previously selected item's content.
+    ///
+    /// The resulting buttons are bound straight to the cell controller, which only ever holds a
+    /// display stack, so <c>XUiC_ItemActionEntry_Ext</c> intercepts activation and routes Use back
+    /// through <c>TryUseSlot</c> and Drop through storage. Without that interception the panel
+    /// would apply effects for free and drop items into the world from nothing.
     /// </summary>
-    private static void ShowReadOnlyItemInfo(XUiC_ItemStack cellController)
+    private static void ShowItemInfo(XUiC_ItemStack cellController)
     {
         var itemStack = cellController?.ItemStack;
         if (itemStack == null || itemStack.IsEmpty())
@@ -165,9 +170,7 @@ public class XUiC_BeyondStorage_UseablesWindow : XUiController
             return;
         }
 
-        infoWindow.ClearSelectedStacks();
-        infoWindow.makeVisible(true);
-        infoWindow.SetInfo(itemStack, cellController, XUiC_ItemActionList.ItemActionListTypes.None);
+        infoWindow.SetItemStack(cellController, _makeVisible: true);
     }
 
     [PublicizedFrom(EAccessModifier.Protected)]
