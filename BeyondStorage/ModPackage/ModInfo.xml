@@ -3,8 +3,8 @@
 <xml>
   <Name value="BeyondStorage3"/>
   <DisplayName value="Beyond Storage 3"/>
-  <Version value="3.3.0"/>
-  <Description value="Everything Is Your Inventory. Consume, Push, and Pull items from everywhere that has a storage."/>
+  <Version value="3.3.2"/>
+  <Description value="Everything Is Your Inventory. Consume, Push, Pull, and Use items from everywhere that has a storage."/>
   <Author value="superguru, gazorper"/>
   <Icon value="Docs/BS3_Icon_225x225.jpg"/>
   <Banner value="Docs/BS3_Banner_Top_1280x357.jpg"/>

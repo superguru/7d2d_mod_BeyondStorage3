@@ -1,6 +1,19 @@
 ﻿# Changelog for Beyond Storage 3
 
+## Work In Progress
+
+__🚀 Released v3.3.2__
+- ♻ Fixed: Useables window no longer removes food/drink/medical items from storage without applying their effect (eating, drinking and healing work again)
+- ♻ Fixed: Item action list and Stats vs Description info now displays correctly when selected items in Useables window
+
 ## History
+
+__🚀 Released v3.3.1__
+- ♻ Fixed: Smart push from Vehicles on a dedicated server no longer causes pushed items to reappear in the vehicle inventory minutes to hours later
+- ♻ Fixed: Same item-reappearance bug applied to smart push to and pull from Drones on a dedicated server
+- ✨ Changed: Dropped redundant per-target vehicle and drone bag sync packets, so less network traffic now
+- ✨ Changed: Updated GearsAPI support to the new Gears v2 XML format for the Gears v3.3 library/mod
+- ✅ Added: Debug-only diagnostic logging for the new vehicle and drone bag broadcast packets
 
 __🚀 Released v3.3.0__
 - ✨ Update mod to work with game V3.3.0_b13/b14 EXP
@@ -91,10 +104,15 @@ __🚀 Released v3.1.1__
 - 📜 TODO: Shift Push from vehicles/drones: should just exclude other vehicles/drones
 
 ```text
-For V3.1.x/3.2.x: Added Useables window that has contextual, needs-based medical and food items. Read CHANGELOG.md for more.
+For V3.3.x: Fixed Useables window not applying actions regression bug. Read CHANGELOG.md for more.
 
 Minor updates released on Discord. Go to #beyond-storage3 on Discord for support. First read the Docs/README.md file.
 ```
+
+```text
+You can also get this version from any of the release sites in the pinned message of this channel.
+```
+
 
 ```text
 __🔬 Experimental v__
@@ -113,11 +131,5 @@ __🚀 Released v__
 
 - 🙋 Any bugs to report?
 ```
-
-## Work In Progress
-
-__🚧 WIP v3.3.x__
--
-- 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
 
 *** PACKAGED aka MOD CHANGELOG.md EOF ***
