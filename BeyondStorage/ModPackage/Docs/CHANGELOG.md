@@ -2,11 +2,20 @@
 
 ## Work In Progress
 
+__🚧 WIP v3.4.1__
+- !! Available on Discord first !! Website releases later.
+- 🤐 Preview channel members already have all these features, which you can also get access to if you like this update message...
+
+
+## History
+
+__🚀 Released v3.4.0__
+- ♻ Fixed: Smart push / pull loadout buttons no longer missing from the Backpack and Loot windows with game V3.4
+- !! Available on Discord first !! Website releases later.
+
 __🚀 Released v3.3.2__
 - ♻ Fixed: Useables window no longer removes food/drink/medical items from storage without applying their effect (eating, drinking and healing work again)
 - ♻ Fixed: Item action list and Stats vs Description info now displays correctly when selected items in Useables window
-
-## History
 
 __🚀 Released v3.3.1__
 - ♻ Fixed: Smart push from Vehicles on a dedicated server no longer causes pushed items to reappear in the vehicle inventory minutes to hours later
